@@ -1,0 +1,20 @@
+{
+    "name": "fm/elfinder-bundle",
+    "description": "ElFinder bundle, add ElFinder file manager to your Symfony2 project",
+    "keywords": ["elfinder","file manager"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Al Ganiev",
+            "email": "helios.ag@gmail.com"
+        }
+    ],
+    "require": {
+        "studio-42/elfinder": "*"
+    },
+    "autoload": {
+        "psr-0": { "FM\\ElfinderBundle": "" }
+    },
+    "target-dir": "FM/ElfinderBundle"
+}

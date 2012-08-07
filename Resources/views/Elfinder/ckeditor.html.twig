@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="{{asset('bundles/fmelfinder/css/jquery/ui-themes/smoothness/jquery-ui-1.8.21.custom.css')}}" />
+{% stylesheets output='ef-assets/css/main.css' filter='?yui_css,cssrewrite'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/css/*'
+%}
+<link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
+
+{% javascripts output='ef-assets/js/main.js' filter='?yui_js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/jquery/jquery-1.7.2.min.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/jquery/jquery-ui-1.8.21.custom.min.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.version.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/jquery.elfinder.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.resources.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.options.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.history.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/elFinder.command.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/ui/*'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/commands/*'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/i18n/*'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/jquery.dialogelfinder.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/proxy/elFinderSupportVer1.js'
+        '%kernel.root_dir%/../vendor/studio-42/elfinder/js/jquery.dialogelfinder.js'
+    %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+<script type="text/javascript" charset="utf-8">
+    function getUrlParam(paramName) {
+        var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+        var match = window.location.search.match(reParam) ;
+
+        return (match && match.length > 1) ? match[1] : '' ;
+    }
+    $().ready(function() {
+        var funcNum = getUrlParam('CKEditorFuncNum');
+        var mode = getUrlParam('mode');
+
+        var f = $('#elfinder').elfinder({
+            url : '{{path('ef_connect')}}'+'?mode='+mode,
+            lang : '{{locale}}',
+            getFileCallback : function(file) {
+                window.opener.CKEDITOR.tools.callFunction(funcNum, file);
+                window.close();
+            }
+        })
+    })
+</script>
+</head>
+<body>
+
+<div id="elfinder"></div>
+
+</body>
+</html>
+
+
+
