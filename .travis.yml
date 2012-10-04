@@ -1,0 +1,15 @@
+language: php
+
+php:
+  - 5.3
+
+before_script:
+  - curl -s http://getcomposer.org/installer | php --
+  - php composer.phar install --dev
+  - php composer.phar require symfony/framework-bundle:2.0.17
+
+script: phpunit --coverage-text
+
+notifications:
+  email:
+    - helios.ag@gmail.com
