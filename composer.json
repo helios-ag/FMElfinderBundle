@@ -1,5 +1,5 @@
 {
-    "name": "helios-ag/elfinder-bundle",
+    "name": "helios-ag/fm-elfinder-bundle",
     "description": "ElFinder bundle, add ElFinder file manager to your Symfony2 project",
     "keywords": ["elfinder","file manager"],
     "type": "symfony-bundle",
@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "studio-42/elfinder": "*"
+        "helios-ag/elfinder": "*"
     },
     "autoload": {
         "psr-0": { "FM\\ElfinderBundle": "" }
