@@ -2,13 +2,21 @@ language: php
 
 php:
   - 5.3
+  - 5.4
+
+env:
+  - SYMFONY_VERSION=2.0.*
+  - SYMFONY_VERSION=2.1.*
+  - SYMFONY_VERSION=dev-master
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php --
-  - php composer.phar install --dev
-  - php composer.phar require symfony/framework-bundle:2.0.17
+  - composer require symfony/framework-bundle:${SYMFONY_VERSION}
+  - composer install --dev
 
 script: phpunit --coverage-text
+
+notifications:
+  email:
 
 notifications:
   email:
