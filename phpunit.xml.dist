@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        - <phpunit bootstrap="./Tests/bootstrap.php" colors="true">
+    - <testsuites>
+    - <testsuite name="FMElfinderBundle test suite">
+    <directory suffix="Test.php">./Tests</directory>
+</testsuite>
+</testsuites>
+    - <filter>
+    - <whitelist addUncoveredFilesFromWhitelist="true">
+    <directory>./</directory>
+    - <exclude>
+    <directory>./Resources</directory>
+    <directory>./Tests</directory>
+    <directory>./vendor</directory>
+</exclude>
+</whitelist>
+</filter>
+    - <logging>
+    - <!--  and this is where your report will be written
+  -->
+    <log type="coverage-clover" target="./clover.xml" />
+</logging>
+</phpunit>
