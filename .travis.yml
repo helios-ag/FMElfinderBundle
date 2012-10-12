@@ -13,6 +13,7 @@ before_script:
   - curl -s http://getcomposer.org/installer | php --
   - php composer.phar install --dev
   - php composer.phar require symfony/framework-bundle:${SYMFONY_VERSION} --dev
+  - php composer.phar require symfony/finder:2.2.x-dev
 
 script: phpunit --coverage-text
 
