@@ -1,0 +1,10 @@
+framework:
+  form: ~
+  router:
+    resource: ~
+  secret: whatever
+  templating:
+    engines: ['twig']
+  test: ~
+  translator:
+    fallback: en
