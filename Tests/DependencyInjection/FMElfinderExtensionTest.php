@@ -22,6 +22,6 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('LocalFileSystem', $parameters['driver']);
         $this->assertEquals('en_US.UTF8', $parameters['locale']);
         $this->assertEquals('ckeditor', $parameters['editor']);
-        $this->assertFalse($parameters['showhidden']);
+//        $this->assertFalse($parameters['showhidden']);
     }
 }
