@@ -1,5 +1,6 @@
 [ElFinder](/Studio-42/elFinder) integration in Symfony2
 
+[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
@@ -8,7 +9,7 @@ Creation is inspired by simplicity and convenience of Finder program used in Mac
 To install this bundle, you'll need both the [ElFinder](/Studio-42/elFinder)
 and this bundle.
 
-This instruction explain how to setup bundle on Symfony 2.1 RC
+This instruction explain how to setup bundle on Symfony 2.1
 
 ### Step 1: Installation
 
@@ -61,7 +62,7 @@ security:
 
     //....
     access_control:
-        - { path: ^/efconnect$, role: ROLE_USER }
+        - { path: ^/efconnect, role: ROLE_USER }
         - { path: ^/elfinder, role: ROLE_USER }
 
 ```
@@ -83,9 +84,9 @@ app/console assets:install web
 app/console assetic:dump
 ```
 
-### Basic configuration
+## Basic configuration
 
-## Add configuration options to your config.yml
+### Add configuration options to your config.yml
 
 fm_elfinder:
     path: uploads
@@ -103,12 +104,12 @@ editor - determines what template to render, to be compatible with WYSIWYG web e
  "Simple" can be used as standalone filebrowser for managing and uploading files.
 showhidden - hides directories starting with . (dot)
 
-### Using ElFinder with CKEditor
+## Using ElFinder with CKEditor
 
 Mostly filebrowsers used with WYSIWYG editors to upload images and other files. The example above will show how to
 configure CKEditor to work with ElFinder through [FMElFinderBundle]
 
-## Step 1: Define class or id for the textarea inside your template:
+### Step 1: Define class or id for the textarea inside your template:
 
 ```jinja
 {# example.html.twig #}
@@ -118,7 +119,7 @@ configure CKEditor to work with ElFinder through [FMElFinderBundle]
 ////
 ```
 
-## Step 2: Place ElFinder URL into attribute "browser-url"
+### Step 2: Place ElFinder URL into attribute "browser-url"
 
 ```jinja
 {# example.html.twig #}
@@ -128,7 +129,7 @@ configure CKEditor to work with ElFinder through [FMElFinderBundle]
 ////
 ```
 
-## Step 3: Add necessary javascript files with ckeditor library, and add configuration/initialisation script inside your
+### Step 3: Add necessary javascript files with ckeditor library, and add configuration/initialisation script inside your
 template:
 ```jinja
 {# example.html.twig #}
@@ -155,4 +156,4 @@ template:
 ////
 ```
 
-After that, you can use "Browse on server" ability that can be found inside insert image or link dialogs.
+After that, you can use "Browse on server" ability that can be found under insert image or insert link dialogs.
