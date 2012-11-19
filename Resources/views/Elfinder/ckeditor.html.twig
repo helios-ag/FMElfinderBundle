@@ -44,8 +44,10 @@
             url : '{{path('ef_connect')}}'+'?mode='+mode,
             lang : '{{locale}}',
             getFileCallback : function(file) {
-                window.opener.CKEDITOR.tools.callFunction(funcNum, file);
-                window.close();
+                if (funcNum) {
+                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    window.close();
+                }
             }
         })
     })
