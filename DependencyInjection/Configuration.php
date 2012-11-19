@@ -31,6 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('locale')->defaultValue('en_US.UTF8')->end()
                 ->scalarNode('editor')->defaultValue('ckeditor')->end()
                 ->scalarNode('showhidden')->defaultValue('false')->end()
+                ->scalarNode('fullscreen')->defaultValue('true')->end()
             ->end()
         ;
 
