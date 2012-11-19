@@ -11,13 +11,14 @@ class ElfinderController extends Controller
         $parameters = $this->container->getParameter('fm_elfinder');
         $editor = $parameters['editor'];
         $locale = $parameters['locale'];
+        $fullscreen = $parameters['fullscreen'];
         switch ($editor){
             // add more
             case 'ckeditor':
-                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale'=>$locale));
+                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
                 break;
             default:
-                return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale'=>$locale));
+                return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
         }
     }
 

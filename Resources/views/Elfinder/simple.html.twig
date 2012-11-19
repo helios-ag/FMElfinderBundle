@@ -28,12 +28,21 @@
     <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script type="text/javascript" charset="utf-8">
-
         $().ready(function() {
-            $('#elfinder').elfinder({
+            var f = $('#elfinder').elfinder({
                 url : '{{path('ef_connect')}}',
                 lang : '{{locale}}'
             });
+
+            {% if fullscreen %}
+                var $window = $(window);
+                $window.resize(function(){
+                    var win_height = $window.height();
+                    if( f.height() != win_height ){
+                        f.height(win_height - 20).resize();
+                    }
+                });
+            {% endif %}
         });
     </script>
 </head>
