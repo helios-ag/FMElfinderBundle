@@ -32,6 +32,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('editor')->defaultValue('ckeditor')->end()
                 ->scalarNode('showhidden')->defaultValue('false')->end()
                 ->scalarNode('fullscreen')->defaultValue('true')->end()
+                ->scalarNode('tinymce_popup_path')->end()
             ->end()
         ;
 
