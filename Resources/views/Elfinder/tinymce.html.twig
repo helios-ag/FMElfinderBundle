@@ -70,7 +70,7 @@
                 folders : false
             },
             getFileCallback : function(url) {
-                path = url.path;
+                path = '/' + url.path;
                 FileBrowserDialogue.mySubmit(path);
             }
     	}).elfinder('instance');
