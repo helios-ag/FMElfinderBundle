@@ -27,21 +27,30 @@ class FMElfinderLoader
     protected function configure()
     {
         $request = $this->container->get('request');
+        $parameters = $this->container->getParameter('fm_elfinder');
+
         $opt = 'access';
-        $properties = $this->container->getParameter('fm_elfinder');
+
         if($properties['showhidden'])
             $opt = null;
-        $path = $properties['path'];
-        $options = array(
-            'roots' => array(
-                array(
-                    'driver'        => $properties['driver'],
-                    'path'          => $path.'/',
-                    'URL'           => $request->getScheme().'://'.$request->getHttpHost() . '/'.$path.'/',
-                    'accessControl' => $opt
-                )
-            )
-        );
+
+        $options = array();
+        $options['debug'] = $parameters['connector']['debug'];
+        $options['roots'] = array();
+
+        foreach ($parameters['connector']['roots'] as $parameter) {
+            $path = $parameter['path'];
+            $options['roots'][] = array(
+                'driver'        => $parameter['driver'],
+                'path'          => $path . '/',
+                'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . '/' . $path . '/',
+                'accessControl' => $opt,
+                'uploadAllow'   => $parameter['upload_allow'],
+                'uploadDeny'    => $parameter['upload_deny'],
+                //'uploadMaxSize' => $parameter['upload_max_size']
+            );
+        }
+
         return $options;
     }
 
@@ -52,6 +61,5 @@ class FMElfinderLoader
     {
         $connector = new \elFinderConnector(new \elFinder($this->options));
         $connector->run();
-
     }
 }
