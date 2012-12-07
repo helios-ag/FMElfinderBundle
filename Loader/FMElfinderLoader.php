@@ -29,11 +29,6 @@ class FMElfinderLoader
         $request = $this->container->get('request');
         $parameters = $this->container->getParameter('fm_elfinder');
 
-        $opt = 'access';
-
-        if($properties['showhidden'])
-            $opt = null;
-
         $options = array();
         $options['debug'] = $parameters['connector']['debug'];
         $options['roots'] = array();
@@ -44,10 +39,10 @@ class FMElfinderLoader
                 'driver'        => $parameter['driver'],
                 'path'          => $path . '/',
                 'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . '/' . $path . '/',
-                'accessControl' => $opt,
+                'accessControl' => $properties['showhidden'] ? null : 'access',
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
-                //'uploadMaxSize' => $parameter['upload_max_size']
+                'uploadMaxSize' => $parameter['upload_max_size']
             );
         }
 
