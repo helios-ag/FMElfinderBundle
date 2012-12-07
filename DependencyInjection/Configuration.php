@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('showhidden')->defaultValue('false')->end()
                 ->scalarNode('editor')->defaultValue('ckeditor')->end()
                 ->scalarNode('fullscreen')->defaultValue('true')->end()
-                ->scalarNode('tinymce_popup_path')->end()
+                ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
             ->end()
         ;
 
@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('connector')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('debug')->defaultValue(false)->end()
                         ->arrayNode('roots')

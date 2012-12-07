@@ -88,21 +88,30 @@ app/console assetic:dump
 
 ### Add configuration options to your config.yml
 
+```
 fm_elfinder:
-    path: uploads
-    driver: LocalFileSystem
     locale: %locale%
-    editor: ckeditor
+    editor: ckeditor # other choices are tinymce or simple
     showhidden: false
+    connector:
+        debug: false # defaults to false
+        roots:       # at least one root must be defined
+            uploads:
+                driver: LocalFileSystem
+                path: uploads
+                upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                upload_deny: ['all']
+                upload_max_size: 2M
+```
 
-path option - define root directory for the files inside web/ directory, default is "uploads". Make sure to set
-proper write/read permissions to this directory.
-driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
-locale - locale determines, which language, ElFinder will use, to translate user interface, default is en_US.UTF8
-editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor" and "simple". How to configure CKEDitor to work with this bundle, will be explained further in this document.
+* path option - define root directory for the files inside web/ directory, default is "uploads". Make sure to set
+* proper write/read permissions to this directory.
+* driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
+* locale - locale determines, which language, ElFinder will use, to translate user interface, default is en_US.UTF8
+* editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
+ "ckeditor", "tinymce" and "simple". How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
  "Simple" can be used as standalone filebrowser for managing and uploading files.
-showhidden - hides directories starting with . (dot)
+* showhidden - hides directories starting with . (dot)
 
 ## Using ElFinder with CKEditor
 
@@ -157,3 +166,34 @@ template:
 ```
 
 After that, you can use "Browse on server" ability that can be found under insert image or insert link dialogs.
+
+## Using ElFinder with TinyMCE
+
+### Configuration
+
+Update the editor property in your app/config.yml
+
+```
+fm_elfinder:
+    editor: tinymce
+    tinymce_popup_path: 'path/to/tiny_mce/tiny_mce_popup.js'
+```
+
+### Integration
+
+First, follow the elFinder / TinyMCE integration guide (https://github.com/Studio-42/elFinder/wiki/Integration-with-TinyMCE-3.x).
+Then update the elFinderBrowser function to use the action provided by this bundle.
+
+```jinja
+////
+function elFinderBrowser (field_name, url, type, win) {
+  var elfinder_url = "{{ url('elfinder') }}"; // use an absolute path
+  tinyMCE.activeEditor.windowManager.open({
+  ...
+////
+```
+
+### Customization
+
+The bundle provides a basic TinyMCE view. If you need to change some options (regarding the UI or anything else), just copy the file FMElFinderBundle/Resources/views/Elfinder/tinymce.html.twig to app/Resources/FMElfinderBundle/views/Elfinder/tinymce.html.twig and change what you need.
+
