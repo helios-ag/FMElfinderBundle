@@ -1,6 +1,7 @@
 <?php
 
 namespace FM\ElfinderBundle\Loader;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -27,21 +28,25 @@ class FMElfinderLoader
     protected function configure()
     {
         $request = $this->container->get('request');
-        $opt = 'access';
-        $properties = $this->container->getParameter('fm_elfinder');
-        if($properties['showhidden'])
-            $opt = null;
-        $path = $properties['path'];
-        $options = array(
-            'roots' => array(
-                array(
-                    'driver'        => $properties['driver'],
-                    'path'          => $path.'/',
-                    'URL'           => $request->getScheme().'://'.$request->getHttpHost() . '/'.$path.'/',
-                    'accessControl' => $opt
-                )
-            )
-        );
+        $parameters = $this->container->getParameter('fm_elfinder');
+
+        $options = array();
+        $options['debug'] = $parameters['connector']['debug'];
+        $options['roots'] = array();
+
+        foreach ($parameters['connector']['roots'] as $parameter) {
+            $path = $parameter['path'];
+            $options['roots'][] = array(
+                'driver'        => $parameter['driver'],
+                'path'          => $path . '/',
+                'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . '/' . $path . '/',
+                'accessControl' => array($this, 'access'),
+                'uploadAllow'   => $parameter['upload_allow'],
+                'uploadDeny'    => $parameter['upload_deny'],
+                'uploadMaxSize' => $parameter['upload_max_size']
+            );
+        }
+
         return $options;
     }
 
@@ -52,6 +57,19 @@ class FMElfinderLoader
     {
         $connector = new \elFinderConnector(new \elFinder($this->options));
         $connector->run();
+    }
 
+    /**
+     * Simple function to demonstrate how to control file access using "accessControl" callback.
+     * This method will disable accessing files/folders starting from '.' (dot)
+     *
+     * @param  string  $attr  attribute name (read|write|locked|hidden)
+     * @param  string  $path  file path relative to volume root directory started with directory separator
+     * @return bool|null
+     **/
+    public function access($attr, $path, $data, $volume) {
+        	return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
+		? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
+		:  null;                                    // else elFinder decide it itself
     }
 }

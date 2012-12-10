@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{asset('bundles/fmelfinder/css/jquery/ui-themes/smoothness/jquery-ui-1.8.21.custom.css')}}" />
+    {% stylesheets output='ef-assets/css/main.css' filter='?yui_css'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/css/*'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+    {% javascripts output='ef-assets/js/main.js' filter='?yui_js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/jquery/jquery-1.7.2.min.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/jquery/jquery-ui-1.8.21.custom.min.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.version.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/jquery.elfinder.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.resources.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.options.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.history.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.command.js'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/ui/*'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/commands/*'
+        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/i18n/*'
+    %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript" src="{{ tinymce_popup_path }}"></script>
+
+    <script type="text/javascript" charset="utf-8">
+
+    var FileBrowserDialogue = {
+        init: function() {
+          // Here goes your code for setting your custom things onLoad.
+        },
+        mySubmit: function (URL) {
+
+          var win = tinyMCEPopup.getWindowArg('window');
+
+          // pass selected file path to TinyMCE
+          win.document.getElementById(tinyMCEPopup.getWindowArg('input')).value = URL;
+
+          // are we an image browser?
+          if (typeof(win.ImageDialog) != 'undefined') {
+            // update image dimensions
+            if (win.ImageDialog.getImageData) {
+              win.ImageDialog.getImageData();
+            }
+            // update preview if necessary
+            if (win.ImageDialog.showPreviewImage) {
+              win.ImageDialog.showPreviewImage(URL);
+            }
+          }
+
+          // close popup window
+          tinyMCEPopup.close();
+        }
+    }
+
+    tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
+
+    $().ready(function() {
+
+        var f = $('#elfinder').elfinder({
+        	url : '{{ path('ef_connect') }}',
+            lang : '{{ locale }}',
+            getfile : {
+                onlyURL : true,
+                multiple : false,
+                folders : false
+            },
+            getFileCallback : function(url) {
+                path = '/' + url.path;
+                FileBrowserDialogue.mySubmit(path);
+            }
+    	}).elfinder('instance');
+
+    });
+    </script>
+</head>
+<body>
+<div id="elfinder"></div>
+</body>
+</html>
