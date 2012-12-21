@@ -197,3 +197,75 @@ function elFinderBrowser (field_name, url, type, win) {
 
 The bundle provides a basic TinyMCE view. If you need to change some options (regarding the UI or anything else), just copy the file FMElFinderBundle/Resources/views/Elfinder/tinymce.html.twig to app/Resources/FMElfinderBundle/views/Elfinder/tinymce.html.twig and change what you need.
 
+## Using ElFinder with TrsteelCkeditorBundle
+
+### Configuration
+
+Remove or comment next options from trsteel_ckeditor section of symfony config file:
+
+```
+
+# app/config/config.yml
+
+trsteel_ckeditor:
+        # something...
+        
+        #filebrowser_browse_url : '#something',
+        #filebrowser_image_browse_url : '#something',
+        #filebrowser_flash_browse_url : '#something',
+        #filebrowser_image_window_width : '#something',
+        #filebrowser_image_window_height : '#something',
+        #filebrowser_window_width : '#something',
+        #filebrowser_window_height : '#something'
+```
+
+Remove those options from your form types if they exist.
+
+Override TrsteelCkeditorBundle template ckeditor_widget.html.twig.
+
+Just copy this template from vendor/Trsteel/ckeditor-bundle/Trsteel/CkeditorBundle/Resources/views/Form/ to 
+app/Resources/TrsteelCkeditorBundle/views/Form folder and make next changes in ckeditor_widget.html.twig:
+
+``` twig
+
+{# Stuff code... #}
+
+CKEDITOR.replace("{{ id }}",{
+
+{# Stuff code... #}
+
+{% if filebrowser_browse_url.route is defined and filebrowser_browse_url.route is not null %}
+    filebrowserBrowseUrl: '{{ path(filebrowser_browse_url.route, filebrowser_browse_url.route_parameters) }}',
+{% elseif filebrowser_browse_url.route is defined and filebrowser_browse_url.route is not null  %}
+    filebrowserBrowseUrl: '{{ filebrowser_browse_url.url }}',
+{% else %}
+    filebrowserBrowseUrl: '{{ path('elfinder') ~ '?mode=file' }}',
+{% endif %}
+
+{# Stuff code... #}
+
+{% if filebrowser_image_browse_url.route is defined and filebrowser_image_browse_url.route is not null %}
+    filebrowserImageBrowseUrl: '{{ path(filebrowser_image_browse_url.route, filebrowser_image_browse_url.route_parameters) }}',
+{% elseif filebrowser_image_browse_url.route is defined and filebrowser_image_browse_url.route is not null  %}
+    filebrowserImageBrowseUrl: '{{ filebrowser_image_browse_url.url }}',
+{% else %}
+    filebrowserImageBrowseUrl: '{{ path('elfinder') ~ '?mode=image' }}',
+{% endif %}
+
+{# Stuff code... #}
+
+filebrowserImageWindowWidth : '950',
+filebrowserImageWindowHeight : '520',
+filebrowserWindowWidth : '950',
+filebrowserWindowHeight : '520',
+
+{# Stuff code... #}
+
+toolbar: {{ toolbar | json_encode | raw }}
+});
+
+{# Stuff code... #}
+
+```
+
+It`s work!
