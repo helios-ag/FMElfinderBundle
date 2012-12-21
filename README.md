@@ -201,26 +201,28 @@ The bundle provides a basic TinyMCE view. If you need to change some options (re
 
 ### Configuration
 
-Remove next options from trsteel_ckeditor section of symfony config file:
+Remove or comment next options from trsteel_ckeditor section of symfony config file:
 
 ```
 
 # app/config/config.yml
 
 trsteel_ckeditor:
-        filebrowser_browse_url : '#something',
-        filebrowser_image_browse_url : '#something',
-        filebrowser_flash_browse_url : '#something',
-        filebrowser_image_window_width : '#something',
-        filebrowser_image_window_height : '#something',
-        filebrowser_window_width : '#something',
-        filebrowser_window_height : '#something'
+        # something...
+        
+        #filebrowser_browse_url : '#something',
+        #filebrowser_image_browse_url : '#something',
+        #filebrowser_flash_browse_url : '#something',
+        #filebrowser_image_window_width : '#something',
+        #filebrowser_image_window_height : '#something',
+        #filebrowser_window_width : '#something',
+        #filebrowser_window_height : '#something'
 ```
 
 Remove those options from your form types if they exist.
 
 Override TrsteelCkeditorBundle template ckeditor_widget.html.twig.
- 
+
 Just copy this template from vendor/Trsteel/ckeditor-bundle/Trsteel/CkeditorBundle/Resources/views/Form/ to 
 app/Resources/TrsteelCkeditorBundle/views/Form folder and make next changes in ckeditor_widget.html.twig:
 
