@@ -48,7 +48,7 @@ public function registerBundles()
 ### Step 3: Import FMElfinderBundle routing file
 
 ``` yaml
-# app/config/config.yml
+# app/config/routing.yml
 elfinder:
      resource: "@FMElfinderBundle/Resources/config/routing.yml"
 ```
