@@ -1,7 +1,7 @@
 FMElfinderBundle
 ================
 
-[ElFinder](/Studio-42/elFinder) integration in Symfony2
+[ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
 [![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
@@ -176,11 +176,10 @@ After that, you can use "Browse on server" ability that can be found under inser
 
 ## Using ElFinder with TinyMCE
 
-
 You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
-Below instruction how to integrate [FMElfinderBundle](/helios-ag/FMElfinderBundle) with [TinyMCEBundle](/stfalcon/TinymceBundle)
+Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 
-## Using ElfinderBundle with [TinyMCEBundle](/stfalcon/TinymceBundle)
+## Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 
 Download both bundles, configure, dump and install assets as written in installation steps
 
@@ -194,7 +193,7 @@ fm_elfinder:
     editor: tinymce
     tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"
 ```
-Under tinymce configuration node, theme configuration, add file_browser_callback
+Under tinymce configuration node, theme configuration, add:
 file_browser_callback : 'elFinderBrowser'
 
 ```yaml
@@ -205,12 +204,14 @@ stfalcon_tinymce:
 ```
 
 near tinymce initialisation twig extension (  {{ tinymce_init() }} )
-place ElfinderBundle's initialisation twig functions: {{elfinder_tinymce_init}}
+place ElfinderBundle's initialisation function: {{ elfinder_tinymce_init() }}
 
 ```jinja
 {{ tinymce_init() }}
-{{ elfinder_tinymce_init }}
+{{ elfinder_tinymce_init() }}
 ```
+
+Thats all, Elfinder is integrated into TinyMCE.
 
 Manual integration guide located below.
 

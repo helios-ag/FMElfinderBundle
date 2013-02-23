@@ -15,7 +15,11 @@
         "php":                           ">=5.3.3",
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
-        "helios-ag/fm-elfinder": "2.x-dev"
+        "helios-ag/fm-elfinder":         "2.x-dev",
+        "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev"
+    },
+    "suggest": {
+        "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon"
     },
     "autoload": {
         "psr-0": { "FM\\ElfinderBundle": "" }
