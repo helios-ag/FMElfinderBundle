@@ -11,6 +11,10 @@
         <service id="elfinder_loader" class="%elfinder.loader%">
             <argument type="service" id="service_container" />
         </service>
-    </services>
 
+        <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">
+            <argument type="service" id="service_container"></argument>
+            <tag name="twig.extension" alias="fm_tinymce_init" />
+        </service>
+    </services>
 </container>
