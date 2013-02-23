@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  *
  */
-class FMElfinderTinymceExtension extends \TwigExtension
+class FMElfinderTinymceExtension extends \Twig_Extension
 {
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
