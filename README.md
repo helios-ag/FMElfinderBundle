@@ -8,7 +8,7 @@ elFinder is an open-source file manager for web, written in JavaScript using jQu
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
 DISCLAIMER: Elfinder Bundle depends on my copy of repository of Elfinder bundle. So my fork of repo, doesn't have latest
-changes available to original repo. If you find that Elfinder lacked of some features let me know, and i will update
+changes available in original repo. If you find that Elfinder lacked of some features, let me know, and i will update
 my repo. Thank you.
 
 ## Installation
@@ -25,7 +25,7 @@ Add FMElfinderBundle in your composer.json:
 ```js
 {
     "require": {
-        "helios-ag/fm-elfinder-bundle": "*"
+        "helios-ag/fm-elfinder-bundle": "dev-master"
     }
 }
 ```
@@ -120,59 +120,41 @@ fm_elfinder:
  "Simple" can be used as standalone filebrowser for managing and uploading files.
 * showhidden - hides directories starting with . (dot)
 
-## Using ElFinder with CKEditor
+## Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
 
 Mostly filebrowsers used with WYSIWYG editors to upload images and other files. The example above will show how to
-configure CKEditor to work with ElFinder through [FMElFinderBundle]
+configure [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle) by Trsteel to work with ElFinder
+through [FMElFinderBundle](https://github.com/helios-ag/FMElFinderBundle)
 
 ### Step 1: Define class or id for the textarea inside your template:
 
-```jinja
-{# example.html.twig #}
-////
-<textarea id="ck" required="required" name="ckeditor"></textarea>
+Install both bundles according README files
 
-////
+### Step 2: Configure CKEditor setting via settings.yml or through form builder:
+
+```yml
+trsteel_ckeditor:
+    ...
+    filebrowser_image_browse_url:
+        route: elfinder
 ```
 
-### Step 2: Place ElFinder URL into attribute "browser-url"
+```php
 
-```jinja
-{# example.html.twig #}
-////
-<textarea id="ck" required="required" name="ckeditor" browser-url="{{path('elfinder')}}"></textarea>
+<?php
 
-////
+$form = $this->createFormBuilder()
+            ->add('content', 'ckeditor', array(
+                'filebrowser_image_browse_url' => array(
+                    'route'            => 'elfinder',
+                    'route_parameters' => array(),
+                ),
+            ))
+            ->getForm()
+;
 ```
 
-### Step 3: Add necessary javascript files with ckeditor library, and add configuration/initialisation script inside your
-template:
-```jinja
-{# example.html.twig #}
-////
-<script type="text/javascript" charset="utf-8">
-{
-    var action = $('textarea').attr('browser-url');
-    var config = {
-            toolbar : 'Full',
-            uiColor : 'White',
-            filebrowserBrowseUrl : action+'?mode=file',
-            filebrowserImageBrowseUrl : action+'?mode=image',
-            filebrowserFlashBrowseUrl : action+'?mode=flash',
-            filebrowserImageWindowWidth : '950',
-            filebrowserImageWindowHeight : '520',
-            filebrowserWindowWidth : '950',
-            filebrowserWindowHeight : '520',
-
-    };
-    ];
-    $('textarea#ckeditor').ckeditor(config);
-})
-
-////
-```
-
-After that, you can use "Browse on server" ability that can be found under insert image or insert link dialogs.
+Thats all, after, you can use "Browse on server" ability that can be found under insert image or insert link dialogs.
 
 ## Using ElFinder with TinyMCE
 
@@ -183,12 +165,11 @@ Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-
 
 Download both bundles, configure, dump and install assets as written in installation steps
 
-
 ### Configuration
 
 Update the editor property in your app/config.yml
 Set TinyMce popup path:
-```yaml
+```yml
 fm_elfinder:
     editor: tinymce
     tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"
@@ -196,7 +177,7 @@ fm_elfinder:
 Under tinymce configuration node, theme configuration, add:
 file_browser_callback : 'elFinderBrowser'
 
-```yaml
+```yml
 stfalcon_tinymce:
     theme:
         simple:
@@ -213,46 +194,5 @@ place ElfinderBundle's initialisation function: {{ elfinder_tinymce_init() }}
 
 Thats all, Elfinder is integrated into TinyMCE.
 
-Manual integration guide located below.
-
-### Integration
-
-First, follow the elFinder / TinyMCE integration guide (https://github.com/Studio-42/elFinder/wiki/Integration-with-TinyMCE-3.x).
-Then update the elFinderBrowser function to use the action provided by this bundle.
-
-```jinja
-////
-function elFinderBrowser (field_name, url, type, win) {
-  var elfinder_url = "{{ url('elfinder') }}"; // use an absolute path
-  tinyMCE.activeEditor.windowManager.open({
-  ...
-////
-```
-### Configuration
-
-Update the editor property in your app/config.yml
-
-```
-fm_elfinder:
-    editor: tinymce
-    tinymce_popup_path: 'asset[bundle/acmedemo/path/to/tiny_mce/tiny_mce_popup.js]'
-```
-
-### Integration
-
-First, follow the elFinder / TinyMCE integration guide (https://github.com/Studio-42/elFinder/wiki/Integration-with-TinyMCE-3.x).
-Then update the elFinderBrowser function to use the action provided by this bundle.
-
-```jinja
-////
-function elFinderBrowser (field_name, url, type, win) {
-  var elfinder_url = "{{ url('elfinder') }}"; // use an absolute path
-  tinyMCE.activeEditor.windowManager.open({
-  ...
-////
-```
-
-### Customization
-
-The bundle provides a basic TinyMCE view. If you need to change some options (regarding the UI or anything else), just copy the file FMElFinderBundle/Resources/views/Elfinder/tinymce.html.twig to app/Resources/FMElfinderBundle/views/Elfinder/tinymce.html.twig and change what you need.
+Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 

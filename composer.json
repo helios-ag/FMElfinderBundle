@@ -9,6 +9,10 @@
         {
             "name": "Al Ganiev",
             "email": "helios.ag@gmail.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://github.com/helios-ag/FMElfinderBundle/contributors"
         }
     ],
     "require": {
@@ -19,7 +23,8 @@
         "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev"
     },
     "suggest": {
-        "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon"
+        "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon",
+        "Trsteel/ckeditor-bundle": "CKEditor WYSIWYG Editor Bundlefor Symfony2 Project by Trsteel"
     },
     "autoload": {
         "psr-0": { "FM\\ElfinderBundle": "" }
