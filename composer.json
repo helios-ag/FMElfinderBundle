@@ -19,7 +19,7 @@
         "php":                           ">=5.3.3",
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
-        "helios-ag/fm-elfinder":         "2.x-dev",
+        "helios-ag/fm-elfinder":         "dev-master",
         "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev"
     },
     "suggest": {
