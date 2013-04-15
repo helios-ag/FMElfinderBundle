@@ -8,3 +8,4 @@ framework:
   test: ~
   translator:
     fallback: en
+  session: ~
