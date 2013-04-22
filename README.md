@@ -126,7 +126,7 @@ Mostly filebrowsers used with WYSIWYG editors to upload images and other files. 
 configure [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle) by Trsteel to work with ElFinder
 through [FMElFinderBundle](https://github.com/helios-ag/FMElFinderBundle)
 
-### Step 1: Define class or id for the textarea inside your template:
+### Step 1: Installation:
 
 Install both bundles according README files
 
