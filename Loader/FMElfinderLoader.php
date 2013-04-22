@@ -39,7 +39,7 @@ class FMElfinderLoader
             $options['roots'][] = array(
                 'driver'        => $parameter['driver'],
                 'path'          => $path . '/',
-                'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . '/' . $path . '/',
+                'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/' . $path . '/',
                 'accessControl' => array($this, 'access'),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
