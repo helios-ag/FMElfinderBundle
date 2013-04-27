@@ -20,7 +20,8 @@
         "php":                           ">=5.3.3",
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
-        "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev"
+        "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev",
+        "helios-ag/fm-elfinder-php-connector": "dev-master"
     },
     "suggest": {
         "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon",
