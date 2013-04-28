@@ -1,52 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="{{asset('bundles/fmelfinder/css/jquery/ui-themes/smoothness/jquery-ui-1.8.21.custom.css')}}" />
-    {% stylesheets output='ef-assets/css/main.css' filter='?yui_css'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/css/*'
-    %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-    {% endstylesheets %}
-
-    {% javascripts output='ef-assets/js/main.js' filter='?yui_js'
-    '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/jquery/jquery-1.9.1.min.js'
-    '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/jquery/jquery-ui-1.8.23.custom.min.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.version.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/jquery.elfinder.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.resources.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.options.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.history.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/elFinder.command.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/ui/*'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/commands/*'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/i18n/*'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/jquery.dialogelfinder.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/proxy/elFinderSupportVer1.js'
-        '%kernel.root_dir%/../vendor/helios-ag/fm-elfinder/FM/elfinder/js/jquery.dialogelfinder.js'
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    <script type="text/javascript" charset="utf-8">
-        $().ready(function() {
-            var f = $('#elfinder').elfinder({
-                url : '{{path('ef_connect')}}',
-                lang : '{{locale}}'
-            });
-
-            {% if fullscreen %}
-                var $window = $(window);
-                $window.resize(function(){
-                    var win_height = $window.height();
-                    if( f.height() != win_height ){
-                        f.height(win_height - 20).resize();
-                    }
-                });
-            {% endif %}
-        });
-    </script>
+        {% stylesheets output='bundles/fmelfinder/css/main.css'
+        '@FMElfinderBundle/Resources/public/css/*' filter='?yui_css' %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
 </head>
 <body>
+        {% javascripts output='bundles/fmelfinder/js/main.js' filter='?yui_js'
+            '@FMElfinderBundle/Resources/public/js/jquery/jquery-1.8.0.min.js'
+            '@FMElfinderBundle/Resources/public/js/jquery/jquery-ui-1.8.23.custom.min.js'
+            '@FMElfinderBundle/Resources/public/js/elfinder.min.js'
+            '@FMElfinderBundle/Resources/public/js/i18n/*'
+        %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+<script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+        var $f = $('#elfinder').elfinder({
+            url : '{{path('ef_connect')}}',
+            lang : '{{locale}}'
+        });
+
+        {% if fullscreen %}
+        var $window = $(window);
+        $window.resize(function(){
+            var $win_height = $window.height();
+            if( $f.height() != $win_height ){
+                $f.height($win_height).resize();
+            }
+        });
+        {% endif %}
+    });
+</script>
 <div id="elfinder"></div>
 </body>
 </html>

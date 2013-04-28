@@ -12,7 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012 Al Ganiev
+ * @copyright 2012-2013 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Configuration implements ConfigurationInterface
@@ -28,15 +28,13 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('locale')->defaultValue('en_US.UTF8')->end()
-                ->scalarNode('showhidden')->defaultValue('false')->end()
-                ->scalarNode('editor')->defaultValue('ckeditor')->end()
-                ->scalarNode('fullscreen')->defaultValue('true')->end()
+                ->booleanNode('showhidden')->defaultValue(false)->end()
+                ->scalarNode('editor')->defaultValue('simple')->end()
+                ->booleanNode('fullscreen')->defaultValue(true)->end()
                 ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
             ->end()
         ;
-
         $this->addConnectorSection($rootNode);
-
         return $treeBuilder;
     }
 

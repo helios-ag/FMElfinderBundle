@@ -7,16 +7,12 @@ FMElfinderBundle
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
-DISCLAIMER: Elfinder Bundle depends on my copy of repository of Elfinder bundle. So my fork of repo, doesn't have latest
-changes available in original repo. If you find that Elfinder lacked of some features, let me know, and i will update
-my repo. Thank you.
-
 ## Installation
 
-To install this bundle, you'll need both the [ElFinder](/Studio-42/elFinder)
+To install this bundle, you'll need both the lib [ElFinderPHP](https://github.com/helios-ag/ElFinderPHP)
 and this bundle.
 
-This instruction explain how to setup bundle on Symfony 2.1
+This instruction explain how to setup bundle on Symfony 2.1 and newer (2.2 and so on)
 
 ### Step 1: Installation
 
@@ -73,13 +69,23 @@ security:
         - { path: ^/elfinder, role: ROLE_USER }
 
 ```
+ROLE_USER is provided as example.
+
 ### Step 5: Configure assetic
-Under assetic section of your config.yml, add to bundles, FMElfinderBundle
+
+Under assetic section of your config.yml, add FMElfinderBundle to bundles section, also enable yui compressor.
 ``` yaml
 assetic:
     debug:          %kernel.debug%
     use_controller: false
     bundles:        [FMElfinderBundle]
+    java: /usr/bin/java
+    filters:
+        cssrewrite: ~
+        yui_css:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        yui_js:
+            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 ```
 
 ### Step 6: Install and dump assets
@@ -88,7 +94,7 @@ Install and dump assets using symfony built-in commands:
 
 ```sh
 app/console assets:install web
-app/console assetic:dump
+app/console assetic:dump --env=prod
 ```
 
 ## Basic configuration
@@ -154,7 +160,7 @@ $form = $this->createFormBuilder()
 ;
 ```
 
-Thats all, after, you can use "Browse on server" ability that can be found under insert image or insert link dialogs.
+ElFinder will be available under Insert Image dialog
 
 ## Using ElFinder with TinyMCE
 
@@ -184,9 +190,9 @@ stfalcon_tinymce:
             file_browser_callback : 'elFinderBrowser'
 ```
 
-near tinymce initialisation twig extension (  {{ tinymce_init() }} )
-place ElfinderBundle's initialisation function: {{ elfinder_tinymce_init() }}
-
+after (  {{ tinymce_init() }} ) function call
+place ElfinderBundle's function: {{ elfinder_tinymce_init() }}
+as shown below
 ```jinja
 {{ tinymce_init() }}
 {{ elfinder_tinymce_init() }}
