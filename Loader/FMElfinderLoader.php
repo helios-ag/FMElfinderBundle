@@ -5,11 +5,9 @@ namespace FM\ElfinderBundle\Loader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-error_reporting(0);
-include_once __DIR__.'/../../../../fm-elfinder/FM/elfinder/php/elFinderConnector.class.php';
-include_once __DIR__.'/../../../../fm-elfinder/FM/elfinder/php/elFinder.class.php';
-include_once __DIR__.'/../../../../fm-elfinder/FM/elfinder/php/elFinderVolumeDriver.class.php';
-include_once __DIR__.'/../../../../fm-elfinder/FM/elfinder/php/elFinderVolumeLocalFileSystem.class.php';
+use FM\ElFinderPHP\ElFinder;
+use FM\ElFinderPHP\Connector\ElFinderConnector;
+use FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem;
 
 class FMElfinderLoader
 {
@@ -55,7 +53,7 @@ class FMElfinderLoader
      */
     public function load()
     {
-        $connector = new \elFinderConnector(new \elFinder($this->options));
+        $connector = new ElFinderConnector(new ElFinder($this->options));
         $connector->run();
     }
 
