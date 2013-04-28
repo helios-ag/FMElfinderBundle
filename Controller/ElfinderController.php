@@ -24,7 +24,7 @@ class ElfinderController extends Controller
         $fullscreen = $parameters['fullscreen'];
         switch ($editor){
             case 'ckeditor':
-                    return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
+                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
                 break;
             case 'tinymce':
                 return $this->render('FMElfinderBundle:Elfinder:tinymce.html.twig', array(
