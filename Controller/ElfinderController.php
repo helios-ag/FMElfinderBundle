@@ -24,16 +24,17 @@ class ElfinderController extends Controller
         $fullscreen = $parameters['fullscreen'];
         switch ($editor){
             case 'ckeditor':
-                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
+                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale' => $locale, 'fullscreen' => $fullscreen));
                 break;
             case 'tinymce':
                 return $this->render('FMElfinderBundle:Elfinder:tinymce.html.twig', array(
                     'locale' => $locale,
-                    'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path'])
+                    'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
+                     'fullscreen' => $fullscreen
                 ));
                 break;
             default:
-                return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale'=>$locale, 'fullscreen'=>$fullscreen));
+                return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale' => $locale, 'fullscreen' => $fullscreen));
         }
     }
 
