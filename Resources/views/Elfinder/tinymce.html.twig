@@ -50,8 +50,7 @@
     tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
 
     $().ready(function() {
-
-        var f = $('#elfinder').elfinder({
+        var $f = $('#elfinder').elfinder({
             url : '{{ path('ef_connect') }}',
             lang : '{{ locale }}',
             getfile : {
@@ -60,16 +59,17 @@
                 folders : false
             },
             getFileCallback : function(url) {
-                path = '/' + url.path;
+                var path = '/' + url.path;
                 FileBrowserDialogue.mySubmit(path);
             }
-        }).elfinder('instance');
+        });
+    
         {% if fullscreen %}
         var $window = $(window);
         $window.resize(function(){
-            var $win_height = $window.height();
-            if( $f.height() != $win_height ){
-                $f.height($win_height).resize();
+            var win_height = $window.height();
+            if( $f.height() != win_height ){
+                $f.height(win_height).resize();
             }
         });
         {% endif %}
