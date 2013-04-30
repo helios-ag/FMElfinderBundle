@@ -74,6 +74,7 @@ ROLE_USER is provided as example.
 ### Step 5: Configure assetic
 
 Under assetic section of your config.yml, add FMElfinderBundle to bundles section, also enable yui compressor.
+Also set "use_controller: false".
 ``` yaml
 assetic:
     debug:          %kernel.debug%
