@@ -106,7 +106,8 @@ app/console assetic:dump --env=prod
 fm_elfinder:
     locale: %locale%
     editor: ckeditor # other choices are tinymce or simple
-    showhidden: false
+    showhidden: false # defaults to false
+    fullscreen: true # defaults true, applies to simple and ckeditor editors
     connector:
         debug: false # defaults to false
         roots:       # at least one root must be defined
@@ -124,7 +125,7 @@ fm_elfinder:
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is en_US.UTF8
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
  "ckeditor", "tinymce" and "simple". How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
- "Simple" can be used as standalone filebrowser for managing and uploading files.
+ "simple" can be used as standalone filebrowser for managing and uploading files.
 * showhidden - hides directories starting with . (dot)
 
 ## Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)

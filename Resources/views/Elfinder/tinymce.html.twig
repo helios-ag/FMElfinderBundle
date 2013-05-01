@@ -64,15 +64,6 @@
                 FileBrowserDialogue.mySubmit(path);
             }
         }).elfinder('instance');
-        {% if fullscreen %}
-        var $window = $(window);
-        $window.resize(function(){
-            var $win_height = $window.height();
-            if( $f.height() != $win_height ){
-                $f.height($win_height).resize();
-            }
-        });
-        {% endif %}
     });
 </script>
 <div id="elfinder"></div>
