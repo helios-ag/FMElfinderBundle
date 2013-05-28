@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
 <head>
-        {% stylesheets output='bundles/fmelfinder/css/main.css'
+        {% stylesheets output='assetic/compiled/bundles/fmelfinder/css/main.css'
         '@FMElfinderBundle/Resources/public/css/*' filter='?yui_css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 </head>
 <body>
-        {% javascripts output='bundles/fmelfinder/js/main.js' filter='?yui_js'
+        {% javascripts output='assetic/compiled/bundles/fmelfinder/js/main.js' filter='?yui_js'
             '@FMElfinderBundle/Resources/public/js/jquery/jquery-1.8.0.min.js'
             '@FMElfinderBundle/Resources/public/js/jquery/jquery-ui-1.8.23.custom.min.js'
             '@FMElfinderBundle/Resources/public/js/elfinder.min.js'
