@@ -2,9 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-<head>
         {% stylesheets output='assetic/css/compiled/fmelfinder/main.css'
-        '@FMElfinderBundle/Resources/public/css/*' filter='?yui_css' %}
+        '@FMElfinderBundle/Resources/public/css/*' filter='cssrewrite,?yui_css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 </head>
