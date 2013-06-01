@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<head>
         {% stylesheets output='bundles/fmelfinder/css/main.css'
-        '@FMElfinderBundle/Resources/public/css/*' filter='?yui_css' %}
+        '@FMElfinderBundle/Resources/public/css/*' filter='cssrewrite,?yui_css' %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 </head>
