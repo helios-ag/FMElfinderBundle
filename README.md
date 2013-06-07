@@ -4,6 +4,12 @@ FMElfinderBundle
 [ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
 [![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
+
+[![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/d/total.png)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
+
+[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/version.png)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
+
+
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
