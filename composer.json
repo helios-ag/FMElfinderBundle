@@ -20,7 +20,7 @@
         "php":                           ">=5.3.3",
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
-        "symfony/twig-bundle":           ">=2.0-dev,<2.3-dev",
+        "symfony/twig-bundle":           "~2.0",
         "helios-ag/fm-elfinder-php-connector": "1.0"
     },
     "suggest": {
