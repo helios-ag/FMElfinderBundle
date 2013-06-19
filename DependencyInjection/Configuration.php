@@ -53,6 +53,7 @@ class Configuration implements ConfigurationInterface
                                 ->children()
                                     ->scalarNode('driver')->defaultValue('LocalFileSystem')->end()
                                     ->scalarNode('path')->defaultValue('uploads')->end()
+                                    ->scalarNode('url')->end()
                                     ->arrayNode('upload_allow')
                                         ->prototype('scalar')->end()
                                         ->defaultValue(array('image'))
