@@ -125,8 +125,8 @@ fm_elfinder:
                 upload_max_size: 2M
 ```
 
-* path option - define root directory for the files inside web/ directory, default is "uploads". Make sure to set
-* proper write/read permissions to this directory.
+* path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
+* url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, appened with the value of the 'path' parameter
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is en_US.UTF8
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
