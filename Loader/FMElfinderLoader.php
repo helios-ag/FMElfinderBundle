@@ -37,7 +37,11 @@ class FMElfinderLoader
             $options['roots'][] = array(
                 'driver'        => $parameter['driver'],
                 'path'          => $path . '/',
-                'URL'           => $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath() . '/' . $path . '/',
+                'URL'           => isset($parameter['url']) && $parameter['url']
+                    ? strpos($parameter['url'], 'http') === 0
+                        ? $parameter['url']
+                        : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
+                    : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
                 'accessControl' => array($this, 'access'),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
