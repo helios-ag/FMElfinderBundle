@@ -2,18 +2,26 @@
 
 namespace FM\ElfinderBundle\Loader;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use FM\ElFinderPHP\ElFinder;
+use Symfony\Component\HttpFoundation\Request;
 use FM\ElFinderPHP\Connector\ElFinderConnector;
-use FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem;
+use FM\ElfinderBundle\Bridge\ElFinderBridge;
 
 class FMElfinderLoader
 {
+    /**
+     * @var array $options
+     */
     protected $options = array();
+
+    /**
+     * @var ContainerInterface $container
+     */
     protected $container;
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -34,8 +42,10 @@ class FMElfinderLoader
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
+            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
             $options['roots'][] = array(
                 'driver'        => $parameter['driver'],
+                'service'       => $driver,
                 'path'          => $path . '/',
                 'URL'           => isset($parameter['url']) && $parameter['url']
                     ? strpos($parameter['url'], 'http') === 0
@@ -57,7 +67,7 @@ class FMElfinderLoader
      */
     public function load()
     {
-        $connector = new ElFinderConnector(new ElFinder($this->options));
+        $connector = new ElFinderConnector(new ElFinderBridge($this->options));
         $connector->run();
     }
 
