@@ -40,11 +40,11 @@
         });
 
         {% if fullscreen %}
-        var $window = $(window);
-        $window.resize(function(){
-            var win_height = $window.height();
-            if( f.height() != win_height ){
-                f.height(win_height - 20).resize();
+        $(window).resize(function(){
+            var h = $(window).height();
+
+            if($('#elfinder').height() != h){
+                $('#elfinder').height(h).resize();
             }
         });
         {% endif %}
