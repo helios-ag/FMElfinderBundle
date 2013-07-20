@@ -43,8 +43,8 @@
         $(window).resize(function(){
             var h = $(window).height();
 
-            if($('#elfinder').height() != h){
-                $('#elfinder').height(h).resize();
+            if($('#elfinder').height() != h - 20){
+                $('#elfinder').height(h -20).resize();
             }
         });
         {% endif %}
