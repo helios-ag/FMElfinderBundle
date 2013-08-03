@@ -134,6 +134,28 @@ fm_elfinder:
  "simple" can be used as standalone filebrowser for managing and uploading files.
 * showhidden - hides directories starting with . (dot)
 
+## Configuring symfony service as a volumeDriver
+volumeDriver can be declared as Symfony service
+The service should however be an instance of the FM\ElFinderPHP\Driver\ElFinderVolumeDriver class. This check is to
+ensure the service is a valid ElFinder VolumeDriver.
+
+To configure a root with a service-driver you can simply use the service id as the drive key:
+
+```
+fm_elfinder:
+    connector:
+        roots:
+            uploads:
+                driver: elfinder.driver.filesystem
+                path: uploads
+```
+
+This means that if you add the service definition:
+
+```xml
+<service id="elfinder.driver.filesystem" class="FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem" />
+```
+
 ## Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
 
 Mostly filebrowsers used with WYSIWYG editors to upload images and other files. The example above will show how to
@@ -174,7 +196,7 @@ ElFinder will be available under Insert Image dialog
 
 You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
 Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-
+Currently compatible with version 0.2.1 of TinyMCE bundle (require: "stfalcon/tinymce-bundle": "v0.2.1")
 ## Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 
 Download both bundles, configure, dump and install assets as written in installation steps
