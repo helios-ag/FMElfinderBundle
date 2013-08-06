@@ -21,7 +21,7 @@
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
         "symfony/twig-bundle":           "~2.0",
-        "helios-ag/fm-elfinder-php-connector": "1.1"
+        "helios-ag/fm-elfinder-php-connector": "1.1.1"
     },
     "suggest": {
         "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon",
