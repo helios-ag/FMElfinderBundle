@@ -29,7 +29,8 @@ class FMElfinderTinymceExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'elfinder_tinymce_init' => new \Twig_Function_Method($this, 'tinymce', array('is_safe' => array('html')))
+            'elfinder_tinymce_init' => new \Twig_Function_Method($this, 'tinymce', array('is_safe' => array('html'))),
+            'elfinder_tinymce_init4' => new \Twig_Function_Method($this, 'tinymce4', array('is_safe' => array('html')))
         );
     }
 
@@ -39,6 +40,11 @@ class FMElfinderTinymceExtension extends \Twig_Extension
     public function tinymce()
     {
         return $this->container->get('templating')->render('FMElfinderBundle:Elfinder:_tinymce.html.twig');
+    }
+
+    public function tinymce4()
+    {
+        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder:_tinymce4.html.twig');
     }
 
     /**
