@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% stylesheets output='assetic/css/compiled/fmelfinder/main.css'
+    'bundles/fmelfinder/css/*' filter='cssrewrite,?yui_css' %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+</head>
+<body>
+{% javascripts output='bundles/fmelfinder/js/main.js' filter='?yui_js'
+'@FMElfinderBundle/Resources/public/js/jquery/jquery-1.8.0.min.js'
+'@FMElfinderBundle/Resources/public/js/jquery/jquery-ui-1.8.23.custom.min.js'
+'@FMElfinderBundle/Resources/public/js/elfinder.min.js'
+'@FMElfinderBundle/Resources/public/js/i18n/*'
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+<script type="text/javascript" charset="utf-8">
+
+    var FileBrowserDialogue = {
+        init: function () {
+            // Here goes your code for setting your custom things onLoad.
+        },
+        mySubmit: function (URL) {
+            // pass selected file path to TinyMCE
+            top.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
+
+            // close popup window
+            top.tinymce.activeEditor.windowManager.close();
+        }
+    }
+
+    $(document).ready(function() {
+        var elf = $('#elfinder').elfinder({
+            // set your elFinder options here
+            url: '{{ path('ef_connect') }}',  // connector URL
+            lang : '{{ locale }}',
+            getFileCallback: function(file) { // editor callback
+                FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+            }
+        }).elfinder('instance');
+    });
+</script>
+<div id="elfinder"></div>
+</body>
+</html>
