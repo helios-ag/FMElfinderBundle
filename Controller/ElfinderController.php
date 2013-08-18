@@ -32,6 +32,11 @@ class ElfinderController extends Controller
                     'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path'])
                 ));
                 break;
+            case 'tinymce4':
+                return $this->render('FMElfinderBundle:Elfinder:tinymce4.html.twig', array(
+                    'locale' => $locale,
+                ));
+                break;
             default:
                 return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale' => $locale, 'fullscreen' => $fullscreen));
         }
