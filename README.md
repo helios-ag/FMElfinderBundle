@@ -197,7 +197,7 @@ ElFinder will be available under Insert Image dialog
 You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
 Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 ## Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-Instruction for version 0.2.1 and above (TinyMCE 3.x)
+Instruction for bundle version 0.2.1 and below (TinyMCE 3.x)
 Download both bundles, configure, dump and install assets as written in installation steps
 
 ### Configuration
