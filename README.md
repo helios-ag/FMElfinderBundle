@@ -13,12 +13,30 @@ FMElfinderBundle
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
+- [FMElfinderBundle](#fmelfinderbundle)
+	- [Installation](#installation)
+		- [Step 1: Installation](#step-1-installation)
+		- [Step 2: Enable the bundle](#step-2-enable-the-bundle)
+		- [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
+		- [Step 4: Configure your application's security.yml](#step-4-configure-your-applications-securityyml)
+		- [Step 5: Configure assetic](#step-5-configure-assetic)
+		- [Step 6: Install and dump assets](#step-6-install-and-dump-assets)
+	- [Basic configuration](#basic-configuration)
+		- [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
+	- [Configuring symfony service as a volumeDriver](#configuring-symfony-service-as-a-volumedriver)
+	- [Using ElFinder with CKEditorBundle](#using-elfinder-with-ckeditorbundle)
+		- [Step 1: Installation:](#step-1-installation-1)
+		- [Step 2: Configure CKEditor setting via settings.yml or through form builder:](#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
+	- [Using ElFinder with TinyMCE](#using-elfinder-with-tinymce)
+	- [Using ElfinderBundle with TinyMCEBundle](#using-elfinderbundle-with-tinymcebundle)
+		- [Integrating with TinyMCE 4.x](#integrating-with-tinymce-4x)
+
 ## Installation
 
 To install this bundle, you'll need both the lib [ElFinderPHP](https://github.com/helios-ag/ElFinderPHP)
 and this bundle.
 
-This instruction explain how to setup bundle on Symfony 2.1 and newer (2.2 and so on)
+This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
@@ -27,7 +45,7 @@ Add FMElfinderBundle in your composer.json:
 ```js
 {
     "require": {
-        "helios-ag/fm-elfinder-bundle": "1.2"
+        "helios-ag/fm-elfinder-bundle": "1.x"
     }
 }
 ```
@@ -161,6 +179,8 @@ This means that if you add the service definition:
 Mostly filebrowsers used with WYSIWYG editors to upload images and other files. The example above will show how to
 configure [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle) by Trsteel to work with ElFinder
 through [FMElFinderBundle](https://github.com/helios-ag/FMElFinderBundle)
+Also take a view to @egeloen [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle), which includes
+[configuration guide](https://github.com/egeloen/IvoryCKEditorBundle/blob/master/Resources/doc/file_browse_upload.md) for both bundles
 
 ### Step 1: Installation:
 
@@ -197,7 +217,8 @@ ElFinder will be available under Insert Image dialog
 You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
 Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 ## Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-Instruction for bundle version 0.2.1 and below (TinyMCE 3.x)
+Instruction for bundle version 0.2.1 (TinyMCE 3.x), instruction for TinyMCE 4.x, you can find at the end of this
+document.
 Download both bundles, configure, dump and install assets as written in installation steps
 
 ### Configuration
@@ -229,30 +250,28 @@ as shown below
 
 ### Integrating with TinyMCE 4.x
 
- ### Configuration
-
- Update the editor property in your app/config.yml
- ```yml
+Update the editor property in your app/config.yml
+```yml
  fm_elfinder:
      editor: tinymce4
- ```
- Under tinymce configuration node, theme configuration, add:
- file_browser_callback : 'elFinderBrowser'
+```
+Under tinymce configuration node, theme configuration, add:
+ file_browser_callback : elFinderBrowser
 
- ```yml
- stfalcon_tinymce:
+```yml
+stfalcon_tinymce:
      theme:
          simple:
              file_browser_callback : elFinderBrowser
- ```
+```
 
- before (  {{ tinymce_init() }} ) function call
- place ElfinderBundle's function: {{ elfinder_tinymce_init4() }}
- as shown below
- ```jinja
+before (  {{ tinymce_init() }} ) function call (order is important)
+place ElfinderBundle's function: {{ elfinder_tinymce_init4() }}
+as shown below
+```jinja
      {{ elfinder_tinymce_init4() }}
      {{ tinymce_init() }}
- ```
+```
 
 Thats all, Elfinder is integrated into TinyMCE.
 
