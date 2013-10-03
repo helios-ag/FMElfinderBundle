@@ -28,7 +28,7 @@ Creation is inspired by simplicity and convenience of Finder program used in Mac
 		- [Step 1: Installation:](#step-1-installation-1)
 		- [Step 2: Configure CKEditor setting via settings.yml or through form builder:](#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
 	- [Using ElFinder with TinyMCE](#using-elfinder-with-tinymce)
-	- [Using ElfinderBundle with TinyMCEBundle](#using-elfinderbundle-with-tinymcebundle)
+	    - [Using ElfinderBundle with TinyMCEBundle](#using-elfinderbundle-with-tinymcebundle)
 		- [Integrating with TinyMCE 4.x](#integrating-with-tinymce-4x)
 
 ## Installation
@@ -97,8 +97,11 @@ ROLE_USER is provided as example.
 
 ### Step 5: Configure assetic
 
-Under assetic section of your config.yml, add FMElfinderBundle to bundles section, also enable yui compressor.
+Under assetic section of your config.yml, add FMElfinderBundle to bundles section, also you can enable uglify js/css
+compressor (also you need to enable option "compression: true" under bundle configuration).
+
 Also set "use_controller: false".
+
 ``` yaml
 assetic:
     debug:          %kernel.debug%
@@ -107,10 +110,11 @@ assetic:
     java: /usr/bin/java
     filters:
         cssrewrite: ~
-        yui_css:
-            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
-        yui_js:
-            jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        uglifyjs2:
+            # the path to the uglifyjs executable
+            bin: /usr/bin/uglifyjs
+        uglifycss:
+            bin: /usr/bin/uglifycss
 ```
 
 ### Step 6: Install and dump assets
@@ -216,7 +220,8 @@ ElFinder will be available under Insert Image dialog
 
 You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
 Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-## Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
+
+### Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
 Instruction for bundle version 0.2.1 (TinyMCE 3.x), instruction for TinyMCE 4.x, you can find at the end of this
 document.
 Download both bundles, configure, dump and install assets as written in installation steps
@@ -277,3 +282,8 @@ Thats all, Elfinder is integrated into TinyMCE.
 
 Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
+
+##Changelog
+
+1.x
+Switched from YUI compressor to Uglify
