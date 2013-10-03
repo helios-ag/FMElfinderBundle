@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     {% if includeAssets %}
-        {% include "FMElfinderBundle:Elfinder:helper:assets_css.html.twig" %}
+        {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
     {% endif %}
 </head>
 <body>
 {% if includeAssets %}
-    {% include "FMElfinderBundle:Elfinder:helper:assets_js.html.twig" %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
 {% endif %}
 <script type="text/javascript" charset="utf-8">
     function getUrlParam(paramName) {
