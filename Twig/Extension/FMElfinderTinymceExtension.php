@@ -3,8 +3,10 @@
 namespace FM\ElfinderBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
 /**
- *
+ * Class FMElfinderTinymceExtension
+ * @package FM\ElfinderBundle\Twig\Extension
  */
 class FMElfinderTinymceExtension extends \Twig_Extension
 {
@@ -35,16 +37,19 @@ class FMElfinderTinymceExtension extends \Twig_Extension
     }
 
     /**
-     *
+     * @return mixed
      */
     public function tinymce()
     {
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder:_tinymce.html.twig');
+        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig');
     }
 
+    /**
+     * @return mixed
+     */
     public function tinymce4()
     {
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder:_tinymce4.html.twig');
+        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig');
     }
 
     /**

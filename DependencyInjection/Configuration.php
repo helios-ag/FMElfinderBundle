@@ -30,7 +30,9 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('locale')->defaultValue('en_US.UTF8')->end()
                 ->booleanNode('showhidden')->defaultValue(false)->end()
                 ->scalarNode('editor')->defaultValue('simple')->end()
+                ->booleanNode('compression')->defaultValue(false)->end()
                 ->booleanNode('fullscreen')->defaultValue(true)->end()
+                ->booleanNode('include_assets')->defaultValue(true)->end()
                 ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
             ->end()
         ;
@@ -38,6 +40,9 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
     private function addConnectorSection(ArrayNodeDefinition $rootNode)
     {
         $rootNode

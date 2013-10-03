@@ -3,6 +3,7 @@ namespace FM\ElfinderBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Loader service for Elfinder backend
  * displays Elfinder
@@ -22,23 +23,36 @@ class ElfinderController extends Controller
         $editor = $parameters['editor'];
         $locale = $parameters['locale'];
         $fullscreen = $parameters['fullscreen'];
+        $includeAssets = $parameters['include_assets'];
+        $compression = $parameters['compression'];
+        $prefix = ($compression ? '/compressed' : '');
         switch ($editor){
             case 'ckeditor':
-                return $this->render('FMElfinderBundle:Elfinder:ckeditor.html.twig', array('locale' => $locale, 'fullscreen' => $fullscreen));
+                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':ckeditor.html.twig', array(
+                    'locale' => $locale,
+                    'fullscreen' => $fullscreen,
+                    'includeAssets' => $includeAssets
+                ));
                 break;
             case 'tinymce':
-                return $this->render('FMElfinderBundle:Elfinder:tinymce.html.twig', array(
+                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':tinymce.html.twig', array(
                     'locale' => $locale,
-                    'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path'])
+                    'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
+                    'includeAssets' => $includeAssets,
                 ));
                 break;
             case 'tinymce4':
-                return $this->render('FMElfinderBundle:Elfinder:tinymce4.html.twig', array(
+                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':tinymce4.html.twig', array(
                     'locale' => $locale,
+                    'includeAssets'=>$includeAssets
                 ));
                 break;
             default:
-                return $this->render('FMElfinderBundle:Elfinder:simple.html.twig', array('locale' => $locale, 'fullscreen' => $fullscreen));
+                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':simple.html.twig', array(
+                    'locale' => $locale,
+                    'fullscreen' => $fullscreen,
+                    'includeAssets' => $includeAssets,
+                ));
         }
     }
 
