@@ -20,7 +20,7 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
 
         $parameters = $container->getParameter('fm_elfinder');
 
-        $this->assertEquals('en_US.UTF8', $parameters['locale']);
+        $this->assertNull($parameters['locale']);
         $this->assertEquals('simple', $parameters['editor']);
 
         $this->assertArrayHasKey('connector', $parameters);

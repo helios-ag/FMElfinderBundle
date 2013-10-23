@@ -27,7 +27,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('locale')->defaultValue('en_US.UTF8')->end()
+                ->scalarNode('locale')->defaultNull()->end()
                 ->booleanNode('showhidden')->defaultValue(false)->end()
                 ->scalarNode('editor')->defaultValue('simple')->end()
                 ->booleanNode('compression')->defaultValue(false)->end()
