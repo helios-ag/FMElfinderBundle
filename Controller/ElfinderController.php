@@ -21,7 +21,7 @@ class ElfinderController extends Controller
     {
         $parameters = $this->container->getParameter('fm_elfinder');
         $editor = $parameters['editor'];
-        $locale = $parameters['locale'];
+        $locale = $parameters['locale'] ?: $this->getRequest()->getLocale();
         $fullscreen = $parameters['fullscreen'];
         $includeAssets = $parameters['include_assets'];
         $compression = $parameters['compression'];

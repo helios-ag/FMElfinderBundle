@@ -132,7 +132,7 @@ app/console assetic:dump --env=prod
 
 ```
 fm_elfinder:
-    locale: %locale%
+    locale: %locale% # defaults to current request locale
     editor: ckeditor # other choices are tinymce or simple
     showhidden: false # defaults to false
     fullscreen: true # defaults true, applies to simple and ckeditor editors
@@ -150,7 +150,7 @@ fm_elfinder:
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
 * url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, appened with the value of the 'path' parameter
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
-* locale - locale determines, which language, ElFinder will use, to translate user interface, default is en_US.UTF8
+* locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
  "ckeditor", "tinymce" and "simple". How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
  "simple" can be used as standalone filebrowser for managing and uploading files.
