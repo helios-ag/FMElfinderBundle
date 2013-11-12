@@ -28,11 +28,11 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('locale')->defaultNull()->end()
-                ->booleanNode('showhidden')->defaultValue(false)->end()
+                ->booleanNode('showhidden')->defaultFalse()->end()
                 ->scalarNode('editor')->defaultValue('simple')->end()
-                ->booleanNode('compression')->defaultValue(false)->end()
-                ->booleanNode('fullscreen')->defaultValue(true)->end()
-                ->booleanNode('include_assets')->defaultValue(true)->end()
+                ->booleanNode('compression')->defaultFalse()->end()
+                ->booleanNode('fullscreen')->defaultTrue()->end()
+                ->booleanNode('include_assets')->defaultTrue()->end()
                 ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
             ->end()
         ;
