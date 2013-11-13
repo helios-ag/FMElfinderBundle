@@ -136,6 +136,8 @@ fm_elfinder:
     editor: ckeditor # other choices are tinymce or simple
     showhidden: false # defaults to false
     fullscreen: true # defaults true, applies to simple and ckeditor editors
+    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+    compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
     connector:
         debug: false # defaults to false
         roots:       # at least one root must be defined
@@ -285,5 +287,7 @@ Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
 ##Changelog
 
-1.x
-Switched from YUI compressor to Uglify
+### 1.4
+
+* Made compressing assets optional. When compressing is active, it now uses
+  uglify.js instead of YUI compressor.

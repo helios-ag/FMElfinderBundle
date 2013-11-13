@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
         {% stylesheets output='assetic/css/compiled/fmelfinder/main.css'
-        'bundles/fmelfinder/css/*' filter='cssrewrite,?yui_css' %}
+        'bundles/fmelfinder/css/*' filter='cssrewrite,?uglifycss' %}
             <link rel="stylesheet" href="{{ asset_url }}" />
         {% endstylesheets %}
 </head>
 <body>
-        {% javascripts output='assetic/js/compiled/fmelfinder/main.js' filter='?yui_js'
+        {% javascripts output='assetic/js/compiled/fmelfinder/main.js' filter='?uglifyjs2'
             '@FMElfinderBundle/Resources/public/js/jquery/jquery-1.8.0.min.js'
             '@FMElfinderBundle/Resources/public/js/jquery/jquery-ui-1.8.23.custom.min.js'
             '@FMElfinderBundle/Resources/public/js/elfinder.min.js'
@@ -53,6 +53,3 @@
 <div id="elfinder"></div>
 </body>
 </html>
-
-
-
