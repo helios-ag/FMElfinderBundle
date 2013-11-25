@@ -291,3 +291,7 @@ Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
 * Made compressing assets optional. When compressing is active, it now uses
   uglify.js instead of YUI compressor.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
