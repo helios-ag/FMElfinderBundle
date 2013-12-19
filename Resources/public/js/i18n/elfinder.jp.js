@@ -1,11 +1,12 @@
 /**
  * Japanese translation
- * @author Tomoaki Yoshida <info@yoshida-studio.jp>, Naoki Sawada <hypweb@gmail.com>
- * @version 2012-08-15
+ * @author Tomoaki Yoshida <info@yoshida-studio.jp>
+ * @author Naoki Sawada <hypweb@gmail.com>
+ * @version 2013-07-03
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.jp = {
-		translator : 'Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;',
+		translator : 'Tomoaki Yoshida &lt;info@yoshida-studio.jp&gt;, Naoki Sawada &lt;hypweb@gmail.com&gt;',
 		language   : 'Japanese',
 		direction  : 'ltr',
 		dateFormat : 'Y/m/d h:i A', // 2012/04/11 05:27 PM
@@ -74,6 +75,10 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errArcSymlinks'       : 'シンボリックリンクまたは許容されないファイル名を含むアーカイブはセキュリティ上、解凍できません', // edited 25.06.2012
 			'errArcMaxSize'        : 'アーカイブが許容されたサイズを超えています',
 			'errResize'            : '"$1"をリサイズできません',
+			'errResizeDegree'      : 'イメージの回転角度が不正です',  // added 7.3.2013
+			'errResizeRotate'      : 'イメージの回転ができません',  // added 7.3.2013
+			'errResizeSize'        : '指定されたイメージサイズが不正です',  // added 7.3.2013
+			'errResizeNoChange'    : 'イメージサイズなどの変更がありません',  // added 7.3.2013
 			'errUsupportType'      : 'このファイルタイプはサポートされません',
 			'errNotUTF8Content'    : 'ファイル "$1" には UTF-8 以外の文字が含まれているので編集できません',  // added 9.11.2011
 			'errNetMount'          : '"$1"をマウントできません', // added 17.04.2012
@@ -128,26 +133,27 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnYes'    : 'はい',
 			'btnMount'  : 'マウント',  // added 18.04.2012
 			/******************************** notifications ********************************/
-			'ntfopen'     : 'フォルダーを開く',
-			'ntffile'     : 'ファイルを開く',
-			'ntfreload'   : 'フォルダーを再読込',
-			'ntfmkdir'    : 'ディレクトリーを作成',
-			'ntfmkfile'   : 'ファイルを作成',
-			'ntfrm'       : 'ファイルを削除',
-			'ntfcopy'     : 'ファイルをコピー',
-			'ntfmove'     : 'ファイルを移動',
-			'ntfprepare'  : 'ファイルコピーを準備',
-			'ntfrename'   : 'ファイル名を変更',
-			'ntfupload'   : 'ファイルをアップロード',
-			'ntfdownload' : 'ファイルをダウンロード',
-			'ntfsave'     : 'ファイルを保存',
-			'ntfarchive'  : 'アーカイブ作成',
-			'ntfextract'  : 'アーカイブを解凍',
-			'ntfsearch'   : 'ファイル検索',
+			'ntfopen'     : 'フォルダーを開いています',
+			'ntffile'     : 'ファイルを開いています',
+			'ntfreload'   : 'フォルダーを再読込しています',
+			'ntfmkdir'    : 'ディレクトリーを作成しています',
+			'ntfmkfile'   : 'ファイルを作成しています',
+			'ntfrm'       : 'ファイルを削除しています',
+			'ntfcopy'     : 'ファイルをコピーしています',
+			'ntfmove'     : 'ファイルを移動しています',
+			'ntfprepare'  : 'ファイルコピーを準備しています',
+			'ntfrename'   : 'ファイル名を変更しています',
+			'ntfupload'   : 'ファイルをアップロードしています',
+			'ntfdownload' : 'ファイルをダウンロードしています',
+			'ntfsave'     : 'ファイルを保存しています',
+			'ntfarchive'  : 'アーカイブ作成しています',
+			'ntfextract'  : 'アーカイブを解凍しています',
+			'ntfsearch'   : 'ファイル検索中',
 			'ntfresize'   : 'リサイズしています',
-			'ntfsmth'     : '何かしています',
+			'ntfsmth'     : '処理をしています',
       		'ntfloadimg'  : 'イメージを読み込んでいます',
       		'ntfnetmount' : 'ネットワークボリュームをマウントしています', // added 18.04.2012
+			'ntfdim'      : '画像サイズを取得しています', // added 20.05.2013
 			
 			/************************************ dates **********************************/
 			'dateUnknown' : '不明',
@@ -174,9 +180,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'sortFoldersFirst'  : 'フォルダ優先', // added 21.06.2012
 
 			/********************************** messages **********************************/
-			'confirmReq'      : '確認必須です',
-			'confirmRm'       : '本当にファイルを削除しますか?<br/>この操作は取り消せません!',
-			'confirmRepl'     : '古いファイルを新しいファイルで上書きしますか?',
+			'confirmReq'      : '処理を実行しますか？',
+			'confirmRm'       : '本当にファイルを削除しますか?<br/>この操作は取り消せません！',
+			'confirmRepl'     : '古いファイルを新しいファイルで上書きしますか？',
 			'apllyAll'        : '全てに適用します',
 			'name'            : '名前',
 			'size'            : 'サイズ',
