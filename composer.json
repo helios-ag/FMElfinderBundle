@@ -1,6 +1,6 @@
 {
     "name": "helios-ag/fm-elfinder-bundle",
-    "description": "ElFinder bundle, add ElFinder file manager to your Symfony2 project",
+    "description": "ElFinder bundle, adds ElFinder file manager to your Symfony2 project",
     "keywords": ["elfinder","file manager"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/helios-ag/FMElfinderBundle",
@@ -21,11 +21,12 @@
         "symfony/symfony":               "*@stable",
         "sensio/framework-extra-bundle": "*@dev",
         "symfony/twig-bundle":           "~2.0",
-        "helios-ag/fm-elfinder-php-connector": "1.1.1"
+        "helios-ag/fm-elfinder-php-connector": "dev-master"
     },
     "suggest": {
-        "stfalcon/tinymce-bundle": "TinyMCE WYSIWYG Editor Bundle by Stfalcon",
-        "Trsteel/ckeditor-bundle": "CKEditor WYSIWYG Editor Bundlefor Symfony2 Project by Trsteel"
+        "stfalcon/tinymce-bundle": "TinyMCE Bundle by Stfalcon",
+        "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen",
+        "trsteel/ckeditor-bundle": "CKEditor Bundle by trsteel"
     },
     "autoload": {
         "psr-0": { "FM\\ElfinderBundle": "" }
