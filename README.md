@@ -36,6 +36,8 @@ Recommended bundles to use with:
 - [Using ElFinder with TinyMCE](#using-elfinder-with-tinymce)
     - [Using ElfinderBundle with TinyMCEBundle](#using-elfinderbundle-with-tinymcebundle)
     - [Integrating with TinyMCE 4.x](#integrating-with-tinymce-4x)
+- [Custom configuration provider](#custom-configuration-provider)
+- [Basic user integration](#Basic user integration)
 
 ## Installation
 
@@ -213,6 +215,19 @@ trsteel_ckeditor:
              instance: ckeditor
 ```
 
+or if you prefer Ivory CKEditor Bundle
+
+```yml
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowseRouteParameters:
+                instance: ckeditor
+
+```
+
 Note that instance name should be the same as configured in elfinder bundle
 
 ```php
@@ -262,7 +277,7 @@ stfalcon_tinymce:
 ```
 
 after (  {{ tinymce_init() }} ) function call
-place ElfinderBundle's function: {{ elfinder_tinymce_init('instance_name', {'width':'900','height': '450', 'title':'ElFinder 2.0'}) }}
+place ElfinderBundle's function: {{ elfinder_tinymce_init('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'}) }}
 as shown below
 
 ```jinja
@@ -290,7 +305,7 @@ stfalcon_tinymce:
 ```
 
 before (  {{ tinymce_init() }} ) function call (order is important)
-place ElfinderBundle's function: {{ elfinder_tinymce_init4('instance_name', {'width':'900','height': '450', 'title':'ElFinder 2.0'} ) }}
+place ElfinderBundle's function: {{ elfinder_tinymce_init4('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'} ) }}
 as shown below
 ```jinja
      {{ elfinder_tinymce_init4('instance_name') }}
@@ -299,17 +314,54 @@ as shown below
 
 instance_name is instance of elfinder's configuration
 
-That's all, Elfinder is integrated into TinyMCE.
+That's all, Elfinder is configured to work with TinyMCE editor.
+
+#Custom configuration provider
+
+ElFinder bundle allows to override his configuration provider service:
+
+```yaml
+fm_elfinder:
+    configuration_provider: elfinder.configurator
+```
+where 'elfinder.configurator' is default ElFinder's bundle service to read configuration from DIC
+
+To override service, simply define your own service:
+```yaml
+services:
+    my_elfinder_configurator:
+        class:        Acme\DemoBundle\MyElfinderConfigurator
+        arguments:    ["%my_arguments%"]
+```
+
+Configuration class must implement interface ElFinderConfigurationProviderInterface
+
+method getConfiguration($instance) should return array of parameters compatible with ElFinder bundle configuration
+
+#Basic user integration
+
+Now bundle provides basic user integration, by enabling parameter "enableUserIntegration":
+
+```yaml
+fm_elfinder:
+    instances:
+        my_instance:
+            enableUserIntegration: true
+```
+
+In this case user class must implement ElFinderPermissionsInterface interface,
+and implement method (string)getRootDirectoryName(), method should return directory name that belongs to user.
 
 Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
+##Todo
+
+More tests, gridfs support, complex user intergration(?)
 
 ##Changelog
 
-### 2.x
-* Multiple instances of elfinder configuration (allows multiple editors in one project)
-
-*
+### 2.0
+* Multiple instances of elfinder configuration (allows multiple editors in one project, with different elfinder configurations)
 
 ### 1.4
 
