@@ -4,4 +4,3 @@ ef_connect:
 elfinder:
     pattern: /elfinder/{instance}
     defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
-
