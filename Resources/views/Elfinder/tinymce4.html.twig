@@ -24,9 +24,9 @@
     };
 
     $(document).ready(function() {
-        var elf = $('#elfinder').elfinder({
+        var elf = $('.elfinder').elfinder({
             // set your elFinder options here
-            url: '{{ path('ef_connect') }}',  // connector URL
+            url: '{{ path('ef_connect', {'instance': instance}) }}',  // connector URL
             lang : '{{ locale }}',
             getFileCallback: function(file) { // editor callback
                 FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
@@ -34,6 +34,6 @@
         }).elfinder('instance');
     });
 </script>
-<div id="elfinder"></div>
+<div class="elfinder"></div>
 </body>
 </html>

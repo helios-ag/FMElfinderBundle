@@ -44,14 +44,14 @@
             // close popup window
             tinyMCEPopup.close();
         }
-    }
+    };
 
     tinyMCEPopup.onInit.add(FileBrowserDialogue.init, FileBrowserDialogue);
 
     $().ready(function() {
 
-        var f = $('#elfinder').elfinder({
-            url : '{{ path('ef_connect') }}',
+        var f = $('.elfinder').elfinder({
+            url: '{{ path('ef_connect', {'instance': instance}) }}'
             lang : '{{ locale }}',
             getfile : {
                 onlyURL : true,
@@ -65,6 +65,6 @@
         }).elfinder('instance');
     });
 </script>
-<div id="elfinder"></div>
+<div class="elfinder"></div>
 </body>
 </html>

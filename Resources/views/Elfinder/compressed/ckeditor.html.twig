@@ -29,7 +29,7 @@
         var mode = getUrlParam('mode');
 
         var f = $('#elfinder').elfinder({
-            url : '{{path('ef_connect')}}'+'?mode='+mode,
+            url: '{{ path('ef_connect', {'instance': instance}) }}'+'?mode='+mode,
             lang : '{{locale}}',
             getFileCallback : function(file) {
                 if (funcNum) {
@@ -42,9 +42,9 @@
         {% if fullscreen %}
         $(window).resize(function(){
             var h = $(window).height();
-
-            if($('#elfinder').height() != h - 20){
-                $('#elfinder').height(h -20).resize();
+            var $ef = $('#elfinder');
+            if($ef.height() != h - 20){
+                $ef.height(h -20).resize();
             }
         });
         {% endif %}
