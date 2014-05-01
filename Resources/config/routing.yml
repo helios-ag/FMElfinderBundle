@@ -1,8 +1,8 @@
 ef_connect:
-    pattern:  /efconnect
-    defaults: { _controller: FMElfinderBundle:Elfinder:load }
+    pattern:  /efconnect/{instance}
+    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
 
 elfinder:
-    pattern: /elfinder
-    defaults: { _controller: FMElfinderBundle:Elfinder:show }
+    pattern: /elfinder/{instance}
+    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
 
