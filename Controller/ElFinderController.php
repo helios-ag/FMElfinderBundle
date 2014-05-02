@@ -1,9 +1,7 @@
 <?php
 namespace FM\ElfinderBundle\Controller;
 
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,48 +23,71 @@ class ElFinderController extends Controller
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
+        $result = $this->selectEditor($parameters, $instance);
+        return $this->render($result['template'], $result['params']);
+    }
+
+    /**
+     * @param $parameters
+     * @param $instance
+     * @return array
+     */
+    private function selectEditor($parameters, $instance)
+    {
         $editor = $parameters['editor'];
         $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullscreen = $parameters['fullscreen'];
         $includeAssets = $parameters['include_assets'];
         $compression = $parameters['compression'];
         $prefix = ($compression ? '/compressed' : '');
+        $result = array();
+
         switch ($editor){
             case 'ckeditor':
-                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':ckeditor.html.twig', array(
-                    'locale' => $locale,
-                    'fullscreen' => $fullscreen,
-                    'includeAssets' => $includeAssets,
-                    'instance' => $instance
-                ));
+                $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':ckeditor.html.twig';
+                $result['params'] = array(
+                        'locale' => $locale,
+                        'fullscreen' => $fullscreen,
+                        'includeAssets' => $includeAssets,
+                        'instance' => $instance
+                );
+                return $result;
                 break;
             case 'tinymce':
-                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':tinymce.html.twig', array(
+                $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':tinymce.html.twig';
+                $result['params'] = array(
                     'locale' => $locale,
                     'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
-                ));
+                );
+                return $result;
                 break;
             case 'tinymce4':
-                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':tinymce4.html.twig', array(
+                $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':tinymce4.html.twig';
+                $result['params'] = array(
                     'locale' => $locale,
-                    'includeAssets'=>$includeAssets,
+                    'includeAssets' => $includeAssets,
                     'instance' => $instance
-                ));
+                );
+                return $result;
                 break;
             default:
-                return $this->render('FMElfinderBundle:Elfinder'.$prefix.':simple.html.twig', array(
+                $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':simple.html.twig';
+                $result['params'] = array(
                     'locale' => $locale,
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
-                ));
+                );
+                return $result;
         }
     }
 
     /**
      * Loader service init
+     * @param string $instance
+     *
      */
     public function loadAction($instance)
     {
