@@ -16,7 +16,7 @@ class ElFinderController extends Controller
 
     /**
      * Renders Elfinder
-     * @param string $instance
+     * @param  string   $instance
      * @return Response
      */
     public function showAction($instance)
@@ -24,6 +24,7 @@ class ElFinderController extends Controller
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
         $result = $this->selectEditor($parameters, $instance);
+
         return $this->render($result['template'], $result['params']);
     }
 
@@ -42,7 +43,7 @@ class ElFinderController extends Controller
         $prefix = ($compression ? '/compressed' : '');
         $result = array();
 
-        switch ($editor){
+        switch ($editor) {
             case 'ckeditor':
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':ckeditor.html.twig';
                 $result['params'] = array(
@@ -51,6 +52,7 @@ class ElFinderController extends Controller
                         'includeAssets' => $includeAssets,
                         'instance' => $instance
                 );
+
                 return $result;
                 break;
             case 'tinymce':
@@ -61,6 +63,7 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
+
                 return $result;
                 break;
             case 'tinymce4':
@@ -70,6 +73,7 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
+
                 return $result;
                 break;
             default:
@@ -80,6 +84,7 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
+
                 return $result;
         }
     }

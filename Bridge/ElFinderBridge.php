@@ -18,9 +18,9 @@ class ElFinderBridge extends ElFinder
     {
         foreach ($opts['roots'] as $i => $o) {
             $volume = null;
-            if(isset($o['service'])){
+            if (isset($o['service'])) {
                 $driver = $o['service'];
-                if(is_object($driver) && $driver instanceof \FM\ElFinderPHP\Driver\ElFinderVolumeDriver){
+                if (is_object($driver) && $driver instanceof \FM\ElFinderPHP\Driver\ElFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
                 }

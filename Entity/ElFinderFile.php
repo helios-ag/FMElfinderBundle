@@ -315,5 +315,4 @@ class ElFinderFile
         return $this->write;
     }
 
-
 }

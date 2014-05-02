@@ -4,9 +4,6 @@ namespace FM\ElfinderBundle\Tests\DependencyInjection;
 
 use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\Reference;
 
 class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,15 +17,15 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
 
         $parameters = $container->getParameter('fm_elfinder');
 
-        $this->assertNull($parameters['locale']);
-        $this->assertEquals('simple', $parameters['editor']);
+        $this->assertNull($parameters['instances']['locale']);
+        $this->assertEquals('simple', $parameters['instances']['editor']);
 
         $this->assertArrayHasKey('connector', $parameters);
 
-        $this->assertArrayHasKey('debug', $parameters['connector']);
+        $this->assertArrayHasKey('debug', $parameters['instances']['connector']);
         $this->assertFalse($parameters['connector']['debug']);
 
-        $this->assertArrayHasKey('roots', $parameters['connector']);
+        $this->assertArrayHasKey('roots', $parameters['instances']['connector']);
         $this->assertCount(0, $parameters['connector']['roots']);
     }
 }

@@ -39,8 +39,8 @@ class FMElfinderTinymceExtension extends Twig_Extension
     }
 
     /**
-     * @param string $instance
-     * @param array $parameters
+     * @param  string              $instance
+     * @param  array               $parameters
      * @throws \Twig_Error_Runtime
      * @return mixed
      */
@@ -60,8 +60,8 @@ class FMElfinderTinymceExtension extends Twig_Extension
     }
 
     /**
-     * @param string $instance
-     * @param array $parameters
+     * @param  string              $instance
+     * @param  array               $parameters
      * @throws \Twig_Error_Runtime
      * @return mixed
      */

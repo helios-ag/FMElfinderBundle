@@ -4,7 +4,6 @@ namespace FM\ElfinderBundle\Loader;
 
 use Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use FM\ElFinderPHP\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
@@ -45,10 +44,11 @@ class ElFinderLoader
     protected function configure()
     {
         $configurator = $this->container->get($this->configurator);
-        if(!($configurator instanceof ElFinderConfigurationProviderInterface)) {
+        if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
             throw new Exception("Configurator class must implement ElFinderConfigurationProviderInterface");
         }
         $parameters = $configurator->getConfiguration($this->instance);
+
         return $parameters;
     }
 
