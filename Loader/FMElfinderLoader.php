@@ -52,7 +52,7 @@ class FMElfinderLoader
                         ? $parameter['url']
                         : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
                     : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
-                'accessControl' => array($this, 'access'),
+                'accessControl' => $parameter['showhidden'] ? null : array($this, 'access'),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
                 'uploadMaxSize' => $parameter['upload_max_size']

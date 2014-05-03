@@ -28,7 +28,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('locale')->defaultNull()->end()
-                ->booleanNode('showhidden')->defaultFalse()->end()
                 ->scalarNode('editor')->defaultValue('simple')->end()
                 ->booleanNode('compression')->defaultFalse()->end()
                 ->booleanNode('fullscreen')->defaultTrue()->end()
@@ -56,6 +55,7 @@ class Configuration implements ConfigurationInterface
                             ->requiresAtLeastOneElement()
                             ->prototype('array')
                                 ->children()
+                                    ->booleanNode('showhidden')->defaultFalse()->end()
                                     ->scalarNode('driver')->defaultValue('LocalFileSystem')->end()
                                     ->scalarNode('path')->defaultValue('uploads')->end()
                                     ->scalarNode('url')->end()
