@@ -56,6 +56,7 @@ class Configuration implements ConfigurationInterface
                             ->prototype('array')
                                 ->children()
                                     ->booleanNode('showhidden')->defaultFalse()->end()
+                                    ->booleanNode('relative_url')->defaultFalse()->end()
                                     ->scalarNode('driver')->defaultValue('LocalFileSystem')->end()
                                     ->scalarNode('path')->defaultValue('uploads')->end()
                                     ->scalarNode('url')->end()

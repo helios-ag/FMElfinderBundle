@@ -43,20 +43,22 @@ class FMElfinderLoader
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
-            $options['roots'][] = array(
+            $config = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,
                 'path'          => $path . '/',
                 'URL'           => isset($parameter['url']) && $parameter['url']
-                    ? strpos($parameter['url'], 'http') === 0
-                        ? $parameter['url']
-                        : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
-                    : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
+                        ? strpos($parameter['url'], 'http') === 0
+                            ? $parameter['url']
+                            : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
+                        : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
                 'accessControl' => $parameter['showhidden'] ? null : array($this, 'access'),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
-                'uploadMaxSize' => $parameter['upload_max_size']
+                'uploadMaxSize' => $parameter['upload_max_size'],
             );
+            $config['URL'] = $parameter['relative_url'] ? $parameter['url'] : $config['URL'];
+            $options['roots'][] = $config;
         }
 
         return $options;
