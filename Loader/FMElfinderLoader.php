@@ -15,16 +15,23 @@ class FMElfinderLoader
     protected $options = array();
 
     /**
-     * @var ContainerInterface $container
+     * @var array $parameters
      */
-    protected $container;
+    protected $parameters;
 
     /**
-     * @param ContainerInterface $container
+     * @var Request
      */
-    public function __construct(ContainerInterface $container)
+    protected $request;
+
+    /**
+     * @param $parameters
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function __construct($parameters, Request $request)
     {
-        $this->container = $container;
+        $this->parameters = $parameters;
+        $this->request = $request;
         $this->options = $this->configure();
     }
 
@@ -33,16 +40,15 @@ class FMElfinderLoader
      */
     protected function configure()
     {
-        $request = $this->container->get('request');
-        $parameters = $this->container->getParameter('fm_elfinder');
-
+        $request = $this->request;
+        $parameters = $this->parameters;
         $options = array();
         $options['debug'] = $parameters['connector']['debug'];
         $options['roots'] = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
-            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
+            $driver = isset($parameter['driver']) ? $parameter['driver'] : null;
             $config = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,

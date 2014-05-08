@@ -8,12 +8,13 @@
     </parameters>
 
     <services>
-        <service id="elfinder_loader" class="%elfinder.loader%">
-            <argument type="service" id="service_container" />
+        <service id="elfinder_loader" class="%elfinder.loader%" scope="request">
+            <argument>%fm_elfinder%</argument>
+            <argument type="service" id="request"/>
         </service>
 
         <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">
-            <argument type="service" id="service_container"></argument>
+            <argument type="service" id="twig"/>
             <tag name="twig.extension" alias="fm_tinymce_init" />
         </service>
     </services>

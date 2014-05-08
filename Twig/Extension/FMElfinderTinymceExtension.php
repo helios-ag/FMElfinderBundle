@@ -2,8 +2,6 @@
 
 namespace FM\ElfinderBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 /**
  * Class FMElfinderTinymceExtension
  * @package FM\ElfinderBundle\Twig\Extension
@@ -11,16 +9,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FMElfinderTinymceExtension extends \Twig_Extension
 {
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var \Twig_Environment
      */
-    protected $container;
+    protected $twig;
 
     /**
-     * @param ContainerInterface $container
+     * @param \Twig_Environment $twig
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(\Twig_Environment  $twig)
     {
-        $this->container = $container;
+        $this->twig = $twig;
     }
 
     /**
@@ -41,7 +39,7 @@ class FMElfinderTinymceExtension extends \Twig_Extension
      */
     public function tinymce()
     {
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig');
+        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig');
     }
 
     /**
@@ -49,7 +47,7 @@ class FMElfinderTinymceExtension extends \Twig_Extension
      */
     public function tinymce4()
     {
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig');
+        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig');
     }
 
     /**
