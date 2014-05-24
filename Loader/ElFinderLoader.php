@@ -7,17 +7,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use FM\ElFinderPHP\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * Class ElFinderLoader
  * @package FM\ElfinderBundle\Loader
  */
 class ElFinderLoader
 {
-    /**
-     * @var ContainerInterface $container
-     */
-    protected $container;
-
     /**
      * @var string
      */
@@ -30,11 +27,11 @@ class ElFinderLoader
     protected $configurator;
 
     /**
-     * @param ContainerInterface $container
+     * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
-        $this->container = $container;
+        $this->configurator = $configurator;
     }
 
     /**
@@ -43,7 +40,7 @@ class ElFinderLoader
      */
     protected function configure()
     {
-        $configurator = $this->container->get($this->configurator);
+        $configurator = $this->configurator;
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
             throw new Exception("Configurator class must implement ElFinderConfigurationProviderInterface");
         }
@@ -59,8 +56,8 @@ class ElFinderLoader
     public function load($instance)
     {
         $this->setInstance($instance);
-        $this->options = $this->configure();
-        $connector = new ElFinderConnector(new ElFinderBridge($this->options));
+        $options = $this->configure();
+        $connector = new ElFinderConnector(new ElFinderBridge($options));
         $connector->run();
     }
 

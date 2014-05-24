@@ -6,6 +6,8 @@ use Exception;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use FM\ElfinderBundle\Model\ElFinderPermissionsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ElFinderConfigurationReader
@@ -19,16 +21,23 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     protected $options = array();
 
     /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
+     * @var array $parameters
      */
-    protected $container;
+    protected $parameters;
 
     /**
-     * @param ContainerInterface $container
+     * @var Request
      */
-    public function __construct(ContainerInterface $container)
+    protected $requestStack;
+
+    /**
+     * @param $parameters
+     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     */
+    public function __construct($parameters, RequestStack $requestStack)
     {
-        $this->container = $container;
+        $this->parameters = $parameters;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -38,26 +47,17 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     public function getConfiguration($instance)
     {
-        $request = $this->container->get('request');
-        $efParameters = $this->container->getParameter('fm_elfinder');
+        $request = $this->requestStack->getCurrentRequest();
+        $efParameters = $this->parameters;
         $parameters = $efParameters['instances'][$instance];
-        $userIntegration = $parameters['enableUserIntegration'];
         $options = array();
         $options['debug'] = $parameters['connector']['debug'];
         $options['roots'] = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
-            if ($userIntegration) {
-                if(!$user = $this->container->get('security.context')->getToken()->getUser())
-                    throw new Exception("Can't access user object");
-                if (!($user instanceof ElFinderPermissionsInterface)) {
-                    throw new Exception("User class must implement ElFinderPermissionsInterface");
-                }
-                $path = $user->getRootDirectoryName();
-            };
 
-            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
+            $driver = isset($parameter['driver']) ? $parameter['driver'] : null;
             $driverOptions = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,

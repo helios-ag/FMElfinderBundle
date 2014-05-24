@@ -37,7 +37,6 @@ Recommended bundles to use with:
     - [Using ElfinderBundle with TinyMCEBundle](#using-elfinderbundle-with-tinymcebundle)
     - [Integrating with TinyMCE 4.x](#integrating-with-tinymce-4x)
 - [Custom configuration provider](#custom-configuration-provider)
-- [Basic user integration](#Basic user integration)
 
 ## Installation
 
@@ -338,19 +337,6 @@ Configuration class must implement interface ElFinderConfigurationProviderInterf
 
 method getConfiguration($instance) should return array of parameters compatible with ElFinder bundle configuration
 
-#Basic user integration
-
-Now bundle provides basic user integration, by enabling parameter "enableUserIntegration":
-
-```yaml
-fm_elfinder:
-    instances:
-        my_instance:
-            enableUserIntegration: true
-```
-
-In this case user class must implement ElFinderPermissionsInterface interface,
-and implement method (string)getRootDirectoryName(), method should return directory name that belongs to user.
 
 Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 

@@ -26,14 +26,13 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('configuration_provider')->defaultValue('elfinder.configurator')->end()
+                ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
                     ->prototype('array')
                         ->children()
                             ->scalarNode('locale')->defaultNull()->end()
-                            ->booleanNode('showhidden')->defaultFalse()->end()
                             ->scalarNode('editor')->defaultValue('simple')->end()
                             ->booleanNode('compression')->defaultFalse()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
@@ -58,6 +57,7 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue('LocalFileSystem')->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
                                                 ->scalarNode('url')->end()
+                                                ->booleanNode('showhidden')->defaultFalse()->end()
                                                 ->scalarNode('alias')->defaultValue('')->end()
                                                 ->integerNode('treeDeep')->defaultValue(0)->end()
                                                 ->scalarNode('accessControl')->defaultNull()->end()

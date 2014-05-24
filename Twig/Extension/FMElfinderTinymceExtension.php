@@ -2,7 +2,7 @@
 
 namespace FM\ElfinderBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig_Environment;
 use Twig_Error_Runtime;
 use Twig_Extension;
 
@@ -12,17 +12,18 @@ use Twig_Extension;
  */
 class FMElfinderTinymceExtension extends Twig_Extension
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    protected $container;
 
     /**
-     * @param ContainerInterface $container
+     * @var Twig_Environment
      */
-    public function __construct(ContainerInterface $container)
+    protected $twig;
+
+    /**
+     * @param Twig_Environment $twig
+     */
+    public function __construct(Twig_Environment $twig)
     {
-        $this->container = $container;
+        $this->twig = $twig;
     }
 
     /**
@@ -50,7 +51,7 @@ class FMElfinderTinymceExtension extends Twig_Extension
             throw new Twig_Error_Runtime('The filter can be applied to strings only.');
         }
 
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig',
+        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],
@@ -71,7 +72,7 @@ class FMElfinderTinymceExtension extends Twig_Extension
             throw new Twig_Error_Runtime('The filter can be applied to strings only.');
         }
 
-        return $this->container->get('templating')->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig',
+        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],

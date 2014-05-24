@@ -96,9 +96,8 @@ class ElFinderController extends Controller
      */
     public function loadAction($instance)
     {
-        $loader = $this->container->get('elfinder.loader');
+        $loader = $this->container->get('fm_elfinder.loader');
         $settings = $this->container->getParameter('fm_elfinder');
-        $loader->setConfigurator($settings['configuration_provider']);
         $loader->load($instance);
     }
 

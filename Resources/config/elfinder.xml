@@ -4,21 +4,20 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="elfinder.loader">FM\ElfinderBundle\Loader\ElFinderLoader</parameter>
-        <parameter key="elfinder.configuration.reader">FM\ElfinderBundle\Configuration\ElFinderConfigurationReader</parameter>
+        <parameter key="fm_elfinder.loader">FM\ElfinderBundle\Loader\ElFinderLoader</parameter>
+        <parameter key="fm_elfinder.configurator">FM\ElfinderBundle\Configuration\ElFinderConfigurationReader</parameter>
     </parameters>
 
     <services>
-        <service id="elfinder.loader" class="%elfinder.loader%">
-            <argument type="service" id="service_container" />
+        <service id="fm_elfinder.configurator.default" class="%fm_elfinder.configurator%">
+            <argument>%fm_elfinder%</argument>
+            <argument type="service" id="request_stack"/>
         </service>
-
-        <service id="elfinder.configurator" class="%elfinder.configuration.reader%">
-            <argument type="service" id="service_container" />
+        <service id="fm_elfinder.loader" class="FM\ElfinderBundle\Loader\ElFinderLoader">
+            <argument type="service" id="fm_elfinder.configurator"/>
         </service>
-
         <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="twig"/>
             <tag name="twig.extension" alias="fm_tinymce_init" />
         </service>
     </services>
