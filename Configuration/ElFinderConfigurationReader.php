@@ -2,10 +2,7 @@
 
 namespace FM\ElfinderBundle\Configuration;
 
-use Exception;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
-use FM\ElfinderBundle\Model\ElFinderPermissionsInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -42,7 +39,6 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
     /**
      * @param $instance
-     * @throws \Exception
      * @return array
      */
     public function getConfiguration($instance)

@@ -3,11 +3,9 @@
 namespace FM\ElfinderBundle\Loader;
 
 use Exception;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use FM\ElFinderPHP\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ElFinderLoader
