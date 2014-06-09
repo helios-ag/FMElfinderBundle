@@ -2,7 +2,6 @@
 
 namespace FM\ElfinderBundle\Twig\Extension;
 
-use Twig_Environment;
 use Twig_Error_Runtime;
 use Twig_Extension;
 
@@ -14,14 +13,14 @@ class FMElfinderTinymceExtension extends Twig_Extension
 {
 
     /**
-     * @var Twig_Environment
+     * @var
      */
     protected $twig;
 
     /**
-     * @param Twig_Environment $twig
+     * @param \Twig_Environment $twig
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(\Twig_Environment $twig)
     {
         $this->twig = $twig;
     }

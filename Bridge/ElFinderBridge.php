@@ -1,4 +1,5 @@
 <?php
+
 namespace FM\ElfinderBundle\Bridge;
 
 use FM\ElFinderPHP\ElFinder;

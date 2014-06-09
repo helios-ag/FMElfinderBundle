@@ -18,6 +18,7 @@ class AppKernel extends Kernel
     }
 
     /**
+     * @param Symfony\Component\Config\Loader\LoaderInterface $loader
      * @return null
      */
     public function registerContainerConfiguration(LoaderInterface $loader)

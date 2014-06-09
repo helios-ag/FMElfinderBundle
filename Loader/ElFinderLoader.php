@@ -36,7 +36,7 @@ class ElFinderLoader
      * @throws \Exception
      * @return array
      */
-    protected function configure()
+    public function configure()
     {
         $configurator = $this->configurator;
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
@@ -54,8 +54,7 @@ class ElFinderLoader
     public function load($instance)
     {
         $this->setInstance($instance);
-        $options = $this->configure();
-        $connector = new ElFinderConnector(new ElFinderBridge($options));
+        $connector = new ElFinderConnector(new ElFinderBridge($this->configure()));
         $connector->run();
     }
 

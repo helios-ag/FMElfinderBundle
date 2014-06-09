@@ -23,6 +23,10 @@
         "symfony/twig-bundle":           "~2.0",
         "helios-ag/fm-elfinder-php-connector": "2.*"
     },
+    "requier-dev" : {
+        "matthiasnoback/symfony-config-test": "dev-master",
+        "matthiasnoback/symfony-dependency-injection-test": "dev-master"
+    },
     "suggest": {
         "stfalcon/tinymce-bundle": "TinyMCE Bundle by Stfalcon",
         "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen",

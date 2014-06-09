@@ -1,0 +1,19 @@
+fm_elfinder:
+  instances:
+    default:
+      locale: %locale%
+      editor: simple # other choices are tinymce or simple
+      compression: false
+      include_assets: true
+      fullscreen: true
+      enableUserIntegration: true
+      connector:
+          debug: true # defaults to false
+          roots:       # at least one root must be defined
+              uploads:
+                  driver: LocalFileSystem
+                  path: uploads
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
+      tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"

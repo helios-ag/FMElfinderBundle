@@ -3,29 +3,63 @@
 namespace FM\ElfinderBundle\Tests\DependencyInjection;
 
 use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Yaml\Parser;
 
-class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
+class FMElfinderExtensionTest extends AbstractExtensionTestCase
 {
-
-    public function testDefault()
+    protected function getContainerExtensions()
     {
-        $container = new ContainerBuilder();
-        $loader = new FMElfinderExtension();
-        $loader->load(array(array()), $container);
-        $this->assertTrue($container->hasParameter('fm_elfinder'));
-
-        $parameters = $container->getParameter('fm_elfinder');
-
-        $this->assertNull($parameters['instances']['locale']);
-        $this->assertEquals('simple', $parameters['instances']['editor']);
-
-        $this->assertArrayHasKey('connector', $parameters);
-
-        $this->assertArrayHasKey('debug', $parameters['instances']['connector']);
-        $this->assertFalse($parameters['connector']['debug']);
-
-        $this->assertArrayHasKey('roots', $parameters['instances']['connector']);
-        $this->assertCount(0, $parameters['connector']['roots']);
+        return array(
+            new FMElfinderExtension()
+        );
     }
+
+    public function testServices()
+    {
+        $this->load();
+        $this->assertContainerBuilderHasAlias('fm_elfinder.configurator');
+        $this->assertContainerBuilderHasService('fm_elfinder.loader');
+        $this->assertContainerBuilderHasService('fm_elfinder.configurator.default');
+        $this->assertContainerBuilderHasService('twig.extension.fm_tinymce_init');
+    }
+
+    /**
+     * @return void
+     */
+    public function testMinimumConfiguration()
+    {
+        $this->container = new ContainerBuilder();
+        $loader = new FMElfinderExtension();
+        $loader->load(array($this->getMinimalConfiguration()), $this->container);
+        $this->assertTrue($this->container instanceof ContainerBuilder);
+    }
+
+    protected function getMinimalConfiguration()
+    {
+
+        $yaml = <<<EOF
+instances:
+    default:
+      locale: %locale%
+      editor: simple # other choices are tinymce or simple
+      compression: false
+      include_assets: true
+      fullscreen: true
+      connector:
+          debug: true # defaults to false
+          roots:       # at least one root must be defined
+              uploads:
+                  driver: LocalFileSystem
+                  path: uploads
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
+EOF;
+        $parser = new Parser();
+
+        return $parser->parse($yaml);
+    }
+
 }
