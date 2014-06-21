@@ -24,7 +24,7 @@ class ElFinderFile
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=256, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     protected $name;
 
@@ -52,7 +52,7 @@ class ElFinderFile
     /**
      * @var string
      *
-     * @ORM\Column(name="mime", type="string", length=256, nullable=false)
+     * @ORM\Column(name="mime", type="string", length=255, nullable=false)
      */
     protected $mime;
 
