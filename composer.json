@@ -21,7 +21,7 @@
         "symfony/symfony":               "~2.4",
         "sensio/framework-extra-bundle": "*@dev",
         "symfony/twig-bundle":           "~2.0",
-        "helios-ag/fm-elfinder-php-connector": "2.*"
+        "helios-ag/fm-elfinder-php-connector": "2.0.*@dev"
     },
     "require-dev" : {
         "matthiasnoback/symfony-config-test":  "0.*",
