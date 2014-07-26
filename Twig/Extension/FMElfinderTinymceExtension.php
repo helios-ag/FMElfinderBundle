@@ -39,8 +39,8 @@ class FMElfinderTinymceExtension extends Twig_Extension
     }
 
     /**
-     * @param  string              $instance
-     * @param  array               $parameters
+     * @param string $instance
+     * @param array $parameters
      * @throws \Twig_Error_Runtime
      * @return mixed
      */
@@ -53,15 +53,15 @@ class FMElfinderTinymceExtension extends Twig_Extension
         return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig',
             array(
                 'instance' => $instance,
-                'width'    => $parameters['width'],
-                'height'   => $parameters['height'],
-                'title'    => $parameters['title']
+                'width' => $parameters['width'],
+                'height' => $parameters['height'],
+                'title' => $parameters['title']
             ));
     }
 
     /**
-     * @param  string              $instance
-     * @param  array               $parameters
+     * @param string $instance
+     * @param array $parameters
      * @throws \Twig_Error_Runtime
      * @return mixed
      */
@@ -74,9 +74,9 @@ class FMElfinderTinymceExtension extends Twig_Extension
         return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig',
             array(
                 'instance' => $instance,
-                'width'    => $parameters['width'],
-                'height'   => $parameters['height'],
-                'title'    => $parameters['title']
+                'width' => $parameters['width'],
+                'height' => $parameters['height'],
+                'title' => $parameters['title']
             ));
     }
 
