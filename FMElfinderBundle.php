@@ -4,6 +4,6 @@ namespace FM\ElfinderBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class FMElfinderBundle extends Bundle {
-
+class FMElfinderBundle extends Bundle
+{
 }

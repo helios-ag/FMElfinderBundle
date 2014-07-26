@@ -18,7 +18,7 @@
 <script type="text/javascript" charset="utf-8">
     $().ready(function() {
         var $f = $('#elfinder').elfinder({
-            url : '{{path('ef_connect')}}',
+            url: '{{ path('ef_connect', {'instance': instance}) }}'
             lang : '{{locale}}'
         });
 
