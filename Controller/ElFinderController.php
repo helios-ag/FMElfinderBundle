@@ -52,9 +52,7 @@ class ElFinderController extends Controller
                         'includeAssets' => $includeAssets,
                         'instance' => $instance
                 );
-
                 return $result;
-                break;
             case 'tinymce':
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':tinymce.html.twig';
                 $result['params'] = array(
@@ -63,9 +61,7 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
-
                 return $result;
-                break;
             case 'tinymce4':
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':tinymce4.html.twig';
                 $result['params'] = array(
@@ -73,9 +69,7 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
-
                 return $result;
-                break;
             default:
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':simple.html.twig';
                 $result['params'] = array(
@@ -84,7 +78,6 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );
-
                 return $result;
         }
     }

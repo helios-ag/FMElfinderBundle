@@ -23,7 +23,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     protected $parameters;
 
     /**
-     * @var Request
+     * @var RequestStack
      */
     protected $requestStack;
 
