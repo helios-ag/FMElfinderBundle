@@ -14,12 +14,12 @@ use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 class ElFinderLoader
 {
     /**
-     * @var string
+     * @var
      */
     protected $instance;
 
     /**
-     * @var string
+     * @var ElFinderConfigurationProviderInterface
      * Configurator service name
      */
     protected $configurator;
