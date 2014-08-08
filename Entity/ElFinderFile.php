@@ -59,14 +59,14 @@ class ElFinderFile
     /**
      * @var string
      *
-     * @ORM\Column(name="read", type="string", nullable=false)
+     * @ORM\Column(name="`read`", type="string", nullable=false)
      */
     protected $read;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="write", type="string", nullable=false)
+     * @ORM\Column(name="`write`", type="string", nullable=false)
      */
     protected $write;
 
