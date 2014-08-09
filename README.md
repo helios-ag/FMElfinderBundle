@@ -4,10 +4,11 @@ FMElfinderBundle
 [ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
 [![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
-[![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/d/total.png)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
-[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/version.png)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Dependency Status](https://www.versioneye.com/user/projects/53db56ab4b3ac87d6a0001ff/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ab4b3ac87d6a0001ff)
+
+[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![License](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/license.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
 
 elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
@@ -47,6 +48,7 @@ This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
+You have a choice to install bundle of version 1.x (1.x branch, [documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)) or 2.x branch
 Add FMElfinderBundle in your composer.json:
 
 ```js
