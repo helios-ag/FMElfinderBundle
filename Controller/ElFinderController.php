@@ -47,10 +47,10 @@ class ElFinderController extends Controller
             case 'ckeditor':
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':ckeditor.html.twig';
                 $result['params'] = array(
-                        'locale' => $locale,
-                        'fullscreen' => $fullscreen,
-                        'includeAssets' => $includeAssets,
-                        'instance' => $instance
+                    'locale' => $locale,
+                    'fullscreen' => $fullscreen,
+                    'includeAssets' => $includeAssets,
+                    'instance' => $instance
                 );
                 return $result;
             case 'tinymce':
@@ -66,6 +66,15 @@ class ElFinderController extends Controller
                 $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':tinymce4.html.twig';
                 $result['params'] = array(
                     'locale' => $locale,
+                    'includeAssets' => $includeAssets,
+                    'instance' => $instance
+                );
+                return $result;
+            case 'form':
+                $result['template'] = 'FMElfinderBundle:Elfinder'.$prefix.':elfinder_type.html.twig';
+                $result['params'] = array(
+                    'locale' => $locale,
+                    'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
                     'instance' => $instance
                 );

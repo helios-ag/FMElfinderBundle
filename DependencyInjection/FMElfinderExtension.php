@@ -25,6 +25,7 @@ class FMElfinderExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('elfinder.xml');
+        $loader->load('form.xml');
         $container->setParameter('fm_elfinder', $config);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
     }

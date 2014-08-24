@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% if includeAssets %}
+        {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
+    {% endif %}
+</head>
+<body>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
+{% endif %}
+<script type="text/javascript" charset="utf-8">
+    $().ready(function() {
+        var $f = $('.elfinder').elfinder({
+            url : '{{path('ef_connect', { 'instance': instance } )}}',
+            lang : '{{locale}}',
+            getFileCallback: function(file) {
+                window.opener.setValue(file.path);
+                window.close();
+            }
+        });
+
+
+    {% if fullscreen %}
+    var $window = $(window);
+    $window.resize(function(){
+        var $win_height = $window.height();
+        if( $f.height() != $win_height ){
+            $f.height($win_height).resize();
+        }
+    });
+    {% endif %}
+    });
+</script>
+<div class="elfinder"></div>
+</body>
+</html>

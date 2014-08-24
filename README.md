@@ -31,6 +31,7 @@ Recommended bundles to use with:
 - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
 - [Configuring symfony service as a volumeDriver](#configuring-symfony-service-as-a-volumedriver)
+- [ElFinder form type](#elfinder-form-type)
 - [Using ElFinder with CKEditorBundle](#using-elfinder-with-ckeditorbundle)
     - [Step 1: Installation:](#step-1-installation-1)
     - [Step 2: Configure CKEditor setting via settings.yml or through form builder:](#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
@@ -144,7 +145,7 @@ fm_elfinder:
     instances:
         default:
             locale: %locale% # defaults to current request locale
-            editor: ckeditor # other choices are tinymce or simple
+            editor: ckeditor # other choices are tinymce or simple, and form
             showhidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -191,6 +192,48 @@ This means that if you add the service definition:
 
 ```xml
 <service id="elfinder.driver.filesystem" class="FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem" />
+```
+
+## Elfinder Form Type
+
+Since version 2.1 of the bundle, bundle come with custom form type, that is simple <input type="text"/> , that provide
+elfinder callback (opens Elfinder window), configuration for this form type is simple
+First, define instance with editor setted to "form":
+```
+fm_elfinder:
+    instances:
+        form:
+            locale: %locale% # defaults to current request locale
+            editor: form # other choices are tinymce or simple, and form
+            showhidden: false # defaults to false
+            fullscreen: true # defaults true, applies to simple and ckeditor editors
+            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+            compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
+            connector:
+                debug: false # defaults to false
+                roots:       # at least one root must be defined
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 2M
+```
+
+On second step, add to your form builder (or form class), elfinder type, and pass instance and enable parameters:
+
+```php
+$form = $this->createFormBuilder()
+    ->add('elfinder','elfinder', array('instance'=>'form', 'enable'=>true))
+    ->getForm();
+```
+
+Render form with twig as usual:
+```jinja
+<form action="" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" />
+    </form>
 ```
 
 ## Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
@@ -347,6 +390,8 @@ Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 More tests, gridfs support, complex user intergration(?)
 
 ##Changelog
+### 2.1
+* New Elfinder form type, provides basic <input type="text"/> field with Elfinder callback
 
 ### 2.0
 * Multiple instances of elfinder configuration (allows multiple editors in one project, with different elfinder configurations)
