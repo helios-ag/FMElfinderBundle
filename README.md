@@ -146,7 +146,6 @@ fm_elfinder:
         default:
             locale: %locale% # defaults to current request locale
             editor: ckeditor # other choices are tinymce or simple, and form
-            showhidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
@@ -154,6 +153,7 @@ fm_elfinder:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
                     uploads:
+                        showhidden: false # defaults to false
                         driver: LocalFileSystem
                         path: uploads
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
