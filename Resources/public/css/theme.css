@@ -7,6 +7,7 @@
 
 /* dialogs */
 .std42-dialog, .std42-dialog .ui-widget-content { background-color:#ededed; background-image:none; background-clip: content-box; }
+.ui-dialog .elfinder-dialog-icon { display: block; float: left; margin: 0 15px 15px 0; position: initial; }
 
 /* navbar */
 .elfinder .elfinder-navbar { background:#dde4eb; }
