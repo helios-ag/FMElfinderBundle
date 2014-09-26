@@ -54,9 +54,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $path = $parameter['path'];
 
             $driver = isset($parameter['driver']) ? $parameter['driver'] : null;
+
             $driverOptions = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,
+                'disabled'      => $parameter['disabled'],
                 'path'          => $path . '/',
                 'URL'           => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
