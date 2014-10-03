@@ -4,7 +4,6 @@ namespace FM\ElfinderBundle\Configuration;
 
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class ElFinderConfigurationReader
@@ -23,18 +22,18 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     protected $parameters;
 
     /**
-     * @var RequestStack
+     * @var Request
      */
-    protected $requestStack;
+    protected $request;
 
     /**
      * @param $parameters
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     * @param Request $request
      */
-    public function __construct($parameters, RequestStack $requestStack)
+    public function __construct($parameters, Request $request)
     {
         $this->parameters = $parameters;
-        $this->requestStack = $requestStack;
+        $this->request = $request;
     }
 
     /**
@@ -43,7 +42,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     public function getConfiguration($instance)
     {
-        $request = $this->requestStack->getCurrentRequest();
+        $request = $this->request;
         $efParameters = $this->parameters;
         $parameters = $efParameters['instances'][$instance];
         $options = array();

@@ -9,11 +9,11 @@
     </parameters>
 
     <services>
-        <service id="fm_elfinder.configurator.default" class="%fm_elfinder.configurator%">
+        <service id="fm_elfinder.configurator.default" class="%fm_elfinder.configurator%" scope="request">
             <argument>%fm_elfinder%</argument>
-            <argument type="service" id="request_stack"/>
+            <argument type="service" id="request"/>
         </service>
-        <service id="fm_elfinder.loader" class="FM\ElfinderBundle\Loader\ElFinderLoader">
+        <service id="fm_elfinder.loader" class="FM\ElfinderBundle\Loader\ElFinderLoader" scope="request">
             <argument type="service" id="fm_elfinder.configurator"/>
         </service>
         <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">
