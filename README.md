@@ -49,13 +49,16 @@ This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
-You have a choice to install bundle of version 1.x (1.x branch, [documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)) or 2.x branch
+You have a choice to install bundle of version 1.x (composer require helios-ag/fm-elfinder-bundle: ~1.0, [documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)) or 2.x branch
 Add FMElfinderBundle in your composer.json:
+
+For Symfony 2.4 and later use version 2.5
+For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
 
 ```js
 {
     "require": {
-        "helios-ag/fm-elfinder-bundle": "2.x"
+        "helios-ag/fm-elfinder-bundle": "~2.5"
     }
 }
 ```
