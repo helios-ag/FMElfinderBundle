@@ -76,7 +76,8 @@ class ElFinderController extends Controller
                     'locale' => $locale,
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
-                    'instance' => $instance
+                    'instance' => $instance,
+                    'id'=>$this->getRequest()->get("id")
                 );
                 return $result;
             default:
