@@ -3,6 +3,7 @@ namespace FM\ElfinderBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Loader service for Elfinder backend
@@ -19,11 +20,11 @@ class ElFinderController extends Controller
      * @param  string   $instance
      * @return Response
      */
-    public function showAction($instance)
+    public function showAction(Request $request, $instance)
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
-        $result = $this->selectEditor($parameters, $instance, $this->request->get("id"));
+        $result = $this->selectEditor($parameters, $instance, $request->get("id"));
 
         return $this->render($result['template'], $result['params']);
     }
