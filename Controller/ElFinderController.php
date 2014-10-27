@@ -77,7 +77,7 @@ class ElFinderController extends Controller
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
                     'instance' => $instance,
-                    "id"=>$id
+                    'id'=>$id
                 );
                 return $result;
             default:
