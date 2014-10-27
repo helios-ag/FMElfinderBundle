@@ -23,7 +23,7 @@ class ElFinderController extends Controller
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
-        $result = $this->selectEditor($parameters, $instance);
+        $result = $this->selectEditor($parameters, $instance, $this->getRequest()->get("id"));
 
         return $this->render($result['template'], $result['params']);
     }
@@ -33,7 +33,7 @@ class ElFinderController extends Controller
      * @param $instance
      * @return array
      */
-    private function selectEditor($parameters, $instance)
+    private function selectEditor($parameters, $instance, $id = null)
     {
         $editor = $parameters['editor'];
         $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
@@ -76,7 +76,8 @@ class ElFinderController extends Controller
                     'locale' => $locale,
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
-                    'instance' => $instance
+                    'instance' => $instance,
+                    "id"=>$id
                 );
                 return $result;
             default:
