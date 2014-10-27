@@ -33,7 +33,7 @@ class ElFinderController extends Controller
      * @param $instance
      * @return array
      */
-    private function selectEditor($parameters, $instance, $id = null)
+    private function selectEditor($parameters, $instance, $formTypeId = null)
     {
         $editor = $parameters['editor'];
         $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
@@ -77,7 +77,7 @@ class ElFinderController extends Controller
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
                     'instance' => $instance,
-                    'id'=>$id
+                    'id'=>$formTypeId
                 );
                 return $result;
             default:
