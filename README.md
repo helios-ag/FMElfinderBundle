@@ -55,12 +55,8 @@ Add FMElfinderBundle in your composer.json:
 For Symfony 2.4 and later use version 2.5
 For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
 
-```js
-{
-    "require": {
-        "helios-ag/fm-elfinder-bundle": "~2.5"
-    }
-}
+```sh
+composer require helios-ag/fm-elfinder-bundle
 ```
 
 Now tell composer to download the bundle by running the command:
