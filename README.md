@@ -49,20 +49,36 @@ This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
-You have a choice to install bundle of version 1.x (composer require helios-ag/fm-elfinder-bundle: ~1.0, [documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)) or 2.x branch
-Add FMElfinderBundle in your composer.json:
 
-For Symfony 2.4 and later use version 2.5
-For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
+Install legacy version of the bundle ([documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)):
+
 
 ```sh
-composer require helios-ag/fm-elfinder-bundle
+    composer require helios-ag/fm-elfinder-bundle: "~1.5" 
 ```
+
+
+For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
+
+
+```sh
+    composer require helios-ag/fm-elfinder-bundle: "~2.3"
+```
+
+
+For Symfony 2.4 and later use version 3
+
+
+```sh
+    composer require helios-ag/fm-elfinder-bundle 
+```
+
 
 Now tell composer to download the bundle by running the command:
 
-``` bash
-$ php composer.phar update helios-ag/fm-elfinder-bundle
+
+```sh
+    composer update helios-ag/fm-elfinder-bundle
 ```
 
 ### Step 2: Enable the bundle
@@ -384,11 +400,18 @@ method getConfiguration($instance) should return array of parameters compatible 
 
 Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
-##Todo
-
-More tests, gridfs support, complex user intergration(?)
 
 ##Changelog
+
+### 3.0
+* BC in public api (controllers showAction method with second parameter)
+ 
+### 2.5
+* Version with Request_stack    
+
+### 2.3
+* Version for the LTS Symfony (2.3.x) (Re)    
+
 ### 2.1
 * New Elfinder form type, provides basic <input type="text"/> field with Elfinder callback
 
