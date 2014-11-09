@@ -17,7 +17,8 @@ class ElFinderController extends Controller
 
     /**
      * Renders Elfinder
-     * @param  string   $instance
+     * @param Request $request
+     * @param  string $instance
      * @return Response
      */
     public function showAction(Request $request, $instance)
@@ -32,6 +33,7 @@ class ElFinderController extends Controller
     /**
      * @param $parameters
      * @param $instance
+     * @param null $formTypeId
      * @return array
      */
     private function selectEditor($parameters, $instance, $formTypeId = null)
@@ -39,6 +41,7 @@ class ElFinderController extends Controller
         $editor = $parameters['editor'];
         $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullscreen = $parameters['fullscreen'];
+        $relativePath = $parameters['relative_path'];
         $includeAssets = $parameters['include_assets'];
         $compression = $parameters['compression'];
         $prefix = ($compression ? '/compressed' : '');
@@ -78,7 +81,8 @@ class ElFinderController extends Controller
                     'fullscreen' => $fullscreen,
                     'includeAssets' => $includeAssets,
                     'instance' => $instance,
-                    'id'=>$formTypeId
+                    'id' => $formTypeId,
+                    'relative_path' => $relativePath
                 );
                 return $result;
             default:

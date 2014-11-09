@@ -12,6 +12,7 @@
         <service id="fm_elfinder.configurator.default" class="%fm_elfinder.configurator%">
             <argument>%fm_elfinder%</argument>
             <argument type="service" id="request_stack"/>
+            <argument type="service" id="service_container"/>
         </service>
         <service id="fm_elfinder.loader" class="FM\ElfinderBundle\Loader\ElFinderLoader">
             <argument type="service" id="fm_elfinder.configurator"/>
