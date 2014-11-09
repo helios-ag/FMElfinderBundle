@@ -15,7 +15,11 @@
             url : '{{path('ef_connect', { 'instance': instance } )}}',
             lang : '{{locale}}',
             getFileCallback: function(file) {
-                window.opener.setValue(file.path, "{{ id }}");
+                {% if relative_path %}
+                    window.opener.setValue(file.path, "{{ id }}");
+                {% else %}
+                    window.opener.setValue(file.url, "{{ id }}");
+                {% endif %}
                 window.close();
             }
         });

@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Configuration;
 
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -28,13 +29,19 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     protected $requestStack;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @param $parameters
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
      */
-    public function __construct($parameters, RequestStack $requestStack)
+    public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
     {
         $this->parameters = $parameters;
         $this->requestStack = $requestStack;
+        $this->container = $container;
     }
 
     /**
@@ -53,7 +60,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
 
-            $driver = isset($parameter['driver']) ? $parameter['driver'] : null;
+            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
             $driverOptions = array(
                 'driver'        => $parameter['driver'],

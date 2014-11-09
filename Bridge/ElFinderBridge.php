@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Bridge;
 
 use FM\ElFinderPHP\ElFinder;
+use FM\ElFinderPHP\Driver\ElFinderVolumeDriver;
 
 /**
  * Class ElFinderBridge
@@ -21,7 +22,7 @@ class ElFinderBridge extends ElFinder
             $volume = null;
             if (isset($o['service'])) {
                 $driver = $o['service'];
-                if (is_object($driver) && $driver instanceof \FM\ElFinderPHP\Driver\ElFinderVolumeDriver) {
+                if (is_object($driver) && $driver instanceof ElFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
                 }
