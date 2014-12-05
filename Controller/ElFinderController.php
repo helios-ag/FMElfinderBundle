@@ -31,6 +31,7 @@ class ElFinderController extends Controller
     /**
      * @param $parameters
      * @param $instance
+     * @param null $formTypeId
      * @return array
      */
     private function selectEditor($parameters, $instance, $formTypeId = null)
