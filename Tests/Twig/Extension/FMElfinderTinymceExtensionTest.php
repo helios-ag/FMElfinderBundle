@@ -57,9 +57,9 @@ class FMElfinderTinymceExtensionTest extends \PHPUnit_Framework_TestCase
     function elFinderBrowser (field_name, url, type, win) {
         tinyMCE.activeEditor.windowManager.open({
             file: "http://localhost/elfinder/minimal",
-            title: 'elFinder 2.0',
-            width: 900,
-            height: 450,
+            title: "",
+            width:,
+            height:,
             resizable: 'yes',
             inline: 'yes',    // This parameter only has an effect if you use the inlinepopups plugin!
             popup_css: false, // Disable TinyMCE's default popup CSS
@@ -87,9 +87,9 @@ EOF;
     function elFinderBrowser (field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
             file:"http://localhost/elfinder/minimal",
-            title: 'elFinder 2.0',
-            width: 900,
-            height: 450,
+            title: "",
+            width:,
+            height:,
             resizable: 'yes'
         }, {
             setUrl: function (url) {
