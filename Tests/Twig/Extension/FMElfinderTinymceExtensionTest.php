@@ -35,7 +35,7 @@ class FMElfinderTinymceExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder')));
+        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
         $this->extension = new FMElfinderTinymceExtension($this->twig);
         $this->twig->addExtension($this->extension);
         $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../../../Resources/config'));
