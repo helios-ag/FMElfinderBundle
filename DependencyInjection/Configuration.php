@@ -34,7 +34,6 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('locale')->defaultNull()->end()
                             ->scalarNode('editor')->defaultValue('simple')->end()
-                            ->booleanNode('compression')->defaultFalse()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
                             ->booleanNode('include_assets')->defaultTrue()->end()
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
