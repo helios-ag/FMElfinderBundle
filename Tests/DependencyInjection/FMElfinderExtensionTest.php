@@ -44,7 +44,6 @@ instances:
     default:
       locale: %locale%
       editor: simple # other choices are tinymce or simple
-      compression: false
       include_assets: true
       fullscreen: true
       connector:

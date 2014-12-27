@@ -26,8 +26,7 @@ Recommended bundles to use with:
     - [Step 2: Enable the bundle](#step-2-enable-the-bundle)
     - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
     - [Step 4: Configure your application's security.yml](#step-4-configure-your-applications-securityyml)
-    - [Step 5: Configure assetic](#step-5-configure-assetic)
-    - [Step 6: Install and dump assets](#step-6-install-and-dump-assets)
+    - [Step 5: Install assets](#step-5-install-assets)
 - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
 - [Configuring symfony service as a volumeDriver](#configuring-symfony-service-as-a-volumedriver)
@@ -120,35 +119,13 @@ security:
 ```
 role ROLE_USER is provided as example.
 
-### Step 5: Configure assetic
 
-Under assetic section of your config.yml, add FMElfinderBundle to bundles section, also you can enable uglify js/css
-compressor (also you need to enable option "compression: true" under bundle configuration).
-
-Also set "use_controller: false".
-
-``` yaml
-assetic:
-    debug:          %kernel.debug%
-    use_controller: false
-    bundles:        [FMElfinderBundle]
-    java: /usr/bin/java
-    filters:
-        cssrewrite: ~
-        uglifyjs2:
-            # the path to the uglifyjs executable
-            bin: /usr/bin/uglifyjs
-        uglifycss:
-            bin: /usr/bin/uglifycss
-```
-
-### Step 6: Install and dump assets
+### Step 5: Install assets
 
 Install and dump assets using symfony built-in commands:
 
 ```sh
 app/console assets:install web
-app/console assetic:dump --env=prod
 ```
 
 ## Basic configuration
@@ -402,7 +379,8 @@ Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
 
 ##Changelog
-
+### 3.2 
+* Removed assetic support
 ### 3.0
 * BC in public api (controllers showAction method with second parameter)
  
