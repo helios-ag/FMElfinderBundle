@@ -52,7 +52,8 @@ class ElFinderController extends Controller
                     'locale'        => $locale,
                     'fullscreen'    => $fullscreen,
                     'includeAssets' => $includeAssets,
-                    'instance'      => $instance
+                    'instance'      => $instance,
+                    'relative_path' => $relativePath
                 );
                 return $result;
             case 'tinymce':

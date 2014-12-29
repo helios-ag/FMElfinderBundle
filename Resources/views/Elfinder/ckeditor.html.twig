@@ -26,7 +26,11 @@
             lang : '{{locale}}',
             getFileCallback : function(file) {
                 if (funcNum) {
-                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    {% if relative_path %}
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, file.path);
+                    {% else %}
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    {% endif %}
                     window.close();
                 }
             }
