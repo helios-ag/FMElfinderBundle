@@ -70,7 +70,8 @@ class ElFinderController extends Controller
                 $result['params'] = array(
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
-                    'instance'      => $instance
+                    'instance'      => $instance,
+                    'relative_path' => $relativePath
                 );
                 return $result;
             case 'form':
