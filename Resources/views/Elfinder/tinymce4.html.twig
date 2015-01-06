@@ -29,7 +29,12 @@
             url: '{{ path('ef_connect', {'instance': instance}) }}',  // connector URL
             lang : '{{ locale }}',
             getFileCallback: function(file) { // editor callback
-                FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+                {% if relative_path %}
+                    FileBrowserDialogue.mySubmit(file.path); // pass selected file path to TinyMCE
+                {% else %}
+                    FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+                {% endif %}
+
             }
         }).elfinder('instance');
     });
