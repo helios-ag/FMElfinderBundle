@@ -6,7 +6,7 @@ FMElfinderBundle
 [![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Dependency Status](https://www.versioneye.com/user/projects/53db56ab4b3ac87d6a0001ff/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ab4b3ac87d6a0001ff)
+[![Dependency Status](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4)
 
 [![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![License](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/license.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
 
@@ -163,6 +163,71 @@ fm_elfinder:
 * showhidden - hides directories starting with . (dot)
 * connector - root node for defining options for elfinder root directiories and debug option
 * roots - define
+
+## Plugins support
+
+ElFinder comes with few plugins, like auto-resize, which can be enabled, by the following configuration:
+
+```
+fm_elfinder:
+  instances:
+    tinymce:
+      locale: %locale%
+      editor: tinymce4 # other choices are tinymce or simple
+      include_assets: true
+      relative_path: true
+      fullscreen: true
+      connector:
+          debug: true # defaults to false
+          bind:
+              upload.presave:
+                  - Plugin.AutoResize.onUpLoadPreSave
+          plugin:
+              AutoResize: # global resize options, applies to root which don't have his own resize configuraion 
+                  enable: true 
+                  maxWidth: 750 
+                  maxHeight: 750 
+                  quality: 95 # JPEG image save quality
+          roots:       # at least one root must be defined
+              uploads:
+                  driver: LocalFileSystem
+                  path: uploads
+                  plugin:
+                      AutoResize:
+                          enable: true 
+                          maxWidth: 500 
+                          maxHeight: 500 
+                          quality: 95 # JPEG image save quality
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
+              resize1:
+                  driver: LocalFileSystem
+                  path: uploads
+                  plugin:
+                      AutoResize:
+                          enable: true # For control by volume driver
+                          maxWidth: 800 # Path to Water mark image
+                          maxHeight: 800 # Margin right pixel
+                          quality: 95 # JPEG image save quality
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
+              resize2:
+                  driver: LocalFileSystem
+                  path: uploads
+                  plugin:
+                      AutoResize:
+                          enable: true
+                          maxWidth: 800 
+                          maxHeight: 800 
+                          quality: 95 
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
+```                     
+
+ElFinder comes with other plugins, check it Plugins folder for more information.
 
 ## Configuring symfony service as a volumeDriver
 volumeDriver can be declared as Symfony service
@@ -323,7 +388,7 @@ as shown below
 
 instance_name is instance of elfinder's configuration
 
-### Integrating with TinyMCE 4.x
+### Integration with TinyMCE 4.x
 
 Update the editor property in your app/config.yml
 ```yml
@@ -379,8 +444,10 @@ Manual integration guide can be found [here](/INTEGRATION_GUIDE.md)
 
 
 ##Changelog
-### 3.2 
-* Removed assetic support
+
+### 3.3
+* Plugins support
+
 ### 3.0
 * BC in public api (controllers showAction method with second parameter)
  

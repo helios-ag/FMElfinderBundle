@@ -43,6 +43,8 @@ class Configuration implements ConfigurationInterface
                                 ->addDefaultsIfNotSet()
                                 ->children()
                                     ->booleanNode('debug')->defaultFalse()->end()
+                                    ->append($this->createBindNode())
+                                    ->append($this->createPluginsNode())
                                     ->arrayNode('roots')
                                         ->isRequired()
                                         ->requiresAtLeastOneElement()
@@ -57,6 +59,7 @@ class Configuration implements ConfigurationInterface
                                                 ->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
                                                 ->scalarNode('url')->end()
+                                                ->append($this->createPluginsNode())
                                                 ->booleanNode('showhidden')->defaultFalse()->end()
                                                 ->scalarNode('alias')->defaultValue('')->end()
                                                 ->integerNode('treeDeep')->defaultValue(0)->end()
@@ -109,4 +112,51 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The plugins node.
+     */
+    private function createPluginsNode()
+    {
+        return $this->createNode('plugin')
+            ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')->end()
+            ->end();
+    }
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The plugins node.
+     */
+    private function createBindNode()
+    {
+        return $this->createNode('bind')
+            ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')->end()
+            ->end();
+    }
+
+    /**
+     * Creates a node.
+     *
+     * @param string $name The node name.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The node.
+     */
+    private function createNode($name)
+    {
+        return $this->createTreeBuilder()->root($name);
+    }
+
+    /**
+     * Creates a tree builder.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder.
+     */
+    private function createTreeBuilder()
+    {
+        return new TreeBuilder();
+    }
 }
