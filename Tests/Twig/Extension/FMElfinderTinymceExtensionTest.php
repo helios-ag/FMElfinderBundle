@@ -151,3 +151,4 @@ EOF;
         $this->assertTrue($rc->isSubclassOf('Twig_Extension'));
     }
 }
+
