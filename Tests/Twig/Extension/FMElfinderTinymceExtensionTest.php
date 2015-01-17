@@ -87,7 +87,7 @@ EOF;
     function elFinderBrowser (field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
             file:"http://localhost/elfinder/minimal",
-            title: "",
+            title:"",
             width:,
             height:,
             resizable: 'yes'
@@ -151,3 +151,4 @@ EOF;
         $this->assertTrue($rc->isSubclassOf('Twig_Extension'));
     }
 }
+
