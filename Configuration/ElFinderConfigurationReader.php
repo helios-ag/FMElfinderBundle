@@ -36,6 +36,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     /**
      * @param $parameters
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+     * @param ContainerInterface $container
      */
     public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
     {
@@ -55,6 +56,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $parameters = $efParameters['instances'][$instance];
         $options = array();
         $options['debug'] = $parameters['connector']['debug'];
+        $options['bind'] =  $parameters['connector']['bind'];
+        $options['plugin'] =  $parameters['connector']['plugin'];
         $options['roots'] = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
@@ -66,6 +69,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,
                 'disabled'      => $parameter['disabled'],
+                'plugin'        => $parameter['plugin'],
                 'path'          => $path . '/',
                 'URL'           => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
@@ -77,6 +81,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'uploadDeny'    => $parameter['upload_deny'],
                 'uploadMaxSize' => $parameter['upload_max_size']
             );
+
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
         }
 
