@@ -137,7 +137,7 @@ fm_elfinder:
     instances:
         default:
             locale: %locale% # defaults to current request locale
-            editor: ckeditor # other choices are tinymce or simple, and form
+            editor: ckeditor # other choices are tinymce, simple, form or custom
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
@@ -158,8 +158,9 @@ fm_elfinder:
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor", "tinymce" and "simple". How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
+ "ckeditor", "tinymce", "simple" and "custom". How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
  "simple" can be used as standalone filebrowser for managing and uploading files.
+* editor_template - define template to renderer editor is set to "custom".
 * showhidden - hides directories starting with . (dot)
 * connector - root node for defining options for elfinder root directiories and debug option
 * roots - define
