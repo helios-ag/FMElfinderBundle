@@ -1,6 +1,7 @@
 <?php
 namespace FM\ElfinderBundle\Controller;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,20 @@ class ElFinderController extends Controller
         $result = array();
 
         switch ($editor) {
+            case 'custom':
+                if (empty($parameters['editor_template'])) {
+                    throw new Exception("Configuration error : 'custom' editor must define 'editor_template' parameter");
+                }
+
+                $result['template'] = $parameters['editor_template'];
+                $result['params'] = array(
+                    'locale'        => $locale,
+                    'fullscreen'    => $fullscreen,
+                    'includeAssets' => $includeAssets,
+                    'instance'      => $instance,
+                    'relative_path' => $relativePath
+                );
+                return $result;
             case 'ckeditor':
                 $result['template'] = 'FMElfinderBundle:Elfinder:ckeditor.html.twig';
                 $result['params'] = array(
