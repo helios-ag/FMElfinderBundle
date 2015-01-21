@@ -25,12 +25,23 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fm_elfinder');
 
         $rootNode
+            ->fixXmlConfig('instance')
             ->children()
                 ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
                     ->prototype('array')
+                        ->beforeNormalization()
+                            ->ifTrue(function ($v) { return isset($v['enableUserIntegration']); })
+                            ->then(function ($v) {
+                                $v['enable_user_integration'] = $v['enableUserIntegration'];
+                                unset($v['enableUserIntegration']);
+
+                                return $v;
+                            })
+                        ->end()
                         ->children()
                             ->scalarNode('locale')->defaultNull()->end()
                             ->scalarNode('editor')->defaultValue('simple')->end()
@@ -38,10 +49,11 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('fullscreen')->defaultTrue()->end()
                             ->booleanNode('include_assets')->defaultTrue()->end()
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
-                            ->booleanNode('enableUserIntegration')->defaultFalse()->end()
+                            ->booleanNode('enable_user_integration')->defaultFalse()->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
                             ->arrayNode('connector')
                                 ->addDefaultsIfNotSet()
+                                ->fixXmlConfig('root')
                                 ->children()
                                     ->booleanNode('debug')->defaultFalse()->end()
                                     ->append($this->createBindNode())
@@ -49,15 +61,17 @@ class Configuration implements ConfigurationInterface
                                     ->arrayNode('roots')
                                         ->isRequired()
                                         ->requiresAtLeastOneElement()
+                                        ->useAttributeAsKey('name')
                                         ->prototype('array')
                                             ->children()
                                                 ->scalarNode('driver')
                                                     ->isRequired()
-                                                    ->defaultValue('LocalFileSystem')->end()
+                                                    ->defaultValue('LocalFileSystem')
+                                                ->end() // driver
                                                 ->arrayNode('disabled')
                                                     ->prototype('scalar')->end()
                                                     ->defaultValue(array())
-                                                ->end()
+                                                ->end() // disabled
                                                 ->scalarNode('path')->defaultValue('')->end()
                                                 ->scalarNode('url')->end()
                                                 ->append($this->createPluginsNode())
@@ -66,13 +80,25 @@ class Configuration implements ConfigurationInterface
                                                 ->integerNode('treeDeep')->defaultValue(0)->end()
                                                 ->scalarNode('accessControl')->defaultNull()->end()
                                                 ->arrayNode('upload_allow')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
                                                     ->prototype('scalar')->end()
                                                     ->defaultValue(array('image'))
-                                                ->end()
+                                                ->end() // upload_allow
                                                 ->arrayNode('upload_deny')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
                                                     ->prototype('scalar')->end()
                                                     ->defaultValue(array('all'))
-                                                ->end()
+                                                ->end() // upload_deny
                                                 ->scalarNode('upload_max_size')->defaultValue('2M')->end()
                                                 ->arrayNode('dropbox_settings')
                                                     ->canBeEnabled()
@@ -84,7 +110,7 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('dropboxUid')->end()
                                                         ->scalarNode('metaCachePath')->end()
                                                     ->end()
-                                                ->end()
+                                                ->end() // dropbox_settings
                                                 ->arrayNode('ftp_settings')
                                                     ->canBeEnabled()
                                                     ->children()
@@ -93,7 +119,7 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('password')->end()
                                                         ->scalarNode('path')->end()
                                                     ->end()
-                                                ->end()
+                                                ->end() // ftp_settings
                                                 ->arrayNode('s3_settings')
                                                     ->canBeEnabled()
                                                     ->children()
@@ -102,13 +128,16 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('bucket')->end()
                                                         ->scalarNode('tmpPath')->end()
                                                     ->end()
-                                                ->end()
+                                                ->end() // s3_settings
                                             ->end()
                                         ->end()
-                                    ->end()
+                                    ->end() // roots
                                 ->end()
-                            ->end()
-                ->end();
+                            ->end() // connector
+                        ->end()
+                    ->end()
+                ->end() // instances
+            ->end();
 
         return $treeBuilder;
     }
@@ -118,12 +147,13 @@ class Configuration implements ConfigurationInterface
      */
     private function createPluginsNode()
     {
-        return $this->createNode('plugin')
-            ->useAttributeAsKey('name')
-                ->prototype('array')
+        return $this
+            ->createNode('plugin')
                 ->useAttributeAsKey('name')
-                ->prototype('variable')->end()
-            ->end();
+                ->prototype('array')
+                    ->useAttributeAsKey('name')
+                    ->prototype('variable')->end()
+                ->end();
     }
 
     /**
@@ -131,12 +161,13 @@ class Configuration implements ConfigurationInterface
      */
     private function createBindNode()
     {
-        return $this->createNode('bind')
-            ->useAttributeAsKey('name')
-                ->prototype('array')
+        return $this
+            ->createNode('bind')
                 ->useAttributeAsKey('name')
-                ->prototype('variable')->end()
-            ->end();
+                ->prototype('array')
+                    ->useAttributeAsKey('name')
+                    ->prototype('variable')->end()
+                ->end();
     }
 
     /**

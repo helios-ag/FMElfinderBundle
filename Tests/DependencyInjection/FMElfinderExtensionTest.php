@@ -33,7 +33,6 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->container = new ContainerBuilder();
         $loader = new FMElfinderExtension();
         $loader->load(array($this->getMinimalConfiguration()), $this->container);
-        $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 
     protected function getMinimalConfiguration()

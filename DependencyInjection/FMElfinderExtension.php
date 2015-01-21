@@ -29,4 +29,9 @@ class FMElfinderExtension extends Extension
         $container->setParameter('fm_elfinder', $config);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
     }
+
+    public function getNamespace()
+    {
+        return 'http://helios-ag.github.io/schema/dic/fm_elfinder';
+    }
 }
