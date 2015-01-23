@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:fm-elfinder="http://helios-ag.github.io/schema/dic/fm_elfinder"
+>
+    <fm-elfinder:config configuration-provider="app.configurator.custom">
+        <fm-elfinder:instance name="default"
+            locale="en"
+            editor="tinymce"
+            editor-template="Elfinder/editor.html.twig"
+            fullscreen="false"
+            include-assets="false"
+            tinymce-popup-path="/pop-up"
+            enable-user-integration="true"
+            relative-path="false"
+        >
+            <fm-elfinder:connector debug="true">
+                <fm-elfinder:root name="uploads"
+                    driver="LocalFileSystem"
+                    path="uploads"
+                    showhidden="true"
+                    alias="foo"
+                    treeDeep="1"
+                    accessControl="ROLE_ADMIN"
+                    upload-allow="image/png, image/jpg, image/jpeg"
+                    upload-deny="all"
+                    upload-max-size="2M"
+                >
+                    <fm-elfinder:dropbox-settings
+                        consumerKey="some_consumer"
+                        consumerSecret="con$umer"
+                    />
+
+                    <fm-elfinder:ftp-settings
+                        host="127.0.0.1"
+                        user="root"
+                    />
+                </fm-elfinder:root>
+            </fm-elfinder:connector>
+        </fm-elfinder:instance>
+    </fm-elfinder:config>
+</container>
