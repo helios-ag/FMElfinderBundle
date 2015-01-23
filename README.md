@@ -338,9 +338,11 @@ Note that instance name should be the same as configured in elfinder bundle
 
 $form = $this->createFormBuilder()
             ->add('content', 'ckeditor', array(
-                'filebrowser_image_browse_url' => array(
-                    'route'            => 'elfinder',
-                    'route_parameters' => array('instance' => 'ckeditor'),
+                'config' => array(
+                    'filebrowser_image_browse_url' => array(
+                        'route'            => 'elfinder',
+                        'route_parameters' => array('instance' => 'ckeditor'),
+                    ),
                 ),
             ))
             ->getForm()
