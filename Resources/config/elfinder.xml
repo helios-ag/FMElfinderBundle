@@ -14,7 +14,7 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="service_container"/>
         </service>
-        <service id="fm_elfinder.loader" class="FM\ElfinderBundle\Loader\ElFinderLoader">
+        <service id="fm_elfinder.loader.default" class="%fm_elfinder.loader%">
             <argument type="service" id="fm_elfinder.configurator"/>
         </service>
         <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">

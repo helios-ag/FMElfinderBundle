@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
+                ->scalarNode('loader')->defaultValue('fm_elfinder.loader.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
@@ -54,7 +55,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('driver')
                                                     ->isRequired()
                                                     ->defaultValue('LocalFileSystem')->end()
-                                                ->arrayNode('disabled')
+                                                ->arrayNode('disabled_commands')
                                                     ->prototype('scalar')->end()
                                                     ->defaultValue(array())
                                                 ->end()
