@@ -40,9 +40,9 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
     {
-        $this->parameters = $parameters;
+        $this->parameters   = $parameters;
         $this->requestStack = $requestStack;
-        $this->container = $container;
+        $this->container    = $container;
     }
 
     /**
@@ -68,7 +68,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $driverOptions = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,
-                'disabled'      => $parameter['disabled'],
+                'disabled'      => $parameter['disabled_commands'],
                 'plugin'        => $parameter['plugin'],
                 'path'          => $path . '/',
                 'URL'           => isset($parameter['url']) && $parameter['url']
@@ -76,12 +76,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                             ? $parameter['url']
                             : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
                         : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
-                'accessControl' => array($this, 'access'),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
                 'uploadMaxSize' => $parameter['upload_max_size']
             );
-
+            if(!$parameter['showhidden']) {
+                $driverOptions['accessControl'] = array($this, 'access');
+            };
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
         }
 
@@ -110,18 +111,18 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['path'] = $parameter['ftp_settings']['path'];
                 break;
             case "dropbox":
-                $settings['consumerKey'] = $parameter['dropbox_settings']['consumerKey'];
-                $settings['consumerSecret'] = $parameter['dropbox_settings']['consumerSecret'];
-                $settings['accessToken'] = $parameter['dropbox_settings']['accessToken'];
+                $settings['consumerKey']       = $parameter['dropbox_settings']['consumerKey'];
+                $settings['consumerSecret']    = $parameter['dropbox_settings']['consumerSecret'];
+                $settings['accessToken']       = $parameter['dropbox_settings']['accessToken'];
                 $settings['accessTokenSecret'] = $parameter['dropbox_settings']['accessTokenSecret'];
-                $settings['dropboxUid'] = $parameter['dropbox_settings']['dropboxUid'];
-                $settings['metaCachePath'] = $parameter['dropbox_settings']['metaCachePath'];
+                $settings['dropboxUid']        = $parameter['dropbox_settings']['dropboxUid'];
+                $settings['metaCachePath']     = $parameter['dropbox_settings']['metaCachePath'];
                 break;
             case "s3":
                 $settings['accesskey'] = $parameter['s3_settings']['accesskey'];
                 $settings['secretkey'] = $parameter['s3_settings']['secretkey'];
-                $settings['bucket'] = $parameter['s3_settings']['bucket'];
-                $settings['tmpPath'] = $parameter['s3_settings']['tmpPath'];
+                $settings['bucket']    = $parameter['s3_settings']['bucket'];
+                $settings['tmpPath']   = $parameter['s3_settings']['tmpPath'];
                 break;
             default:
                 break;
