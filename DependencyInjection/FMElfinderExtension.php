@@ -28,5 +28,6 @@ class FMElfinderExtension extends Extension
         $loader->load('form.xml');
         $container->setParameter('fm_elfinder', $config);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
+        $container->setAlias('fm_elfinder.loader', $config['loader']);
     }
 }
