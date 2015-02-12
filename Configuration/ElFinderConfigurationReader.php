@@ -55,6 +55,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $efParameters = $this->parameters;
         $parameters = $efParameters['instances'][$instance];
         $options = array();
+        $options['corsSupport'] = $parameters['cors_support'];
         $options['debug'] = $parameters['connector']['debug'];
         $options['bind'] =  $parameters['connector']['bind'];
         $options['plugin'] =  $parameters['connector']['plugin'];

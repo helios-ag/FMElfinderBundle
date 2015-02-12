@@ -50,12 +50,18 @@ class ElFinderLoader
     /**
      * Starts ElFinder
      * @var $instance string
+     * @return void/array
      */
     public function load($instance)
     {
         $this->setInstance($instance);
-        $connector = new ElFinderConnector(new ElFinderBridge($this->configure()));
-        $connector->run();
+        $config = $this->configure();
+        $connector = new ElFinderConnector(new ElFinderBridge($config));
+        if ($config['corsSupport']) {
+            return $connector->run();
+        } else {
+            $connector->runAndExit();
+        }
     }
 
     /**

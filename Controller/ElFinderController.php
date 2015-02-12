@@ -4,6 +4,7 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -115,12 +116,12 @@ class ElFinderController extends Controller
     /**
      * Loader service init
      * @param string $instance
-     *
+     * @return JsonResponse/void
      */
     public function loadAction($instance)
     {
         $loader = $this->container->get('fm_elfinder.loader');
-        $loader->load($instance);
+        return new JsonResponse($loader->load($instance));
     }
 
     /**
