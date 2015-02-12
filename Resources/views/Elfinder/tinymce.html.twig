@@ -43,7 +43,7 @@
     $().ready(function() {
 
         var f = $('.elfinder').elfinder({
-            url : '{{ path('ef_connect', {'instance': instance }) }}',
+            url : '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',
             lang : '{{ locale }}',
             getfile : {
                 onlyURL : true,

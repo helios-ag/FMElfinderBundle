@@ -12,7 +12,7 @@
 <script type="text/javascript" charset="utf-8">
     $().ready(function() {
         var $f = $('.elfinder').elfinder({
-            url : '{{path('ef_connect', { 'instance': instance } )}}',
+            url : '{{path('ef_connect', { 'instance': instance, 'homeFolder': homeFolder } )}}',
             lang : '{{locale}}',
             getFileCallback: function(file) {
                 {% if relative_path %}
