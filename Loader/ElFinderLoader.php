@@ -58,9 +58,9 @@ class ElFinderLoader
         $config = $this->configure();
         $connector = new ElFinderConnector(new ElFinderBridge($config));
         if ($config['corsSupport']) {
-            return $connector->run();
+            return $connector->execute();
         } else {
-            $connector->runAndExit();
+            $connector->run();
         }
     }
 
