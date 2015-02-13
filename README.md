@@ -28,7 +28,9 @@ Recommended bundles to use with:
     - [Step 5: Install assets](#step-5-install-assets)
   - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
+    - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
   - [Plugins support](#plugins-support)
+  - [CORS support](#cors-support)
   - [Configuring symfony service as a volumeDriver](#configuring-symfony-service-as-a-volumedriver)
   - [Elfinder Form Type](#elfinder-form-type)
   - [Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)](#using-elfinder-with-ckeditorbundlehttpsgithubcomtrsteel88trsteelckeditorbundle)
@@ -148,21 +150,17 @@ fm_elfinder:
                     uploads:
                         showhidden: false # defaults to false
                         driver: LocalFileSystem
-                        path: uploads # root path. You can add a home path (e.g. for multiple users) in the URL used to access this instance.
+                        path: uploads
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                         upload_deny: ['all']
                         upload_max_size: 2M
 ```
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
- You can also define a home folder for this instance's root path when accessing the instance : `elfinder/{instance}/{homeFolder} or efconnect/{instance}/{homeFolder}` (defaults empty).
- This allows you to use multiple root folders (e.g. for multiple users) with only one instance setting :
- Bob's home : `elfinder/{instance}/{homeFolder}`
- Alice's home : `elfinder/{instance}/{homeFolder}`
- Make sure to set proper write/read permissions on home folders.
 * url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, appened with the value of the 'path' parameter
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
+* cors_support - allows cross domain responses handling (default false)
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
  "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" and "custom". 
  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
@@ -178,6 +176,25 @@ fm_elfinder:
     * upload_deny: ['all'] 
     * upload_max_size: 2M 
     
+### Use multiple upload folder by instance
+You can set multiple upload root folder by instance configuration.
+
+If you have configured your instance with `/uploads` path, you can provide
+an additional folder as a home folder (e.g. for a multi-users application) when accessing to the instance URL :
+
+`/elfinder/{instance}/{homeFolder}` or `/efconnect/{instance}/{homeFolder}`
+
+For example, accessing to `/elfinder/acmeInstance/bob` URL will open up elfinder with
+`/uploads/bob` as root directory which only contains Bob's files.
+
+Then, accessing to `/elfinder/acmeInstance/alice` URL will re-use your instance,
+but open up elfinder with `/uploads/alice` folder as root directory, containing only Alice's files.
+
+To use this feature, you **must** provide the instance name in the URL,
+and of course be sure to set proper write/read permissions on home folders.
+
+**Note:** this feature is only available with `LocalFileSystem` driver.
+
 ## Plugins support
 
 ElFinder comes with few plugins, like auto-resize, which can be enabled, by the following configuration:
@@ -242,6 +259,42 @@ fm_elfinder:
 ```                     
 
 ElFinder comes with other plugins, check it Plugins folder for more information.
+
+
+## CORS support
+If you want to access to the connector URL from an other domain on the client side,
+simply configure FMElFindle bundle as you used to, and add the `cors_support: true` option to the cross domain instance:
+```yaml
+# app/config/config.yml
+fm_elfinder:
+    instances:
+        default:
+            locale: %locale% # defaults to current request locale
+            cors_support: true # allows cross domain responses handling (default false)
+            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
+            # ...
+```
+Then you have to add the CORS headers (`Access-Control-Allow-Origin`) to the response.
+It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) : 
+```yaml
+# app/config/config.yml
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+    paths:
+        '^/efconnect':
+            allow_origin: ['*']
+            allow_headers: ['X-Custom-Auth', 'Content-Type', 'X-Requested-With']
+            allow_methods: ['POST', 'GET', 'PATCH', 'PUT', 'DELETE']
+            max_age: 3600
+            allow_credentials: true
+```
 
 ## Configuring symfony service as a volumeDriver
 volumeDriver can be declared as Symfony service
