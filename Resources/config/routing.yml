@@ -1,6 +1,6 @@
 ef_connect:
-    path:  /efconnect/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default }
+    path:  /efconnect/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:load, instance: default, homeFolder: '' }
 elfinder:
-    path: /elfinder/{instance}
-    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default }
+    path: /elfinder/{instance}/{homeFolder}
+    defaults: { _controller: FMElfinderBundle:ElFinder:show, instance: default, homeFolder: '' }

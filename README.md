@@ -134,7 +134,7 @@ app/console assets:install web
 
 ### Add configuration options to your config.yml
 
-```
+```yaml
 fm_elfinder:
     instances:
         default:
@@ -148,13 +148,18 @@ fm_elfinder:
                     uploads:
                         showhidden: false # defaults to false
                         driver: LocalFileSystem
-                        path: uploads
+                        path: uploads # root path. You can add a home path (e.g. for multiple users) in the URL used to access this instance.
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                         upload_deny: ['all']
                         upload_max_size: 2M
 ```
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
+ You can also define a home folder for this instance's root path when accessing the instance : `elfinder/{instance}/{homeFolder} or efconnect/{instance}/{homeFolder}` (defaults empty).
+ This allows you to use multiple root folders (e.g. for multiple users) with only one instance setting :
+ Bob's home : `elfinder/{instance}/{homeFolder}`
+ Alice's home : `elfinder/{instance}/{homeFolder}`
+ Make sure to set proper write/read permissions on home folders.
 * url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, appened with the value of the 'path' parameter
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale

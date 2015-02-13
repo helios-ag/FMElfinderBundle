@@ -26,7 +26,7 @@
     $(document).ready(function() {
         var elf = $('.elfinder').elfinder({
             // set your elFinder options here
-            url: '{{ path('ef_connect', {'instance': instance}) }}',  // connector URL
+            url: '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',  // connector URL
             lang : '{{ locale }}',
             getFileCallback: function(file) { // editor callback
                 {% if relative_path %}

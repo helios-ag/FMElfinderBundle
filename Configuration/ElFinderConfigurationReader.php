@@ -63,6 +63,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path = $parameter['path'];
+            $homeFolder = $request->attributes->get('homeFolder');
+            if ($homeFolder !== '') {
+                $homeFolder .= '/';
+            }
 
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
@@ -71,12 +75,12 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'service'       => $driver,
                 'disabled'      => $parameter['disabled_commands'],
                 'plugin'        => $parameter['plugin'],
-                'path'          => $path . '/',
+                'path'          => $path . '/' . $homeFolder,
                 'URL'           => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
                             ? $parameter['url']
-                            : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'])
-                        : sprintf('%s://%s%s/%s/', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path),
+                            : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
+                        : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder),
                 'uploadAllow'   => $parameter['upload_allow'],
                 'uploadDeny'    => $parameter['upload_deny'],
                 'uploadMaxSize' => $parameter['upload_max_size']

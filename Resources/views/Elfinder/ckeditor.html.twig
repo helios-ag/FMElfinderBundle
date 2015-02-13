@@ -22,7 +22,7 @@
         var mode = getUrlParam('mode');
 
         var f = $('.elfinder').elfinder({
-            url : '{{path('ef_connect', {'instance': instance })}}'+'?mode='+mode,
+            url : '{{path('ef_connect', {'instance': instance, 'homeFolder': homeFolder })}}'+'?mode='+mode,
             lang : '{{locale}}',
             getFileCallback : function(file) {
                 if (funcNum) {
