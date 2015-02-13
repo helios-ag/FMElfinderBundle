@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->children()
                             ->scalarNode('locale')->defaultNull()->end()
+                            ->booleanNode('cors_support')->defaultFalse()->end()
                             ->scalarNode('editor')->defaultValue('simple')->end()
                             ->scalarNode('editor_template')->defaultNull()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
