@@ -20,28 +20,28 @@ Recommended bundles to use with:
 * [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
 
 
-  - [Installation](#installation)
+- [Installation](#installation)
     - [Step 1: Installation](#step-1-installation)
     - [Step 2: Enable the bundle](#step-2-enable-the-bundle)
     - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
-    - [Step 4: Configure your application's security.yml](#step-4-configure-your-applications-securityyml)
+    - [Step 4: Securing paths](#step-4-configure-your-applications-securityyml)
     - [Step 5: Install assets](#step-5-install-assets)
-  - [Basic configuration](#basic-configuration)
+- [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
     - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
-  - [Plugins support](#plugins-support)
-  - [CORS support](#cors-support)
-  - [Configuring symfony service as a volumeDriver](#configuring-symfony-service-as-a-volumedriver)
-  - [Elfinder Form Type](#elfinder-form-type)
-  - [Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)](#using-elfinder-with-ckeditorbundlehttpsgithubcomtrsteel88trsteelckeditorbundle)
-    - [Step 1: Installation:](#step-1-installation)
-    - [Step 2: Configure CKEditor setting via settings.yml or through form builder:](#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
-  - [Using ElFinder with TinyMCE](#using-elfinder-with-tinymce)
-    - [Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)](#using-elfinderbundle-with-tinymcebundlehttpsgithubcomstfalcontinymcebundle)
-    - [Configuration](#configuration)
-    - [Integration with TinyMCE 4.x](#integration-with-tinymce-4x)
-- [Custom configuration provider](#custom-configuration-provider)
-- [Custom loader](#custom-loader)
+- [CORS support](#cors-support)
+- [Elfinder Form Type](#elfinder-form-type)
+- [CKEditor integration](#ckeditor-integration)
+    - [Installation](#step-1-installation)
+    - [Configuration](#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
+- [TinyMCE integration](#tinymce-integration)
+    - [Integration with TinyMCE 3](#tinymce-3x)
+    - [Integration with TinyMCE 4](#tinymce-4x)
+- [Advanced configuration](#advanced-configuration)    
+    - [Custom configuration provider](#custom-configuration-provider)
+    - [Custom loader](#custom-loader)
+    - [Plugins support](#plugins-support)
+    - [Service as volume driver](#symfony-service-as-a-volume-driver)
 - [Changelog](#changelog)
 
 ## Installation
@@ -141,7 +141,7 @@ fm_elfinder:
     instances:
         default:
             locale: %locale% # defaults to current request locale
-            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
+            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
@@ -157,20 +157,19 @@ fm_elfinder:
 ```
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
-* url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, appened with the value of the 'path' parameter
+* url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
 * driver - can be LocalFileSystem, FTP or MySQL2, currently supported only LocalFileSystem, default is LocalFileSystem
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * cors_support - allows cross domain responses handling (default false)
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" and "custom". 
+ "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" for standalone and "custom". 
  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
- "simple" can be used as standalone filebrowser for managing and uploading files.
-* editor_template - define template to renderer editor is set to "custom".
-* showhidden - hides directories starting with . (dot)
-* connector - root node for defining options for elfinder root directiories and debug option
+* editor_template - define template to render editor is set to "custom".
+* connector - root node for defining options for elfinder root directories.
 * roots - define "virtual directories" that reflect directories in your project. 
-    * showhidden - show files and folders that starts from . (dot)
+    * show_hidden - show files and folders that starts from . (dot)
     * driver - driver type, LocalFileSystem, Dropbox, FTP 
+    * alias - directory alias
     * path - directory that contains files
     * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
     * upload_deny: ['all'] 
@@ -195,7 +194,253 @@ and of course be sure to set proper write/read permissions on home folders.
 
 **Note:** this feature is only available with `LocalFileSystem` driver.
 
-## Plugins support
+## CORS support
+If you want to access to the connector URL from an other domain on the client side,
+simply configure FMElFinder bundle as you used to, and add the `cors_support: true` option to the cross domain instance:
+```yaml
+# app/config/config.yml
+fm_elfinder:
+    instances:
+        default:
+            locale: %locale% # defaults to current request locale
+            cors_support: true # allows cross domain responses handling (default false)
+            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
+            # ...
+```
+Then you have to add the CORS headers (`Access-Control-Allow-Origin`) to the response.
+It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) : 
+```yaml
+# app/config/config.yml
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: []
+        allow_headers: []
+        allow_methods: []
+        expose_headers: []
+        max_age: 0
+        hosts: []
+    paths:
+        '^/efconnect':
+            allow_origin: ['*']
+            allow_headers: ['X-Custom-Auth', 'Content-Type', 'X-Requested-With']
+            allow_methods: ['POST', 'GET', 'PATCH', 'PUT', 'DELETE']
+            max_age: 3600
+            allow_credentials: true
+```
+
+## Elfinder Form Type
+
+Since version 2.1 of the bundle, bundle come with custom form type, that is simple <input type="text"/> , that provide
+elfinder callback (opens Elfinder window), configuration for this form type is simple
+First, define instance with editor set to "form":
+```
+fm_elfinder:
+    instances:
+        form:
+            locale: %locale% # defaults to current request locale
+            editor: form # other choices are tinymce or simple, and form
+            showhidden: false # defaults to false
+            fullscreen: true # defaults true, applies to simple and ckeditor editors
+            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+            compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
+            connector:
+                debug: false # defaults to false
+                roots:       # at least one root must be defined
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 2M
+```
+
+On second step, add to your form builder (or form class), elfinder type, and pass instance and `enable` parameters:
+
+```php
+$form = $this->createFormBuilder()
+    ->add('elfinder','elfinder', array('instance'=>'form', 'enable'=>true))
+    ->getForm();
+```
+
+Render form with twig as usual:
+```jinja
+<form action="" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <input type="submit" />
+    </form>
+```
+
+## CKEditor integration
+
+Mostly filebrowsers used with WYSIWYG editors to upload images and other files. There are two bundles to work with CKEditor
+available: [TrsteelCKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle) and [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle)
+Both will work with this bundle.
+
+**Step 1: Installation**
+
+Install both bundles according README files
+
+**Step 2: Configure CKEditor setting via settings.yml or through form builder:**
+
+```yaml
+trsteel_ckeditor:
+    ...
+    filebrowser_image_browse_url:
+        route: elfinder
+        route_parameters:
+             instance: ckeditor
+```
+
+or if you prefer Ivory CKEditor Bundle
+
+```yaml
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowseRouteParameters:
+                instance: ckeditor
+
+```
+
+Note that instance name should be the same as configured in elfinder bundle
+
+```php
+
+<?php
+// applies to Ivory CKEditor Bundle
+$form = $this->createFormBuilder()
+            ->add('content', 'ckeditor', array(
+                'config' => array(
+                    'filebrowser_image_browse_url' => array(
+                        'route'            => 'elfinder',
+                        'route_parameters' => array('instance' => 'ckeditor'),
+                    ),
+                ),
+            ))
+            ->getForm()
+;
+```
+
+ElFinder will be available under Insert Image dialog
+
+## TinyMCE integration
+
+You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
+Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
+
+How to use ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
+
+### TinyMCE 3.x
+Instruction for version 0.2.1 (TinyMCE 3.x)
+Download bundles, configure, dump and install assets as written in installation steps
+
+**Configuration**
+
+Update the editor property in your app/config.yml
+Set TinyMce popup path:
+```yaml
+fm_elfinder:
+    editor: tinymce
+    tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"
+```
+Under tinymce configuration node, theme configuration, add:
+file_browser_callback : 'elFinderBrowser'
+
+```yaml
+stfalcon_tinymce:
+    theme:
+        simple:
+            file_browser_callback : 'elFinderBrowser'
+```
+
+after (  {{ tinymce_init() }} ) function call
+place ElfinderBundle's function:
+ 
+```jinja
+{{ elfinder_tinymce_init('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'}) }}
+```
+
+as shown below
+
+```jinja
+{{ tinymce_init() }}
+{{ elfinder_tinymce_init('instance_name') }}
+```
+
+instance_name is an instance of elfinder's configuration
+
+### TinyMCE 4.x
+
+Update the editor property in your app/config.yml
+
+```yaml
+ fm_elfinder:
+     editor: tinymce4
+```
+
+Under tinymce configuration node, theme configuration, add:
+file_browser_callback : elFinderBrowser
+
+```yaml
+stfalcon_tinymce:
+     theme:
+         simple:
+             file_browser_callback : elFinderBrowser
+```
+
+before (  {{ tinymce_init() }} ) function call (order is important)
+place ElfinderBundle's function: 
+{{ elfinder_tinymce_init4('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'} ) }}
+as shown below
+
+```jinja
+     {{ elfinder_tinymce_init4('instance_name') }}
+     {{ tinymce_init() }}
+```
+
+instance_name is instance of elfinder's configuration
+
+# Advanced configuration
+
+## Custom configuration provider
+
+ElFinder bundle allows to override his configuration provider service:
+
+```yaml
+fm_elfinder:
+    configuration_provider: elfinder.configurator
+```
+where 'elfinder.configurator' is default ElFinder's bundle service to read configuration from DIC
+
+To override service, simply define your own service:
+```yaml
+services:
+    my_elfinder_configurator:
+        class:        Acme\DemoBundle\MyElfinderConfigurator
+        arguments:    ["%my_arguments%"]
+```
+
+Configuration class must implement  ElFinderConfigurationProviderInterface
+
+method getConfiguration($instance) should return array of parameters compatible with ElFinder bundle configuration
+
+## Custom loader
+
+It is possible to override loader service with your own class:
+
+```yaml
+services:
+    my_loader:
+        class:        AppBundle\Service\MyElFinderLoader
+        arguments:    [@fm_elfinder.configurator]
+        
+fm_elfinder:
+  loader: my_loader
+```
+## Plugins
 
 ElFinder comes with few plugins, like auto-resize, which can be enabled, by the following configuration:
 
@@ -258,45 +503,10 @@ fm_elfinder:
                   upload_max_size: 2M
 ```                     
 
-ElFinder comes with other plugins, check it Plugins folder for more information.
+ElFinder comes with other plugins, check Plugins folder under ElFinderPHP for more information.
+ 
+## Symfony service as a volume driver
 
-
-## CORS support
-If you want to access to the connector URL from an other domain on the client side,
-simply configure FMElFindle bundle as you used to, and add the `cors_support: true` option to the cross domain instance:
-```yaml
-# app/config/config.yml
-fm_elfinder:
-    instances:
-        default:
-            locale: %locale% # defaults to current request locale
-            cors_support: true # allows cross domain responses handling (default false)
-            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
-            # ...
-```
-Then you have to add the CORS headers (`Access-Control-Allow-Origin`) to the response.
-It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) : 
-```yaml
-# app/config/config.yml
-nelmio_cors:
-    defaults:
-        allow_credentials: false
-        allow_origin: []
-        allow_headers: []
-        allow_methods: []
-        expose_headers: []
-        max_age: 0
-        hosts: []
-    paths:
-        '^/efconnect':
-            allow_origin: ['*']
-            allow_headers: ['X-Custom-Auth', 'Content-Type', 'X-Requested-With']
-            allow_methods: ['POST', 'GET', 'PATCH', 'PUT', 'DELETE']
-            max_age: 3600
-            allow_credentials: true
-```
-
-## Configuring symfony service as a volumeDriver
 volumeDriver can be declared as Symfony service
 The service should however be an instance of the FM\ElFinderPHP\Driver\ElFinderVolumeDriver class. This check is to
 ensure the service is a valid ElFinder VolumeDriver.
@@ -318,223 +528,12 @@ This means that if you add the service definition:
 <service id="elfinder.driver.filesystem" class="FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem" />
 ```
 
-## Elfinder Form Type
+# Changelog
 
-Since version 2.1 of the bundle, bundle come with custom form type, that is simple <input type="text"/> , that provide
-elfinder callback (opens Elfinder window), configuration for this form type is simple
-First, define instance with editor setted to "form":
-```
-fm_elfinder:
-    instances:
-        form:
-            locale: %locale% # defaults to current request locale
-            editor: form # other choices are tinymce or simple, and form
-            showhidden: false # defaults to false
-            fullscreen: true # defaults true, applies to simple and ckeditor editors
-            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
-            compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
-            connector:
-                debug: false # defaults to false
-                roots:       # at least one root must be defined
-                    uploads:
-                        driver: LocalFileSystem
-                        path: uploads
-                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                        upload_deny: ['all']
-                        upload_max_size: 2M
-```
-
-On second step, add to your form builder (or form class), elfinder type, and pass instance and enable parameters:
-
-```php
-$form = $this->createFormBuilder()
-    ->add('elfinder','elfinder', array('instance'=>'form', 'enable'=>true))
-    ->getForm();
-```
-
-Render form with twig as usual:
-```jinja
-<form action="" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-        <input type="submit" />
-    </form>
-```
-
-## Using ElFinder with [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
-
-Mostly filebrowsers used with WYSIWYG editors to upload images and other files. The example above will show how to
-configure [CKEditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle) by Trsteel to work with ElFinder
-through [FMElFinderBundle](https://github.com/helios-ag/FMElFinderBundle)
-Also take a view to @egeloen [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle), which includes
-[configuration guide](https://github.com/egeloen/IvoryCKEditorBundle/blob/master/Resources/doc/file_browse_upload.md) for both bundles
-
-### Step 1: Installation:
-
-Install both bundles according README files
-
-### Step 2: Configure CKEditor setting via settings.yml or through form builder:
-
-```yml
-trsteel_ckeditor:
-    ...
-    filebrowser_image_browse_url:
-        route: elfinder
-        route_parameters:
-             instance: ckeditor
-```
-
-or if you prefer Ivory CKEditor Bundle
-
-```yml
-ivory_ck_editor:
-    default_config: default
-    configs:
-        default:
-            filebrowserBrowseRoute: elfinder
-            filebrowserBrowseRouteParameters:
-                instance: ckeditor
-
-```
-
-Note that instance name should be the same as configured in elfinder bundle
-
-```php
-
-<?php
-// applies to Ivory CKEditor Bundle
-$form = $this->createFormBuilder()
-            ->add('content', 'ckeditor', array(
-                'config' => array(
-                    'filebrowser_image_browse_url' => array(
-                        'route'            => 'elfinder',
-                        'route_parameters' => array('instance' => 'ckeditor'),
-                    ),
-                ),
-            ))
-            ->getForm()
-;
-```
-
-ElFinder will be available under Insert Image dialog
-
-## Using ElFinder with TinyMCE
-
-You can integrate TinyMCE byself or use Bundles that already add TinyMCE functionality to your Symfony project.
-Below instruction how to integrate [FMElfinderBundle](https://github.com/helios-ag/FMElfinderBundle) with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-
-### Using ElfinderBundle with [TinyMCEBundle](https://github.com/stfalcon/TinymceBundle)
-Instruction for bundle version 0.2.1 (TinyMCE 3.x), instruction for TinyMCE 4.x, you can find at the end of this
-document.
-Download both bundles, configure, dump and install assets as written in installation steps
-
-### Configuration
-
-Update the editor property in your app/config.yml
-Set TinyMce popup path:
-```yaml
-fm_elfinder:
-    editor: tinymce
-    tinymce_popup_path: "asset[bundles/stfalcontinymce/vendor/tiny_mce/tiny_mce_popup.js]"
-```
-Under tinymce configuration node, theme configuration, add:
-file_browser_callback : 'elFinderBrowser'
-
-```yaml
-stfalcon_tinymce:
-    theme:
-        simple:
-            file_browser_callback : 'elFinderBrowser'
-```
-
-after (  {{ tinymce_init() }} ) function call
-place ElfinderBundle's function:
+### 4.0
+* CORS support
+* Flysystem driver support
  
-```jinja
-{{ elfinder_tinymce_init('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'}) }}
-```
-
-as shown below
-
-```jinja
-{{ tinymce_init() }}
-{{ elfinder_tinymce_init('instance_name') }}
-```
-
-instance_name is an instance of elfinder's configuration
-
-### Integration with TinyMCE 4.x
-
-Update the editor property in your app/config.yml
-
-```yaml
- fm_elfinder:
-     editor: tinymce4
-```
-
-Under tinymce configuration node, theme configuration, add:
- file_browser_callback : elFinderBrowser
-
-```yaml
-stfalcon_tinymce:
-     theme:
-         simple:
-             file_browser_callback : elFinderBrowser
-```
-
-before (  {{ tinymce_init() }} ) function call (order is important)
-place ElfinderBundle's function: 
-{{ elfinder_tinymce_init4('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'} ) }}
-as shown below
-
-```jinja
-     {{ elfinder_tinymce_init4('instance_name') }}
-     {{ tinymce_init() }}
-```
-
-instance_name is instance of elfinder's configuration
-
-That's all, Elfinder is configured to work with TinyMCE editor.
-
-#Custom configuration provider
-
-ElFinder bundle allows to override his configuration provider service:
-
-```yaml
-fm_elfinder:
-    configuration_provider: elfinder.configurator
-```
-where 'elfinder.configurator' is default ElFinder's bundle service to read configuration from DIC
-
-To override service, simply define your own service:
-```yaml
-services:
-    my_elfinder_configurator:
-        class:        Acme\DemoBundle\MyElfinderConfigurator
-        arguments:    ["%my_arguments%"]
-```
-
-Configuration class must implement  ElFinderConfigurationProviderInterface
-
-method getConfiguration($instance) should return array of parameters compatible with ElFinder bundle configuration
-
-#Custom loader
-
-It is possible to override loader service with your own class:
-
-```yaml
-services:
-    my_loader:
-        class:        AppBundle\Service\MyElFinderLoader
-        arguments:    [@fm_elfinder.configurator]
-        
-fm_elfinder:
-  loader: my_loader
-```
-
- 
-
-#Changelog
-
 ### 3.4
 * Custom template renderer
 

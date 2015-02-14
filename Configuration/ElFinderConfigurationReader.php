@@ -4,8 +4,20 @@ namespace FM\ElfinderBundle\Configuration;
 
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Adapter\Ftp;
+use League\Flysystem\Dropbox\DropboxAdapter;
+use League\Flysystem\Sftp\SftpAdapter;
+use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
+use League\Flysystem\AwsS3v3\AwsS3Adapter as AwsS3v3;
+
+use League\Flysystem\Copy\CopyAdapter;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use Aws\S3\S3Client;
+use Dropbox\Client;
+use Barracuda\Copy\API;
 
 /**
  * Class ElFinderConfigurationReader
@@ -65,17 +77,24 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $path = $parameter['path'];
             $homeFolder = $request->attributes->get('homeFolder');
             if ($homeFolder !== '') {
-                $homeFolder .= '/';
+                $homeFolder = '/'.$homeFolder.'/';
             }
-
+            if($parameter['flysystem']['enabled']) {
+                $adapter = $parameter['flysystem']['type']; // ftp ex.
+                $opt = $parameter['flysystem']['options'];
+                $filesystem  = $this->configureFlysystem($opt, $adapter);
+            }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
             $driverOptions = array(
                 'driver'        => $parameter['driver'],
                 'service'       => $driver,
+                'glideURL'      => $parameter['glide_url'],
+                'glideKey'      => $parameter['glide_key'],
                 'disabled'      => $parameter['disabled_commands'],
                 'plugin'        => $parameter['plugin'],
-                'path'          => $path . '/' . $homeFolder,
+                'alias'         => $parameter['alias'],
+                'path'          => $path . $homeFolder, //removed slash for Flysystem compatibility
                 'URL'           => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
                             ? $parameter['url']
@@ -85,13 +104,84 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'uploadDeny'    => $parameter['upload_deny'],
                 'uploadMaxSize' => $parameter['upload_max_size']
             );
-            if(!$parameter['showhidden']) {
+            if(!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
             };
+
+            if($parameter['driver'] == 'Flysystem') {
+                $driverOptions['filesystem'] = $filesystem;
+            }
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
         }
 
         return $options;
+    }
+
+    /**
+     * @param $opt
+     * @param $adapter
+     * @return Filesystem
+     */
+    private function configureFlysystem($opt, $adapter)
+    {
+        switch ($adapter) {
+            case 'local':
+                $filesystem = new Filesystem(new Local($opt['local']['path']));
+                break;
+            case 'ftp':
+                $settings = array(
+                    'host'     => $opt['ftp']['host'],
+                    'username' => $opt['ftp']['username'],
+                    'password' => $opt['ftp']['password'],
+
+                    /** optional config settings */
+                    'port'     => $opt['ftp']['port'],
+                    'root'     => $opt['ftp']['root'],
+                    'passive'  => $opt['ftp']['passive'],
+                    'ssl'      => $opt['ftp']['ssl'],
+                    'timeout'  => $opt['ftp']['timeout']
+                );
+                $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)): new Filesystem(new SftpAdapter($settings));
+                break;
+            case 'aws_s3_v2':
+                $client = S3Client::factory([
+                    'key'     => $opt['aws_s3_v2']['key'],
+                    'secret'  => $opt['aws_s3_v2']['secret'],
+                    'region'  => $opt['aws_s3_v2']['region']
+                ]);
+                $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
+                break;
+            case 'aws_s3_v3':
+                $client = S3Client::factory([
+                    'key'     => $opt['aws_s3_v3']['key'],
+                    'secret'  => $opt['aws_s3_v3']['secret'],
+                    'region'  => $opt['aws_s3_v3']['region'],
+                    'version' => $opt['aws_s3_v3']['version']
+                ]);
+                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
+                break;
+            case 'copy_com':
+                $client = new API(
+                    $opt['copy_com']['consumer_key'],
+                    $opt['copy_com']['consumer_secret'],
+                    $opt['copy_com']['access_token'],
+                    $opt['copy_com']['token_secret']
+                );
+                $filesystem = new Filesystem(new CopyAdapter($client, $opt['copy_com']['optional_prefix']));
+                break;
+            case 'gridfs':
+                $mongoClient = new MongoClient();
+                $gridFs = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
+                $filesystem = new Filesystem(new GridFSAdapter($gridFs));
+                break;
+            case 'zip':
+                $filesystem = new Filesystem(new ZipArchiveAdapter($opt['zip']['path']));
+                break;
+            case 'dropbox':
+                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'],$opt['dropbox']['app'])));
+                break;
+        }
+        return $filesystem;
     }
 
     /**

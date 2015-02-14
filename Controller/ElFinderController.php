@@ -34,11 +34,12 @@ class ElFinderController extends Controller
     }
 
     /**
-     * @param array  $parameters
+     * @param array $parameters
      * @param string $instance
      * @param string $homeFolder
      * @param null $formTypeId
      * @return array
+     * @throws Exception
      */
     private function selectEditor($parameters, $instance, $homeFolder, $formTypeId = null)
     {
@@ -99,23 +100,23 @@ class ElFinderController extends Controller
             case 'form':
                 $result['template'] = 'FMElfinderBundle:Elfinder:elfinder_type.html.twig';
                 $result['params'] = array(
-                    'locale' => $locale,
-                    'fullscreen' => $fullscreen,
+                    'locale'        => $locale,
+                    'fullscreen'    => $fullscreen,
                     'includeAssets' => $includeAssets,
-                    'instance' => $instance,
-                    'homeFolder' => $homeFolder,
-                    'id' => $formTypeId,
+                    'instance'      => $instance,
+                    'homeFolder'    => $homeFolder,
+                    'id'            => $formTypeId,
                     'relative_path' => $relativePath
                 );
                 return $result;
             default:
                 $result['template'] = 'FMElfinderBundle:Elfinder:simple.html.twig';
                 $result['params'] = array(
-                    'locale' => $locale,
-                    'fullscreen' => $fullscreen,
+                    'locale'        => $locale,
+                    'fullscreen'    => $fullscreen,
                     'includeAssets' => $includeAssets,
-                    'instance' => $instance,
-                    'homeFolder' => $homeFolder
+                    'instance'      => $instance,
+                    'homeFolder'    => $homeFolder
                 );
                 return $result;
         }
