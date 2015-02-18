@@ -42,6 +42,7 @@ Recommended bundles to use with:
     - [Custom loader](#custom-loader)
     - [Plugins support](#plugins-support)
     - [Service as volume driver](#symfony-service-as-a-volume-driver)
+    - [Flysystem configuration](#flysystem-configuration)
 - [Changelog](#changelog)
 
 ## Installation
@@ -60,6 +61,13 @@ Install legacy version of the bundle ([documentation](https://github.com/helios-
     composer require helios-ag/fm-elfinder-bundle: "~1.5" 
 ```
 
+Version with flysystem support tagged as 4.0, this version have a minor changes in configuration, and require update
+to your config.yml, mostly its about under_score naming params;
+
+```sh
+    composer require helios-ag/fm-elfinder-bundle: "~4.0"
+```
+ 
 
 For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
 
@@ -73,9 +81,8 @@ For Symfony 2.4 and later use version 3
 
 
 ```sh
-    composer require helios-ag/fm-elfinder-bundle 
+    composer require helios-ag/fm-elfinder-bundle: "~3"
 ```
-
 
 Now tell composer to download the bundle by running the command:
 
@@ -148,7 +155,7 @@ fm_elfinder:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
                     uploads:
-                        showhidden: false # defaults to false
+                        show_hidden: false # defaults to false
                         driver: LocalFileSystem
                         path: uploads
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
@@ -240,7 +247,7 @@ fm_elfinder:
         form:
             locale: %locale% # defaults to current request locale
             editor: form # other choices are tinymce or simple, and form
-            showhidden: false # defaults to false
+            show_hidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
@@ -528,6 +535,61 @@ This means that if you add the service definition:
 <service id="elfinder.driver.filesystem" class="FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem" />
 ```
 
+## Flysystem configuration
+
+Since 4.0 bundle supports [flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library
+
+You will need library files to work with 
+
+Below example of configuring flysystem 
+```yaml
+fm_elfinder:
+    instances:
+        default:
+            locale: %locale% # defaults to current request locale
+            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+            fullscreen: true # defaults true, applies to simple and ckeditor editors
+            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+            connector:
+                debug: false # defaults to false
+                roots:       # at least one root must be defined
+                      local:
+                          driver: Flysystem
+                          path: uploads
+                          flysystem:
+                              type: local
+                              options:
+                                local:
+                                    path: %kernel.root_dir%/../web/uploads/
+                          upload_allow: ['all']
+                          #upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                          #upload_deny: ['all']
+                          upload_max_size: 2M
+                      dropbox:
+                          driver: Flysystem
+                          path: uploads
+                          flysystem:
+                              type: dropbox
+                              options:
+                                dropbox:
+                                    app: YourAppname // see dropbox developer site
+                                    token: ToKeN // can be aquired via developer console 
+                          upload_allow: ['all']
+                      aws_s3:
+                          driver: Flysystem
+                          path: uploads
+                          flysystem:
+                              type: dropbox
+                              options:
+                                aws_s3_v2:
+                                    key: 1
+                                    secret: 1
+                                    region: 1
+                          upload_allow: ['all']
+                          
+
+for more options see [ElFinderConfigurationReader.php](https://github.com/helios-ag/FMElfinderBundle/blob/master/Configuration/ElFinderConfigurationReader.php)
+                          
 # Changelog
 
 ### 4.0
