@@ -17,7 +17,7 @@ Recommended bundles to use with:
 
 * [TinymceBundle](https://github.com/stfalcon/TinymceBundle/)
 * [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle/)
-* [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle)
+* [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle/)
 
 
 - [Installation](#installation)
