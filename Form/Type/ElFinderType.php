@@ -24,6 +24,7 @@ class ElFinderType extends AbstractType
 
         if($builder->getAttribute('enable'))
             $builder->setAttribute('instance', $options['instance']);
+            $builder->setAttribute('homeFolder', $options['homeFolder']);
     }
 
     /**
@@ -35,6 +36,7 @@ class ElFinderType extends AbstractType
 
         if($form->getConfig()->getAttribute('enable')) {
             $view->vars['instance'] = $form->getConfig()->getAttribute('instance');
+            $view->vars['homeFolder'] = $form->getConfig()->getAttribute('homeFolder');
         }
     }
 
@@ -45,12 +47,14 @@ class ElFinderType extends AbstractType
     {
         $resolver
             ->setDefaults(array(
-                'enable' => true,
-                'instance' => ''
+                'enable'        => true,
+                'instance'      => '',
+                'homeFolder'    => '',
             ))
             ->addAllowedTypes(array(
-                'enable' => 'bool',
-                'instance' => array('string', 'null')
+                'enable'        => 'bool',
+                'instance'      => array('string', 'null'),
+                'homeFolder'    => array('string', 'null'),
             ));
     }
     /**
