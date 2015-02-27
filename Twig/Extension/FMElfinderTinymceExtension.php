@@ -90,3 +90,4 @@ class FMElfinderTinymceExtension extends Twig_Extension
     }
 
 }
+

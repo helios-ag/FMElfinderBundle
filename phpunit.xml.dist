@@ -26,3 +26,4 @@
         <log type="coverage-clover" target="./clover.xml"/>
     </logging>
 </phpunit>
+

@@ -72,3 +72,4 @@ class ElFinderType extends AbstractType
         return 'elfinder';
     }
 }
+
