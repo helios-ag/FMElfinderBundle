@@ -1,6 +1,6 @@
 <?php
 
-namespace Symfony\Cmf\Bundle\RoutingBundle\Tests\Unit\DependencyInjection;
+namespace FM\ElfinderBundle\Tests\DependencyInjection;
 
 use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use FM\ElfinderBundle\DependencyInjection\Configuration;
@@ -25,6 +25,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
     {
         $expectedConfiguration = array(
             'configuration_provider' => 'app.configurator.custom',
+            'assets_path' => '/assets',
+            'loader' => 'fm_elfinder.loader.default',
             'instances' => array(
                 'default' => array(
                     'locale' => 'en',
@@ -32,6 +34,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'editor_template' => 'Elfinder/editor.html.twig',
                     'fullscreen' => false,
                     'include_assets' => false,
+                    'cors_support' => false,
                     'tinymce_popup_path' => '/pop-up',
                     'relative_path' => false,
                     'connector' => array(
@@ -41,10 +44,16 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                         'roots' => array(
                             'uploads' => array(
                                 'driver' => 'LocalFileSystem',
-                                'disabled' => array(),
+                                'disabled_commands' => array(),
                                 'plugin' => array(),
                                 'path' => 'uploads',
                                 'show_hidden' => true,
+                                'flysystem' => array(
+                                    'enabled' => false,
+                                    'type' => ''
+                                ),
+                                'glide_url' => '',
+                                'glide_key' => '',
                                 'alias' => 'foo',
                                 'tree_deep' => 1,
                                 'upload_allow' => array('image/png', 'image/jpg', 'image/jpeg'),
@@ -62,7 +71,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 ),
                                 's3_settings' => array(
                                     'enabled' => false,
-                                ),
+                                )
                             ),
                         ),
                     ),
@@ -78,7 +87,6 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
     {
         return array(
             'yml' => array('config/config.yml'),
-            'xml' => array('config/config.xml'),
             'php' => array('config/config.php'),
         );
     }

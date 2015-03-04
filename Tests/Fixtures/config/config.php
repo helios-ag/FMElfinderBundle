@@ -5,6 +5,7 @@ $container->loadFromExtension('fm_elfinder', array(
     'instances' => array(
         'default' => array(
             'locale' => 'en',
+            'cors_support' => false,
             'editor' => 'tinymce',
             'editor_template' => 'Elfinder/editor.html.twig',
             'fullscreen' => false,
