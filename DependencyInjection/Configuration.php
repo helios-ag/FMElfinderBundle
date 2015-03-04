@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2014 Al Ganiev
+ * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Configuration implements ConfigurationInterface
@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
+                ->scalarNode('assets_path')->defaultValue('/assets')->end()
                 ->scalarNode('loader')->defaultValue('fm_elfinder.loader.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
@@ -86,12 +87,12 @@ class Configuration implements ConfigurationInterface
                                                 ->arrayNode('dropbox_settings')
                                                     ->canBeEnabled()
                                                     ->children()
-                                                        ->scalarNode('consumerKey')->end()
-                                                        ->scalarNode('consumerSecret')->end()
-                                                        ->scalarNode('accessToken')->end()
-                                                        ->scalarNode('accessTokenSecret')->end()
-                                                        ->scalarNode('dropboxUid')->end()
-                                                        ->scalarNode('metaCachePath')->end()
+                                                        ->scalarNode('consumer_key')->end()
+                                                        ->scalarNode('consumer_secret')->end()
+                                                        ->scalarNode('access_token')->end()
+                                                        ->scalarNode('access_token_secret')->end()
+                                                        ->scalarNode('dropbox_uid')->end()
+                                                        ->scalarNode('meta_cache_path')->end()
                                                     ->end()
                                                 ->end()
                                                 ->arrayNode('ftp_settings')
@@ -106,10 +107,10 @@ class Configuration implements ConfigurationInterface
                                                 ->arrayNode('s3_settings')
                                                     ->canBeEnabled()
                                                     ->children()
-                                                        ->scalarNode('accesskey')->end()
-                                                        ->scalarNode('secretkey')->end()
+                                                        ->scalarNode('access_key')->end()
+                                                        ->scalarNode('secret_key')->end()
                                                         ->scalarNode('bucket')->end()
-                                                        ->scalarNode('tmpPath')->end()
+                                                        ->scalarNode('tmp_path')->end()
                                                     ->end()
                                                 ->end()
                                             ->end()

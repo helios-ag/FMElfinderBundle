@@ -207,18 +207,18 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['path'] = $parameter['ftp_settings']['path'];
                 break;
             case "dropbox":
-                $settings['consumerKey']       = $parameter['dropbox_settings']['consumerKey'];
-                $settings['consumerSecret']    = $parameter['dropbox_settings']['consumerSecret'];
-                $settings['accessToken']       = $parameter['dropbox_settings']['accessToken'];
-                $settings['accessTokenSecret'] = $parameter['dropbox_settings']['accessTokenSecret'];
-                $settings['dropboxUid']        = $parameter['dropbox_settings']['dropboxUid'];
-                $settings['metaCachePath']     = $parameter['dropbox_settings']['metaCachePath'];
+                $settings['consumerKey']       = $parameter['dropbox_settings']['consumer_key'];
+                $settings['consumerSecret']    = $parameter['dropbox_settings']['consumer_secret'];
+                $settings['accessToken']       = $parameter['dropbox_settings']['access_token'];
+                $settings['accessTokenSecret'] = $parameter['dropbox_settings']['access_token_secret'];
+                $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];
+                $settings['metaCachePath']     = $parameter['dropbox_settings']['meta_cache_path'];
                 break;
             case "s3":
-                $settings['accesskey'] = $parameter['s3_settings']['accesskey'];
-                $settings['secretkey'] = $parameter['s3_settings']['secretkey'];
+                $settings['accesskey'] = $parameter['s3_settings']['access_key'];
+                $settings['secretkey'] = $parameter['s3_settings']['secret_key'];
                 $settings['bucket']    = $parameter['s3_settings']['bucket'];
-                $settings['tmpPath']   = $parameter['s3_settings']['tmpPath'];
+                $settings['tmpPath']   = $parameter['s3_settings']['tmp_path'];
                 break;
             default:
                 break;
