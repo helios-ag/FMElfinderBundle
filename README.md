@@ -577,18 +577,54 @@ fm_elfinder:
                           upload_allow: ['all']
                       aws_s3:
                           driver: Flysystem
-                          path: uploads
+                          url: "https://yours3orcloudfrontdomain.de"
                           flysystem:
-                              type: dropbox
+                              type: aws_s3_v2
                               options:
                                 aws_s3_v2:
                                     key: 1
                                     secret: 1
                                     region: 1
                           upload_allow: ['all']
-                          
+```                          
 
 for more options see [ElFinderConfigurationReader.php](https://github.com/helios-ag/FMElfinderBundle/blob/master/Configuration/ElFinderConfigurationReader.php)
+              
+# Amazon S3 Configuration
+
+To work with your S3 account and upload your files directly to S3 you have to set the following properties in your config file (config.yml).
+
+```yaml
+fm_elfinder:
+    instances:
+        default:
+            locale: %locale%
+            editor: ckeditor
+            fullscreen: true
+            include_assets: true
+            relative_path: false
+            connector:
+                debug: false
+                roots:
+                    aws_s3:
+                        driver: Flysystem
+                        url: %aws.cdn.content.url%
+                        flysystem:
+                            type: aws_s3_v2
+                            options:
+                                aws_s3_v2:
+                                    key: %aws.key%
+                                    secret: %aws.secret%
+                                    region: %aws.region%
+                                    bucket_name: %aws.cdn.content.bucket%
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+```
+
+In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path. 
+
+If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example. 
+Define the variables in your config.yml or set it directly. 
                           
 # Changelog
 
