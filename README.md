@@ -161,6 +161,9 @@ fm_elfinder:
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                         upload_deny: ['all']
                         upload_max_size: 2M
+                        options: # used to override connector's default options (optional)
+                            'tmbSize': 64
+                            # ...
 ```
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
@@ -181,6 +184,7 @@ fm_elfinder:
     * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
     * upload_deny: ['all'] 
     * upload_max_size: 2M 
+    * options - Used to override connector's default options. Each key is a string corresponding to option name. You can go [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options "connector options list") to see all options list.
     
 ### Use multiple upload folder by instance
 You can set multiple upload root folder by instance configuration.

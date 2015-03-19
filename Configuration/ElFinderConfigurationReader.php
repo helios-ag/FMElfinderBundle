@@ -112,6 +112,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             if($parameter['driver'] == 'Flysystem') {
                 $driverOptions['filesystem'] = $filesystem;
             }
+
+            if (isset($parameter['options'])) {
+                foreach($parameter['options'] as $option => $value) {
+                    // we do not override previously defined options from config.yml file
+                    if (!isset($driverOptions[$option])) {
+                        $driverOptions[$option] = $value;
+                    }
+                }
+            }
+
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
         }
 
