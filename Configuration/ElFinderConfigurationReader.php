@@ -88,23 +88,50 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
             $driverOptions = array(
-                'driver'        => $parameter['driver'],
-                'service'       => $driver,
-                'glideURL'      => $parameter['glide_url'],
-                'glideKey'      => $parameter['glide_key'],
-                'disabled'      => $parameter['disabled_commands'],
-                'plugin'        => $parameter['plugin'],
-                'alias'         => $parameter['alias'],
-                'path'          => $path . $homeFolder, //removed slash for Flysystem compatibility
-                'URL'           => isset($parameter['url']) && $parameter['url']
+                'driver'            => $parameter['driver'],
+                'service'           => $driver,
+                'glideURL'          => $parameter['glide_url'],
+                'glideKey'          => $parameter['glide_key'],
+                'plugin'            => $parameter['plugin'],
+                'path'              => $path . $homeFolder, //removed slash for Flysystem compatibility
+                'startPath'         => $parameter['start_path'],
+                'URL'               => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
                             ? $parameter['url']
                             : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
                         : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder),
-                'uploadAllow'   => $parameter['upload_allow'],
-                'uploadDeny'    => $parameter['upload_deny'],
-                'uploadMaxSize' => $parameter['upload_max_size']
+                'alias'             => $parameter['alias'],
+                'mimeDetect'        => $parameter['mime_detect'],
+                'mimefile'          => $parameter['mimefile'],
+                'imgLib'            => $parameter['img_lib'],
+                'tmbPath'           => $parameter['tmb_path'],
+                'tmbPathMode'       => $parameter['tmb_path_mode'],
+                'tmbUrl'            => $parameter['tmb_url'],
+                'tmbSize'           => $parameter['tmb_size'],
+                'tmbCrop'           => $parameter['tmb_crop'],
+                'tmbBgColor'        => $parameter['tmb_bg_color'],
+                'copyOverwrite'     => $parameter['copy_overwrite'],
+                'copyJoin'          => $parameter['copy_join'],
+                'copyFrom'          => $parameter['copy_from'],
+                'copyTo'            => $parameter['copy_to'],
+                'uploadOverwrite'   => $parameter['upload_overwrite'],
+                'uploadAllow'       => $parameter['upload_allow'],
+                'uploadDeny'        => $parameter['upload_deny'],
+                'uploadMaxSize'     => $parameter['upload_max_size'],
+                'defaults'          => $parameter['defaults'],
+                'attributes'        => $parameter['attributes'],
+                'acceptedName'      => $parameter['accepted_name'],
+                'accessControl'     => $parameter['access_control'],
+                'accessControlData' => $parameter['access_control_data'],
+                'disabled'          => $parameter['disabled_commands'],
+                'treeDeep'          => $parameter['tree_deep'],
+                'checkSubfolders'   => $parameter['check_subfolders'],
+                'separator'         => $parameter['separator'],
+                'timeFormat'        => $parameter['time_format'],
+                'archiveMimes'      => $parameter['archive_mimes'],
+                'archivers'         => $parameter['archivers']
             );
+
             if(!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
             };
@@ -112,6 +139,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             if($parameter['driver'] == 'Flysystem') {
                 $driverOptions['filesystem'] = $filesystem;
             }
+
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
         }
 
