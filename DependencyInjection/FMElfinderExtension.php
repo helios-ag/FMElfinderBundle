@@ -29,6 +29,7 @@ class FMElfinderExtension extends Extension
         $container->setParameter('fm_elfinder', $config);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
         $container->setAlias('fm_elfinder.loader', $config['loader']);
+//        $container->setAlias('fm_elfinder.assets_path', $config['assets_path']);
     }
 
     /**

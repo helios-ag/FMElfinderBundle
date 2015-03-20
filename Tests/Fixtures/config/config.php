@@ -23,7 +23,7 @@ $container->loadFromExtension('fm_elfinder', array(
                         'tree_deep' => 1,
                         'upload_allow' => array('image/png', 'image/jpg', 'image/jpeg'),
                         'upload_deny' => array('all'),
-                        'upload_max_size' => '2M',
+                        'upload_max_size' => 0,
                         'dropbox_settings' => array(
                             'consumer_key' => 'some_consumer',
                             'consumer_secret' => 'con$umer',

@@ -19,8 +19,6 @@ fm_elfinder:
                         alias: foo
                         tree_deep: 1
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                        upload_deny: ['all']
-                        upload_max_size: 2M
                         dropbox_settings:
                             consumer_key: some_consumer
                             consumer_secret: con$umer

@@ -54,7 +54,7 @@ This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
-Version 5:
+**Version 5:**
 
 Add FMElfinderBundle to your composer.json:
 
@@ -76,9 +76,9 @@ also add component-dir under config node of composer.json
 }
 ```
 
+**Version 4:**
 
-Version with flysystem support tagged as 4.0, this version have a minor changes in configuration, and require update
-to your config.yml, mostly its about under_score naming params;
+This version dont use **component** library 
 
 ```sh
 composer require helios-ag/fm-elfinder-bundle: "~4.0"
@@ -162,6 +162,7 @@ fm_elfinder:
             locale: %locale% # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: true # defaults true, applies to simple and ckeditor editors
+            theme: smoothness # jquery theme
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: false # defaults to false

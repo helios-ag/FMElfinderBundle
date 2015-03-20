@@ -70,8 +70,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $options = array();
         $options['corsSupport'] = $parameters['cors_support'];
         $options['debug'] = $parameters['connector']['debug'];
-        $options['bind'] =  $parameters['connector']['bind'];
-        $options['plugin'] =  $parameters['connector']['plugin'];
+        $options['bind'] =  $parameters['connector']['binds'];
+        $options['plugins'] =  $parameters['connector']['plugins'];
         $options['roots'] = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
@@ -92,18 +92,44 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'service'       => $driver,
                 'glideURL'      => $parameter['glide_url'],
                 'glideKey'      => $parameter['glide_key'],
-                'disabled'      => $parameter['disabled_commands'],
-                'plugin'        => $parameter['plugin'],
-                'alias'         => $parameter['alias'],
+                'plugin'        => $parameter['plugins'],
                 'path'          => $path . $homeFolder, //removed slash for Flysystem compatibility
+                'startPath' => $parameter['start_path'],
                 'URL'           => isset($parameter['url']) && $parameter['url']
                         ? strpos($parameter['url'], 'http') === 0
                             ? $parameter['url']
                             : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
                         : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder),
-                'uploadAllow'   => $parameter['upload_allow'],
-                'uploadDeny'    => $parameter['upload_deny'],
-                'uploadMaxSize' => $parameter['upload_max_size']
+                'alias' => $parameter['alias'],
+                'mimeDetect' => $parameter['mime_detect'],
+                'mimefile' => $parameter['mimefile'],
+                'imgLib' => $parameter['img_lib'],
+                'tmbPath' => $parameter['tmb_path'],
+                'tmbPathMode' => $parameter['tmb_path_mode'],
+                'tmbUrl' => $parameter['tmb_url'],
+                'tmbSize' => $parameter['tmb_size'],
+                'tmbCrop' => $parameter['tmb_crop'],
+                'tmbBgColor' => $parameter['tmb_bg_color'],
+                'copyOverwrite' => $parameter['copy_overwrite'],
+                'copyJoin' => $parameter['copy_join'],
+                'copyFrom' => $parameter['copy_from'],
+                'copyTo' => $parameter['copy_to'],
+                'uploadOverwrite' => $parameter['upload_overwrite'],
+                'uploadAllow' => $parameter['upload_allow'],
+                'uploadDeny' => $parameter['upload_deny'],
+                'uploadMaxSize' => $parameter['upload_max_size'],
+                'defaults' => $parameter['defaults'],
+                'attributes' => $parameter['attributes'],
+                'acceptedName' => $parameter['accepted_name'],
+                'accessControl' => $parameter['access_control'],
+                'accessControlData' => $parameter['access_control_data'],
+                'disabled' => $parameter['disabled_commands'],
+                'treeDeep' => $parameter['tree_deep'],
+                'checkSubfolders' => $parameter['check_subfolders'],
+                'separator' => $parameter['separator'],
+                'timeFormat' => $parameter['time_format'],
+                'archiveMimes' => $parameter['archive_mimes'],
+                'archivers' => $parameter['archivers']
             );
             if(!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');

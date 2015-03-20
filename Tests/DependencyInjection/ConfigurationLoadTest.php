@@ -31,6 +31,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                 'default' => array(
                     'locale' => 'en',
                     'editor' => 'tinymce',
+                    'theme' => 'smoothness',
                     'editor_template' => 'Elfinder/editor.html.twig',
                     'fullscreen' => false,
                     'include_assets' => false,
@@ -39,26 +40,52 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'relative_path' => false,
                     'connector' => array(
                         'debug' => true,
-                        'bind' => array(),
-                        'plugin' => array(),
+                        'binds' => array(),
+                        'plugins' => array(),
                         'roots' => array(
                             'uploads' => array(
                                 'driver' => 'LocalFileSystem',
                                 'disabled_commands' => array(),
-                                'plugin' => array(),
+                                'plugins' => array(),
                                 'path' => 'uploads',
                                 'show_hidden' => true,
                                 'flysystem' => array(
                                     'enabled' => false,
                                     'type' => ''
                                 ),
+                                'start_path' => '',
+                                'url' => '',
+                                'mime_detect' => 'auto',
+                                'mimefile' => '',
+                                'img_lib' => 'auto',
+                                'tmb_path' => '.tmb',
+                                'tmb_url' => '',
+                                'tmb_size' => 48,
+                                'tmb_crop' => true,
+                                'tmb_bg_color' => '#ffffff',
+                                'tmb_path_mode' => 511,
+                                'copy_overwrite' => true,
+                                'copy_join' => true,
+                                'copy_from' => true,
+                                'copy_to' => true,
+                                'upload_overwrite' => true,
+                                'attributes' => array(),
+                                'accepted_name' => '/^\w[\w\s\.\%\-]*$/u',
+                                'check_subfolders' => true,
+                                'separator' => DIRECTORY_SEPARATOR,
+                                'date_format' => 'j M Y H:i',
+                                'time_format' => 'H:i',
+                                'archive_mimes' => array(),
+                                'archivers' => array(),
                                 'glide_url' => '',
                                 'glide_key' => '',
                                 'alias' => 'foo',
                                 'tree_deep' => 1,
                                 'upload_allow' => array('image/png', 'image/jpg', 'image/jpeg'),
+                                'upload_order' => array('deny', 'allow'),
+                                'defaults' => array('read' => true, 'write' => true),
                                 'upload_deny' => array('all'),
-                                'upload_max_size' => '2M',
+                                'upload_max_size' => 0,
                                 'dropbox_settings' => array(
                                     'consumer_key' => 'some_consumer',
                                     'consumer_secret' => 'con$umer',
@@ -88,6 +115,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
         return array(
             'yml' => array('config/config.yml'),
             'php' => array('config/config.php'),
+            'xml' => array('config/config.xml')
         );
     }
 }

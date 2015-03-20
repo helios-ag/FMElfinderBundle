@@ -29,7 +29,7 @@ class ElFinderController extends Controller
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
         $assetsPath = $efParameters['assets_path'];
-        $result = $this->selectEditor($parameters, $instance, $homeFolder, $request->get("id"), $assetsPath);
+        $result = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get("id"));
 
         return $this->render($result['template'], $result['params']);
     }
@@ -50,6 +50,7 @@ class ElFinderController extends Controller
         $fullScreen = $parameters['fullscreen'];
         $relativePath = $parameters['relative_path'];
         $includeAssets = $parameters['include_assets'];
+        $theme = $parameters['theme'];
         $result = array();
 
         switch ($editor) {
@@ -66,7 +67,8 @@ class ElFinderController extends Controller
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
-                    'prefix'        => $assetsPath
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
                 );
                 return $result;
             case 'ckeditor':
@@ -78,7 +80,9 @@ class ElFinderController extends Controller
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
-                    'prefix'        => $assetsPath
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
+
                 );
                 return $result;
             case 'tinymce':
@@ -89,7 +93,8 @@ class ElFinderController extends Controller
                     'includeAssets'      => $includeAssets,
                     'instance'           => $instance,
                     'homeFolder'         => $homeFolder,
-                    'prefix'             => $assetsPath
+                    'prefix'             => $assetsPath,
+                    'theme'              => $theme
                 );
                 return $result;
             case 'tinymce4':
@@ -100,7 +105,8 @@ class ElFinderController extends Controller
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
-                    'prefix'        => $assetsPath
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
                 );
                 return $result;
             case 'form':
@@ -113,7 +119,8 @@ class ElFinderController extends Controller
                     'homeFolder'    => $homeFolder,
                     'id'            => $formTypeId,
                     'relative_path' => $relativePath,
-                    'prefix'        => $assetsPath
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
                 );
                 return $result;
             default:
