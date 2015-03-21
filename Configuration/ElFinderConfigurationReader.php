@@ -149,8 +149,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     {
         return isset($parameter['url']) && $parameter['url']
             ? strpos($parameter['url'], 'http') === 0
-            ? $parameter['url']
-            : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
+                ? $parameter['url']
+                : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
             : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder);
     }
 
