@@ -1,283 +1,343 @@
 <?php
 
-namespace FM\ElfinderBundle\Configuration;
+namespace FM\ElfinderBundle\DependencyInjection;
 
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Adapter\Ftp;
-use League\Flysystem\Dropbox\DropboxAdapter;
-use League\Flysystem\Sftp\SftpAdapter;
-use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as AwsS3v3;
-use League\Flysystem\GridFS\GridFSAdapter;
-use MongoClient;
-use League\Flysystem\Copy\CopyAdapter;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-use Aws\S3\S3Client;
-use Dropbox\Client;
-use Barracuda\Copy\API;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Class ElFinderConfigurationReader
- * @package FM\ElfinderBundle\Configuration
+ * This class contains the configuration information for the bundle
+ *
+ * This information is solely responsible for how the different configuration
+ * sections are normalized, and merged.
+ * @author Al Ganiev <helios.ag@gmail.com>
+ * @copyright 2012-2015 Al Ganiev
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
+class Configuration implements ConfigurationInterface
 {
     /**
-     * @var array $options
+     * {@inheritDoc}
      */
-    protected $options = array();
-
-    /**
-     * @var array $parameters
-     */
-    protected $parameters;
-
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param $parameters
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param ContainerInterface $container
-     */
-    public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
+    public function getConfigTreeBuilder()
     {
-        $this->parameters   = $parameters;
-        $this->requestStack = $requestStack;
-        $this->container    = $container;
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('fm_elfinder');
+
+        $rootNode
+            ->fixXmlConfig('instance')
+            ->children()
+                ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
+                ->scalarNode('assets_path')->defaultValue('/assets')->end()
+                ->scalarNode('loader')->defaultValue('fm_elfinder.loader.default')->end()
+                ->arrayNode('instances')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('locale')->defaultNull()->end()
+                            ->booleanNode('cors_support')->defaultFalse()->end()
+                            ->scalarNode('editor')->defaultValue('simple')->end()
+                            ->scalarNode('editor_template')->defaultNull()->end()
+                            ->booleanNode('fullscreen')->defaultTrue()->end()
+                            ->scalarNode('theme')->defaultValue('smoothness')->end() // jQuery UI theme name
+                            ->booleanNode('include_assets')->defaultTrue()->end()
+                            ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
+                            ->booleanNode('relative_path')->defaultTrue()->end()
+                            ->scalarNode('path_prefix')->defaultValue('/')->end()
+                            ->arrayNode('connector')
+                                ->addDefaultsIfNotSet()
+                                ->fixXmlConfig('root')
+                                ->children()
+                                    ->booleanNode('debug')->defaultFalse()->end()
+                                    ->append($this->createBindsNode())
+                                    ->append($this->createPluginsNode())
+                                    ->arrayNode('roots')
+                                        ->useAttributeAsKey('name')
+                                        ->isRequired()
+                                        ->requiresAtLeastOneElement()
+                                        ->prototype('array')
+                                            ->children()
+                                                ->scalarNode('driver')
+                                                    ->isRequired()
+                                                    ->defaultValue('LocalFileSystem')
+                                                ->end() // driver
+                                                ->scalarNode('path')->defaultValue('')->end()
+                                                ->scalarNode('start_path')->defaultValue('')->end()
+                                                ->scalarNode('url')->defaultValue('')->end()
+                                                ->scalarNode('alias')->defaultValue('')->end()
+                                                ->scalarNode('mime_detect')->defaultValue('auto')->end()
+                                                ->scalarNode('mimefile')->defaultValue('')->end()
+                                                ->scalarNode('img_lib')->defaultValue('auto')->end()
+                                                ->scalarNode('tmb_path')->defaultValue('.tmb')->end()
+                                                ->scalarNode('tmb_path_mode')->defaultValue(0777)->end()
+                                                ->scalarNode('tmb_url')->defaultValue('')->end()
+                                                ->integerNode('tmb_size')->defaultValue(48)->end()
+                                                ->booleanNode('tmb_crop')->defaultTrue()->end()
+                                                ->scalarNode('tmb_bg_color')->defaultValue('#ffffff')->end()
+                                                ->booleanNode('copy_overwrite')->defaultTrue()->end()
+                                                ->booleanNode('copy_join')->defaultTrue()->end()
+                                                ->booleanNode('copy_from')->defaultTrue()->end()
+                                                ->booleanNode('copy_to')->defaultTrue()->end()
+                                                ->booleanNode('upload_overwrite')->defaultTrue()->end()
+                                                ->arrayNode('upload_allow')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('image'))
+                                                ->end() // upload_allow
+                                                ->arrayNode('upload_deny')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('all'))
+                                                ->end() // upload_deny
+                                                ->arrayNode('upload_order')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('deny', 'allow'))
+                                                ->end() // upload_order
+                                                ->scalarNode('upload_max_size')->defaultValue(0)->end()
+                                                ->arrayNode('defaults')
+                                                    ->useAttributeAsKey('defaults')
+                                                    ->normalizeKeys(false)
+                                                    ->prototype('boolean')->end()
+                                                    ->defaultValue(array('read' => true, 'write' => true))
+                                                ->end() // defaults
+                                                ->arrayNode('attributes')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // attributes
+                                                ->scalarNode('accepted_name')->defaultValue('/^\w[\w\s\.\%\-]*$/u')->end()
+                                                ->booleanNode('show_hidden')->defaultFalse()->end()
+                                                ->arrayNode('disabled_commands')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // disabled_commands
+                                                ->integerNode('tree_deep')->defaultValue(0)->end()
+                                                ->booleanNode('check_subfolders')->defaultTrue()->end()
+                                                ->scalarNode('separator')->defaultValue(DIRECTORY_SEPARATOR)->end()
+                                                ->scalarNode('date_format')->defaultValue('j M Y H:i')->end()
+                                                ->scalarNode('time_format')->defaultValue('H:i')->end()
+                                                ->arrayNode('archive_mimes')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // archive_mimes
+                                                ->arrayNode('archivers')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // archive_mimes
+                                                ->arrayNode('flysystem')
+                                                    ->canBeEnabled()
+                                                    ->children()
+                                                        ->scalarNode('type')->defaultValue('')->end()
+                                                        ->append($this->createFlysystemNode())
+                                                    ->end()
+                                                ->end()
+                                                ->scalarNode('glide_url')->defaultValue('')->end()
+                                                ->scalarNode('glide_key')->defaultValue('')->end()
+                                                ->append($this->createPluginsNode())
+                                                ->arrayNode('dropbox_settings')
+                                                    ->canBeEnabled()
+                                                    ->children()
+                                                        ->scalarNode('consumer_key')->end()
+                                                        ->scalarNode('consumer_secret')->end()
+                                                        ->scalarNode('access_token')->end()
+                                                        ->scalarNode('access_token_secret')->end()
+                                                        ->scalarNode('dropbox_uid')->end()
+                                                        ->scalarNode('meta_cache_path')->end()
+                                                    ->end()
+                                                ->end()
+                                                ->arrayNode('ftp_settings')
+                                                    ->canBeEnabled()
+                                                    ->children()
+                                                        ->scalarNode('host')->end()
+                                                        ->scalarNode('user')->end()
+                                                        ->scalarNode('password')->end()
+                                                        ->scalarNode('path')->end()
+                                                    ->end()
+                                                ->end()
+                                                ->arrayNode('s3_settings')
+                                                    ->canBeEnabled()
+                                                    ->children()
+                                                        ->scalarNode('access_key')->end()
+                                                        ->scalarNode('secret_key')->end()
+                                                        ->scalarNode('bucket')->end()
+                                                        ->scalarNode('tmp_path')->end()
+                                                    ->end()
+                                                ->end()
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                ->end();
+
+        return $treeBuilder;
     }
 
     /**
-     * @param $instance
-     * @return array
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The Flysystem node.
      */
-    public function getConfiguration($instance)
+    private function createFlysystemNode()
     {
-        $request = $this->requestStack->getCurrentRequest();
-        $efParameters = $this->parameters;
-        $parameters = $efParameters['instances'][$instance];
-        $options = array();
-        $options['corsSupport'] = $parameters['cors_support'];
-        $options['debug'] = $parameters['connector']['debug'];
-        $options['bind'] =  $parameters['connector']['binds'];
-        $options['plugins'] =  $parameters['connector']['plugins'];
-        $options['roots'] = array();
-
-        foreach ($parameters['connector']['roots'] as $parameter) {
-            $path = $parameter['path'];
-            $homeFolder = $request->attributes->get('homeFolder');
-            if ($homeFolder !== '') {
-                $homeFolder = '/'.$homeFolder.'/';
-            }
-            if($parameter['flysystem']['enabled']) {
-                $adapter = $parameter['flysystem']['type']; // ftp ex.
-                $opt = $parameter['flysystem']['options'];
-                $filesystem  = $this->configureFlysystem($opt, $adapter);
-            }
-            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
-
-            $driverOptions = array(
-                'driver'            => $parameter['driver'],
-                'service'           => $driver,
-                'glideURL'          => $parameter['glide_url'],
-                'glideKey'          => $parameter['glide_key'],
-                'plugin'            => $parameter['plugins'],
-                'path'              => $path . $homeFolder, //removed slash for Flysystem compatibility
-                'startPath'         => $parameter['start_path'],
-                'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
-                'alias'             => $parameter['alias'],
-                'mimeDetect'        => $parameter['mime_detect'],
-                'mimefile'          => $parameter['mimefile'],
-                'imgLib'            => $parameter['img_lib'],
-                'tmbPath'           => $parameter['tmb_path'],
-                'tmbPathMode'       => $parameter['tmb_path_mode'],
-                'tmbUrl'            => $parameter['tmb_url'],
-                'tmbSize'           => $parameter['tmb_size'],
-                'tmbCrop'           => $parameter['tmb_crop'],
-                'tmbBgColor'        => $parameter['tmb_bg_color'],
-                'copyOverwrite'     => $parameter['copy_overwrite'],
-                'copyJoin'          => $parameter['copy_join'],
-                'copyFrom'          => $parameter['copy_from'],
-                'copyTo'            => $parameter['copy_to'],
-                'uploadOverwrite'   => $parameter['upload_overwrite'],
-                'uploadAllow'       => $parameter['upload_allow'],
-                'uploadDeny'        => $parameter['upload_deny'],
-                'uploadMaxSize'     => $parameter['upload_max_size'],
-                'defaults'          => $parameter['defaults'],
-                'attributes'        => $parameter['attributes'],
-                'acceptedName'      => $parameter['accepted_name'],
-                'disabled'          => $parameter['disabled_commands'],
-                'treeDeep'          => $parameter['tree_deep'],
-                'checkSubfolders'   => $parameter['check_subfolders'],
-                'separator'         => $parameter['separator'],
-                'timeFormat'        => $parameter['time_format'],
-                'archiveMimes'      => $parameter['archive_mimes'],
-                'archivers'         => $parameter['archivers']
-            );
-            if(!$parameter['show_hidden']) {
-                $driverOptions['accessControl'] = array($this, 'access');
-            };
-
-            if($parameter['driver'] == 'Flysystem') {
-                $driverOptions['filesystem'] = $filesystem;
-            }
-            $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
-        }
-
-        return $options;
+        return $this->createNode('options')
+            ->children()
+                ->arrayNode('local')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('path')->defaultvalue('')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('ftp')
+                    ->canBeEnabled()
+                        ->children()
+                            ->booleanNode('sftp')->defaultFalse()->end()
+                            ->scalarNode('host')->defaultValue('')->end()
+                            ->scalarNode('username')->defaultValue('')->end()
+                            ->scalarNode('password')->defaultValue('')->end()
+                            ->integerNode('port')->defaultValue('')->end()
+                            ->booleanNode('passive')->defaultTrue()->end()
+                            ->booleanNode('ssl')->defaultTrue()->end()
+                            ->integerNode('timeout')->defaultValue(30)->end()
+                    ->end()
+                ->end()
+                ->arrayNode('aws_s3_v2')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('key')->defaultvalue('')->end()
+                            ->scalarNode('secret')->defaultvalue('')->end()
+                            ->scalarNode('region')->defaultvalue('')->end()
+                            ->scalarNode('bucket_name')->defaultvalue('')->end()
+                            ->scalarNode('optional_prefix')->defaultvalue('')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('aws_s3_v3')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('key')->defaultvalue('')->end()
+                            ->scalarNode('secret')->defaultvalue('')->end()
+                            ->scalarNode('region')->defaultvalue('')->end()
+                            ->scalarNode('version')->defaultvalue('')->end()
+                            ->scalarNode('bucket_name')->defaultvalue('')->end()
+                            ->scalarNode('optional_prefix')->defaultvalue('')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('copy_com')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('consumer_key')->defaultvalue('')->end()
+                            ->scalarNode('consumer_secret')->defaultvalue('')->end()
+                            ->scalarNode('access_token')->defaultvalue('')->end()
+                            ->scalarNode('token_secret')->defaultvalue('')->end()
+                            ->scalarNode('optional_prefix')->defaultvalue('')->end()
+                        ->end()
+                ->end()
+                ->arrayNode('gridfs')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('db_name')->defaultvalue('')->end()
+                        ->end()
+                ->end()
+                ->arrayNode('zip')
+                    ->canBeEnabled()
+                        ->children()
+                            ->scalarNode('path')->defaultvalue('')->end()
+                        ->end()
+                ->end()
+                ->arrayNode('dropbox')
+                    ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('app')->defaultvalue('')->end()
+                        ->scalarNode('token')->defaultvalue('')->end()
+                ->end()
+            ->end()->end();
     }
 
     /**
-     * @param $parameter
-     * @param $request
-     * @param $homeFolder
-     * @param $path
-     * @return string
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The plugins node.
      */
-    private function getURL($parameter, $request, $homeFolder, $path)
+    private function createPluginsNode()
     {
-        return isset($parameter['url']) && $parameter['url']
-            ? strpos($parameter['url'], 'http') === 0
-                ? $parameter['url']
-                : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
-            : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder);
+        return $this->createNode('plugins')
+            ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')->end()
+            ->end();
     }
 
     /**
-     * @param $opt
-     * @param $adapter
-     * @return Filesystem
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The bind node.
      */
-    private function configureFlysystem($opt, $adapter)
+    private function createBindsNode()
     {
-        switch ($adapter) {
-            case 'local':
-                $filesystem = new Filesystem(new Local($opt['local']['path']));
-                break;
-            case 'ftp':
-                $settings = array(
-                    'host'     => $opt['ftp']['host'],
-                    'username' => $opt['ftp']['username'],
-                    'password' => $opt['ftp']['password'],
-
-                    /** optional config settings */
-                    'port'     => $opt['ftp']['port'],
-                    'root'     => $opt['ftp']['root'],
-                    'passive'  => $opt['ftp']['passive'],
-                    'ssl'      => $opt['ftp']['ssl'],
-                    'timeout'  => $opt['ftp']['timeout']
-                );
-                $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)): new Filesystem(new SftpAdapter($settings));
-                break;
-            case 'aws_s3_v2':
-                $client = S3Client::factory([
-                    'key'     => $opt['aws_s3_v2']['key'],
-                    'secret'  => $opt['aws_s3_v2']['secret'],
-                    'region'  => $opt['aws_s3_v2']['region']
-                ]);
-                $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
-                break;
-            case 'aws_s3_v3':
-                $client = S3Client::factory([
-                    'key'     => $opt['aws_s3_v3']['key'],
-                    'secret'  => $opt['aws_s3_v3']['secret'],
-                    'region'  => $opt['aws_s3_v3']['region'],
-                    'version' => $opt['aws_s3_v3']['version']
-                ]);
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
-                break;
-            case 'copy_com':
-                $client = new API(
-                    $opt['copy_com']['consumer_key'],
-                    $opt['copy_com']['consumer_secret'],
-                    $opt['copy_com']['access_token'],
-                    $opt['copy_com']['token_secret']
-                );
-                $filesystem = new Filesystem(new CopyAdapter($client, $opt['copy_com']['optional_prefix']));
-                break;
-            case 'gridfs':
-                $mongoClient = new MongoClient();
-                $gridFs = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
-                $filesystem = new Filesystem(new GridFSAdapter($gridFs));
-                break;
-            case 'zip':
-                $filesystem = new Filesystem(new ZipArchiveAdapter($opt['zip']['path']));
-                break;
-            case 'dropbox':
-                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'],$opt['dropbox']['app'])));
-                break;
-        }
-        return $filesystem;
+        return $this->createNode('binds')
+            ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')->end()
+            ->end();
     }
 
     /**
-     * @param  array $parameter
-     * @return array
-     */
-    private function configureDriver(array $parameter)
-    {
-        $settings = array();
-
-        switch (strtolower($parameter['driver'])) {
-            case "ftp":
-                $settings['host'] = $parameter['ftp_settings']['host'];
-                $settings['user'] = $parameter['ftp_settings']['user'];
-                $settings['pass'] = $parameter['ftp_settings']['password'];
-                $settings['path'] = $parameter['ftp_settings']['path'];
-                break;
-            case "ftpiis":
-                $settings['host'] = $parameter['ftp_settings']['host'];
-                $settings['user'] = $parameter['ftp_settings']['user'];
-                $settings['pass'] = $parameter['ftp_settings']['password'];
-                $settings['path'] = $parameter['ftp_settings']['path'];
-                break;
-            case "dropbox":
-                $settings['consumerKey']       = $parameter['dropbox_settings']['consumer_key'];
-                $settings['consumerSecret']    = $parameter['dropbox_settings']['consumer_secret'];
-                $settings['accessToken']       = $parameter['dropbox_settings']['access_token'];
-                $settings['accessTokenSecret'] = $parameter['dropbox_settings']['access_token_secret'];
-                $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];
-                $settings['metaCachePath']     = $parameter['dropbox_settings']['meta_cache_path'];
-                break;
-            case "s3":
-                $settings['accesskey'] = $parameter['s3_settings']['access_key'];
-                $settings['secretkey'] = $parameter['s3_settings']['secret_key'];
-                $settings['bucket']    = $parameter['s3_settings']['bucket'];
-                $settings['tmpPath']   = $parameter['s3_settings']['tmp_path'];
-                break;
-            default:
-                break;
-        }
-
-        return $settings;
-    }
-
-    /**
-     * Simple function to demonstrate how to control file access using "accessControl" callback.
-     * This method will disable accessing files/folders starting from '.' (dot)
+     * Creates a node.
      *
-     * @param  string    $attr attribute name (read|write|locked|hidden)
-     * @param  string    $path file path relative to volume root directory started with directory separator
-     * @param $data
-     * @param $volume
-     * @return bool|null
+     * @param string $name The node name.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The node.
      */
-    public function access($attr, $path, $data, $volume)
+    private function createNode($name)
     {
-        return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
-            ? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
-            :  null;                                    // else elFinder decide it itself
+        return $this->createTreeBuilder()->root($name);
+    }
+
+    /**
+     * Creates a tree builder.
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder.
+     */
+    private function createTreeBuilder()
+    {
+        return new TreeBuilder();
     }
 }
 
