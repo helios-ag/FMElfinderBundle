@@ -45,6 +45,7 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('include_assets')->defaultTrue()->end()
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
+                            ->scalarNode('path_prefix')->defaultValue('/')->end()
                             ->arrayNode('connector')
                                 ->addDefaultsIfNotSet()
                                 ->fixXmlConfig('root')

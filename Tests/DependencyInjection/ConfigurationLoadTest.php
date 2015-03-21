@@ -38,6 +38,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'cors_support' => false,
                     'tinymce_popup_path' => '/pop-up',
                     'relative_path' => false,
+                    'path_prefix' => '/',
                     'connector' => array(
                         'debug' => true,
                         'binds' => array(),

@@ -1,4 +1,5 @@
 <?php
+
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Loader service for Elfinder backend
  * displays Elfinder
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2014 Al Ganiev
+ * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class ElFinderController extends Controller
@@ -45,13 +46,14 @@ class ElFinderController extends Controller
      */
     private function selectEditor($parameters, $instance, $homeFolder, $assetsPath, $formTypeId = null)
     {
-        $editor = $parameters['editor'];
-        $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
-        $fullScreen = $parameters['fullscreen'];
-        $relativePath = $parameters['relative_path'];
-        $includeAssets = $parameters['include_assets'];
-        $theme = $parameters['theme'];
-        $result = array();
+        $editor         = $parameters['editor'];
+        $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
+        $fullScreen     = $parameters['fullscreen'];
+        $relativePath   = $parameters['relative_path'];
+        $pathPrefix     = $parameters['path_prefix'];
+        $includeAssets  = $parameters['include_assets'];
+        $theme          = $parameters['theme'];
+        $result         = array();
 
         switch ($editor) {
             case 'custom':
@@ -81,8 +83,8 @@ class ElFinderController extends Controller
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
-                    'theme'         => $theme
-
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
                 );
                 return $result;
             case 'tinymce':
@@ -94,7 +96,8 @@ class ElFinderController extends Controller
                     'instance'           => $instance,
                     'homeFolder'         => $homeFolder,
                     'prefix'             => $assetsPath,
-                    'theme'              => $theme
+                    'theme'              => $theme,
+                    'pathPrefix'         => $pathPrefix
                 );
                 return $result;
             case 'tinymce4':
@@ -106,7 +109,8 @@ class ElFinderController extends Controller
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
-                    'theme'         => $theme
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
                 );
                 return $result;
             case 'form':

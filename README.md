@@ -188,6 +188,7 @@ fm_elfinder:
 * editor_template - define template to render editor is set to "custom".
 * connector - root node for defining options for elfinder root directories.
 * roots - define "virtual directories" that reflect directories in your project. 
+* path_prefix - path prefix with relative_path enabled, default is slash ('/')
     * show_hidden - show files and folders that starts from . (dot)
     * driver - driver type, LocalFileSystem, Dropbox, FTP 
     * alias - directory alias
@@ -195,6 +196,10 @@ fm_elfinder:
     * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
     * upload_deny: ['all'] 
     * upload_max_size: 2M 
+You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
+convert camelCased option name to under_scored option name.
+
+**Note:** `crypt_lib` option is not available as not implemented yet by elFinder PHP library.
     
 ### Use multiple upload folder by instance
 
@@ -612,9 +617,39 @@ fm_elfinder:
 
 for more options see [ElFinderConfigurationReader.php](https://github.com/helios-ag/FMElfinderBundle/blob/master/Configuration/ElFinderConfigurationReader.php)
                           
+# Amazon S3 Configuration
 
+To work with your S3 account and upload your files directly to S3 you have to set the following properties in your config file (config.yml).
 
+```yaml
+fm_elfinder:
+    instances:
+        default:
+            locale: %locale%
+            editor: ckeditor
+            fullscreen: true
+            include_assets: true
+            relative_path: false
+            connector:
+                debug: false
+                roots:
+                    aws_s3:
+                        driver: Flysystem
+                        url: %aws.cdn.content.url%
+                        flysystem:
+                            type: aws_s3_v2
+                            options:
+                                aws_s3_v2:
+                                    key: %aws.key%
+                                    secret: %aws.secret%
+                                    region: %aws.region%
+                                    bucket_name: %aws.cdn.content.bucket%
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+```
 
+In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path. 
 
-
+If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example. 
+Define the variables in your config.yml or set it directly. 
 
