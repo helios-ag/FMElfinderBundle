@@ -19,6 +19,7 @@ Recommended bundles to use with:
 * [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle/)
 * [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle/)
 
+<!-- -->
 
 - [Installation](#installation)
     - [Step 1: Installation](#step-1-installation)
@@ -43,7 +44,6 @@ Recommended bundles to use with:
     - [Plugins support](#plugins-support)
     - [Service as volume driver](#symfony-service-as-a-volume-driver)
     - [Flysystem configuration](#flysystem-configuration)
-- [Changelog](#changelog)
 
 ## Installation
 
@@ -54,48 +54,61 @@ This instruction explain how to setup bundle on Symfony 2.1 and newer
 
 ### Step 1: Installation
 
-Install legacy version of the bundle ([documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)):
+**Version 5:**
 
+Add FMElfinderBundle to your composer.json:
 
-```sh
-    composer require helios-ag/fm-elfinder-bundle: "~1.5" 
+```json
+{
+    "require": {
+        "helios-ag/fm-elfinder-bundle": "~5",
+    }
+}
 ```
 
-Version with flysystem support tagged as 4.0, this version have a minor changes in configuration, and require update
-to your config.yml, mostly its about under_score naming params;
+also add component-dir under config node of composer.json
+
+```json
+{
+    "config": {
+        "component-dir": "web/assets"
+    }
+}
+```
+
+**Version 4:**
+
+This version dont use **component** library 
 
 ```sh
-    composer require helios-ag/fm-elfinder-bundle: "~4.0"
+composer require helios-ag/fm-elfinder-bundle: "~4.0"
 ```
- 
 
 For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
 
 
 ```sh
-    composer require helios-ag/fm-elfinder-bundle: "~2.3"
-```
-
-
-For Symfony 2.4 and later use version 3
-
-
-```sh
-    composer require helios-ag/fm-elfinder-bundle: "~3"
+composer require helios-ag/fm-elfinder-bundle: "~2.3"
 ```
 
 Now tell composer to download the bundle by running the command:
 
 
 ```sh
-    composer update helios-ag/fm-elfinder-bundle
+composer update helios-ag/fm-elfinder-bundle
+```
+
+Install legacy version of the bundle ([documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)):
+
+```sh
+composer require helios-ag/fm-elfinder-bundle: "~1.5" 
 ```
 
 ### Step 2: Enable the bundle
 
 Enable the bundle in the kernel:
 
-``` php
+```php
 <?php
 // app/AppKernel.php
 
@@ -107,6 +120,7 @@ public function registerBundles()
     );
 }
 ```
+
 ### Step 3: Import FMElfinderBundle routing file
 
 ``` yaml
@@ -128,12 +142,10 @@ security:
         - { path: ^/elfinder, role: ROLE_USER }
 
 ```
-role ROLE_USER is provided as example.
-
 
 ### Step 5: Install assets
 
-Install and dump assets using symfony built-in commands:
+Install and dump assets via symfony built-in command:
 
 ```sh
 app/console assets:install web
@@ -150,6 +162,7 @@ fm_elfinder:
             locale: %locale% # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: true # defaults true, applies to simple and ckeditor editors
+            theme: smoothness # jquery theme
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: false # defaults to false
@@ -162,6 +175,7 @@ fm_elfinder:
                         upload_deny: ['all']
                         upload_max_size: 2M
 ```
+
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read permissions to this directory.
 * url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
@@ -174,6 +188,7 @@ fm_elfinder:
 * editor_template - define template to render editor is set to "custom".
 * connector - root node for defining options for elfinder root directories.
 * roots - define "virtual directories" that reflect directories in your project. 
+* path_prefix - path prefix with relative_path enabled, default is slash ('/')
     * show_hidden - show files and folders that starts from . (dot)
     * driver - driver type, LocalFileSystem, Dropbox, FTP 
     * alias - directory alias
@@ -181,8 +196,13 @@ fm_elfinder:
     * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
     * upload_deny: ['all'] 
     * upload_max_size: 2M 
+You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
+convert camelCased option name to under_scored option name.
+
+**Note:** `crypt_lib` option is not available as not implemented yet by elFinder PHP library.
     
 ### Use multiple upload folder by instance
+
 You can set multiple upload root folder by instance configuration.
 
 If you have configured your instance with `/uploads` path, you can provide
@@ -202,7 +222,8 @@ and of course be sure to set proper write/read permissions on home folders.
 **Note:** this feature is only available with `LocalFileSystem` driver.
 
 ## CORS support
-If you want to access to the connector URL from an other domain on the client side,
+
+If you want access connector URL from an other domain on the client side,
 simply configure FMElFinder bundle as you used to, and add the `cors_support: true` option to the cross domain instance:
 ```yaml
 # app/config/config.yml
@@ -214,8 +235,10 @@ fm_elfinder:
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
             # ...
 ```
+
 Then you have to add the CORS headers (`Access-Control-Allow-Origin`) to the response.
 It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) : 
+
 ```yaml
 # app/config/config.yml
 nelmio_cors:
@@ -238,9 +261,10 @@ nelmio_cors:
 
 ## Elfinder Form Type
 
-Since version 2.1 of the bundle, bundle come with custom form type, that is simple <input type="text"/> , that provide
-elfinder callback (opens Elfinder window), configuration for this form type is simple
+Bundle come with custom form type, ```html <input type="text"/>```, that provide elfinder callback (opens Elfinder window).
+
 First, define instance with editor set to "form":
+
 ```
 fm_elfinder:
     instances:
@@ -270,7 +294,8 @@ $form = $this->createFormBuilder()
     ->getForm();
 ```
 
-Render form with twig as usual:
+Third step, render form with twig as usual, please note that you need to include **jQuery (>=1.7)** library on your page
+
 ```jinja
 <form action="" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
@@ -408,7 +433,7 @@ as shown below
      {{ tinymce_init() }}
 ```
 
-instance_name is instance of elfinder's configuration
+instance_name is instance of elfinder configuration
 
 # Advanced configuration
 
@@ -447,6 +472,7 @@ services:
 fm_elfinder:
   loader: my_loader
 ```
+
 ## Plugins
 
 ElFinder comes with few plugins, like auto-resize, which can be enabled, by the following configuration:
@@ -539,143 +565,6 @@ This means that if you add the service definition:
 
 Since 4.0 bundle supports [flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library
 
-You will need library files to work with 
-
-Below example of configuring flysystem 
-```yaml
-fm_elfinder:
-    instances:
-        default:
-            locale: %locale% # defaults to current request locale
-            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
-            fullscreen: true # defaults true, applies to simple and ckeditor editors
-            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
-            connector:
-                debug: false # defaults to false
-                roots:       # at least one root must be defined
-                      local:
-                          driver: Flysystem
-                          path: uploads
-                          flysystem:
-                              type: local
-                              options:
-                                local:
-                                    path: %kernel.root_dir%/../web/uploads/
-                          upload_allow: ['all']
-                          #upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                          #upload_deny: ['all']
-                          upload_max_size: 2M
-                      dropbox:
-                          driver: Flysystem
-                          path: uploads
-                          flysystem:
-                              type: dropbox
-                              options:
-                                dropbox:
-                                    app: YourAppname // see dropbox developer site
-                                    token: ToKeN // can be aquired via developer console 
-                          upload_allow: ['all']
-                      aws_s3:
-                          driver: Flysystem
-                          url: "https://yours3orcloudfrontdomain.de"
-                          flysystem:
-                              type: aws_s3_v2
-                              options:
-                                aws_s3_v2:
-                                    key: 1
-                                    secret: 1
-                                    region: 1
-                          upload_allow: ['all']
-```                          
-
-for more options see [ElFinderConfigurationReader.php](https://github.com/helios-ag/FMElfinderBundle/blob/master/Configuration/ElFinderConfigurationReader.php)
-              
-# Amazon S3 Configuration
-
-To work with your S3 account and upload your files directly to S3 you have to set the following properties in your config file (config.yml).
-
-```yaml
-fm_elfinder:
-    instances:
-        default:
-            locale: %locale%
-            editor: ckeditor
-            fullscreen: true
-            include_assets: true
-            relative_path: false
-            connector:
-                debug: false
-                roots:
-                    aws_s3:
-                        driver: Flysystem
-                        url: %aws.cdn.content.url%
-                        flysystem:
-                            type: aws_s3_v2
-                            options:
-                                aws_s3_v2:
-                                    key: %aws.key%
-                                    secret: %aws.secret%
-                                    region: %aws.region%
-                                    bucket_name: %aws.cdn.content.bucket%
-                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                        upload_deny: ['all']
-```
-
-In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path. 
-
-If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example. 
-Define the variables in your config.yml or set it directly. 
-                          
-# Changelog
-
-### 4.0
-* CORS support
-* Flysystem driver support
- 
-### 3.4
-* Custom template renderer
-
-### 3.3
-* Plugins support
-
-### 3.2
-* Assetic support removed
-
-### 3.1
-* Plugins support
- 
-### 3.0
-* BC in public api (controllers showAction method with second parameter)
- 
-### 2.5
-* Version with Request_stack    
-
-### 2.3.3
-* Assetic support removed
-
-### 2.3.2
-* Multiple form types on the same page
-
-### 2.3
-* Version for the LTS Symfony (2.3.x) (without RequestStack usage)
-
-### 2.1
-* New Elfinder form type, provides basic <input type="text"/> field with Elfinder callback
-
-### 2.0
-* Multiple instances of elfinder configuration (allows multiple editors in one project, with different elfinder configurations)
-
-### 1.4
-* Dropped YUI compression support.
-* Uglify JS/CSS optional compression.
-
-### 1.3
-* TinyMCE 4 integration
-* Added link to IvoryCKEditorBundle in Readme
-* Minor improvements
-* Readme TOC
-
-
-
+Example configuration can be found here [Flysystem](/Resources/doc/flysystem.md)                      
 
 

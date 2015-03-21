@@ -1,0 +1,27 @@
+fm_elfinder:
+    configuration_provider: app.configurator.custom
+    instances:
+        default:
+            locale: en
+            editor: tinymce
+            editor_template: Elfinder/editor.html.twig
+            fullscreen: false
+            include_assets: false
+            tinymce_popup_path: /pop-up
+            relative_path: false
+            connector:
+                debug: true
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        show_hidden: true
+                        alias: foo
+                        tree_deep: 1
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        dropbox_settings:
+                            consumer_key: some_consumer
+                            consumer_secret: con$umer
+                        ftp_settings:
+                            host: 127.0.0.1
+                            user: root

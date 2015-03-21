@@ -1,4 +1,5 @@
 <?php
+
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Loader service for Elfinder backend
  * displays Elfinder
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2014 Al Ganiev
+ * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class ElFinderController extends Controller
@@ -28,7 +29,8 @@ class ElFinderController extends Controller
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters = $efParameters['instances'][$instance];
-        $result = $this->selectEditor($parameters, $instance, $homeFolder, $request->get("id"));
+        $assetsPath = $efParameters['assets_path'];
+        $result = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get("id"));
 
         return $this->render($result['template'], $result['params']);
     }
@@ -37,18 +39,21 @@ class ElFinderController extends Controller
      * @param array $parameters
      * @param string $instance
      * @param string $homeFolder
+     * @param $assetsPath
      * @param null $formTypeId
      * @return array
      * @throws Exception
      */
-    private function selectEditor($parameters, $instance, $homeFolder, $formTypeId = null)
+    private function selectEditor($parameters, $instance, $homeFolder, $assetsPath, $formTypeId = null)
     {
-        $editor = $parameters['editor'];
-        $locale = $parameters['locale'] ?: $this->container->getParameter('locale');
-        $fullscreen = $parameters['fullscreen'];
-        $relativePath = $parameters['relative_path'];
-        $includeAssets = $parameters['include_assets'];
-        $result = array();
+        $editor         = $parameters['editor'];
+        $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
+        $fullScreen     = $parameters['fullscreen'];
+        $relativePath   = $parameters['relative_path'];
+        $pathPrefix     = $parameters['path_prefix'];
+        $includeAssets  = $parameters['include_assets'];
+        $theme          = $parameters['theme'];
+        $result         = array();
 
         switch ($editor) {
             case 'custom':
@@ -59,22 +64,27 @@ class ElFinderController extends Controller
                 $result['template'] = $parameters['editor_template'];
                 $result['params'] = array(
                     'locale'        => $locale,
-                    'fullscreen'    => $fullscreen,
+                    'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
-                    'relative_path' => $relativePath
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
                 );
                 return $result;
             case 'ckeditor':
                 $result['template'] = 'FMElfinderBundle:Elfinder:ckeditor.html.twig';
                 $result['params'] = array(
                     'locale'        => $locale,
-                    'fullscreen'    => $fullscreen,
+                    'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
-                    'relative_path' => $relativePath
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
                 );
                 return $result;
             case 'tinymce':
@@ -84,7 +94,10 @@ class ElFinderController extends Controller
                     'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
                     'includeAssets'      => $includeAssets,
                     'instance'           => $instance,
-                    'homeFolder'         => $homeFolder
+                    'homeFolder'         => $homeFolder,
+                    'prefix'             => $assetsPath,
+                    'theme'              => $theme,
+                    'pathPrefix'         => $pathPrefix
                 );
                 return $result;
             case 'tinymce4':
@@ -94,29 +107,35 @@ class ElFinderController extends Controller
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
-                    'relative_path' => $relativePath
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
                 );
                 return $result;
             case 'form':
                 $result['template'] = 'FMElfinderBundle:Elfinder:elfinder_type.html.twig';
                 $result['params'] = array(
                     'locale'        => $locale,
-                    'fullscreen'    => $fullscreen,
+                    'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'id'            => $formTypeId,
-                    'relative_path' => $relativePath
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme
                 );
                 return $result;
             default:
                 $result['template'] = 'FMElfinderBundle:Elfinder:simple.html.twig';
                 $result['params'] = array(
                     'locale'        => $locale,
-                    'fullscreen'    => $fullscreen,
+                    'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
-                    'homeFolder'    => $homeFolder
+                    'homeFolder'    => $homeFolder,
+                    'prefix'        => $assetsPath
                 );
                 return $result;
         }

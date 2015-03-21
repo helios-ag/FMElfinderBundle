@@ -11,7 +11,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2014 Al Ganiev
+ * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Configuration implements ConfigurationInterface
@@ -25,12 +25,15 @@ class Configuration implements ConfigurationInterface
         $rootNode = $treeBuilder->root('fm_elfinder');
 
         $rootNode
+            ->fixXmlConfig('instance')
             ->children()
                 ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
+                ->scalarNode('assets_path')->defaultValue('/assets')->end()
                 ->scalarNode('loader')->defaultValue('fm_elfinder.loader.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
+                    ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
                             ->scalarNode('locale')->defaultNull()->end()
@@ -38,23 +41,130 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('editor')->defaultValue('simple')->end()
                             ->scalarNode('editor_template')->defaultNull()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
+                            ->scalarNode('theme')->defaultValue('smoothness')->end() // jQuery UI theme name
                             ->booleanNode('include_assets')->defaultTrue()->end()
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
+                            ->scalarNode('path_prefix')->defaultValue('/')->end()
                             ->arrayNode('connector')
                                 ->addDefaultsIfNotSet()
+                                ->fixXmlConfig('root')
                                 ->children()
                                     ->booleanNode('debug')->defaultFalse()->end()
-                                    ->append($this->createBindNode())
+                                    ->append($this->createBindsNode())
                                     ->append($this->createPluginsNode())
                                     ->arrayNode('roots')
+                                        ->useAttributeAsKey('name')
                                         ->isRequired()
                                         ->requiresAtLeastOneElement()
                                         ->prototype('array')
                                             ->children()
                                                 ->scalarNode('driver')
                                                     ->isRequired()
-                                                    ->defaultValue('LocalFileSystem')->end()
+                                                    ->defaultValue('LocalFileSystem')
+                                                ->end() // driver
+                                                ->scalarNode('path')->defaultValue('')->end()
+                                                ->scalarNode('start_path')->defaultValue('')->end()
+                                                ->scalarNode('url')->defaultValue('')->end()
+                                                ->scalarNode('alias')->defaultValue('')->end()
+                                                ->scalarNode('mime_detect')->defaultValue('auto')->end()
+                                                ->scalarNode('mimefile')->defaultValue('')->end()
+                                                ->scalarNode('img_lib')->defaultValue('auto')->end()
+                                                ->scalarNode('tmb_path')->defaultValue('.tmb')->end()
+                                                ->scalarNode('tmb_path_mode')->defaultValue(0777)->end()
+                                                ->scalarNode('tmb_url')->defaultValue('')->end()
+                                                ->integerNode('tmb_size')->defaultValue(48)->end()
+                                                ->booleanNode('tmb_crop')->defaultTrue()->end()
+                                                ->scalarNode('tmb_bg_color')->defaultValue('#ffffff')->end()
+                                                ->booleanNode('copy_overwrite')->defaultTrue()->end()
+                                                ->booleanNode('copy_join')->defaultTrue()->end()
+                                                ->booleanNode('copy_from')->defaultTrue()->end()
+                                                ->booleanNode('copy_to')->defaultTrue()->end()
+                                                ->booleanNode('upload_overwrite')->defaultTrue()->end()
+                                                ->arrayNode('upload_allow')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('image'))
+                                                ->end() // upload_allow
+                                                ->arrayNode('upload_deny')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('all'))
+                                                ->end() // upload_deny
+                                                ->arrayNode('upload_order')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array('deny', 'allow'))
+                                                ->end() // upload_order
+                                                ->scalarNode('upload_max_size')->defaultValue(0)->end()
+                                                ->arrayNode('defaults')
+                                                    ->useAttributeAsKey('defaults')
+                                                    ->normalizeKeys(false)
+                                                    ->prototype('boolean')->end()
+                                                    ->defaultValue(array('read' => true, 'write' => true))
+                                                ->end() // defaults
+                                                ->arrayNode('attributes')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // attributes
+                                                ->scalarNode('accepted_name')->defaultValue('/^\w[\w\s\.\%\-]*$/u')->end()
+                                                ->booleanNode('show_hidden')->defaultFalse()->end()
+                                                ->arrayNode('disabled_commands')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // disabled_commands
+                                                ->integerNode('tree_deep')->defaultValue(0)->end()
+                                                ->booleanNode('check_subfolders')->defaultTrue()->end()
+                                                ->scalarNode('separator')->defaultValue(DIRECTORY_SEPARATOR)->end()
+                                                ->scalarNode('date_format')->defaultValue('j M Y H:i')->end()
+                                                ->scalarNode('time_format')->defaultValue('H:i')->end()
+                                                ->arrayNode('archive_mimes')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // archive_mimes
+                                                ->arrayNode('archivers')
+                                                    ->beforeNormalization()
+                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->then(function ($v) {
+                                                            return array_map('trim', explode(',', $v));
+                                                        })
+                                                    ->end()
+                                                    ->prototype('scalar')->end()
+                                                    ->defaultValue(array())
+                                                ->end() // archive_mimes
                                                 ->arrayNode('flysystem')
                                                     ->canBeEnabled()
                                                     ->children()
@@ -64,34 +174,16 @@ class Configuration implements ConfigurationInterface
                                                 ->end()
                                                 ->scalarNode('glide_url')->defaultValue('')->end()
                                                 ->scalarNode('glide_key')->defaultValue('')->end()
-                                                ->arrayNode('disabled_commands')
-                                                    ->prototype('scalar')->end()
-                                                    ->defaultValue(array())
-                                                ->end()
-                                                ->scalarNode('path')->defaultValue('')->end()
-                                                ->scalarNode('url')->end()
                                                 ->append($this->createPluginsNode())
-                                                ->booleanNode('show_hidden')->defaultFalse()->end()
-                                                ->scalarNode('alias')->defaultValue('')->end()
-                                                ->integerNode('tree_deep')->defaultValue(0)->end()
-                                                ->arrayNode('upload_allow')
-                                                    ->prototype('scalar')->end()
-                                                    ->defaultValue(array('image'))
-                                                ->end()
-                                                ->arrayNode('upload_deny')
-                                                    ->prototype('scalar')->end()
-                                                    ->defaultValue(array('all'))
-                                                ->end()
-                                                ->scalarNode('upload_max_size')->defaultValue('2M')->end()
                                                 ->arrayNode('dropbox_settings')
                                                     ->canBeEnabled()
                                                     ->children()
-                                                        ->scalarNode('consumerKey')->end()
-                                                        ->scalarNode('consumerSecret')->end()
-                                                        ->scalarNode('accessToken')->end()
-                                                        ->scalarNode('accessTokenSecret')->end()
-                                                        ->scalarNode('dropboxUid')->end()
-                                                        ->scalarNode('metaCachePath')->end()
+                                                        ->scalarNode('consumer_key')->end()
+                                                        ->scalarNode('consumer_secret')->end()
+                                                        ->scalarNode('access_token')->end()
+                                                        ->scalarNode('access_token_secret')->end()
+                                                        ->scalarNode('dropbox_uid')->end()
+                                                        ->scalarNode('meta_cache_path')->end()
                                                     ->end()
                                                 ->end()
                                                 ->arrayNode('ftp_settings')
@@ -106,10 +198,10 @@ class Configuration implements ConfigurationInterface
                                                 ->arrayNode('s3_settings')
                                                     ->canBeEnabled()
                                                     ->children()
-                                                        ->scalarNode('accesskey')->end()
-                                                        ->scalarNode('secretkey')->end()
+                                                        ->scalarNode('access_key')->end()
+                                                        ->scalarNode('secret_key')->end()
                                                         ->scalarNode('bucket')->end()
-                                                        ->scalarNode('tmpPath')->end()
+                                                        ->scalarNode('tmp_path')->end()
                                                     ->end()
                                                 ->end()
                                             ->end()
@@ -205,7 +297,7 @@ class Configuration implements ConfigurationInterface
      */
     private function createPluginsNode()
     {
-        return $this->createNode('plugin')
+        return $this->createNode('plugins')
             ->useAttributeAsKey('name')
                 ->prototype('array')
                 ->useAttributeAsKey('name')
@@ -216,9 +308,9 @@ class Configuration implements ConfigurationInterface
     /**
      * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The bind node.
      */
-    private function createBindNode()
+    private function createBindsNode()
     {
-        return $this->createNode('bind')
+        return $this->createNode('binds')
             ->useAttributeAsKey('name')
                 ->prototype('array')
                 ->useAttributeAsKey('name')
