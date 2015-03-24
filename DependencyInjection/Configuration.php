@@ -76,6 +76,7 @@ class Configuration implements ConfigurationInterface
                                                 ->integerNode('tmb_size')->defaultValue(48)->end()
                                                 ->booleanNode('tmb_crop')->defaultTrue()->end()
                                                 ->scalarNode('tmb_bg_color')->defaultValue('#ffffff')->end()
+                                                ->append($this->createAdditionalThumbnailsNode())
                                                 ->booleanNode('copy_overwrite')->defaultTrue()->end()
                                                 ->booleanNode('copy_join')->defaultTrue()->end()
                                                 ->booleanNode('copy_from')->defaultTrue()->end()
@@ -212,6 +213,25 @@ class Configuration implements ConfigurationInterface
                 ->end();
 
         return $treeBuilder;
+    }
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The additional thumbnails node.
+     */
+    private function createAdditionalThumbnailsNode()
+    {
+        return $this->createNode('thumbnails')
+            ->useAttributeAsKey('name')
+            ->prototype('array')
+                ->children()
+                    ->scalarNode('tmb_path')->defaultValue('.tmb')->end()
+                    ->scalarNode('tmb_path_mode')->defaultValue(0777)->end()
+                    ->scalarNode('tmb_url')->defaultValue('')->end()
+                    ->integerNode('tmb_size')->defaultValue(48)->end()
+                    ->booleanNode('tmb_crop')->defaultTrue()->end()
+                    ->scalarNode('tmb_bg_color')->defaultValue('#ffffff')->end()
+                ->end()
+            ->end();
     }
 
     /**
