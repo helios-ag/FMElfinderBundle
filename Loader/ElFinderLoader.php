@@ -6,6 +6,7 @@ use Exception;
 use FM\ElFinderPHP\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class ElFinderLoader
@@ -49,18 +50,19 @@ class ElFinderLoader
 
     /**
      * Starts ElFinder
-     * @var $instance string
+     * @var Request $request
+     * @var string  $instance
      * @return void/array
      */
-    public function load($instance)
+    public function load(Request $request, $instance)
     {
         $this->setInstance($instance);
         $config = $this->configure();
         $connector = new ElFinderConnector(new ElFinderBridge($config));
         if ($config['corsSupport']) {
-            return $connector->execute();
+            return $connector->execute($request->query->all());
         } else {
-            $connector->run();
+            $connector->run($request->query->all());
         }
     }
 
