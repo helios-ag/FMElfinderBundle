@@ -65,6 +65,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'tmb_crop' => true,
                                 'tmb_bg_color' => '#ffffff',
                                 'tmb_path_mode' => 511,
+                                'thumbnails' => array(),
                                 'copy_overwrite' => true,
                                 'copy_join' => true,
                                 'copy_from' => true,
