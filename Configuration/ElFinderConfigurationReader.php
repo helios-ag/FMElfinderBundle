@@ -181,20 +181,20 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)): new Filesystem(new SftpAdapter($settings));
                 break;
             case 'aws_s3_v2':
-                $client = S3Client::factory([
+                $client = S3Client::factory(array(
                     'key'     => $opt['aws_s3_v2']['key'],
                     'secret'  => $opt['aws_s3_v2']['secret'],
                     'region'  => $opt['aws_s3_v2']['region']
-                ]);
+                ));
                 $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
                 break;
             case 'aws_s3_v3':
-                $client = S3Client::factory([
+                $client = S3Client::factory(array(
                     'key'     => $opt['aws_s3_v3']['key'],
                     'secret'  => $opt['aws_s3_v3']['secret'],
                     'region'  => $opt['aws_s3_v3']['region'],
                     'version' => $opt['aws_s3_v3']['version']
-                ]);
+                ));
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
                 break;
             case 'copy_com':
