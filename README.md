@@ -29,6 +29,7 @@ Recommended bundles to use with:
     - [Step 5: Install assets](#step-5-install-assets)
 - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
+    - [Multiple thumbnails](#multiple-thumbnails)
     - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
 - [CORS support](#cors-support)
 - [Elfinder Form Type](#elfinder-form-type)
@@ -197,11 +198,41 @@ fm_elfinder:
     * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
     * upload_deny: ['all'] 
     * upload_max_size: 2M 
+
 You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
 convert camelCased option name to under_scored option name.
 
 **Note:** `crypt_lib` option is not available as not implemented yet by elFinder PHP library.
-    
+
+
+### Multiple thumbnails
+
+By default, elFinder creates one thumbnail by image file.
+
+You can provide other thumbnails settings (in addition of the default one who is also configurable).
+Simply add a `thumbnails` key under one of your `roots` configuration :
+
+```yml
+roots:
+    uploads:
+        thumbnails:
+            tmb_64: # name of the thumbnail settings
+                tmb_path: '.tmb64' # if you don't provide a path different from the default one ('.tmb'), your thumbnail setting won't be took
+                tmb_size: 64
+                tmb_crop: false
+                # other tmb options ...
+            tmb_128:
+                tmb_path: '.tmb128'
+                tmb_size: 128
+                tmb_crop: false
+                # other tmb options ...
+```
+The default values for additional thumbnails settings are the same as the default thumbnail setting.
+
+For now, only the default thumbnail URL is returned.
+To get additional thumbnails URL, simply replace the path of the default thumbnail
+in the default thumbnail URL by the additional thumbnails' path.
+
 ### Use multiple upload folder by instance
 
 You can set multiple upload root folder by instance configuration.

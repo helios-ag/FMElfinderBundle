@@ -125,6 +125,17 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'archiveMimes'      => $parameter['archive_mimes'],
                 'archivers'         => $parameter['archivers']
             );
+
+            $driverOptions['additionalTmb'] = array();
+            $tmbPaths = array($parameter['tmb_path'] => true);
+            foreach ($parameter['thumbnails'] as $tmbConfigName => $tmbConfigValues) {
+                // we avoid to create different thumbnails sets on the same path
+                if (!isset($tmbPaths[$tmbConfigValues['tmb_path']])) {
+                    $driverOptions['additionalTmb'][$tmbConfigName] = $this->configureThumbnails($tmbConfigValues);
+                    $tmbPaths[$tmbConfigValues['tmb_path']] = true;
+                }
+            }
+
             if(!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
             };
@@ -152,6 +163,23 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 ? $parameter['url']
                 : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
             : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder);
+    }
+
+    /**
+     * @param  array  $thumbnailsOptions
+     * @return array
+     */
+    private function configureThumbnails(array $thumbnailsOptions)
+    {
+        $thumbnailsConfig = array();
+        $thumbnailsConfig['tmbPath']     = $thumbnailsOptions['tmb_path'];
+        $thumbnailsConfig['tmbPathMode'] = $thumbnailsOptions['tmb_path_mode'];
+        $thumbnailsConfig['tmbUrl']      = $thumbnailsOptions['tmb_url'];
+        $thumbnailsConfig['tmbSize']     = $thumbnailsOptions['tmb_size'];
+        $thumbnailsConfig['tmbCrop']     = $thumbnailsOptions['tmb_crop'];
+        $thumbnailsConfig['tmbBgColor']  = $thumbnailsOptions['tmb_bg_color'];
+
+        return $thumbnailsConfig;
     }
 
     /**
