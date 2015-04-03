@@ -238,6 +238,7 @@ class Configuration implements ConfigurationInterface
                             ->booleanNode('passive')->defaultTrue()->end()
                             ->booleanNode('ssl')->defaultTrue()->end()
                             ->integerNode('timeout')->defaultValue(30)->end()
+                            ->scalarNode('root')->defaultValue('/')->end()
                     ->end()
                 ->end()
                 ->arrayNode('aws_s3_v2')
