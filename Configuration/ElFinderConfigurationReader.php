@@ -172,11 +172,12 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'password' => $opt['ftp']['password'],
 
                     /** optional config settings */
-                    'port'     => $opt['ftp']['port'],
-                    'root'     => $opt['ftp']['root'],
-                    'passive'  => $opt['ftp']['passive'],
-                    'ssl'      => $opt['ftp']['ssl'],
-                    'timeout'  => $opt['ftp']['timeout']
+                    'port'          => $opt['ftp']['port'],
+                    'root'          => $opt['ftp']['root'],
+                    'passive'       => $opt['ftp']['passive'],
+                    'ssl'           => $opt['ftp']['ssl'],
+                    'timeout'       => $opt['ftp']['timeout'],
+                    'directoryPerm' => $opt['ftp']['directoryPerm']
                 );
                 $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)): new Filesystem(new SftpAdapter($settings));
                 break;
