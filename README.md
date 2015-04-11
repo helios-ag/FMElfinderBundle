@@ -3,14 +3,21 @@ FMElfinderBundle
 
 [ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
-[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+### Gitter chat ###
+
+[![Join the chat at https://gitter.im/helios-ag/FMElfinderBundle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/helios-ag/FMElfinderBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+### Code Quality Assurance ###
+
+| SensioLabs Insight | Travis CI | Scrutinizer CI|
+| ------------------------|-------------|-----------------|
+|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)|[![Build Status](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/helios-ag/FMElfinderBundle/?branch=master)
+
 [![Dependency Status](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4)
-
 [![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![License](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/license.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-elFinder is an open-source file manager for web, written in JavaScript using jQuery UI.
+**elFinder** is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
 Recommended bundles to use with:
@@ -20,6 +27,8 @@ Recommended bundles to use with:
 * [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle/)
 
 <!-- -->
+
+**Table of contents**
 
 - [Installation](#installation)
     - [Step 1: Installation](#step-1-installation)
@@ -38,7 +47,7 @@ Recommended bundles to use with:
 - [TinyMCE integration](#tinymce-integration)
     - [Integration with TinyMCE 3](#tinymce-3x)
     - [Integration with TinyMCE 4](#tinymce-4x)
-- [Advanced configuration](#advanced-configuration)    
+- [Advanced configuration](#advanced-configuration)
     - [Custom configuration provider](#custom-configuration-provider)
     - [Custom loader](#custom-loader)
     - [Plugins support](#plugins-support)
@@ -78,7 +87,7 @@ also add component-dir under config node of composer.json
 
 **Version 4:**
 
-This version dont use **component** library 
+This version dont use **component** library
 
 ```sh
 composer require helios-ag/fm-elfinder-bundle: "~4.0"
@@ -101,7 +110,7 @@ composer update helios-ag/fm-elfinder-bundle
 Install legacy version of the bundle ([documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)):
 
 ```sh
-composer require helios-ag/fm-elfinder-bundle: "~1.5" 
+composer require helios-ag/fm-elfinder-bundle: "~1.5"
 ```
 
 ### Step 2: Enable the bundle
@@ -184,24 +193,24 @@ fm_elfinder:
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * cors_support - allows cross domain responses handling (default false)
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" for standalone and "custom". 
+ "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" for standalone and "custom".
  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
 * editor_template - define template to render editor is set to "custom".
 * connector - root node for defining options for elfinder root directories.
-* roots - define "virtual directories" that reflect directories in your project. 
+* roots - define "virtual directories" that reflect directories in your project.
 * path_prefix - path prefix with relative_path enabled, default is slash ('/')
     * show_hidden - show files and folders that starts from . (dot)
-    * driver - driver type, LocalFileSystem, Dropbox, FTP 
+    * driver - driver type, LocalFileSystem, Dropbox, FTP
     * alias - directory alias
     * path - directory that contains files
-    * upload_allow: ['image/png', 'image/jpg', 'image/jpeg'] 
-    * upload_deny: ['all'] 
-    * upload_max_size: 2M 
+    * upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+    * upload_deny: ['all']
+    * upload_max_size: 2M
 You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
 convert camelCased option name to under_scored option name.
 
 **Note:** `crypt_lib` option is not available as not implemented yet by elFinder PHP library.
-    
+
 ### Use multiple upload folder by instance
 
 You can set multiple upload root folder by instance configuration.
@@ -233,12 +242,12 @@ fm_elfinder:
         default:
             locale: %locale% # defaults to current request locale
             cors_support: true # allows cross domain responses handling (default false)
-            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple, 
+            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple,
             # ...
 ```
 
 Then you have to add the CORS headers (`Access-Control-Allow-Origin`) to the response.
-It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) : 
+It can be easily done with [NelmioCORSBundle](https://github.com/nelmio/NelmioCorsBundle) :
 
 ```yaml
 # app/config/config.yml
@@ -391,7 +400,7 @@ stfalcon_tinymce:
 
 after (  {{ tinymce_init() }} ) function call
 place ElfinderBundle's function:
- 
+
 ```jinja
 {{ elfinder_tinymce_init('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'}) }}
 ```
@@ -425,7 +434,7 @@ stfalcon_tinymce:
 ```
 
 before (  {{ tinymce_init() }} ) function call (order is important)
-place ElfinderBundle's function: 
+place ElfinderBundle's function:
 {{ elfinder_tinymce_init4('instance_name', {'width':'900', 'height': '450', 'title':'ElFinder 2.0'} ) }}
 as shown below
 
@@ -469,44 +478,44 @@ services:
     my_loader:
         class:        AppBundle\Service\MyElFinderLoader
         arguments:    [@fm_elfinder.configurator]
-        
+
 fm_elfinder:
   loader: my_loader
 ```
 
 ## Plugins
 
-ElFinder comes with few plugins, like auto-resize, which can be enabled, by the following configuration:
+ElFinder comes with some plugins, like auto-resize, which can be enabled, by the following configuration:
 
 ```yaml
 fm_elfinder:
   instances:
     tinymce:
       locale: %locale%
-      editor: tinymce4 
+      editor: tinymce4
       include_assets: true
       relative_path: true
       fullscreen: true
       connector:
           debug: true # defaults to false
-          bind:
+          binds:
               upload.presave:
                   - Plugin.AutoResize.onUpLoadPreSave
-          plugin:
-              AutoResize: # global resize options, applies to root which don't have his own resize configuraion 
-                  enable: true 
-                  maxWidth: 750 
-                  maxHeight: 750 
+          plugins:
+              AutoResize: # global resize options, applies to root which don't have his own resize configuraion
+                  enable: true
+                  maxWidth: 750
+                  maxHeight: 750
                   quality: 95 # JPEG image save quality
           roots:       # at least one root must be defined
               uploads:
                   driver: LocalFileSystem
                   path: uploads
-                  plugin:
+                  plugins:
                       AutoResize:
-                          enable: true 
-                          maxWidth: 500 
-                          maxHeight: 500 
+                          enable: true
+                          maxWidth: 500
+                          maxHeight: 500
                           quality: 95 # JPEG image save quality
                   upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                   upload_deny: ['all']
@@ -514,7 +523,7 @@ fm_elfinder:
               resize1:
                   driver: LocalFileSystem
                   path: uploads
-                  plugin:
+                  plugins:
                       AutoResize:
                           enable: true # For control by volume driver
                           maxWidth: 800 # Path to Water mark image
@@ -526,19 +535,19 @@ fm_elfinder:
               resize2:
                   driver: LocalFileSystem
                   path: uploads
-                  plugin:
+                  plugins:
                       AutoResize:
                           enable: true
-                          maxWidth: 800 
-                          maxHeight: 800 
-                          quality: 95 
+                          maxWidth: 800
+                          maxHeight: 800
+                          quality: 95
                   upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                   upload_deny: ['all']
                   upload_max_size: 2M
-```                     
+```
 
 ElFinder comes with other plugins, check Plugins folder under ElFinderPHP for more information.
- 
+
 ## Symfony service as a volume driver
 
 volumeDriver can be declared as Symfony service
@@ -566,6 +575,4 @@ This means that if you add the service definition:
 
 Since 4.0 bundle supports [flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library
 
-Example configuration can be found here [Flysystem](/Resources/doc/flysystem.md)                      
-
-
+Example configuration can be found here [Flysystem](/Resources/doc/flysystem.md)
