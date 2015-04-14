@@ -119,13 +119,15 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue(array('read' => true, 'write' => true))
                                                 ->end() // defaults
                                                 ->arrayNode('attributes')
-                                                    ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
-                                                        ->then(function ($v) {
-                                                            return array_map('trim', explode(',', $v));
-                                                        })
+                                                    ->prototype('array')
+                                                        ->children()
+                                                            ->scalarNode('pattern')->end()
+                                                            ->scalarNode('read')->defaultValue(true)->end()
+                                                            ->scalarNode('write')->defaultValue(true)->end()
+                                                            ->scalarNode('locked')->defaultValue(false)->end()
+                                                            ->scalarNode('hidden')->defaultValue(false)->end()
+                                                        ->end()
                                                     ->end()
-                                                    ->prototype('scalar')->end()
                                                     ->defaultValue(array())
                                                 ->end() // attributes
                                                 ->scalarNode('accepted_name')->defaultValue('/^\w[\w\s\.\%\-]*$/u')->end()

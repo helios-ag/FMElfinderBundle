@@ -70,7 +70,15 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'copy_from' => true,
                                 'copy_to' => true,
                                 'upload_overwrite' => true,
-                                'attributes' => array(),
+                                'attributes' => array(
+                                    'some_pattern' => array(
+                                        'pattern' => '/^some_pattern$/',
+                                        'read'    => true,
+                                        'write'   => true,
+                                        'locked'  => false,
+                                        'hidden'  => false,
+                                    )
+                                ),
                                 'accepted_name' => '/^\w[\w\s\.\%\-]*$/u',
                                 'check_subfolders' => true,
                                 'separator' => DIRECTORY_SEPARATOR,
@@ -99,7 +107,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 ),
                                 's3_settings' => array(
                                     'enabled' => false,
-                                )
+                                ),
                             ),
                         ),
                     ),

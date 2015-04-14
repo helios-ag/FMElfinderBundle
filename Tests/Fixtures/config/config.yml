@@ -25,3 +25,10 @@ fm_elfinder:
                         ftp_settings:
                             host: 127.0.0.1
                             user: root
+                        attributes:
+                            some_pattern:
+                                pattern: '/^some_pattern$/'
+                                read: true
+                                write: true
+                                locked: false
+                                hidden: false
