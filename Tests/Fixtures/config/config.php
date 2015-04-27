@@ -32,6 +32,15 @@ $container->loadFromExtension('fm_elfinder', array(
                             'host' => '127.0.0.1',
                             'user' => 'root',
                         ),
+                        'attributes' => array(
+                            'some_pattern' => array(
+                                'pattern' => '/^some_pattern$/',
+                                'read'    => true,
+                                'write'   => true,
+                                'locked'  => false,
+                                'hidden'  => false,
+                            )
+                        ),
                     ),
                 ),
             ),

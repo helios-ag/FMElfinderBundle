@@ -31,6 +31,15 @@
                             host="127.0.0.1"
                             user="root"
                             />
+                    <fm-elfinder:attributes>
+                        <fm-elfinder:some_pattern
+                                pattern="/^some_pattern$/"
+                                read="true"
+                                write="true"
+                                locked="false"
+                                hidden="false"
+                                />
+                    </fm-elfinder:attributes>
                 </fm-elfinder:root>
             </fm-elfinder:connector>
         </fm-elfinder:instance>
