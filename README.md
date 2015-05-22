@@ -342,8 +342,7 @@ ivory_ck_editor:
     configs:
         default:
             filebrowserBrowseRoute: elfinder
-            filebrowserBrowseRouteParameters:
-                instance: ckeditor
+            filebrowserBrowseRouteParameters: []
 
 ```
 
@@ -355,11 +354,10 @@ Note that instance name should be the same as configured in elfinder bundle
 // applies to Ivory CKEditor Bundle
 $form = $this->createFormBuilder()
             ->add('content', 'ckeditor', array(
-                'config' => array(
-                    'filebrowser_image_browse_url' => array(
-                        'route'            => 'elfinder',
-                        'route_parameters' => array('instance' => 'ckeditor'),
-                    ),
+                 'config' => array(
+       			'filebrowserBrowseRoute' => 'elfinder',
+		        'filebrowserBrowseRouteParameters' => array('instance' => 'default')
+		        ),
                 ),
             ))
             ->getForm()
