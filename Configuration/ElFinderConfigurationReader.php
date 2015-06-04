@@ -125,6 +125,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'archiveMimes'      => $parameter['archive_mimes'],
                 'archivers'         => $parameter['archivers']
             );
+
+            if ($parameter['volume_id'] > 0) {
+                $driverOptions['id'] = $parameter['volume_id'];
+            }
+
             if(!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
             };

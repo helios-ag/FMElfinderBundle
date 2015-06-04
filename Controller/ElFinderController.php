@@ -7,6 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use FM\ElfinderBundle\Event\ElFinderEvents;
+use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
+use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
 /**
  * Loader service for Elfinder backend
@@ -144,13 +147,26 @@ class ElFinderController extends Controller
 
     /**
      * Loader service init
+     * @param Request $request
      * @param string $instance
+     * @param string $homeFolder
      * @return JsonResponse/void
      */
-    public function loadAction($instance)
+    public function loadAction(Request $request, $instance, $homeFolder)
     {
-        $loader = $this->container->get('fm_elfinder.loader');
-        return new JsonResponse($loader->load($instance));
+        $httpKernel = $this->get('http_kernel');
+
+        $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
+        $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
+
+        $loader = $this->get('fm_elfinder.loader');
+        $result = $loader->load($request, $instance);
+
+        $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
+        $this->get('event_dispatcher')->dispatch(ElFinderEvents::POST_EXECUTION, $postExecutionEvent);
+
+        // returning result (who may have been modified by a post execution event listener)
+        return new JsonResponse($postExecutionEvent->getResult());
     }
 
     /**

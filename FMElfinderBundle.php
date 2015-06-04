@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle;
 
 use FM\ElfinderBundle\DependencyInjection\Compiler\TwigFormPass;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -17,5 +18,6 @@ class FMElfinderBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new TwigFormPass());
+        $container->addCompilerPass(new RegisterListenersPass('event_dispatcher', 'fm_elfinder.event_listener', 'fm_elfinder.event_subscriber'));
     }
 }
