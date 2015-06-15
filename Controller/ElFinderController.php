@@ -73,7 +73,8 @@ class ElFinderController extends Controller
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
-                    'theme'         => $theme
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
                 );
                 return $result;
             case 'ckeditor':
