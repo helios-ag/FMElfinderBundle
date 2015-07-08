@@ -51,7 +51,7 @@
                 folders : false
             },
             getFileCallback : function(url) {
-                path = '/' + url.path;
+                path = '/' + url.replace("{{ app.request.schemeAndHttpHost }}/", "");
                 FileBrowserDialogue.mySubmit(path);
             }
         }).elfinder('instance');

@@ -27,7 +27,7 @@
             getFileCallback : function(file) {
                 if (funcNum) {
                     {% if relative_path %}
-                        window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ pathPrefix }}'+file.path);
+                        window.opener.CKEDITOR.tools.callFunction(funcNum, '{{ pathPrefix }}'+file.url.replace("{{ app.request.schemeAndHttpHost }}/", ""));
                     {% else %}
                         window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     {% endif %}

@@ -30,7 +30,7 @@
             lang : '{{ locale }}',
             getFileCallback: function(file) { // editor callback
                 {% if relative_path %}
-                        FileBrowserDialogue.mySubmit('{{ pathPrefix }}'+file.path); // pass selected file path to TinyMCE
+                        FileBrowserDialogue.mySubmit('{{ pathPrefix }}'+file.url.replace("{{ app.request.schemeAndHttpHost }}/", "")); // pass selected file path to TinyMCE
                 {% else %}
                     FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
                 {% endif %}
