@@ -16,7 +16,7 @@
             lang : '{{locale}}',
             getFileCallback: function(file) {
                 {% if relative_path %}
-                    window.opener.setValue('{{ pathPrefix }}'+file.path, "{{ id }}");
+                    window.opener.setValue('{{ pathPrefix }}'+file.url.replace("{{ app.request.schemeAndHttpHost }}/", ""), "{{ id }}");
                 {% else %}
                     window.opener.setValue(file.url, "{{ id }}");
                 {% endif %}
