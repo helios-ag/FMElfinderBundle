@@ -205,6 +205,8 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('secret_key')->end()
                                                         ->scalarNode('bucket')->end()
                                                         ->scalarNode('tmp_path')->end()
+                                                        ->scalarNode('signature')->end()
+                                                        ->scalarNode('region')->end()
                                                     ->end()
                                                 ->end()
                                             ->end()
