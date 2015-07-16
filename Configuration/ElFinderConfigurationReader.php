@@ -261,6 +261,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['secretkey'] = $parameter['s3_settings']['secret_key'];
                 $settings['bucket']    = $parameter['s3_settings']['bucket'];
                 $settings['tmpPath']   = $parameter['s3_settings']['tmp_path'];
+                $settings['signature']   = $parameter['s3_settings']['signature'];
+                $settings['region']   = $parameter['s3_settings']['region'];
                 break;
             default:
                 break;
