@@ -18,6 +18,7 @@
     ],
     "require": {
         "php":                           ">=5.3.3",
+        "symfony/symfony":               "~2.4",
         "symfony/framework-bundle":      "~2.4",
         "symfony/twig-bundle":           "~2.4",
         "helios-ag/fm-elfinder-php-connector": "~2.0",
