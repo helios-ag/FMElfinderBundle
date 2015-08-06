@@ -1,4 +1,5 @@
 composer.lock
 Tests/cache
 Tests/log
-
+Tests/Functional/cache
+Tests/Functional/log

@@ -1,0 +1,39 @@
+framework:
+    secret:          "thisismysecret"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "en"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+    fragments:       ~
+    http_method_override: true
+
+
+# ElFinder file manager
+fm_elfinder:
+    instances:
+        default:
+            locale: en # defaults to current request locale
+            editor: custom # other options are tinymce, tinymce4, form, custom and simple, 
+            cors_support: true # full symfony life cycle
+            fullscreen: true # defaults true, applies to simple and ckeditor editors
+            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+            connector:
+                debug: false # defaults to false
+                roots:       # at least one root must be defined
+                    uploads:
+                        show_hidden: false # defaults to false
+                        driver: LocalFileSystem
+                        volume_id: 1
+                        path: uploads
+
+
