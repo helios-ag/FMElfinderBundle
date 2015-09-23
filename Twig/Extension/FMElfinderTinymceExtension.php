@@ -34,7 +34,8 @@ class FMElfinderTinymceExtension extends Twig_Extension
     {
         return array(
             'elfinder_tinymce_init' => new \Twig_Function_Method($this, 'tinymce', array('is_safe' => array('html'))),
-            'elfinder_tinymce_init4' => new \Twig_Function_Method($this, 'tinymce4', array('is_safe' => array('html')))
+            'elfinder_tinymce_init4' => new \Twig_Function_Method($this, 'tinymce4', array('is_safe' => array('html'))),
+            'elfinder_summernote_init' => new \Twig_Function_Method($this, 'summernote', array('is_safe' => array('html'))),
         );
     }
 
@@ -77,6 +78,22 @@ class FMElfinderTinymceExtension extends Twig_Extension
                 'width' => $parameters['width'],
                 'height' => $parameters['height'],
                 'title' => $parameters['title']
+            ));
+    }
+
+    public function summernote($instance = 'default', $selector = '.summenote', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
+    {
+        if (!is_string($instance)) {
+            throw new Twig_Error_Runtime('The function can be applied to strings only.');
+        }
+
+        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_summernote.html.twig',
+            array(
+                'instance' => $instance,
+                'selector' => $selector,
+                'width'    => $parameters['width'],
+                'height'   => $parameters['height'],
+                'title'    => $parameters['title']
             ));
     }
 

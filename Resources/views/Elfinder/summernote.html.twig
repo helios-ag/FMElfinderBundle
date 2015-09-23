@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% if includeAssets %}
+        {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
+    {% endif %}
+</head>
+<body>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
+{% endif %}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        var elf = $('.elfinder').elfinder({
+            url : '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',  // connector URL
+            lang : '{{locale}}',
+            destroyOnClose : true,
+            getFileCallback : function(files, fm) {
+                window.opener.$('.summernote').summernote('editor.insertImage',files.url);
+                window.close();
+            }
+        }).elfinder('instance');
+    });
+</script>
+<div class="elfinder"></div>
+</body>
+</html>

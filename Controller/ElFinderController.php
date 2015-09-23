@@ -91,6 +91,20 @@ class ElFinderController extends Controller
                     'pathPrefix'    => $pathPrefix
                 );
                 return $result;
+            case 'summernote':
+                $result['template'] = 'FMElfinderBundle:Elfinder:summernote.html.twig';
+                $result['params'] = array(
+                    'locale'        => $locale,
+                    'fullscreen'    => $fullScreen,
+                    'includeAssets' => $includeAssets,
+                    'instance'      => $instance,
+                    'homeFolder'    => $homeFolder,
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix
+                );
+                return $result;
             case 'tinymce':
                 $result['template'] = 'FMElfinderBundle:Elfinder:tinymce.html.twig';
                 $result['params'] = array(

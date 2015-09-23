@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    function elFinderBrowser(){
+            window.open(
+                "{{ url('elfinder', {'instance': instance}) }}",
+                "",
+                "width={{ width }}, height={{ height }}, resizable=yes, scrollbars=no, status=no, toolbar=no"
+            );
+            return false;
+        }
+</script>
