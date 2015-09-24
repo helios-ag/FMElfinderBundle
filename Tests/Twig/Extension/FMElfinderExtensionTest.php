@@ -2,7 +2,7 @@
 
 namespace FM\ElfinderBundle\Tests\Twig\Extension;
 
-use FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension;
+use FM\ElfinderBundle\Twig\Extension\FMElfinderExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-class FMElfinderTinymceExtensionTest extends \PHPUnit_Framework_TestCase
+class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $containerMock;
@@ -36,7 +36,7 @@ class FMElfinderTinymceExtensionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
-        $this->extension = new FMElfinderTinymceExtension($this->twig);
+        $this->extension = new FMElfinderExtension($this->twig);
         $this->twig->addExtension($this->extension);
         $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../../../Resources/config'));
         $routes = new RouteCollection();
@@ -109,7 +109,7 @@ EOF;
      */
     public function testName()
     {
-        $this->assertEquals('fm_tinymce_init', $this->extension->getName());
+        $this->assertEquals('fm_elfinder_init', $this->extension->getName());
     }
 
     /**
@@ -146,9 +146,8 @@ EOF;
      */
     public function testSubClassOfTwigExtension()
     {
-        $rc = new \ReflectionClass('FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension');
+        $rc = new \ReflectionClass('FM\ElfinderBundle\Twig\Extension\FMElfinderExtension');
 
         $this->assertTrue($rc->isSubclassOf('Twig_Extension'));
     }
 }
-

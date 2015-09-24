@@ -17,10 +17,9 @@
         <service id="fm_elfinder.loader.default" class="%fm_elfinder.loader%">
             <argument type="service" id="fm_elfinder.configurator"/>
         </service>
-        <service id="twig.extension.fm_tinymce_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderTinymceExtension">
+        <service id="twig.extension.fm_elfinder_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderExtension">
             <argument type="service" id="twig"/>
-            <tag name="twig.extension" alias="fm_tinymce_init" />
+            <tag name="twig.extension" alias="fm_elfinder_init" />
         </service>
     </services>
 </container>
-
