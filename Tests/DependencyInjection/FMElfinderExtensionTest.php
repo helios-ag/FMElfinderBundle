@@ -22,7 +22,7 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('fm_elfinder.configurator');
         $this->assertContainerBuilderHasService('fm_elfinder.loader');
         $this->assertContainerBuilderHasService('fm_elfinder.configurator.default');
-        $this->assertContainerBuilderHasService('twig.extension.fm_tinymce_init');
+        $this->assertContainerBuilderHasService('twig.extension.fm_elfinder_init');
     }
 
     /**
