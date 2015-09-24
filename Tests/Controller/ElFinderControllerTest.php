@@ -18,18 +18,18 @@ class ElFinderControllerTest extends WebTestCase
 
     public function testDispatchedPrePostExecutionEvents()
     {
-        $preExecCount = 0;
+        $preExecCount  = 0;
         $postExecCount = 0;
         // storing the real event dispatcher
         $eventDispatcher = $this->container->get('event_dispatcher');
         // creating a container with mocked services for this test
         $container = $this->getContainer($eventDispatcher);
-        // adding listeners        
+        // adding listeners
         $eventDispatcher->addListener(ElFinderEvents::PRE_EXECUTION, $preExecListener = function (ElFinderEvents $e) use (&$preExecCount) {
-            $preExecCount++;
+            ++$preExecCount;
         });
         $eventDispatcher->addListener(ElFinderEvents::POST_EXECUTION, $postExecListener = function (ElFinderEvents $e) use (&$postExecCount) {
-            $postExecCount++;
+            ++$postExecCount;
         });
 
         $controller = new ElFinderController();
@@ -46,6 +46,7 @@ class ElFinderControllerTest extends WebTestCase
         $container->set('fm_elfinder.loader', $this->getElFinderLoaderMock());
         $container->set('http_kernel', $this->getHttpKernelMock());
         $container->set('event_dispatcher', $eventDispatcher);
+
         return $container;
     }
 
@@ -57,6 +58,7 @@ class ElFinderControllerTest extends WebTestCase
         $stub->expects($this->once())
             ->method('load')
             ->willReturn(array());
+
         return $stub;
     }
 
@@ -65,6 +67,7 @@ class ElFinderControllerTest extends WebTestCase
         $stub = $this->getMockBuilder('Symfony\Component\HttpKernel\HttpKernelInterface')
             ->disableOriginalConstructor()
             ->getMock();
+
         return $stub;
     }
 }

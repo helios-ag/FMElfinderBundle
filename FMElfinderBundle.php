@@ -8,8 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class FMElfinderBundle
- * @package FM\ElfinderBundle
+ * Class FMElfinderBundle.
  */
 class FMElfinderBundle extends Bundle
 {

@@ -2,8 +2,6 @@
 
 namespace FM\ElfinderBundle\Tests\Configuration;
 
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
-
 class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testSubClassOfHelper()

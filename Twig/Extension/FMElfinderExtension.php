@@ -3,12 +3,10 @@
 namespace FM\ElfinderBundle\Twig\Extension;
 
 /**
- * Class FMElfinderExtension
- * @package FM\ElfinderBundle\Twig\Extension
+ * Class FMElfinderExtension.
  */
 class FMElfinderExtension extends \Twig_Extension
 {
-
     /**
      * @var \Twig_Environment
      */
@@ -24,23 +22,26 @@ class FMElfinderExtension extends \Twig_Extension
 
     /**
      * {@inheritdoc}
+     *
      * @return array
      */
     public function getFunctions()
     {
-        $options = array('is_safe'=>array('html'));
+        $options = array('is_safe' => array('html'));
 
         return array(
             new \Twig_SimpleFunction('elfinder_tinymce_init', array($this, 'tinymce'), $options),
             new \Twig_SimpleFunction('elfinder_tinymce_init4', array($this, 'tinymce4'), $options),
-            new \Twig_SimpleFunction('elfinder_summernote_init', array($this, 'summernote'), $options)
+            new \Twig_SimpleFunction('elfinder_summernote_init', array($this, 'summernote'), $options),
         );
     }
 
     /**
      * @param string $instance
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @throws \Twig_Error_Runtime
+     *
      * @return mixed
      */
     public function tinymce($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
@@ -54,14 +55,16 @@ class FMElfinderExtension extends \Twig_Extension
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
-                'title'    => $parameters['title']
+                'title'    => $parameters['title'],
             ));
     }
 
     /**
      * @param string $instance
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @throws \Twig_Error_Runtime
+     *
      * @return mixed
      */
     public function tinymce4($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
@@ -75,14 +78,16 @@ class FMElfinderExtension extends \Twig_Extension
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
-                'title'    => $parameters['title']
+                'title'    => $parameters['title'],
             ));
     }
 
     /**
      * @param string $instance
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @throws \Twig_Error_Runtime
+     *
      * @return mixed
      */
     public function summernote($instance = 'default', $selector = '.summenote', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
@@ -97,17 +102,17 @@ class FMElfinderExtension extends \Twig_Extension
                 'selector' => $selector,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
-                'title'    => $parameters['title']
+                'title'    => $parameters['title'],
             ));
     }
 
     /**
-     * (non-PHPdoc)
+     * (non-PHPdoc).
+     *
      * @see Twig_ExtensionInterface::getName()
      */
     public function getName()
     {
         return 'fm_elfinder_init';
     }
-
 }

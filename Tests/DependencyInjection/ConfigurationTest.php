@@ -1,12 +1,12 @@
 <?php
 
 namespace FM\ElfinderBundle\Tests\DependencyInjection;
+
 use FM\ElfinderBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyConfigTest\PhpUnit\AbstractConfigurationTestCase;
 
 /**
- * Class ConfigurationTest
- * @package FM\ElfinderBundle\Tests\DependencyInjection
+ * Class ConfigurationTest.
  */
 class ConfigurationTest extends  AbstractConfigurationTestCase
 {
@@ -19,10 +19,8 @@ class ConfigurationTest extends  AbstractConfigurationTestCase
     {
         $this->assertConfigurationIsInvalid(
             array(
-                array()
+                array(),
             )
         );
     }
-
 }
-

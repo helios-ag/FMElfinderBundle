@@ -5,7 +5,6 @@ namespace FM\ElfinderBundle\Tests\Twig\Extension;
 use FM\ElfinderBundle\Twig\Extension\FMElfinderExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
@@ -35,21 +34,20 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->twig = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
+        $this->twig      = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
         $this->extension = new FMElfinderExtension($this->twig);
         $this->twig->addExtension($this->extension);
-        $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../../../Resources/config'));
-        $routes = new RouteCollection();
+        $loader     = new YamlFileLoader(new FileLocator(__DIR__.'/../../../Resources/config'));
+        $routes     = new RouteCollection();
         $collection = $loader->load('routing.yml');
         $routes->addCollection($collection);
         $this->twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
     }
 
-
     public function testRenderTinyMCE3()
     {
         $this->template = $this->twig->loadTemplate('_tinymce.html.twig');
-        $testData = $this->renderTemplate(array('instance' => 'minimal'));
+        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
 
         $expected = <<<EOF
 <script type="text/javascript">
@@ -80,7 +78,7 @@ EOF;
     public function testRenderTinyMCE4()
     {
         $this->template = $this->twig->loadTemplate('_tinymce4.html.twig');
-        $testData = $this->renderTemplate(array('instance' => 'minimal'));
+        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
 
         $expected = <<<EOF
 <script type="text/javascript">
@@ -138,7 +136,7 @@ EOF;
      */
     protected function normalizeOutput($output)
     {
-        return preg_replace( "/\r|\n/", "", str_replace(PHP_EOL, '', str_replace(' ', '', $output)));
+        return preg_replace("/\r|\n/", '', str_replace(PHP_EOL, '', str_replace(' ', '', $output)));
     }
 
     /**
