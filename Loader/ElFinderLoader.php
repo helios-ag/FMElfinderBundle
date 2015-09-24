@@ -9,8 +9,7 @@ use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class ElFinderLoader
- * @package FM\ElfinderBundle\Loader
+ * Class ElFinderLoader.
  */
 class ElFinderLoader
 {
@@ -21,7 +20,7 @@ class ElFinderLoader
 
     /**
      * @var ElFinderConfigurationProviderInterface
-     * Configurator service name
+     *                                             Configurator service name
      */
     protected $configurator;
 
@@ -35,13 +34,14 @@ class ElFinderLoader
 
     /**
      * @throws \Exception
+     *
      * @return array
      */
     public function configure()
     {
         $configurator = $this->configurator;
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
-            throw new Exception("Configurator class must implement ElFinderConfigurationProviderInterface");
+            throw new Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
         }
         $parameters = $configurator->getConfiguration($this->instance);
 
@@ -49,15 +49,15 @@ class ElFinderLoader
     }
 
     /**
-     * Starts ElFinder
-     * @var Request $request
+     * Starts ElFinder.
+     *
+     * @var Request
      * @var string  $instance
-     * @return void/array
      */
     public function load(Request $request, $instance)
     {
         $this->setInstance($instance);
-        $config = $this->configure();
+        $config    = $this->configure();
         $connector = new ElFinderConnector(new ElFinderBridge($config));
         if ($config['corsSupport']) {
             return $connector->execute($request->query->all());

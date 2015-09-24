@@ -3,8 +3,7 @@
 namespace FM\ElfinderBundle\Model;
 
 /**
- * Interface ElFinderUserInterface
- * @package FM\ElfinderBundle\Model
+ * Interface ElFinderUserInterface.
  */
 interface ElFinderPermissionsInterface
 {
@@ -24,5 +23,4 @@ interface ElFinderPermissionsInterface
 //     * @return mixed
 //     */
 //    public function setPermissions($permissions = array());
-
 }

@@ -6,8 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 /**
- * Class TwigFormPass
- * @package FM\ElfinderBundle\DependencyInjection\Compiler
+ * Class TwigFormPass.
  */
 class TwigFormPass implements CompilerPassInterface
 {
@@ -23,4 +22,3 @@ class TwigFormPass implements CompilerPassInterface
         ));
     }
 }
-

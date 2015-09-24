@@ -10,9 +10,9 @@ class ElFinderPostExecutionEventTest extends TestCase
 {
     public function testHasErrors()
     {
-        $request = new Request();
+        $request    = new Request();
         $httpKernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
-        $event = new ElFinderPostExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder', array());
+        $event      = new ElFinderPostExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder', array());
         $this->assertEquals(false, $event->hasErrors());
 
         $event = new ElFinderPostExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder', array('error' => true));

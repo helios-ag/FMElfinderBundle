@@ -12,7 +12,7 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return array(
-            new FMElfinderExtension()
+            new FMElfinderExtension(),
         );
     }
 
@@ -26,19 +26,17 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @return void
      */
     public function testMinimumConfiguration()
     {
         $this->container = new ContainerBuilder();
-        $loader = new FMElfinderExtension();
+        $loader          = new FMElfinderExtension();
         $loader->load(array($this->getMinimalConfiguration()), $this->container);
         $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 
     protected function getMinimalConfiguration()
     {
-
         $yaml = <<<EOF
 instances:
     default:
@@ -60,5 +58,4 @@ EOF;
 
         return $parser->parse($yaml);
     }
-
 }

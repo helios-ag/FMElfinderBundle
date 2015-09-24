@@ -21,18 +21,17 @@ use Dropbox\Client;
 use Barracuda\Copy\API;
 
 /**
- * Class ElFinderConfigurationReader
- * @package FM\ElfinderBundle\Configuration
+ * Class ElFinderConfigurationReader.
  */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
     /**
-     * @var array $options
+     * @var array
      */
     protected $options = array();
 
     /**
-     * @var array $parameters
+     * @var array
      */
     protected $parameters;
 
@@ -49,7 +48,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     /**
      * @param $parameters
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param ContainerInterface $container
+     * @param ContainerInterface                             $container
      */
     public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
     {
@@ -60,29 +59,30 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
     /**
      * @param $instance
+     *
      * @return array
      */
     public function getConfiguration($instance)
     {
-        $request = $this->requestStack->getCurrentRequest();
-        $efParameters = $this->parameters;
-        $parameters = $efParameters['instances'][$instance];
-        $options = array();
+        $request                = $this->requestStack->getCurrentRequest();
+        $efParameters           = $this->parameters;
+        $parameters             = $efParameters['instances'][$instance];
+        $options                = array();
         $options['corsSupport'] = $parameters['cors_support'];
-        $options['debug'] = $parameters['connector']['debug'];
-        $options['bind'] =  $parameters['connector']['binds'];
-        $options['plugins'] =  $parameters['connector']['plugins'];
-        $options['roots'] = array();
+        $options['debug']       = $parameters['connector']['debug'];
+        $options['bind']        =  $parameters['connector']['binds'];
+        $options['plugins']     =  $parameters['connector']['plugins'];
+        $options['roots']       = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
-            $path = $parameter['path'];
+            $path       = $parameter['path'];
             $homeFolder = $request->attributes->get('homeFolder');
             if ($homeFolder !== '') {
                 $homeFolder = '/'.$homeFolder.'/';
             }
-            if($parameter['flysystem']['enabled']) {
-                $adapter = $parameter['flysystem']['type']; // ftp ex.
-                $opt = $parameter['flysystem']['options'];
+            if ($parameter['flysystem']['enabled']) {
+                $adapter     = $parameter['flysystem']['type']; // ftp ex.
+                $opt         = $parameter['flysystem']['options'];
                 $filesystem  = $this->configureFlysystem($opt, $adapter);
             }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
@@ -93,7 +93,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'glideURL'          => $parameter['glide_url'],
                 'glideKey'          => $parameter['glide_key'],
                 'plugin'            => $parameter['plugins'],
-                'path'              => $path . $homeFolder, //removed slash for Flysystem compatibility
+                'path'              => $path.$homeFolder, //removed slash for Flysystem compatibility
                 'startPath'         => $parameter['start_path'],
                 'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
                 'alias'             => $parameter['alias'],
@@ -123,18 +123,18 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'separator'         => $parameter['separator'],
                 'timeFormat'        => $parameter['time_format'],
                 'archiveMimes'      => $parameter['archive_mimes'],
-                'archivers'         => $parameter['archivers']
+                'archivers'         => $parameter['archivers'],
             );
 
             if ($parameter['volume_id'] > 0) {
                 $driverOptions['id'] = $parameter['volume_id'];
             }
 
-            if(!$parameter['show_hidden']) {
+            if (!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
             };
 
-            if($parameter['driver'] == 'Flysystem') {
+            if ($parameter['driver'] == 'Flysystem') {
                 $driverOptions['filesystem'] = $filesystem;
             }
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
@@ -148,6 +148,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      * @param $request
      * @param $homeFolder
      * @param $path
+     *
      * @return string
      */
     private function getURL($parameter, $request, $homeFolder, $path)
@@ -162,6 +163,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     /**
      * @param $opt
      * @param $adapter
+     *
      * @return Filesystem
      */
     private function configureFlysystem($opt, $adapter)
@@ -176,21 +178,21 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'username' => $opt['ftp']['username'],
                     'password' => $opt['ftp']['password'],
 
-                    /** optional config settings */
+                    /* optional config settings */
                     'port'          => $opt['ftp']['port'],
                     'root'          => $opt['ftp']['root'],
                     'passive'       => $opt['ftp']['passive'],
                     'ssl'           => $opt['ftp']['ssl'],
                     'timeout'       => $opt['ftp']['timeout'],
-                    'directoryPerm' => $opt['ftp']['directoryPerm']
+                    'directoryPerm' => $opt['ftp']['directoryPerm'],
                 );
-                $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)): new Filesystem(new SftpAdapter($settings));
+                $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)) : new Filesystem(new SftpAdapter($settings));
                 break;
             case 'aws_s3_v2':
                 $client = S3Client::factory(array(
                     'key'     => $opt['aws_s3_v2']['key'],
                     'secret'  => $opt['aws_s3_v2']['secret'],
-                    'region'  => $opt['aws_s3_v2']['region']
+                    'region'  => $opt['aws_s3_v2']['region'],
                 ));
                 $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
                 break;
@@ -199,7 +201,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'key'     => $opt['aws_s3_v3']['key'],
                     'secret'  => $opt['aws_s3_v3']['secret'],
                     'region'  => $opt['aws_s3_v3']['region'],
-                    'version' => $opt['aws_s3_v3']['version']
+                    'version' => $opt['aws_s3_v3']['version'],
                 ));
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
                 break;
@@ -214,21 +216,23 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'gridfs':
                 $mongoClient = new MongoClient();
-                $gridFs = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
-                $filesystem = new Filesystem(new GridFSAdapter($gridFs));
+                $gridFs      = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
+                $filesystem  = new Filesystem(new GridFSAdapter($gridFs));
                 break;
             case 'zip':
                 $filesystem = new Filesystem(new ZipArchiveAdapter($opt['zip']['path']));
                 break;
             case 'dropbox':
-                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'],$opt['dropbox']['app'])));
+                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'], $opt['dropbox']['app'])));
                 break;
         }
+
         return $filesystem;
     }
 
     /**
-     * @param  array $parameter
+     * @param array $parameter
+     *
      * @return array
      */
     private function configureDriver(array $parameter)
@@ -236,19 +240,19 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $settings = array();
 
         switch (strtolower($parameter['driver'])) {
-            case "ftp":
+            case 'ftp':
                 $settings['host'] = $parameter['ftp_settings']['host'];
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
                 break;
-            case "ftpiis":
+            case 'ftpiis':
                 $settings['host'] = $parameter['ftp_settings']['host'];
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
                 break;
-            case "dropbox":
+            case 'dropbox':
                 $settings['consumerKey']       = $parameter['dropbox_settings']['consumer_key'];
                 $settings['consumerSecret']    = $parameter['dropbox_settings']['consumer_secret'];
                 $settings['accessToken']       = $parameter['dropbox_settings']['access_token'];
@@ -256,13 +260,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];
                 $settings['metaCachePath']     = $parameter['dropbox_settings']['meta_cache_path'];
                 break;
-            case "s3":
-                $settings['accesskey'] = $parameter['s3_settings']['access_key'];
-                $settings['secretkey'] = $parameter['s3_settings']['secret_key'];
-                $settings['bucket']    = $parameter['s3_settings']['bucket'];
-                $settings['tmpPath']   = $parameter['s3_settings']['tmp_path'];
+            case 's3':
+                $settings['accesskey']   = $parameter['s3_settings']['access_key'];
+                $settings['secretkey']   = $parameter['s3_settings']['secret_key'];
+                $settings['bucket']      = $parameter['s3_settings']['bucket'];
+                $settings['tmpPath']     = $parameter['s3_settings']['tmp_path'];
                 $settings['signature']   = $parameter['s3_settings']['signature'];
-                $settings['region']   = $parameter['s3_settings']['region'];
+                $settings['region']      = $parameter['s3_settings']['region'];
                 break;
             default:
                 break;
@@ -273,12 +277,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
     /**
      * Simple function to demonstrate how to control file access using "accessControl" callback.
-     * This method will disable accessing files/folders starting from '.' (dot)
+     * This method will disable accessing files/folders starting from '.' (dot).
      *
-     * @param  string    $attr attribute name (read|write|locked|hidden)
-     * @param  string    $path file path relative to volume root directory started with directory separator
+     * @param string $attr attribute name (read|write|locked|hidden)
+     * @param string $path file path relative to volume root directory started with directory separator
      * @param $data
      * @param $volume
+     *
      * @return bool|null
      */
     public function access($attr, $path, $data, $volume)

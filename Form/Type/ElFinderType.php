@@ -9,39 +9,38 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class ElFinderType
- * @package FM\ElfinderBundle\Form\Type
+ * Class ElFinderType.
  */
 class ElFinderType extends AbstractType
 {
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->setAttribute('enable', $options['enable']);
 
-        if($builder->getAttribute('enable'))
+        if ($builder->getAttribute('enable')) {
             $builder->setAttribute('instance', $options['instance']);
-            $builder->setAttribute('homeFolder', $options['homeFolder']);
+        }
+        $builder->setAttribute('homeFolder', $options['homeFolder']);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['enable'] = $form->getConfig()->getAttribute('enable');
 
-        if($form->getConfig()->getAttribute('enable')) {
-            $view->vars['instance'] = $form->getConfig()->getAttribute('instance');
+        if ($form->getConfig()->getAttribute('enable')) {
+            $view->vars['instance']   = $form->getConfig()->getAttribute('instance');
             $view->vars['homeFolder'] = $form->getConfig()->getAttribute('homeFolder');
         }
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -57,19 +56,20 @@ class ElFinderType extends AbstractType
                 'homeFolder'    => array('string', 'null'),
             ));
     }
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getParent()
     {
         return 'text';
     }
+
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
         return 'elfinder';
     }
 }
-

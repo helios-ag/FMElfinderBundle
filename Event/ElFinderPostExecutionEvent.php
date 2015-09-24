@@ -9,13 +9,14 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 {
     /**
      * Command execution result.
+     *
      * @var array
      */
     protected $result;
 
-
     /**
      * Constructor.
+     *
      * @param Request             $request
      * @param HttpKernelInterface $httpKernel
      * @param string              $instance
@@ -31,7 +32,8 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 
     /**
      * Tells if execution has encountered errors.
-     * @return boolean
+     *
+     * @return bool
      */
     public function hasErrors()
     {

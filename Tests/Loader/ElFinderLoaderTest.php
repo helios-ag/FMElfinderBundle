@@ -3,12 +3,9 @@
 namespace FM\ElfinderBundle\Tests\Loader;
 
 use FM\ElfinderBundle\Loader\ElFinderLoader;
-use InvalidArgumentException;
-use stdClass;
 
 class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * @var ElFinderLoader
      */
@@ -24,7 +21,7 @@ class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
         $this->configuratorMock = $this->getMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
         $this->configuratorMock->expects($this->any())
                                ->method('getConfiguration')
-                               ->will($this->returnValue(array('parameters'=>array())));
+                               ->will($this->returnValue(array('parameters' => array())));
         $this->loader = new ElFinderLoader($this->configuratorMock);
         $this->loader->setInstance('minimal');
     }
@@ -32,6 +29,6 @@ class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
     public function testConfigure()
     {
         $this->loader->configure();
-        $this->assertEquals(array('parameters'=>array()), $this->configuratorMock->getConfiguration('minimal'));
+        $this->assertEquals(array('parameters' => array()), $this->configuratorMock->getConfiguration('minimal'));
     }
 }
