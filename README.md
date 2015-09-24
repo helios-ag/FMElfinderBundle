@@ -25,6 +25,7 @@ Recommended bundles to use with:
 * [TinymceBundle](https://github.com/stfalcon/TinymceBundle/)
 * [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle/)
 * [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle/)
+* [FMSummernoteBundle](https://github.com/helios-ag/summernote-bundle/)
 
 <!-- -->
 
@@ -50,6 +51,8 @@ Recommended bundles to use with:
 - [TinyMCE integration](#tinymce-integration)
     - [Integration with TinyMCE 3](#tinymce-3x)
     - [Integration with TinyMCE 4](#tinymce-4x)
+- [Summernote integration](#summernote-integration)
+
 - [Advanced configuration](#advanced-configuration)
     - [Custom configuration provider](#custom-configuration-provider)
     - [Custom loader](#custom-loader)
@@ -521,6 +524,26 @@ as shown below
 ```
 
 instance_name is instance of elfinder configuration
+
+## Summernote integration
+
+Update the editor property in your app/config.yml
+Set Summernote editor type:
+
+```yaml
+fm_elfinder:
+    editor: summernote
+```
+
+Edit template that contains summernote instance (the same way as for tinymce)
+
+```jinja
+     {{ elfinder_summernote_init('instance_name') }}
+     {{ summernote_init() }}
+```
+
+Don't forget to enable elfinder plugin in summernote configuration.
+
 
 # Advanced configuration
 

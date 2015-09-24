@@ -6,10 +6,11 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle
+ * This class contains the configuration information for the bundle.
  *
  * This information is solely responsible for how the different configuration
  * sections are normalized, and merged.
+ *
  * @author Al Ganiev <helios.ag@gmail.com>
  * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
@@ -17,12 +18,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('fm_elfinder');
+        $rootNode    = $treeBuilder->root('fm_elfinder');
 
         $rootNode
             ->fixXmlConfig('instance')
@@ -347,4 +348,3 @@ class Configuration implements ConfigurationInterface
         return new TreeBuilder();
     }
 }
-

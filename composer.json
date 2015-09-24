@@ -33,7 +33,8 @@
     "suggest": {
         "stfalcon/tinymce-bundle": "TinyMCE Bundle by Stfalcon",
         "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen",
-        "trsteel/ckeditor-bundle": "CKEditor Bundle by trsteel"
+        "trsteel/ckeditor-bundle": "CKEditor Bundle by trsteel",
+        "helios-ag/fm-summernote-bundle": "Summernote Bundle by me"
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "" }

@@ -6,10 +6,9 @@ use FM\ElFinderPHP\ElFinder;
 use FM\ElFinderPHP\Driver\ElFinderVolumeDriver;
 
 /**
- * Class ElFinderBridge
+ * Class ElFinderBridge.
  *
  * Use Symfony services as regular VolumeDrivers.
- *
  */
 class ElFinderBridge extends ElFinder
 {

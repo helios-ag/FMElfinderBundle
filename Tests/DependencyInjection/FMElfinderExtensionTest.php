@@ -12,7 +12,7 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
     protected function getContainerExtensions()
     {
         return array(
-            new FMElfinderExtension()
+            new FMElfinderExtension(),
         );
     }
 
@@ -22,23 +22,21 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasAlias('fm_elfinder.configurator');
         $this->assertContainerBuilderHasService('fm_elfinder.loader');
         $this->assertContainerBuilderHasService('fm_elfinder.configurator.default');
-        $this->assertContainerBuilderHasService('twig.extension.fm_tinymce_init');
+        $this->assertContainerBuilderHasService('twig.extension.fm_elfinder_init');
     }
 
     /**
-     * @return void
      */
     public function testMinimumConfiguration()
     {
         $this->container = new ContainerBuilder();
-        $loader = new FMElfinderExtension();
+        $loader          = new FMElfinderExtension();
         $loader->load(array($this->getMinimalConfiguration()), $this->container);
         $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 
     protected function getMinimalConfiguration()
     {
-
         $yaml = <<<EOF
 instances:
     default:
@@ -60,5 +58,4 @@ EOF;
 
         return $parser->parse($yaml);
     }
-
 }

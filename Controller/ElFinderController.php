@@ -13,38 +13,42 @@ use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
 /**
  * Loader service for Elfinder backend
- * displays Elfinder
+ * displays Elfinder.
+ *
  * @author Al Ganiev <helios.ag@gmail.com>
  * @copyright 2012-2015 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class ElFinderController extends Controller
 {
-
     /**
-     * Renders Elfinder
+     * Renders Elfinder.
+     *
      * @param Request $request
-     * @param  string $instance
-     * @param  string $homeFolder
+     * @param string  $instance
+     * @param string  $homeFolder
+     *
      * @return Response
      */
     public function showAction(Request $request, $instance, $homeFolder)
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
-        $parameters = $efParameters['instances'][$instance];
-        $assetsPath = $efParameters['assets_path'];
-        $result = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get("id"));
+        $parameters   = $efParameters['instances'][$instance];
+        $assetsPath   = $efParameters['assets_path'];
+        $result       = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
 
         return $this->render($result['template'], $result['params']);
     }
 
     /**
-     * @param array $parameters
+     * @param array  $parameters
      * @param string $instance
      * @param string $homeFolder
      * @param $assetsPath
      * @param null $formTypeId
+     *
      * @return array
+     *
      * @throws Exception
      */
     private function selectEditor($parameters, $instance, $homeFolder, $assetsPath, $formTypeId = null)
@@ -65,7 +69,7 @@ class ElFinderController extends Controller
                 }
 
                 $result['template'] = $parameters['editor_template'];
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -74,12 +78,13 @@ class ElFinderController extends Controller
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
-                    'pathPrefix'    => $pathPrefix
+                    'pathPrefix'    => $pathPrefix,
                 );
+
                 return $result;
             case 'ckeditor':
                 $result['template'] = 'FMElfinderBundle:Elfinder:ckeditor.html.twig';
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -88,12 +93,28 @@ class ElFinderController extends Controller
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
-                    'pathPrefix'    => $pathPrefix
+                    'pathPrefix'    => $pathPrefix,
                 );
+
+                return $result;
+            case 'summernote':
+                $result['template'] = 'FMElfinderBundle:Elfinder:summernote.html.twig';
+                $result['params']   = array(
+                    'locale'        => $locale,
+                    'fullscreen'    => $fullScreen,
+                    'includeAssets' => $includeAssets,
+                    'instance'      => $instance,
+                    'homeFolder'    => $homeFolder,
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix,
+                );
+
                 return $result;
             case 'tinymce':
                 $result['template'] = 'FMElfinderBundle:Elfinder:tinymce.html.twig';
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'             => $locale,
                     'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
                     'includeAssets'      => $includeAssets,
@@ -101,12 +122,13 @@ class ElFinderController extends Controller
                     'homeFolder'         => $homeFolder,
                     'prefix'             => $assetsPath,
                     'theme'              => $theme,
-                    'pathPrefix'         => $pathPrefix
+                    'pathPrefix'         => $pathPrefix,
                 );
+
                 return $result;
             case 'tinymce4':
                 $result['template'] = 'FMElfinderBundle:Elfinder:tinymce4.html.twig';
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
@@ -114,12 +136,13 @@ class ElFinderController extends Controller
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
-                    'pathPrefix'    => $pathPrefix
+                    'pathPrefix'    => $pathPrefix,
                 );
+
                 return $result;
             case 'form':
                 $result['template'] = 'FMElfinderBundle:Elfinder:elfinder_type.html.twig';
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -129,28 +152,32 @@ class ElFinderController extends Controller
                     'relative_path' => $relativePath,
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
-                    'pathPrefix'    => $pathPrefix
+                    'pathPrefix'    => $pathPrefix,
                 );
+
                 return $result;
             default:
                 $result['template'] = 'FMElfinderBundle:Elfinder:simple.html.twig';
-                $result['params'] = array(
+                $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
-                    'prefix'        => $assetsPath
+                    'prefix'        => $assetsPath,
                 );
+
                 return $result;
         }
     }
 
     /**
-     * Loader service init
+     * Loader service init.
+     *
      * @param Request $request
-     * @param string $instance
-     * @param string $homeFolder
+     * @param string  $instance
+     * @param string  $homeFolder
+     *
      * @return JsonResponse/void
      */
     public function loadAction(Request $request, $instance, $homeFolder)
@@ -171,7 +198,7 @@ class ElFinderController extends Controller
     }
 
     /**
-     * Get url from config string
+     * Get url from config string.
      *
      * @param string $inputUrl
      *
@@ -190,5 +217,4 @@ class ElFinderController extends Controller
 
         return $inputUrl;
     }
-
 }
