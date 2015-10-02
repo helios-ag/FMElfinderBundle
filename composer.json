@@ -22,7 +22,7 @@
         "symfony/framework-bundle":      "~2.4",
         "symfony/twig-bundle":           "~2.4",
         "helios-ag/fm-elfinder-php-connector": "~2.0",
-        "components/elfinder": "~1.0"
+        "components/elfinder": "^1.0"
     },
     "require-dev" : {
         "symfony/form": "~2.1",
