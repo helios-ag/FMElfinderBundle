@@ -22,13 +22,12 @@
         "symfony/framework-bundle":      "~2.4",
         "symfony/twig-bundle":           "~2.4",
         "helios-ag/fm-elfinder-php-connector": "~2.0",
-        "components/elfinder": "~1.0"
+        "components/elfinder": "~2.0"
     },
     "require-dev" : {
         "symfony/form": "~2.1",
-        "doctrine/doctrine-bundle": "~1.0",
-        "matthiasnoback/symfony-config-test":  "0.*",
-        "matthiasnoback/symfony-dependency-injection-test": "0.*"
+        "matthiasnoback/symfony-config-test":  "~1",
+        "matthiasnoback/symfony-dependency-injection-test": "~1"
     },
     "suggest": {
         "stfalcon/tinymce-bundle": "TinyMCE Bundle by Stfalcon",
