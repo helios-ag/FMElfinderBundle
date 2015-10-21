@@ -331,7 +331,7 @@ class PreExecutionListener
 
 ### Sub requests
 
-Events allows you to perform sub requests (only for commands used with HTTP GET method, i.e. not to upload a file).
+Events allows you to perform sub requests.
 These subrequests are working the same way than `forward` function on symfony controllers,
 and are also hookable.
 
