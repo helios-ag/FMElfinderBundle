@@ -300,6 +300,35 @@ If you don't, the symfony life cycle won't end properly and so the event won't b
 
 You can access to all commands names [here](https://github.com/helios-ag/ElFinderPHP/blob/master/src/ElFinder.php#L61 "elFinder commands").
 
+If the default behavior doesn't suit you, you can also change a command parameter just like that:
+
+```xml
+<!-- src/AppBundle/Resources/config/services.xml -->
+<service id="app_bundle.listener.elfinder_pre_execution" class="AppBundle\EventListener\ElFinder\PreExecutionListener">
+    <tag name="fm_elfinder.event_listener" event="fm_elfinder.event.pre_execution" method="onPreExecute" />
+</service>
+```
+
+```php
+// src/AppBundle/EventListener/ElFinder/PostExecutionListener.php
+namespace AppBundle\EventListener\ElFinder;
+
+use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
+
+class PreExecutionListener
+{
+    /**
+     * @param  ElFinderPreExecutionEvent $event
+     */
+    public function onPreExecute(ElFinderPreExecutionEvent $event)
+    {
+        if ($event->getCommand() == 'upload') {
+        	$event->getRequest()->query->set('upload_path', array('/myDirectory/') );	// relative path
+        }
+    }
+}
+```
+
 ### Sub requests
 
 Events allows you to perform sub requests (only for commands used with HTTP GET method, i.e. not to upload a file).
