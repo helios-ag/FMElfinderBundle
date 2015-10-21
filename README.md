@@ -323,7 +323,7 @@ class PreExecutionListener
     public function onPreExecute(ElFinderPreExecutionEvent $event)
     {
         if ($event->getCommand() == 'upload') {
-        	$event->getRequest()->query->set('upload_path', array('/myDirectory/') );	// relative path
+        	$event->getRequest()->query->set('upload_path', array('/myDirectory/') );  // relative path
         }
     }
 }
