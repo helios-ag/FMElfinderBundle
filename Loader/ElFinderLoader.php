@@ -64,9 +64,10 @@ class ElFinderLoader
         $this->setInstance($instance);
         $config = $this->configure();
 
-	$this->Bridge = new ElFinderBridge($config);
+		$this->Bridge = new ElFinderBridge($config);
 
         $connector = new ElFinderConnector($this->Bridge);
+        
         if ($config['corsSupport']) {
             return $connector->execute($request->query->all());
         } else {
@@ -99,15 +100,15 @@ class ElFinderLoader
 	 * @return string
 	 **/
 	public function encode(Request $Request, $path) {
-
+	    
 		$target = ($Request->isMethod('POST')) ? $Request->get('target') : $Request->query->get('target');
-
+		
 		if (empty($target)) {
 			throw new Exception('Request: target parameter is empty. Volume id can\'t be found');
 		}
-
+		
 		$Volume = $this->Bridge->getVolume($target);
-
+		
 		return (!empty($Volume)) ? $Volume->encode($path) : false;
 	}
 
@@ -119,9 +120,9 @@ class ElFinderLoader
 	 * @return string
 	 **/
 	public function decode($hash) {
-
+	    
 		$Volume = $this->Bridge->getVolume($hash);
-
+		
 		return (!empty($Volume)) ? $Volume->decode($hash) : false;
 	}
 }
