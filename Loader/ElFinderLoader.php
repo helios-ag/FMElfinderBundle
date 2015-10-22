@@ -81,4 +81,39 @@ class ElFinderLoader
     {
         $this->configurator = $configurator;
     }
+    
+    /**
+	 * Encode path into hash
+	 *
+	 * @var Request
+	 * @param  string
+	 * @throws \Exception
+	 * @return string
+	 **/
+	public function encode(Request $Request, $path) {
+
+		$target = ($Request->isMethod('POST')) ? $Request->get('target') : $Request->query->get('target');
+
+		if (empty($target)) {
+			throw new Exception('Request: target parameter is empty. Volume id can\'t be found');
+		}
+
+		$Volume = $this->Bridge->getVolume($target);
+
+		return $Volume->encode($path);
+	}
+
+	/**
+	 * Decode path from hash
+	 *
+	 * @param  string
+	 * @throws \Exception
+	 * @return string
+	 **/
+	public function decode($hash) {
+
+		$Volume = $this->Bridge->getVolume($hash);
+
+		return $Volume->decode($hash);
+	}
 }
