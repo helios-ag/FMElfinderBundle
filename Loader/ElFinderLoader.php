@@ -25,6 +25,11 @@ class ElFinderLoader
     protected $configurator;
 
     /**
+     * @var ElFinderBridge
+     */
+    protected $Bridge;
+
+    /**
      * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
      */
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
@@ -57,8 +62,12 @@ class ElFinderLoader
     public function load(Request $request, $instance)
     {
         $this->setInstance($instance);
-        $config    = $this->configure();
-        $connector = new ElFinderConnector(new ElFinderBridge($config));
+        $config = $this->configure();
+        
+        $this->Bridge = new ElFinderBridge($config);
+
+        $connector = new ElFinderConnector($this->Bridge);
+        
         if ($config['corsSupport']) {
             return $connector->execute($request->query->all());
         } else {
