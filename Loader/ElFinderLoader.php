@@ -125,7 +125,7 @@ class ElFinderLoader
 
 		$Volume = $this->Bridge->getVolume($hash);
 
-		if (empty($target)) return false;
+		if (empty($Volume)) return false;
 
 		return $Volume->decode($hash);
 	}
