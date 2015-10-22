@@ -64,7 +64,7 @@ class ElFinderLoader
         $this->setInstance($instance);
         $config = $this->configure();
 
-		$this->Bridge = new ElFinderBridge($config);
+	$this->Bridge = new ElFinderBridge($config);
 
         $connector = new ElFinderConnector($this->Bridge);
         if ($config['corsSupport']) {
