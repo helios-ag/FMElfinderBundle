@@ -91,7 +91,7 @@ class ElFinderLoader
         $this->configurator = $configurator;
     }
     
-    /**
+	/**
 	 * Encode path into hash
 	 *
 	 * @var Request
@@ -109,19 +109,23 @@ class ElFinderLoader
 
 		$Volume = $this->Bridge->getVolume($target);
 
+		if (empty($Volume)) return false;
+
 		return $Volume->encode($path);
 	}
 
 	/**
 	 * Decode path from hash
 	 *
+	 * @var Request
 	 * @param  string
-	 * @throws \Exception
 	 * @return string
 	 **/
 	public function decode($hash) {
 
 		$Volume = $this->Bridge->getVolume($hash);
+
+		if (empty($target)) return false;
 
 		return $Volume->decode($hash);
 	}
