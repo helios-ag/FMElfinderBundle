@@ -90,7 +90,7 @@ class ElFinderLoader
     {
         $this->configurator = $configurator;
     }
-    
+
     /**
      * Encode path into hash
      *
