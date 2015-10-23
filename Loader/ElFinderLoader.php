@@ -24,10 +24,10 @@ class ElFinderLoader
      */
     protected $configurator;
 
-	/**
-	 * @var ElFinderBridge
-	 */
-	protected $Bridge;
+    /**
+     * @var ElFinderBridge
+     */
+    protected $Bridge;
 
     /**
      * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
@@ -57,15 +57,15 @@ class ElFinderLoader
      * Starts ElFinder.
      *
      * @var Request
-     * @var string  $instance
+     * @var string $instance
      */
     public function load(Request $request, $instance)
     {
         $this->setInstance($instance);
         $config = $this->configure();
-
-		$this->Bridge = new ElFinderBridge($config);
-
+        
+        $this->Bridge = new ElFinderBridge($config);
+        
         $connector = new ElFinderConnector($this->Bridge);
         
         if ($config['corsSupport']) {
@@ -92,37 +92,36 @@ class ElFinderLoader
     }
     
     /**
-	 * Encode path into hash
-	 *
-	 * @var Request
-	 * @param  string
-	 * @throws \Exception
-	 * @return string
-	 **/
-	public function encode(Request $Request, $path) {
-	    
-		$target = ($Request->isMethod('POST')) ? $Request->get('target') : $Request->query->get('target');
-		
-		if (empty($target)) {
-			throw new Exception('Request: target parameter is empty. Volume id can\'t be found');
-		}
-		
-		$Volume = $this->Bridge->getVolume($target);
-		
-		return (!empty($Volume)) ? $Volume->encode($path) : false;
-	}
+     * Encode path into hash
+     *
+     * @param Request
+     * @param string $path
+     * @throws \Exception
+     * @return string
+     **/
+    public function encode(Request $Request, $path) {
+        
+        $target = ($Request->isMethod('POST')) ? $Request->get('target') : $Request->query->get('target');
+        
+        if (empty($target)) {
+            throw new Exception('Request: target parameter is empty. Volume id can\'t be found');
+        }
+        
+        $Volume = $this->Bridge->getVolume($target);
+        
+        return (!empty($Volume)) ? $Volume->encode($path) : false;
+    }
 
-	/**
-	 * Decode path from hash
-	 *
-	 * @var Request
-	 * @param  string
-	 * @return string
-	 **/
-	public function decode($hash) {
-	    
-		$Volume = $this->Bridge->getVolume($hash);
-		
-		return (!empty($Volume)) ? $Volume->decode($hash) : false;
-	}
+    /**
+     * Decode path from hash
+     *
+     * @param  string $hash
+     * @return string
+     **/
+    public function decode($hash) {
+        
+        $Volume = $this->Bridge->getVolume($hash);
+        
+        return (!empty($Volume)) ? $Volume->decode($hash) : false;
+    }
 }
