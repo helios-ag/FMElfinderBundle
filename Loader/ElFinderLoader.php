@@ -109,9 +109,9 @@ class ElFinderLoader
             throw new Exception('Request: target parameter is empty. Volume id can\'t be found.');
         }
 
-        $Volume = $this->bridge->getVolume($target);
+        $volume = $this->bridge->getVolume($target);
 
-        return (!empty($Volume)) ? $Volume->encode($path) : false;
+        return (!empty($volume)) ? $volume->encode($path) : false;
     }
 
     /**
@@ -123,8 +123,8 @@ class ElFinderLoader
      **/
     public function decode($hash)
     {
-        $Volume = $this->bridge->getVolume($hash);
+        $volume = $this->bridge->getVolume($hash);
 
-        return (!empty($Volume)) ? $Volume->decode($hash) : false;
+        return (!empty($volume)) ? $volume->decode($hash) : false;
     }
 }
