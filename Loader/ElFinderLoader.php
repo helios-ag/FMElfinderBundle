@@ -117,7 +117,7 @@ class ElFinderLoader
     /**
      * Decode path from hash.
      *
-     * @param  string $hash
+     * @param string $hash
      * 
      * @return string
      **/
