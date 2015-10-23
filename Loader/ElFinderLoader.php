@@ -25,6 +25,11 @@ class ElFinderLoader
     protected $configurator;
 
     /**
+     * @var ElFinderBridge
+     */
+    protected $bridge;
+
+    /**
      * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
      */
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
@@ -57,8 +62,12 @@ class ElFinderLoader
     public function load(Request $request, $instance)
     {
         $this->setInstance($instance);
-        $config    = $this->configure();
-        $connector = new ElFinderConnector(new ElFinderBridge($config));
+        $config = $this->configure();
+
+        $this->bridge = new ElFinderBridge($config);
+
+        $connector = new ElFinderConnector($this->bridge);
+
         if ($config['corsSupport']) {
             return $connector->execute($request->query->all());
         } else {
@@ -80,5 +89,42 @@ class ElFinderLoader
     public function setConfigurator($configurator)
     {
         $this->configurator = $configurator;
+    }
+
+    /**
+     * Encode path into hash.
+     *
+     * @param Request
+     * @param string $path
+     * 
+     * @throws \Exception
+     * 
+     * @return string
+     **/
+    public function encode(Request $request, $path)
+    {
+        $target = ($request->isMethod('POST')) ? $request->get('target') : $request->query->get('target');
+
+        if (empty($target)) {
+            throw new Exception('Request: target parameter is empty. Volume id can\'t be found.');
+        }
+
+        $volume = $this->bridge->getVolume($target);
+
+        return (!empty($volume)) ? $volume->encode($path) : false;
+    }
+
+    /**
+     * Decode path from hash.
+     *
+     * @param string $hash
+     * 
+     * @return string
+     **/
+    public function decode($hash)
+    {
+        $volume = $this->bridge->getVolume($hash);
+
+        return (!empty($volume)) ? $volume->decode($hash) : false;
     }
 }
