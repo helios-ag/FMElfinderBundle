@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderEvents;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
+use FM\ElfinderBundle\Exception\ElFinderPreExecutionException;
 
 /**
  * Loader service for Elfinder backend
@@ -184,8 +185,12 @@ class ElFinderController extends Controller
     {
         $httpKernel = $this->get('http_kernel');
 
-        $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
-        $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
+        try {
+            $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
+            $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
+        } catch (ElFinderPreExecutionException $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
 
         $loader = $this->get('fm_elfinder.loader');
         $result = $loader->load($request, $instance);
