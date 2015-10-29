@@ -102,11 +102,12 @@ class ElFinderLoader
      **/
     public function encode($path)
     {
-        if (empty($this->instance)) {
-            throw new Exception('The instance have not been set.');
-        }
-
         if ($this->bridge === null) {
+
+            if (empty($this->instance)) {
+                throw new Exception('The instance have not been set.');
+            }
+
             $config = $this->configurator->getConfiguration($this->instance);
 
             $this->bridge = new ElFinderBridge($config);
@@ -138,11 +139,12 @@ class ElFinderLoader
      **/
     public function decode($hash)
     {
-        if (empty($this->instance)) {
-            throw new Exception('The instance have not been set.');
-        }
-
         if ($this->bridge === null) {
+
+            if (empty($this->instance)) {
+                throw new Exception('The instance have not been set.');
+            }
+
             $config = $this->configurator->getConfiguration($this->instance);
 
             $this->bridge = new ElFinderBridge($config);
