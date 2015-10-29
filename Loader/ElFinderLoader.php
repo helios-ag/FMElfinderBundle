@@ -91,70 +91,70 @@ class ElFinderLoader
         $this->configurator = $configurator;
     }
 
-	/**
-	 * Encode path into hash.
-	 *
-	 * @param string $path
-	 *
-	 * @throws \Exception
-	 *
-	 * @return mixed
-	 **/
-	public function encode($path)
-	{
-		if (empty($this->instance)) {
-			throw new Exception('The instance have not been set.');
-		}
+    /**
+     * Encode path into hash.
+     *
+     * @param string $path
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     **/
+     public function encode($path)
+     {
+          if (empty($this->instance)) {
+               throw new Exception('The instance have not been set.');
+          }
 
-		if ($this->bridge === null) {
+          if ($this->bridge === null) {
 
-			$config = $this->configurator->getConfiguration($this->instance);
+               $config = $this->configurator->getConfiguration($this->instance);
 
-			$this->bridge = new ElFinderBridge($config);
-		}
+               $this->bridge = new ElFinderBridge($config);
+          }
 
-		$aPathEncoded = array();
+          $aPathEncoded = array();
 
-		foreach ($this->bridge->volumes as $hashId => $volume )
-		{
-			$aPathEncoded[$hashId] = $volume->encode($path);
-		}
+          foreach ($this->bridge->volumes as $hashId => $volume )
+          {
+               $aPathEncoded[$hashId] = $volume->encode($path);
+          }
 
-		if (count($aPathEncoded) == 1){
-			return array_values($aPathEncoded)[0];
+          if (count($aPathEncoded) == 1){
+               return array_values($aPathEncoded)[0];
 
-		} elseif (count($aPathEncoded) > 1) {
-			return $aPathEncoded;
+          } elseif (count($aPathEncoded) > 1) {
+               return $aPathEncoded;
 
-		} else {
-			return false;
-		}
-	}
+          } else {
+               return false;
+          }
+     }
 
-	/**
-	 * Decode path from hash.
-	 *
-	 * @param string $hash
-	 *
-	 * @throws \Exception
-	 *
-	 * @return string
-	 **/
-	public function decode($hash)
-	{
-		if (empty($this->instance)) {
-			throw new Exception('The instance have not been set.');
-		}
+     /**
+      * Decode path from hash.
+      *
+      * @param string $hash
+      *
+      * @throws \Exception
+      *
+      * @return string
+      **/
+     public function decode($hash)
+     {
+          if (empty($this->instance)) {
+               throw new Exception('The instance have not been set.');
+          }
 
-		if ($this->bridge === null) {
+          if ($this->bridge === null) {
 
-			$config = $this->configurator->getConfiguration($this->instance);
+               $config = $this->configurator->getConfiguration($this->instance);
 
-			$this->bridge = new ElFinderBridge($config);
-		}
+               $this->bridge = new ElFinderBridge($config);
+          }
 
-		$volume = $this->bridge->getVolume($hash);
+          $volume = $this->bridge->getVolume($hash);
 
-		return (!empty($volume)) ? $volume->decode($hash) : false;
-	}
+          return (!empty($volume)) ? $volume->decode($hash) : false;
+     }
 }
