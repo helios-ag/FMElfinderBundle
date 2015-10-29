@@ -91,40 +91,70 @@ class ElFinderLoader
         $this->configurator = $configurator;
     }
 
-    /**
-     * Encode path into hash.
-     *
-     * @param Request
-     * @param string $path
-     * 
-     * @throws \Exception
-     * 
-     * @return string
-     **/
-    public function encode(Request $request, $path)
-    {
-        $target = ($request->isMethod('POST')) ? $request->get('target') : $request->query->get('target');
+	/**
+	 * Encode path into hash.
+	 *
+	 * @param string $path
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 **/
+	public function encode($path)
+	{
+		if (empty($this->instance)) {
+			throw new Exception('The instance have not been set.');
+		}
 
-        if (empty($target)) {
-            throw new Exception('Request: target parameter is empty. Volume id can\'t be found.');
-        }
+		if ($this->bridge === null) {
 
-        $volume = $this->bridge->getVolume($target);
+			$config = $this->configurator->getConfiguration($this->instance);
 
-        return (!empty($volume)) ? $volume->encode($path) : false;
-    }
+			$this->bridge = new ElFinderBridge($config);
+		}
 
-    /**
-     * Decode path from hash.
-     *
-     * @param string $hash
-     * 
-     * @return string
-     **/
-    public function decode($hash)
-    {
-        $volume = $this->bridge->getVolume($hash);
+		$aPathEncoded = array();
 
-        return (!empty($volume)) ? $volume->decode($hash) : false;
-    }
+		foreach ($this->bridge->volumes as $hashId => $volume )
+		{
+			$aPathEncoded[$hashId] = $volume->encode($path);
+		}
+
+		if (count($aPathEncoded) == 1){
+			return array_values($aPathEncoded)[0];
+
+		} elseif (count($aPathEncoded) > 1) {
+			return $aPathEncoded;
+
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Decode path from hash.
+	 *
+	 * @param string $hash
+	 *
+	 * @throws \Exception
+	 *
+	 * @return string
+	 **/
+	public function decode($hash)
+	{
+		if (empty($this->instance)) {
+			throw new Exception('The instance have not been set.');
+		}
+
+		if ($this->bridge === null) {
+
+			$config = $this->configurator->getConfiguration($this->instance);
+
+			$this->bridge = new ElFinderBridge($config);
+		}
+
+		$volume = $this->bridge->getVolume($hash);
+
+		return (!empty($volume)) ? $volume->decode($hash) : false;
+	}
 }
