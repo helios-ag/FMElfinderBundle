@@ -103,7 +103,6 @@ class ElFinderLoader
     public function encode($path)
     {
         if ($this->bridge === null) {
-
             if (empty($this->instance)) {
                 throw new Exception('The instance have not been set.');
             }
@@ -140,7 +139,6 @@ class ElFinderLoader
     public function decode($hash)
     {
         if ($this->bridge === null) {
-
             if (empty($this->instance)) {
                 throw new Exception('The instance have not been set.');
             }
