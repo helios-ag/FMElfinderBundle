@@ -114,7 +114,7 @@ class ElFinderLoader
 
         $aPathEncoded = array();
 
-        foreach ($this->bridge->volumes as $hashId => $volume ) {
+        foreach ($this->bridge->volumes as $hashId => $volume) {
             $aPathEncoded[$hashId] = $volume->encode($path);
         }
 
