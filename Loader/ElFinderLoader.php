@@ -107,7 +107,6 @@ class ElFinderLoader
         }
 
         if ($this->bridge === null) {
-
             $config = $this->configurator->getConfiguration($this->instance);
 
             $this->bridge = new ElFinderBridge($config);
@@ -116,16 +115,13 @@ class ElFinderLoader
         $aPathEncoded = array();
 
         foreach ($this->bridge->volumes as $hashId => $volume ) {
-
             $aPathEncoded[$hashId] = $volume->encode($path);
         }
 
         if (count($aPathEncoded) == 1) {
             return array_values($aPathEncoded)[0];
-
         } elseif (count($aPathEncoded) > 1) {
             return $aPathEncoded;
-
         } else {
             return false;
         }
@@ -147,7 +143,6 @@ class ElFinderLoader
         }
 
         if ($this->bridge === null) {
-
             $config = $this->configurator->getConfiguration($this->instance);
 
             $this->bridge = new ElFinderBridge($config);
