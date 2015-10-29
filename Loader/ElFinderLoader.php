@@ -115,12 +115,12 @@ class ElFinderLoader
 
         $aPathEncoded = array();
 
-        foreach ($this->bridge->volumes as $hashId => $volume )
-        {
+        foreach ($this->bridge->volumes as $hashId => $volume ) {
+
             $aPathEncoded[$hashId] = $volume->encode($path);
         }
 
-        if (count($aPathEncoded) == 1){
+        if (count($aPathEncoded) == 1) {
             return array_values($aPathEncoded)[0];
 
         } elseif (count($aPathEncoded) > 1) {
