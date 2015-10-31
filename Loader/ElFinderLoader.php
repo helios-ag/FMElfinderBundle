@@ -104,7 +104,7 @@ class ElFinderLoader
     {
         if ($this->bridge === null) {
             if (empty($this->instance)) {
-                throw new Exception('The instance have not been set.');
+                throw new Exception('The instance have not been set. Use setInstance() before to call this function.');
             }
 
             $config = $this->configurator->getConfiguration($this->instance);
@@ -140,7 +140,7 @@ class ElFinderLoader
     {
         if ($this->bridge === null) {
             if (empty($this->instance)) {
-                throw new Exception('The instance have not been set.');
+                throw new Exception('The instance have not been set. Use setInstance() before to call this function.');
             }
 
             $config = $this->configurator->getConfiguration($this->instance);
