@@ -182,13 +182,14 @@ class ElFinderController extends Controller
      */
     public function loadAction(Request $request, $instance, $homeFolder)
     {
-        $httpKernel = $this->get('http_kernel');
+        $loader = $this->get('fm_elfinder.loader');
+        $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
 
+        $httpKernel = $this->get('http_kernel');
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
 
-        $loader = $this->get('fm_elfinder.loader');
-        $result = $loader->load($request, $instance);
+        $result = $loader->load($request); // the instance is already set
 
         $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
         $this->get('event_dispatcher')->dispatch(ElFinderEvents::POST_EXECUTION, $postExecutionEvent);
