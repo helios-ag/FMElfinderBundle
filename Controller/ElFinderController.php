@@ -185,7 +185,7 @@ class ElFinderController extends Controller
         $loader = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
 
-        $httpKernel = $this->get('http_kernel');
+        $httpKernel        = $this->get('http_kernel');
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
 
