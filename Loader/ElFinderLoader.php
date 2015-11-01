@@ -56,12 +56,12 @@ class ElFinderLoader
     /**
      * Configure the Bridge to ElFinder.
      *
-     * @var string  $instance
+     * @var string
      */
     public function initBridge($instance)
     {
         $this->setInstance($instance);
-        $config = $this->configure();
+        $config       = $this->configure();
         $this->bridge = new ElFinderBridge($config);
     }
 
