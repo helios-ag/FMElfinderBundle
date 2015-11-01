@@ -54,18 +54,24 @@ class ElFinderLoader
     }
 
     /**
-     * Starts ElFinder.
+     * Configure the Bridge to ElFinder.
      *
-     * @var Request
      * @var string  $instance
      */
-    public function load(Request $request, $instance)
+    public function initBridge($instance)
     {
         $this->setInstance($instance);
         $config = $this->configure();
-
         $this->bridge = new ElFinderBridge($config);
+    }
 
+    /**
+     * Starts ElFinder.
+     *
+     * @var Request
+     */
+    public function load(Request $request)
+    {
         $connector = new ElFinderConnector($this->bridge);
 
         if ($config['corsSupport']) {
@@ -102,19 +108,11 @@ class ElFinderLoader
      **/
     public function encode($path)
     {
-        if ($this->bridge === null) {
-            if (empty($this->instance)) {
-                throw new Exception('The instance have not been set. Use setInstance() before to call this function.');
-            }
-
-            $config = $this->configurator->getConfiguration($this->instance);
-
-            $this->bridge = new ElFinderBridge($config);
-        }
-
         $aPathEncoded = array();
 
-        foreach ($this->bridge->volumes as $hashId => $volume) {
+        $volumes = $this->bridge->getVolumes();
+
+        foreach ($volumes as $hashId => $volume) {
             $aPathEncoded[$hashId] = $volume->encode($path);
         }
 
@@ -138,16 +136,6 @@ class ElFinderLoader
      **/
     public function decode($hash)
     {
-        if ($this->bridge === null) {
-            if (empty($this->instance)) {
-                throw new Exception('The instance have not been set. Use setInstance() before to call this function.');
-            }
-
-            $config = $this->configurator->getConfiguration($this->instance);
-
-            $this->bridge = new ElFinderBridge($config);
-        }
-
         $volume = $this->bridge->getVolume($hash);
 
         return (!empty($volume)) ? $volume->decode($hash) : false;
