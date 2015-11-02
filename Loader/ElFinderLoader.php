@@ -25,6 +25,11 @@ class ElFinderLoader
     protected $configurator;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
      * @var ElFinderBridge
      */
     protected $bridge;
@@ -54,21 +59,27 @@ class ElFinderLoader
     }
 
     /**
+     * Configure the Bridge to ElFinder.
+     *
+     * @var string
+     */
+    public function initBridge($instance)
+    {
+        $this->setInstance($instance);
+        $this->config = $this->configure();
+        $this->bridge = new ElFinderBridge($config);
+    }
+
+    /**
      * Starts ElFinder.
      *
      * @var Request
-     * @var string  $instance
      */
-    public function load(Request $request, $instance)
+    public function load(Request $request)
     {
-        $this->setInstance($instance);
-        $config = $this->configure();
-
-        $this->bridge = new ElFinderBridge($config);
-
         $connector = new ElFinderConnector($this->bridge);
 
-        if ($config['corsSupport']) {
+        if ($this->config['corsSupport']) {
             return $connector->execute($request->query->all());
         } else {
             $connector->run($request->query->all());
@@ -94,24 +105,27 @@ class ElFinderLoader
     /**
      * Encode path into hash.
      *
-     * @param Request
      * @param string $path
      * 
-     * @throws \Exception
-     * 
-     * @return string
+     * @return mixed
      **/
-    public function encode(Request $request, $path)
+    public function encode($path)
     {
-        $target = ($request->isMethod('POST')) ? $request->get('target') : $request->query->get('target');
+        $aPathEncoded = array();
 
-        if (empty($target)) {
-            throw new Exception('Request: target parameter is empty. Volume id can\'t be found.');
+        $volumes = $this->bridge->getVolumes();
+
+        foreach ($volumes as $hashId => $volume) {
+            $aPathEncoded[$hashId] = $volume->encode($path);
         }
 
-        $volume = $this->bridge->getVolume($target);
-
-        return (!empty($volume)) ? $volume->encode($path) : false;
+        if (count($aPathEncoded) == 1) {
+            return array_values($aPathEncoded)[0];
+        } elseif (count($aPathEncoded) > 1) {
+            return $aPathEncoded;
+        } else {
+            return false;
+        }
     }
 
     /**
