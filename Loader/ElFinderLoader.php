@@ -20,7 +20,7 @@ class ElFinderLoader
 
     /**
      * @var ElFinderConfigurationProviderInterface
-     *                                            Configurator service name
+     *                                             Configurator service name
      */
     protected $configurator;
 
