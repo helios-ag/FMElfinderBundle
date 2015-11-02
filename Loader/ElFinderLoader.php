@@ -24,10 +24,10 @@ class ElFinderLoader
      */
     protected $configurator;
 
-	/**
-	 * @var array
-	 */
-	protected $config;
+    /**
+     * @var array
+     */
+    protected $config;
 
     /**
      * @var ElFinderBridge
