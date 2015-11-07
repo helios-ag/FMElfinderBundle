@@ -22,6 +22,7 @@ script: phpunit --coverage-clover=clover.xml
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover clover.xml
-
+  - php vendor/bin/coveralls -v
+  
 notifications:
   email: helios.ag@gmail.com
