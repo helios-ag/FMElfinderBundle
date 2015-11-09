@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="./Tests/bootstrap.php" colors="true">
+<phpunit colors="true" bootstrap="vendor/autoload.php">
     <php>
         <server name="KERNEL_DIR" value="./Tests/Functional" />
     </php>
     <testsuites>
-        <testsuite name="FMBbcodeBundle test suite">
+        <testsuite name="FMElfinderBundle test suite">
             <directory suffix="Test.php">./Tests</directory>
         </testsuite>
     </testsuites>

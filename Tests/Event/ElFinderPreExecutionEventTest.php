@@ -6,6 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 
+/**
+ * Class ElFinderPreExecutionEventTest
+ * @package FM\ElfinderBundle\Tests\Event
+ */
 class ElFinderPreExecutionEventTest extends TestCase
 {
     public function testGetCommand()
@@ -30,5 +34,6 @@ class ElFinderPreExecutionEventTest extends TestCase
             'instance'   => $event->getInstance(),
             'homeFolder' => $event->getHomeFolder(),
         ), $request->query->all());
+
     }
 }
