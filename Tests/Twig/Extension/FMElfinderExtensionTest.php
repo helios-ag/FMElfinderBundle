@@ -18,9 +18,7 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var \Symfony\Component\Routing\RouterInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $routerMock;
 
-    /**
-     * @var FMElfinderTinymceExtension
-     */
+    /** @var \FM\ElfinderBundle\Twig\Extension\FMElFinderExtension */
     protected $extension;
 
     /** @var \Twig_Environment */
@@ -29,9 +27,6 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
     /** @var \Twig_Template */
     protected $template;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function setUp()
     {
         $this->twig      = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
@@ -102,9 +97,26 @@ EOF;
         $this->assertSame($this->normalizeOutput($expected), $this->normalizeOutput($testData));
     }
 
-    /**
-     *
-     */
+    public function testRenderSummernote()
+    {
+        $this->template = $this->twig->loadTemplate('_summernote.html.twig');
+        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
+
+        $expected  = <<<EOF
+<script type="text/javascript">
+    function elFinderBrowser(){
+            window.open(
+                "http://localhost/elfinder/minimal",
+                "",
+                "width=, height=, resizable=yes, scrollbars=no, status=no, toolbar=no"
+            );
+            return false;
+        }
+</script>
+EOF;
+
+    }
+
     public function testName()
     {
         $this->assertEquals('fm_elfinder_init', $this->extension->getName());
@@ -139,13 +151,47 @@ EOF;
         return preg_replace("/\r|\n/", '', str_replace(PHP_EOL, '', str_replace(' ', '', $output)));
     }
 
-    /**
-     *
-     */
     public function testSubClassOfTwigExtension()
     {
         $rc = new \ReflectionClass('FM\ElfinderBundle\Twig\Extension\FMElfinderExtension');
 
         $this->assertTrue($rc->isSubclassOf('Twig_Extension'));
+    }
+
+    /**
+     * @expectedException \Twig_Error_Runtime
+     * @expectedExceptionMessage The function can be applied to strings only.
+     */
+    public function testSummernoteInstanceNotString()
+    {
+        $this->extension->summernote(array());
+    }
+
+    /**
+     * @expectedException \Twig_Error_Runtime
+     * @expectedExceptionMessage The function can be applied to strings only.
+     */
+    public function testTinyMCEInstanceNotString()
+    {
+        $this->extension->tinymce(array());
+    }
+
+    /**
+     * @expectedException \Twig_Error_Runtime
+     * @expectedExceptionMessage The function can be applied to strings only.
+     */
+    public function testTinyMCE4InstanceNotString()
+    {
+        $this->extension->tinymce4(array());
+    }
+
+    public function testGetFunctions()
+    {
+        $twigFunctions = $this->extension->getFunctions();
+
+        foreach ($twigFunctions as $twigFunction) {
+            $this->assertInstanceOf('Twig_SimpleFunction', $twigFunction);
+        }
+
     }
 }

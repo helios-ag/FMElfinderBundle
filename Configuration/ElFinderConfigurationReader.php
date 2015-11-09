@@ -70,8 +70,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $options                = array();
         $options['corsSupport'] = $parameters['cors_support'];
         $options['debug']       = $parameters['connector']['debug'];
-        $options['bind']        =  $parameters['connector']['binds'];
-        $options['plugins']     =  $parameters['connector']['plugins'];
+        $options['bind']        = $parameters['connector']['binds'];
+        $options['plugins']     = $parameters['connector']['plugins'];
         $options['roots']       = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
