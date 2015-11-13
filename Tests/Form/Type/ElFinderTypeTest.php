@@ -25,7 +25,7 @@ class ElFinderTypeTest extends TypeTestCase
 
     public function testDefaults()
     {
-        $form = $this->factory->create('elfinder');
+        $form = $this->factory->create(ElFinderType::class);
         $view = $form->createView();
 
         $this->assertTrue($view->vars['enable']);
@@ -33,15 +33,15 @@ class ElFinderTypeTest extends TypeTestCase
 
     public function testDefaultInstance()
     {
-        $form = $this->factory->create('elfinder');
+        $form = $this->factory->create(ElFinderType::class);
         $view = $form->createView();
 
-        $this->assertSame('', $view->vars['instance']);
+        $this->assertSame('default', $view->vars['instance']);
     }
 
     public function testDefaultHomeFolder()
     {
-        $form = $this->factory->create('elfinder');
+        $form = $this->factory->create(ElFinderType::class);
         $view = $form->createView();
 
         $this->assertSame('', $view->vars['homeFolder']);
