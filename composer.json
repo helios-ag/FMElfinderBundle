@@ -20,7 +20,7 @@
       "exclude": ["/Tests"]
     },
     "require": {
-        "php":                           ">=5.3.9",
+        "php":                           ">=5.5",
         "symfony/symfony":               "~2.7|~3.0",
         "symfony/framework-bundle":      "~2.7|~3.0",
         "symfony/twig-bundle":           "~2.7|~3.0",
@@ -30,7 +30,6 @@
     "require-dev" : {
         "symfony/form": "~2.7|~3.0",
         "symfony/phpunit-bridge": "~2.7|~3.0",
-
         "matthiasnoback/symfony-config-test":  "~1",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
         "satooshi/php-coveralls": "dev-master"
