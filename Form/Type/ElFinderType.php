@@ -32,11 +32,11 @@ class ElFinderType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['enable'] = $form->getConfig()->getAttribute('enable');
+        $view->vars['enable'] = $options['enable'];
 
-        if ($form->getConfig()->getAttribute('enable')) {
-            $view->vars['instance']   = $form->getConfig()->getAttribute('instance');
-            $view->vars['homeFolder'] = $form->getConfig()->getAttribute('homeFolder');
+        if ($options['enable']) {
+            $view->vars['instance']   = $options['instance'];
+            $view->vars['homeFolder'] = $options['homeFolder'];
         }
     }
 

@@ -3,48 +3,70 @@
 namespace FM\ElfinderBundle\Tests\Form\Type;
 
 use FM\ElfinderBundle\Form\Type\ElFinderType;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Form\FormView;
 
 /**
  * Class ElFinderTypeTest
  * @package FM\ElfinderBundle\Tests
  */
-class ElFinderTypeTest extends TypeTestCase
+class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
+    public function testGetName()
     {
-        parent::setUp();
-
-        $elfinderType = new ElFinderType();
-        $this->factory = Forms::createFormFactoryBuilder()
-            ->addType($elfinderType)
-            ->getFormFactory();
+        $type = new ElFinderType();
+        $this->assertEquals('elfinder', $type->getName());
     }
 
-    public function testDefaults()
+    public function testGetParent()
     {
-        $form = $this->factory->create(ElFinderType::class);
-        $view = $form->createView();
-
-        $this->assertTrue($view->vars['enable']);
+        $type = new ElFinderType();
+        $this->assertEquals(TextType::class, $type->getParent());
     }
 
-    public function testDefaultInstance()
+    public function testConfigureOptions()
     {
-        $form = $this->factory->create(ElFinderType::class);
-        $view = $form->createView();
-
-        $this->assertSame('default', $view->vars['instance']);
+        if (version_compare(Kernel::VERSION_ID, '20600') < 0) {
+            $this->markTestSkipped('No need to test on symfony < 2.6');
+        }
+        $resolver = new OptionsResolver();
+        $type = new ElFinderType();
+        $type->configureOptions($resolver);
+        $this->assertTrue($resolver->isDefined('enable'));
+        $this->assertTrue($resolver->isDefined('instance'));
+        $this->assertTrue($resolver->isDefined('homeFolder'));
     }
 
-    public function testDefaultHomeFolder()
+    public function testLegacySetDefaultOptions()
     {
-        $form = $this->factory->create(ElFinderType::class);
-        $view = $form->createView();
+        if (version_compare(Kernel::VERSION_ID, '20600') >= 0) {
+            $this->markTestSkipped('No need to test on symfony >= 2.6');
+        }
+        $resolver = new OptionsResolver();
+        $type = new ElFinderType();
+        $type->setDefaultOptions($resolver);
+        $this->assertTrue($resolver->isKnown('enable'));
+        $this->assertTrue($resolver->isKnown('instance'));
+        $this->assertTrue($resolver->isKnown('homeFolder'));
+    }
 
-        $this->assertSame('', $view->vars['homeFolder']);
+    public function testBuildView()
+    {
+        $options = array(
+            'instance' => 'default1',
+            'enable' => true,
+            'homeFolder' => '/home'
+        );
+        $view = new FormView();
+        $type = new ElFinderType();
+        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $type->buildView($view, $form, $options);
+        foreach ($options as $name => $value) {
+            $this->assertArrayHasKey($name, $view->vars);
+            $this->assertEquals($value, $view->vars[$name]);
+        }
     }
 
 }
