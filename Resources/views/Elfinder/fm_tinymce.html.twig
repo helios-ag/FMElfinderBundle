@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_css.html.twig" %}
+{% endif %}
+</head>
+<body>
+{% if includeAssets %}
+    {% include "FMElfinderBundle:Elfinder:helper/assets_js.html.twig" %}
+{% endif %}
+<script type="text/javascript" charset="utf-8">
+    var FileBrowserDialogue = {
+        mySubmit: function (file, elf) {
+            // pass selected file data to TinyMCE
+            parent.tinymce.activeEditor.windowManager.getParams().oninsert(file, elf);
+            // close popup window
+            parent.tinymce.activeEditor.windowManager.close();
+        }
+    };
+    $(document).ready(function() {
+        var elf = $('.elfinder').elfinder({
+            // set your elFinder options here
+            url: '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',  // connector URL
+            lang : '{{ locale }}',
+            getFileCallback: function(file) { // editor callback
+                {% if relative_path %}
+                        file.url = '{{ pathPrefix }}' + file.url.replace("{{ app.request.schemeAndHttpHost }}/", "");
+                        FileBrowserDialogue.mySubmit(file, elf); // pass selected file path to TinyMCE
+                {% else %}
+                    FileBrowserDialogue.mySubmit(file, elf); // pass selected file path to TinyMCE
+                {% endif %}
+
+            }
+        }).elfinder('instance');
+    });
+</script>
+<div class="elfinder"></div>
+</body>
+</html>
