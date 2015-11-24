@@ -140,6 +140,20 @@ class ElFinderController extends Controller
                 );
 
                 return $result;
+            case 'fm_tinymce':
+                $result['template'] = 'FMElfinderBundle:Elfinder:fm_tinymce.html.twig';
+                $result['params']   = array(
+                    'locale'        => $locale,
+                    'includeAssets' => $includeAssets,
+                    'instance'      => $instance,
+                    'homeFolder'    => $homeFolder,
+                    'relative_path' => $relativePath,
+                    'prefix'        => $assetsPath,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix,
+                );
+
+                return $result;
             case 'form':
                 $result['template'] = 'FMElfinderBundle:Elfinder:elfinder_type.html.twig';
                 $result['params']   = array(
