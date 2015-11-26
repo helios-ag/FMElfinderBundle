@@ -8,7 +8,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
 
 /**
- * Class FMElfinderExtensionTest
+ * Class FMElfinderExtensionTest.
+ *
  * @package FM\ElfinderBundle\Tests\DependencyInjection
  */
 class FMElfinderExtensionTest extends AbstractExtensionTestCase
