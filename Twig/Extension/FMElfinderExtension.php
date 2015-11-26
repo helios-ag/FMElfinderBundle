@@ -85,8 +85,10 @@ class FMElfinderExtension extends \Twig_Extension
     /**
      * @param string $instance
      * @param string $selector
-     * @param array $parameters
+     * @param array  $parameters
+     *
      * @return mixed
+     *
      * @throws \Twig_Error_Runtime
      */
     public function summernote($instance = 'default', $selector = '.summenote', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))

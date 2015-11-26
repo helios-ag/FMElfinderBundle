@@ -7,17 +7,17 @@ use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
- * Class ElFinderTypeTest
+ * Class ElFinderTypeTest.
+ *
  * @package FM\ElfinderBundle\Tests
  */
 class ElFinderTypeTest extends TypeTestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
-        $elfinderType = new ElFinderType();
+        $elfinderType  = new ElFinderType();
         $this->factory = Forms::createFormFactoryBuilder()
             ->addType($elfinderType)
             ->getFormFactory();
@@ -46,5 +46,4 @@ class ElFinderTypeTest extends TypeTestCase
 
         $this->assertSame('', $view->vars['homeFolder']);
     }
-
 }

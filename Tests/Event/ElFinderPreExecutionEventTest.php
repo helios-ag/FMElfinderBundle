@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 
 /**
- * Class ElFinderPreExecutionEventTest
+ * Class ElFinderPreExecutionEventTest.
+ *
  * @package FM\ElfinderBundle\Tests\Event
  */
 class ElFinderPreExecutionEventTest extends TestCase
@@ -34,6 +35,5 @@ class ElFinderPreExecutionEventTest extends TestCase
             'instance'   => $event->getInstance(),
             'homeFolder' => $event->getHomeFolder(),
         ), $request->query->all());
-
     }
 }

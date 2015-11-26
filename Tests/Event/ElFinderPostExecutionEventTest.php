@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
 /**
- * Class ElFinderPostExecutionEventTest
+ * Class ElFinderPostExecutionEventTest.
+ *
  * @package FM\ElfinderBundle\Tests\Event
  */
 class ElFinderPostExecutionEventTest extends TestCase
