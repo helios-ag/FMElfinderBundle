@@ -9,7 +9,8 @@ use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Form\FormView;
 
 /**
- * Class ElFinderTypeTest
+ * Class ElFinderTypeTest.
+ *
  * @package FM\ElfinderBundle\Tests
  */
 class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
@@ -32,7 +33,7 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('No need to test on symfony < 2.6');
         }
         $resolver = new OptionsResolver();
-        $type = new ElFinderType();
+        $type     = new ElFinderType();
         $type->configureOptions($resolver);
         $this->assertTrue($resolver->isDefined('enable'));
         $this->assertTrue($resolver->isDefined('instance'));
@@ -45,7 +46,7 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('No need to test on symfony >= 2.6');
         }
         $resolver = new OptionsResolver();
-        $type = new ElFinderType();
+        $type     = new ElFinderType();
         $type->setDefaultOptions($resolver);
         $this->assertTrue($resolver->isKnown('enable'));
         $this->assertTrue($resolver->isKnown('instance'));
@@ -55,9 +56,9 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
     public function testBuildView()
     {
         $options = array(
-            'instance' => 'default1',
-            'enable' => true,
-            'homeFolder' => '/home'
+            'instance'   => 'default1',
+            'enable'     => true,
+            'homeFolder' => '/home',
         );
         $view = new FormView();
         $type = new ElFinderType();
@@ -68,5 +69,4 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
             $this->assertEquals($value, $view->vars[$name]);
         }
     }
-
 }
