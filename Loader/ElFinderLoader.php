@@ -8,8 +8,7 @@ use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class ElFinderLoader
- * @package FM\ElfinderBundle\Loader
+ * Class ElFinderLoader.
  */
 class ElFinderLoader
 {
@@ -74,6 +73,7 @@ class ElFinderLoader
      * Starts ElFinder.
      *
      * @var Request
+     *
      * @return void|array
      */
     public function load(Request $request)
