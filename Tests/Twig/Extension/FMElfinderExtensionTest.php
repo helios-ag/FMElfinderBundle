@@ -114,7 +114,6 @@ EOF;
         }
 </script>
 EOF;
-
     }
 
     public function testName()
@@ -192,6 +191,5 @@ EOF;
         foreach ($twigFunctions as $twigFunction) {
             $this->assertInstanceOf('Twig_SimpleFunction', $twigFunction);
         }
-
     }
 }
