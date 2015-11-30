@@ -1,7 +1,0 @@
-filter:
-    excluded_paths:
-        - vendor/*
-        - Tests/*
-
-tools:
-    external_code_coverage: true

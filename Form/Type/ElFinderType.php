@@ -3,10 +3,11 @@
 namespace FM\ElfinderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class ElFinderType.
@@ -31,30 +32,28 @@ class ElFinderType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['enable'] = $form->getConfig()->getAttribute('enable');
+        $view->vars['enable'] = $options['enable'];
 
-        if ($form->getConfig()->getAttribute('enable')) {
-            $view->vars['instance']   = $form->getConfig()->getAttribute('instance');
-            $view->vars['homeFolder'] = $form->getConfig()->getAttribute('homeFolder');
+        if ($options['enable']) {
+            $view->vars['instance']   = $options['instance'];
+            $view->vars['homeFolder'] = $options['homeFolder'];
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(array(
                 'enable'        => true,
-                'instance'      => '',
+                'instance'      => 'default',
                 'homeFolder'    => '',
             ))
-            ->addAllowedTypes(array(
-                'enable'        => 'bool',
-                'instance'      => array('string', 'null'),
-                'homeFolder'    => array('string', 'null'),
-            ));
+            ->setAllowedTypes('enable', 'bool')
+            ->setAllowedTypes('instance', array('string', 'null'))
+            ->setAllowedTypes('homeFolder', array('string', 'null'));
     }
 
     /**
@@ -62,13 +61,15 @@ class ElFinderType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
+    {
+        return $this->getBlockPrefix();
+    }
+
+    public function getBlockPrefix()
     {
         return 'elfinder';
     }

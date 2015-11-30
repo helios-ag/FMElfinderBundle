@@ -9,7 +9,7 @@
     </parameters>
     <services>
         <service id="fm_elfinder.form.type" class="%elfinder.form.type.class%">
-            <tag name="form.type" alias="elfinder" />
+            <tag name="form.type" />
         </service>
     </services>
 </container>

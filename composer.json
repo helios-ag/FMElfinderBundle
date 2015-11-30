@@ -16,22 +16,26 @@
             "homepage": "https://github.com/helios-ag/FMElfinderBundle/contributors"
         }
     ],
+    "archive": {
+      "exclude": ["/Tests"]
+    },
     "require": {
-        "php":                           ">=5.3.3",
-        "symfony/symfony":               "~2.4",
-        "symfony/framework-bundle":      "~2.4",
-        "symfony/twig-bundle":           "~2.4",
+        "php":                           ">=5.5",
+        "symfony/symfony":               "~2.7|~3.0",
+        "symfony/framework-bundle":      "~2.7|~3.0",
+        "symfony/twig-bundle":           "~2.7|~3.0",
         "helios-ag/fm-elfinder-php-connector": "~2.0",
         "components/elfinder": "~2.0"
     },
     "require-dev" : {
-        "symfony/form": "~2.1",
+        "symfony/form": "~2.7|~3.0",
+        "symfony/phpunit-bridge": "~2.7|~3.0",
         "matthiasnoback/symfony-config-test":  "~1",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
         "satooshi/php-coveralls": "dev-master"
     },
     "suggest": {
-        "stfalcon/tinymce-bundle": "TinyMCE Bundle by Stfalcon",
+        "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me",
         "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen",
         "trsteel/ckeditor-bundle": "CKEditor Bundle by trsteel",
         "helios-ag/fm-summernote-bundle": "Summernote Bundle by me"
