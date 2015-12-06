@@ -21,7 +21,7 @@ Creation is inspired by simplicity and convenience of Finder program used in Mac
 Recommended bundles to use with:
 
 
-| FMTinyMCEBundle | FMSummernoteBundle | IvoryCKEditorBundle| TrsteelCkeditorBundle |
+| FMTinyMCEBundle | IvoryCKEditorBundle | TrsteelCkeditorBundle| FMSummernoteBundle |
 | ------------------------|-------------|-----------------|-----------------|
 |[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![IvoryCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com/egeloen/IvoryCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
