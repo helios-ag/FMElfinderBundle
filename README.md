@@ -3,29 +3,29 @@ FMElfinderBundle
 
 [ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
-### Gitter chat ###
-
-[![Join the chat at https://gitter.im/helios-ag/FMElfinderBundle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/helios-ag/FMElfinderBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ### Code Quality Assurance ###
 
-| SensioLabs Insight | Travis CI | CoverAlls|
-| ------------------------|-------------|-----------------|
-|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)
+| Gitter | SL Insight | Travis CI | CoverAlls| License |
+|----------------| ------------------------|-------------|-----------------|-----------------|
+|[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/helios-ag/FMElfinderBundle)|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)
+|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
+|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 [![Dependency Status](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4)
-[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![License](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/license.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/helios-ag/fmelfinderbundle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
+
 
 **elFinder** is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
 Recommended bundles to use with:
-
-* [TinymceBundle](https://github.com/stfalcon/TinymceBundle/)
-* [IvoryCKEditorBundle](https://github.com/egeloen/IvoryCKEditorBundle/)
-* [TrsteelCkeditorBundle](https://github.com/trsteel88/TrsteelCkeditorBundle/)
-* [FMSummernoteBundle](https://github.com/helios-ag/summernote-bundle/)
+| FMTinyMCEBundle | FMSummernoteBundle | IvoryCKEditorBundle| TrsteelCkeditorBundle |
+| ------------------------|-------------|-----------------|-----------------|
+|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|
+[![IvoryCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com/egeloen/IvoryCKEditorBundle)|
+[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|
+[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
 
 **Table of contents**
@@ -61,12 +61,20 @@ Recommended bundles to use with:
 
 ## Installation
 
-To install this bundle, you'll need both the lib [ElFinderPHP](https://github.com/helios-ag/ElFinderPHP)
-and this bundle.
-
-This instruction explain how to setup bundle on Symfony 2.1 and newer
-
 ### Step 1: Installation
+
+**Version 6 (Symfony 3 Compatible):**
+
+Add FMElFinderBundle to your composer.json
+
+```json
+{
+    "require": {
+        "helios-ag/fm-elfinder-bundle": "~6",
+    }
+}
+```
+
 
 **Version 5:**
 
@@ -92,13 +100,13 @@ also add component-dir under config node of composer.json
 
 **Version 4:**
 
-This version dont use **component** library
+This version doesn't use **component** library
 
 ```sh
 composer require helios-ag/fm-elfinder-bundle: "~4.0"
 ```
 
-For Symfony between 2.1 and 2.3 (2.3 included) use version ~2.3
+For Symfony =<2.3 use version ~2.3
 
 
 ```sh
@@ -110,12 +118,6 @@ Now tell composer to download the bundle by running the command:
 
 ```sh
 composer update helios-ag/fm-elfinder-bundle
-```
-
-Install legacy version of the bundle ([documentation](https://github.com/helios-ag/FMElfinderBundle/blob/1.0/README.md)):
-
-```sh
-composer require helios-ag/fm-elfinder-bundle: "~1.5"
 ```
 
 ### Step 2: Enable the bundle
@@ -174,21 +176,24 @@ fm_elfinder:
     instances:
         default:
             locale: %locale% # defaults to current request locale
-            editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
-            fullscreen: true # defaults true, applies to simple and ckeditor editors
-            theme: smoothness # jquery theme
+            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce,  form, simple, custom
+            #editor_template: set custom template for your editor # default null
+            #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
+            #fullscreen: true|false # defaults true, applies to simple and ckeditor editors
+            #theme: smoothness # jquery theme, default is 'smoothness'
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
-                debug: false # defaults to false
+                #debug: true|false # defaults to false
                 roots:       # at least one root must be defined
                     uploads:
-                        show_hidden: false # defaults to false
+                        #show_hidden: true|false # defaults to false, hide files that
                         driver: LocalFileSystem
                         path: uploads
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                         upload_deny: ['all']
                         upload_max_size: 2M
-
+                        #attributes: example of setting attributes permission
+                        #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
 ```
 
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
@@ -198,7 +203,7 @@ fm_elfinder:
 * locale - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * cors_support - allows cross domain responses handling (default false)
 * editor - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor", "tinymce" for tinymce3, "tinymce4" for tinymce4, "form" for form type, "simple" for standalone and "custom".
+ "ckeditor" (to use with IvoryCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
 * editor_template - define template to render editor is set to "custom".
 * connector - root node for defining options for elfinder root directories.
@@ -214,9 +219,7 @@ fm_elfinder:
     * upload_max_size: 2M
 
 You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
-convert camelCased option name to under_scored option name.
-
-**Note:** `crypt_lib` option is not available as not implemented yet by elFinder PHP library.
+convert camelCased option name to under_scored name.
 
 ### Use multiple upload folder by instance
 
