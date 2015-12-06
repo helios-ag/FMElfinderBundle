@@ -5,27 +5,20 @@ FMElfinderBundle
 
 ### Code Quality Assurance ###
 
-| Gitter | SL Insight | Travis CI | CoverAlls| License |
-|----------------| ------------------------|-------------|-----------------|-----------------|
-|[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/helios-ag/FMElfinderBundle)|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)
-|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)
-|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-
-[![Dependency Status](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4)
-[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle) [![Latest Unstable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/unstable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)
+| Gitter | SL Insight | TravisCI | Coverage| License |Dependencies| Version | Downloads |
+|----------------| ------------------------|-------------|-----------------|-----------------|----------------|----------------|----------------|
+|[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/helios-ag/FMElfinderBundle)|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Dependency Status](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53db56ae4b3ac897b60001d4)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|[![Total Downloads](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/downloads.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
 
 
 **elFinder** is an open-source file manager for web, written in JavaScript using jQuery UI.
 Creation is inspired by simplicity and convenience of Finder program used in Mac OS X operating system.
 
 Recommended bundles to use with:
+
+
 | FMTinyMCEBundle | FMSummernoteBundle | IvoryCKEditorBundle| TrsteelCkeditorBundle |
 | ------------------------|-------------|-----------------|-----------------|
-|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|
-[![IvoryCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com/egeloen/IvoryCKEditorBundle)|
-[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|
-[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
+|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![IvoryCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com/egeloen/IvoryCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
 
 **Table of contents**
