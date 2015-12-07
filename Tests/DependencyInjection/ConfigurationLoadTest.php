@@ -39,6 +39,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'tinymce_popup_path' => '/pop-up',
                     'relative_path'      => false,
                     'path_prefix'        => '/',
+                    'visible_mime_types' => array(),
                     'connector'          => array(
                         'debug'   => true,
                         'binds'   => array(),
