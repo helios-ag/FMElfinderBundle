@@ -14,6 +14,7 @@
         var elf = $('.elfinder').elfinder({
             url : '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',  // connector URL
             lang : '{{locale}}',
+            onlyMimes: {{ onlyMimes|raw }},
             destroyOnClose : true,
             getFileCallback : function(files, fm) {
                 window.opener.$('.summernote').summernote('editor.insertImage',files.url);

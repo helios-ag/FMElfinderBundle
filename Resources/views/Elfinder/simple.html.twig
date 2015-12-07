@@ -13,7 +13,8 @@
     $().ready(function() {
         var $f = $('.elfinder').elfinder({
             url : '{{path('ef_connect', { 'instance': instance, 'homeFolder': homeFolder } )}}',
-            lang : '{{locale}}'
+            lang : '{{locale}}',
+            onlyMimes: {{ onlyMimes|raw }}
         });
 
         {% if fullscreen %}
