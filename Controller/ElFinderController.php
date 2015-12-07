@@ -62,7 +62,7 @@ class ElFinderController extends Controller
         $theme          = $parameters['theme'];
         // convert to javascript array
         $onlyMimes      = count($parameters['visible_mime_types'])
-                              ? "['" . implode("','", $parameters['visible_mime_types']) . "']"
+                              ? "['".implode("','", $parameters['visible_mime_types'])."']"
                               : '[]';
         $result         = array();
 
