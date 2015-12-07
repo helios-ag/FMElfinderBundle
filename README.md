@@ -180,6 +180,7 @@ fm_elfinder:
             #fullscreen: true|false # defaults true, applies to simple and ckeditor editors
             #theme: smoothness # jquery theme, default is 'smoothness'
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
+            #visible_mime_types: ['image/png', 'image/jpg', 'image/jpeg'] # only show these mime types, defaults to show all
             connector:
                 #debug: true|false # defaults to false
                 roots:       # at least one root must be defined
