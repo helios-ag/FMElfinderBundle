@@ -60,6 +60,10 @@ class ElFinderController extends Controller
         $pathPrefix     = $parameters['path_prefix'];
         $includeAssets  = $parameters['include_assets'];
         $theme          = $parameters['theme'];
+        // convert to javascript array
+        $onlyMimes      = count($parameters['visible_mime_types'])
+                              ? "['".implode("','", $parameters['visible_mime_types'])."']"
+                              : '[]';
         $result         = array();
 
         switch ($editor) {
@@ -79,6 +83,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -94,6 +99,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -109,6 +115,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -123,6 +130,7 @@ class ElFinderController extends Controller
                     'prefix'             => $assetsPath,
                     'theme'              => $theme,
                     'pathPrefix'         => $pathPrefix,
+                    'onlyMimes'          => $onlyMimes,
                 );
 
                 return $result;
@@ -137,6 +145,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -151,6 +160,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -167,6 +177,7 @@ class ElFinderController extends Controller
                     'prefix'        => $assetsPath,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;
@@ -179,6 +190,7 @@ class ElFinderController extends Controller
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'prefix'        => $assetsPath,
+                    'onlyMimes'     => $onlyMimes,
                 );
 
                 return $result;

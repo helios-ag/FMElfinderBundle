@@ -47,6 +47,16 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
                             ->scalarNode('path_prefix')->defaultValue('/')->end()
+                            ->arrayNode('visible_mime_types')
+                                ->beforeNormalization()
+                                    ->ifTrue(function ($v) { return is_string($v); })
+                                    ->then(function ($v) {
+                                        return array_map('trim', explode(',', $v));
+                                    })
+                                ->end()
+                                ->prototype('scalar')->end()
+                                ->defaultValue(array())
+                            ->end()
                             ->arrayNode('connector')
                                 ->addDefaultsIfNotSet()
                                 ->fixXmlConfig('root')

@@ -45,6 +45,7 @@
         var f = $('.elfinder').elfinder({
             url : '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',
             lang : '{{ locale }}',
+            onlyMimes: {{ onlyMimes|raw }},
             getfile : {
                 onlyURL : true,
                 multiple : false,

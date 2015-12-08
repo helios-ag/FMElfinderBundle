@@ -23,6 +23,7 @@
             // set your elFinder options here
             url: '{{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder }) }}',  // connector URL
             lang : '{{ locale }}',
+            onlyMimes: {{ onlyMimes|raw }},
             getFileCallback: function(file) { // editor callback
                 {% if relative_path %}
                         file.url = '{{ pathPrefix }}' + file.url.replace("{{ app.request.schemeAndHttpHost }}/", "");

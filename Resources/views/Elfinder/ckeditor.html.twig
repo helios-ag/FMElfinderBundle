@@ -24,6 +24,7 @@
         var f = $('.elfinder').elfinder({
             url : '{{path('ef_connect', {'instance': instance, 'homeFolder': homeFolder })}}'+'?mode='+mode,
             lang : '{{locale}}',
+            onlyMimes: {{ onlyMimes|raw }},
             getFileCallback : function(file) {
                 if (funcNum) {
                     {% if relative_path %}
