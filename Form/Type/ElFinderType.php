@@ -61,14 +61,24 @@ class ElFinderType extends AbstractType
      */
     public function getParent()
     {
-        return TextType::class;
+        if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
+            return 'Symfony\Component\Form\Extension\Core\Type\TextareaType';
+        }
+
+        return 'textarea';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->getBlockPrefix();
     }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return 'elfinder';
