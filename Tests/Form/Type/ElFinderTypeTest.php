@@ -24,7 +24,7 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
     public function testGetParent()
     {
         $type = new ElFinderType();
-        $this->assertEquals(Symfony\Component\Form\Extension\Core\Type\TextType, $type->getParent());
+        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', $type->getParent());
     }
 
     public function testConfigureOptions()
