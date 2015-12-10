@@ -31,12 +31,13 @@
         "symfony/phpunit-bridge": "~2.7|~3.0",
         "matthiasnoback/symfony-config-test":  "~1",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
+        "symfony/finder": "~2.4|3.0",
         "satooshi/php-coveralls": "dev-master"
     },
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me",
         "helios-ag/fm-summernote-bundle": "Summernote Bundle by me",
-        "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen"        
+        "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen"
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "" }
