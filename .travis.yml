@@ -1,6 +1,6 @@
 language: php
 
-php:  
+php:
   - 5.4
   - 5.5
   - 5.6
@@ -18,7 +18,7 @@ env:
     global:
         - COMPOSER_PREFER_LOWEST=false
         - SYMFONY_DEPRECATIONS_HELPER=weak
-        - SYMFONY_VERSION=2.3.*
+        - SYMFONY_VERSION=2.4.*
         - SYMFONY_PHPUNIT_BRIDGE_VERSION=2.7.*
 
 matrix:

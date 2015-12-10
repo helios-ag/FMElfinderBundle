@@ -65,7 +65,7 @@ class ElFinderType extends AbstractType
             return 'Symfony\Component\Form\Extension\Core\Type\TextType';
         }
 
-        return 'textarea';
+        return 'text';
     }
 
     /**
