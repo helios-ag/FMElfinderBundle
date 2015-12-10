@@ -44,20 +44,20 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
     {
         $yaml = <<<EOF
 instances:
-  default:
-    locale: %locale%
-    editor: simple # other choices are tinymce or simple
-    include_assets: true
-    fullscreen: true
-    connector:
-        debug: true # defaults to false
-        roots:       # at least one root must be defined
-            uploads:
-                driver: LocalFileSystem
-                path: uploads
-                upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                upload_deny: ['all']
-                upload_max_size: 2M
+    default:
+      locale: %locale%
+      editor: simple # other choices are tinymce or simple
+      include_assets: true
+      fullscreen: true
+      connector:
+          debug: true # defaults to false
+          roots:       # at least one root must be defined
+              uploads:
+                  driver: LocalFileSystem
+                  path: uploads
+                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                  upload_deny: ['all']
+                  upload_max_size: 2M
 EOF;
         $parser = new Parser();
 
