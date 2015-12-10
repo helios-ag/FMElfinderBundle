@@ -4,7 +4,7 @@ namespace FM\ElfinderBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\ConfigurableExtension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -15,12 +15,12 @@ use Symfony\Component\HttpKernel\Kernel;
  * @copyright 2012-2016 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
-class FMElfinderExtension extends ConfigurableExtension
+class FMElfinderExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
-    public function loadInternal(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
