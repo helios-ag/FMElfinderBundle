@@ -25,10 +25,11 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
     {
         $type = new ElFinderType();
         if (version_compare(Kernel::VERSION_ID, '20800') < 0) {
-            $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', $type->getParent());
+            $this->assertEquals('text', $type->getParent());
+
         } else
 
-        $this->assertEquals('text', $type->getParent());
+        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', $type->getParent());
     }
 
     public function testConfigureOptions()
