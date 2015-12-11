@@ -29,15 +29,6 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
         $this->assertEquals('text', $type->getParent());
     }
 
-    public function testGetParent28()
-    {
-        if (version_compare(Kernel::VERSION_ID, '20800') < 0) {
-            $this->markTestSkipped('No need to test on symfony < 2.8');
-        }
-        $type = new ElFinderType();
-        $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', $type->getParent());
-    }
-
     public function testConfigureOptions()
     {
         if (version_compare(Kernel::VERSION_ID, '20600') < 0) {
