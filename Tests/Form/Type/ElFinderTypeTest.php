@@ -3,7 +3,6 @@
 namespace FM\ElfinderBundle\Tests\Form\Type;
 
 use FM\ElfinderBundle\Form\Type\ElFinderType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Form\FormView;
@@ -21,14 +20,21 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
         $this->assertEquals('elfinder', $type->getName());
     }
 
-    public function testGetParent()
+    public function testGetParentOld()
     {
+        if (version_compare(Kernel::VERSION_ID, '20800') >= 0) {
+            $this->markTestSkipped('No need to test on symfony >= 2.8');
+        }
         $type = new ElFinderType();
-        if (version_compare(Kernel::VERSION_ID, '20800') < 0) {
-            $this->assertEquals('text', $type->getParent());
+        $this->assertEquals('text', $type->getParent());
+    }
 
-        } else
-
+    public function testGetParent28()
+    {
+        if (version_compare(Kernel::VERSION_ID, '20800') >= 0) {
+            $this->markTestSkipped('No need to test on symfony >= 2.8');
+        }
+        $type = new ElFinderType();
         $this->assertEquals('Symfony\Component\Form\Extension\Core\Type\TextType', $type->getParent());
     }
 
