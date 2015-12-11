@@ -7,7 +7,8 @@ use FM\ElfinderBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 
 /**
- * Class ConfigurationLoadTest
+ * Class ConfigurationLoadTest.
+ *
  * @package FM\ElfinderBundle\Tests\DependencyInjection
  */
 class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
