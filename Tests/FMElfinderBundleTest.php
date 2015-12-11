@@ -2,7 +2,7 @@
 
 namespace FM\ElfinderBundle\Tests;
 
-use FM\ElFinderBundle\FMElfinderBundle;
+use FM\ElfinderBundle\FMElfinderBundle;
 
 /**
  * Class FMElfinderBundleTest
