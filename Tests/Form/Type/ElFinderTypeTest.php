@@ -31,7 +31,7 @@ class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
 
     public function testGetParent28()
     {
-        if (version_compare(Kernel::VERSION_ID, '20700') < 0) {
+        if (version_compare(Kernel::VERSION_ID, '20800') < 0) {
             $this->markTestSkipped('No need to test on symfony < 2.8');
         }
         $type = new ElFinderType();
