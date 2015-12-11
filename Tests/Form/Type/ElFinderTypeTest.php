@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormView;
  *
  * @package FM\ElfinderBundle\Tests
  */
-class ElFinderTypeTest  extends \PHPUnit_Framework_TestCase
+class ElFinderTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetName()
     {
