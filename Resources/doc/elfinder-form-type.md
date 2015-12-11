@@ -13,7 +13,6 @@ fm_elfinder:
             show_hidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
-            compression: false # enable if you configured the uglifycss and uglifyjs2 assetic filters and want compression
             connector:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
@@ -27,10 +26,36 @@ fm_elfinder:
 
 On second step, add to your form builder (or form class), elfinder type, and pass instance and `enable` parameters:
 
+For Symfony 2.8 and up (Symfony 3 included) and PHP 5.5 and up
+
 ```php
+// ...
+use FM\ElfinderBundle\Form\Type\ElFinderType;
+// ...
+
+$form = $this->createFormBuilder()
+    ->add('elfinder', ElFinderType::class, array('instance'=>'form', 'enable'=>true))
+    ->getForm();
+
+```
+
+For earlier versions of php use FQCN, i.e.
+
+```php
+
+$form = $this->createFormBuilder()
+    ->add('elfinder', FM\ElfinderBundle\Form\Type\ElFinderType, array('instance'=>'form', 'enable'=>true))
+    ->getForm();
+```
+
+For Symfony < 2.8
+
+```php
+
 $form = $this->createFormBuilder()
     ->add('elfinder','elfinder', array('instance'=>'form', 'enable'=>true))
     ->getForm();
+
 ```
 
 Third step, render form with twig as usual, please note that you need to include **jQuery (>=1.7)** library on your page
