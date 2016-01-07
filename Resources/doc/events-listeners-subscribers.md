@@ -18,8 +18,9 @@ using the `setResult` function on this event.
 You can register event listeners with the `fm_elfinder.event_listener` tag
 and event subscribers with the `fm_elfinder.event_subscriber` tag.
 
-**Note:** you must set the `cors_support` option to `true` to use events.
-If you don't, the symfony life cycle won't end properly and so the event won't be dispatched.
+**Note:** you must set the [`cors_support`](/Resources/doc/cors-support.md "CORS Support documentation") option to `true` to use events.
+If you don't, the symfony life cycle won't end properly and the post execution event won't be dispatched.
+Only use the NelmioCORSBundle if your elFinder client is on an other domain.
 
 You can access to all commands names [here](https://github.com/helios-ag/ElFinderPHP/blob/master/src/ElFinder.php#L61 "elFinder commands").
 
