@@ -38,7 +38,10 @@ $form = $this->createFormBuilder()
     ->add('content', 'ckeditor', array(
             'config' => array(
                 'filebrowserBrowseRoute' => 'elfinder',
-                'filebrowserBrowseRouteParameters' => array('instance' => 'default')
+                'filebrowserBrowseRouteParameters' => array(
+                    'instance' => 'default',
+                    'homeFolder' => ''
+                )
             ),
         ),
     ))
