@@ -22,7 +22,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
      */
     protected $elFinderVolumeMock;
 
-    protected function setUp()
+    private function getConfigurationReader($attributesObject)
     {
         /* @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
         $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -49,13 +49,18 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('get')
             ->will($this->returnValue(''));
-
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
-        $attributesObject
+        $requestObject
             ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue(''));
+            ->method('getScheme')
+            ->will($this->returnValue('http'));
+        $requestObject
+            ->expects($this->any())
+            ->method('getHttpHost')
+            ->will($this->returnValue('test.com'));
+        $requestObject
+            ->expects($this->any())
+            ->method('getBasePath')
+            ->will($this->returnValue('/unit-test'));
 
         $requestObject->attributes = $attributesObject;
 
@@ -113,20 +118,137 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
                         ),
                     ),
                 ),
+                'with_path_with_url'  => array(
+                    'cors_support' => true,
+                    'connector'    => array(
+                        'debug' => '', 'binds' => '', 'plugins' => '',
+                        'roots' => array(
+                            'uploads' => array(
+                                'flysystem'         => array('enabled' => false),
+                                'volume_id'         => 1,
+                                'show_hidden'       => false,
+                                'path'              => '/home',
+                                'driver'            => 'LocalFileSystem',
+                                'url'               => 'home-url',
+                                'glide_url'         => '',
+                                'glide_key'         => '',
+                                'plugins'           => '',
+                                'start_path'        => '',
+                                'alias'             => '',
+                                'mime_detect'       => '',
+                                'mimefile'          => '',
+                                'img_lib'           => '',
+                                'tmb_path'          => '',
+                                'tmb_path_mode'     => '',
+                                'tmb_url'           => '',
+                                'tmb_size'          => '',
+                                'tmb_crop'          => '',
+                                'tmb_bg_color'      => '',
+                                'copy_overwrite'    => '',
+                                'copy_join'         => '',
+                                'copy_from'         => '',
+                                'copy_to'           => '',
+                                'upload_overwrite'  => '',
+                                'upload_allow'      => '',
+                                'upload_deny'       => '',
+                                'upload_max_size'   => '',
+                                'defaults'          => '',
+                                'attributes'        => '',
+                                'accepted_name'     => '',
+                                'disabled_commands' => '',
+                                'tree_deep'         => '',
+                                'check_subfolders'  => '',
+                                'separator'         => '',
+                                'time_format'       => '',
+                                'archive_mimes'     => '',
+                                'archivers'         => '',
+                            ),
+                        ),
+                    ),
+                ),
+                'without_path_with_url'  => array(
+                    'cors_support' => true,
+                    'connector'    => array(
+                        'debug' => '', 'binds' => '', 'plugins' => '',
+                        'roots' => array(
+                            'uploads' => array(
+                                'flysystem'         => array('enabled' => false),
+                                'volume_id'         => 2,
+                                'show_hidden'       => false,
+                                'path'              => '',
+                                'driver'            => 'LocalFileSystem',
+                                'url'               => 'home-url-without-path',
+                                'glide_url'         => '',
+                                'glide_key'         => '',
+                                'plugins'           => '',
+                                'start_path'        => '',
+                                'alias'             => '',
+                                'mime_detect'       => '',
+                                'mimefile'          => '',
+                                'img_lib'           => '',
+                                'tmb_path'          => '',
+                                'tmb_path_mode'     => '',
+                                'tmb_url'           => '',
+                                'tmb_size'          => '',
+                                'tmb_crop'          => '',
+                                'tmb_bg_color'      => '',
+                                'copy_overwrite'    => '',
+                                'copy_join'         => '',
+                                'copy_from'         => '',
+                                'copy_to'           => '',
+                                'upload_overwrite'  => '',
+                                'upload_allow'      => '',
+                                'upload_deny'       => '',
+                                'upload_max_size'   => '',
+                                'defaults'          => '',
+                                'attributes'        => '',
+                                'accepted_name'     => '',
+                                'disabled_commands' => '',
+                                'tree_deep'         => '',
+                                'check_subfolders'  => '',
+                                'separator'         => '',
+                                'time_format'       => '',
+                                'archive_mimes'     => '',
+                                'archivers'         => '',
+                            ),
+                        ),
+                    ),
+                ),
             ),
         );
 
-        $this->reader = new ElFinderConfigurationReader($params, $requestStack, $containerMock);
+        return new ElFinderConfigurationReader($params, $requestStack, $containerMock);
     }
 
-    protected function tearDown()
+    private function getDefaultAttributesObject()
     {
-        unset($this->reader);
+        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
+        $attributesObject = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $attributesObject
+            ->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue(''));
+
+        return $attributesObject;
+    }
+
+    private function getHomeFolderAwareAttributesObject()
+    {
+        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
+        $attributesObject = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $attributesObject
+            ->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('homeFolder'))
+            ->will($this->returnValue('bob'));
+
+        return $attributesObject;
     }
 
     public function testConfiguration()
     {
-        $configuration = $this->reader->getConfiguration('default');
+        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $configuration = $reader->getConfiguration('default');
         $this->assertArrayHasKey('roots', $configuration);
         $this->assertArrayHasKey('corsSupport', $configuration);
         $this->assertSame('LocalFileSystem', $configuration['roots'][0]['driver']);
@@ -141,15 +263,44 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testAccessHidden()
     {
+        $reader     = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $hiddenPath = '.hiddenPath';
-        $this->assertFalse($this->reader->access('read', $hiddenPath, 'dummy', 'dummy'));
-        $this->assertFalse($this->reader->access('write', $hiddenPath, 'dummy', 'dummy'));
+        $this->assertFalse($reader->access('read', $hiddenPath, 'dummy', 'dummy'));
+        $this->assertFalse($reader->access('write', $hiddenPath, 'dummy', 'dummy'));
     }
 
     public function testAccessVisible()
     {
+        $reader      = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $visiblePath = 'hiddenPath';
-        $this->assertNull($this->reader->access('read', $visiblePath, 'dummy', 'dummy'));
-        $this->assertNull($this->reader->access('write', $visiblePath, 'dummy', 'dummy'));
+        $this->assertNull($reader->access('read', $visiblePath, 'dummy', 'dummy'));
+        $this->assertNull($reader->access('write', $visiblePath, 'dummy', 'dummy'));
+    }
+
+    public function testPathAndUrlAndHomeFolder()
+    {
+        // with path and without homeFolder
+        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $configuration = $reader->getConfiguration('with_path_with_url');
+        $this->assertEquals('/home', $configuration['roots'][0]['path']);
+        $this->assertEquals('http://test.com/unit-test/home-url/', $configuration['roots'][0]['URL']);
+
+        // with path and with homeFolder
+        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $configuration = $reader->getConfiguration('with_path_with_url');
+        $this->assertEquals('/home/bob', $configuration['roots'][0]['path']);
+        $this->assertEquals('http://test.com/unit-test/home-url/bob', $configuration['roots'][0]['URL']);
+
+        // without path and without homeFolder
+        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $configuration = $reader->getConfiguration('without_path_with_url');
+        $this->assertEquals('', $configuration['roots'][0]['path']);
+        $this->assertEquals('http://test.com/unit-test/home-url-without-path/', $configuration['roots'][0]['URL']);
+
+        // without path and with homeFolder
+        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $configuration = $reader->getConfiguration('without_path_with_url');
+        $this->assertEquals('/bob', $configuration['roots'][0]['path']);
+        $this->assertEquals('http://test.com/unit-test/home-url-without-path/bob', $configuration['roots'][0]['URL']);
     }
 }
