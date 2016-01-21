@@ -152,4 +152,10 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->reader->access('read', $visiblePath, 'dummy', 'dummy'));
         $this->assertNull($this->reader->access('write', $visiblePath, 'dummy', 'dummy'));
     }
+
+    public function testAccessTmbURLOpion()
+    {
+        $configuration = $this->reader->getConfiguration('default');
+        $this->assertArrayHasKey('tmbURL', $configuration['roots'][0]);
+    }
 }
