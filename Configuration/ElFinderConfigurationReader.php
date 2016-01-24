@@ -77,8 +77,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path       = $parameter['path'];
             $homeFolder = $request->attributes->get('homeFolder');
-            if ($homeFolder !== '') {
-                $homeFolder = '/'.$homeFolder.'/';
+            if ($homeFolder) {
+                $pathAndHomeFolder = sprintf('%s/%s', $path, $homeFolder);
+            } else {
+                $pathAndHomeFolder = sprintf('%s%s', $path, $homeFolder);
             }
             if ($parameter['flysystem']['enabled']) {
                 $adapter     = $parameter['flysystem']['type']; // ftp ex.
@@ -93,7 +95,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'glideURL'          => $parameter['glide_url'],
                 'glideKey'          => $parameter['glide_key'],
                 'plugin'            => $parameter['plugins'],
-                'path'              => $path.$homeFolder, //removed slash for Flysystem compatibility
+                'path'              => $pathAndHomeFolder,
                 'startPath'         => $parameter['start_path'],
                 'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
                 'alias'             => $parameter['alias'],
