@@ -303,4 +303,10 @@ class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url-without-path/bob', $configuration['roots'][0]['URL']);
     }
+
+    public function testAccessTmbURLOpion()
+    {
+        $configuration = $this->reader->getConfiguration('default');
+        $this->assertArrayHasKey('tmbURL', $configuration['roots'][0]);
+    }
 }

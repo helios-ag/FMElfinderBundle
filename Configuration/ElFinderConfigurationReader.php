@@ -104,7 +104,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'imgLib'            => $parameter['img_lib'],
                 'tmbPath'           => $parameter['tmb_path'],
                 'tmbPathMode'       => $parameter['tmb_path_mode'],
-                'tmbUrl'            => $parameter['tmb_url'],
+                'tmbURL'            => $parameter['tmb_url'],
                 'tmbSize'           => $parameter['tmb_size'],
                 'tmbCrop'           => $parameter['tmb_crop'],
                 'tmbBgColor'        => $parameter['tmb_bg_color'],
