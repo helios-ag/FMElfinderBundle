@@ -126,6 +126,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'timeFormat'        => $parameter['time_format'],
                 'archiveMimes'      => $parameter['archive_mimes'],
                 'archivers'         => $parameter['archivers'],
+                'encoding'          => $parameters['encoding'],
+                'locale'            => $parameters['locale']
             );
 
             if ($parameter['volume_id'] > 0) {
