@@ -1,6 +1,6 @@
 {
     "name": "helios-ag/fm-elfinder-bundle",
-    "description": "ElFinder bundle, adds ElFinder file manager to your Symfony2 project",
+    "description": "ElFinder bundle, adds ElFinder file manager to your Symfony2/3 project",
     "keywords": ["elfinder","file manager"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/helios-ag/FMElfinderBundle",
