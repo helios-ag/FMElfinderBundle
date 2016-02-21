@@ -191,6 +191,8 @@ class ElFinderController extends Controller
                     'homeFolder'    => $homeFolder,
                     'prefix'        => $assetsPath,
                     'onlyMimes'     => $onlyMimes,
+                    'theme'         => $theme,
+                    'pathPrefix'    => $pathPrefix,
                 );
 
                 return $result;

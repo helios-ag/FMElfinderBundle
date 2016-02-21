@@ -33,7 +33,6 @@ Recommended bundles to use with:
     - [Step 2: Enable the bundle](#step-2-enable-the-bundle)
     - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
     - [Step 4: Securing paths](#step-4-configure-your-applications-securityyml)
-    - [Step 5: Install assets](#step-5-install-assets)
 - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
     - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
@@ -61,8 +60,6 @@ Recommended bundles to use with:
 
 ### Step 1: Installation
 
-**Version 6 (Symfony 3 Compatible):**
-
 Add FMElFinderBundle to your composer.json
 
 ```json
@@ -73,20 +70,7 @@ Add FMElFinderBundle to your composer.json
 }
 ```
 
-
-**Version 5:**
-
-Add FMElfinderBundle to your composer.json:
-
-```json
-{
-    "require": {
-        "helios-ag/fm-elfinder-bundle": "~5",
-    }
-}
-```
-
-also add component-dir under config node of composer.json
+also add **component-dir** under config node of composer.json
 
 ```json
 {
@@ -94,21 +78,6 @@ also add component-dir under config node of composer.json
         "component-dir": "web/assets"
     }
 }
-```
-
-**Version 4:**
-
-This version doesn't use **component** library
-
-```sh
-composer require helios-ag/fm-elfinder-bundle: "~4.0"
-```
-
-For Symfony =<2.3 use version ~2.3
-
-
-```sh
-composer require helios-ag/fm-elfinder-bundle: "~2.3"
 ```
 
 Now tell composer to download the bundle by running the command:
@@ -155,14 +124,6 @@ security:
         - { path: ^/efconnect, role: ROLE_USER }
         - { path: ^/elfinder, role: ROLE_USER }
 
-```
-
-### Step 5: Install assets
-
-Install and dump assets via symfony built-in command:
-
-```sh
-app/console assets:install web
 ```
 
 ## Basic configuration
