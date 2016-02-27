@@ -48,7 +48,6 @@ Recommended bundles to use with:
     - [Integration with TinyMCE 3](/Resources/doc/tinymce-integration.md#tinymce-3x)
     - [Integration with TinyMCE 4](/Resources/doc/tinymce-integration.md#tinymce-4x)
 - [Summernote integration](/Resources/doc/summernote-integration.md)
-
 - [Advanced configuration](/Resources/doc/advanced-configuration.md)
     - [Custom configuration provider](/Resources/doc/advanced-configuration.md#custom-configuration-provider)
     - [Custom loader](/Resources/doc/advanced-configuration.md#custom-loader)
