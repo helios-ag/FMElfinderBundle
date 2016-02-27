@@ -20,12 +20,12 @@
       "exclude": ["/Tests"]
     },
     "require": {
-        "php":                                 ">=5.3.9",
+        "php":                                 ">=5.4",
         "symfony/framework-bundle":            "~2.4|~3.0",
         "symfony/twig-bundle":                 "~2.4|~3.0",
         "symfony/form":                        "~2.4|~3.0",
-        "helios-ag/fm-elfinder-php-connector": "~2.0",
-        "components/elfinder": "~2.0"
+        "helios-ag/fm-elfinder-php-connector": "~2.5",
+        "components/elfinder":                 "~2.1"
     },
     "require-dev" : {
         "symfony/phpunit-bridge": "~2.7|~3.0",
@@ -44,7 +44,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.0-dev"
+            "dev-master": "6.1-dev"
         }
     }
 }
