@@ -307,6 +307,15 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('app')->defaultvalue('')->end()
                         ->scalarNode('token')->defaultvalue('')->end()
                 ->end()
+                ->arrayNode('rackspace')
+                    ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('username')->defaultValue('')->end()
+                        ->scalarNode('apikey')->defaultValue('')->end()
+                        ->scalarNode('endpoint')->defaultValue('')->end()
+                        ->scalarNode('container')->defaultValue('')->end()
+                        ->scalarNode('region')->defaultValue('')->end()
+                ->end()
             ->end()->end();
     }
 
