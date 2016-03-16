@@ -183,6 +183,7 @@ class Configuration implements ConfigurationInterface
                                                     ->canBeEnabled()
                                                     ->children()
                                                         ->scalarNode('type')->defaultValue('')->end()
+                                                        ->scalarNode('adapter_service')->defaultValue('')->end()
                                                         ->append($this->createFlysystemNode())
                                                     ->end()
                                                 ->end()
