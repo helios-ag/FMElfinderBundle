@@ -55,6 +55,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'volume_id'         => 0,
                                 'disabled_commands' => array(),
                                 'plugins'           => array(),
+                                'driver_options'    => array(),
                                 'path'              => 'uploads',
                                 'show_hidden'       => true,
                                 'flysystem'         => array(
