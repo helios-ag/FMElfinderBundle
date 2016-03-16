@@ -303,20 +303,22 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('dropbox')
                     ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('app')->defaultvalue('')->end()
-                        ->scalarNode('token')->defaultvalue('')->end()
+                        ->children()
+                            ->scalarNode('app')->defaultvalue('')->end()
+                            ->scalarNode('token')->defaultvalue('')->end()
+                        ->end()
                 ->end()
                 ->arrayNode('rackspace')
                     ->canBeEnabled()
-                    ->children()
-                        ->scalarNode('username')->defaultValue('')->end()
-                        ->scalarNode('apikey')->defaultValue('')->end()
-                        ->scalarNode('endpoint')->defaultValue('')->end()
-                        ->scalarNode('container')->defaultValue('')->end()
-                        ->scalarNode('region')->defaultValue('')->end()
+                        ->children()
+                          ->scalarNode('username')->defaultValue('')->end()
+                          ->scalarNode('apikey')->defaultValue('')->end()
+                          ->scalarNode('endpoint')->defaultValue('')->end()
+                          ->scalarNode('container')->defaultValue('')->end()
+                          ->scalarNode('region')->defaultValue('')->end()
+                       ->end()
                 ->end()
-            ->end()->end();
+            ->end();
     }
 
     /**

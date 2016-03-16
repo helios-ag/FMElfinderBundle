@@ -1,7 +1,7 @@
 {
     "name": "helios-ag/fm-elfinder-bundle",
     "description": "ElFinder bundle, adds ElFinder file manager to your Symfony2/3 project",
-    "keywords": ["elfinder","file manager"],
+    "keywords": ["elfinder","file manager","wysiwyg"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/helios-ag/FMElfinderBundle",
     "license": "MIT",
@@ -32,7 +32,7 @@
         "matthiasnoback/symfony-config-test":  "~1",
         "matthiasnoback/symfony-dependency-injection-test": "~0.7",
         "symfony/finder": "~2.4|3.0",
-        "satooshi/php-coveralls": "dev-master"
+        "satooshi/php-coveralls": "~1"
     },
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me",
