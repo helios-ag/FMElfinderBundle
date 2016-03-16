@@ -44,7 +44,7 @@ class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
         $this->template = $this->twig->loadTemplate('_tinymce.html.twig');
         $testData       = $this->renderTemplate(array('instance' => 'minimal'));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 <script type="text/javascript">
     //<![CDATA[
     function elFinderBrowser (field_name, url, type, win) {
@@ -75,7 +75,7 @@ EOF;
         $this->template = $this->twig->loadTemplate('_tinymce4.html.twig');
         $testData       = $this->renderTemplate(array('instance' => 'minimal'));
 
-        $expected = <<<EOF
+        $expected = <<<'EOF'
 <script type="text/javascript">
     function elFinderBrowser (field_name, url, type, win) {
         tinymce.activeEditor.windowManager.open({
@@ -102,7 +102,7 @@ EOF;
         $this->template = $this->twig->loadTemplate('_summernote.html.twig');
         $testData       = $this->renderTemplate(array('instance' => 'minimal'));
 
-        $expected  = <<<EOF
+        $expected  = <<<'EOF'
 <script type="text/javascript">
     function elFinderBrowser(){
             window.open(

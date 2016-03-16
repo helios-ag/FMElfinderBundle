@@ -30,8 +30,6 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('twig.extension.fm_elfinder_init');
     }
 
-    /**
-     */
     public function testMinimumConfiguration()
     {
         $this->container = new ContainerBuilder();
@@ -42,10 +40,10 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
 
     protected function getMinimalConfiguration()
     {
-        $yaml = <<<EOF
+        $yaml = <<<'EOF'
 instances:
     default:
-      locale: %locale%
+      locale: '%locale%'
       editor: simple # other choices are tinymce or simple
       include_assets: true
       fullscreen: true
