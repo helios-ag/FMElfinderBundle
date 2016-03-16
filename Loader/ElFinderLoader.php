@@ -109,7 +109,7 @@ class ElFinderLoader
      * Encode path into hash.
      *
      * @param string $path
-     * 
+     *
      * @return mixed
      **/
     public function encode($path)
@@ -135,7 +135,7 @@ class ElFinderLoader
      * Decode path from hash.
      *
      * @param string $hash
-     * 
+     *
      * @return string
      **/
     public function decode($hash)

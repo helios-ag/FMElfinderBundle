@@ -13,7 +13,6 @@ use League\Flysystem\Sftp\SftpAdapter;
 use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
 use League\Flysystem\AwsS3v3\AwsS3Adapter as AwsS3v3;
 use League\Flysystem\GridFS\GridFSAdapter;
-use OpenCloud\OpenStack;
 use OpenCloud\Rackspace;
 use League\Flysystem\Rackspace\RackspaceAdapter;
 use MongoClient;
@@ -235,10 +234,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             case 'rackspace':
                 $client = new Rackspace(Rackspace::$opt['rackspace']['endpoint'], array(
                     'username' => $opt['rackspace']['username'],
-                    'apiKey' => $opt['rackspace']['apikey'],
+                    'apiKey'   => $opt['rackspace']['apikey'],
                 ));
-                $store = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
-                $container = $store->getContainer($opt['rackspace']['container']);
+                $store      = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
+                $container  = $store->getContainer($opt['rackspace']['container']);
                 $filesystem = new Filesystem(new RackspaceAdapter($container));
                 break;
         }
