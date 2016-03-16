@@ -189,6 +189,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('glide_url')->defaultValue('')->end()
                                                 ->scalarNode('glide_key')->defaultValue('')->end()
                                                 ->append($this->createPluginsNode())
+                                                ->append($this->createDriverOptionsNode())
                                                 ->arrayNode('dropbox_settings')
                                                     ->canBeEnabled()
                                                     ->children()
@@ -340,6 +341,19 @@ class Configuration implements ConfigurationInterface
     private function createBindsNode()
     {
         return $this->createNode('binds')
+            ->useAttributeAsKey('name')
+                ->prototype('array')
+                ->useAttributeAsKey('name')
+                ->prototype('variable')->end()
+            ->end();
+    }
+
+    /**
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The bind node.
+     */
+    private function createDriverOptionsNode()
+    {
+        return $this->createNode('driver_options')
             ->useAttributeAsKey('name')
                 ->prototype('array')
                 ->useAttributeAsKey('name')
