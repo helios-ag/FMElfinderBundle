@@ -45,7 +45,7 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $yaml = <<<EOF
 instances:
     default:
-      locale: %locale%
+      locale: '%locale%'
       editor: simple # other choices are tinymce or simple
       include_assets: true
       fullscreen: true
