@@ -61,7 +61,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'flysystem'         => array(
                                     'enabled' => false,
                                     'type'    => '',
-                                    'adapater_service' => ''
+                                    'adapter_service' => ''
                                 ),
                                 'start_path'       => '',
                                 'url'              => '',
