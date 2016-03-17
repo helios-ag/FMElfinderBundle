@@ -59,9 +59,9 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'path'              => 'uploads',
                                 'show_hidden'       => true,
                                 'flysystem'         => array(
-                                    'enabled' => false,
-                                    'type'    => '',
-                                    'adapter_service' => ''
+                                    'enabled'         => false,
+                                    'type'            => '',
+                                    'adapter_service' => '',
                                 ),
                                 'start_path'       => '',
                                 'url'              => '',
