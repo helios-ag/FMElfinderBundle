@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Configuration;
 
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use League\Flysystem\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use League\Flysystem\Filesystem;
@@ -87,7 +88,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             if ($parameter['flysystem']['enabled']) {
                 $adapter     = $parameter['flysystem']['type']; // ftp ex.
                 $opt         = $parameter['flysystem']['options'];
-                $filesystem  = $this->configureFlysystem($opt, $adapter);
+                $serviceName = $parameter['flysystem']['adapter_service'];
+                $filesystem  = $this->configureFlysystem($opt, $adapter, $serviceName);
             }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
@@ -170,7 +172,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      *
      * @return Filesystem
      */
-    private function configureFlysystem($opt, $adapter)
+    private function configureFlysystem($opt, $adapter, $serviceName)
     {
         switch ($adapter) {
             case 'local':
@@ -239,6 +241,12 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $store      = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
                 $container  = $store->getContainer($opt['rackspace']['container']);
                 $filesystem = new Filesystem(new RackspaceAdapter($container));
+                break;
+            case 'custom':
+                $adapter = $this->container->get($serviceName);
+                if (is_object($adapter) && $adapter instanceof AdapterInterface) {
+                    $filesystem = new Filesystem($adapter);
+                }
                 break;
         }
 

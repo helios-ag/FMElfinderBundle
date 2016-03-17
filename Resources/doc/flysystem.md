@@ -1,7 +1,7 @@
 Flysystem example configuration
 ===============================
 
-You will need library files to work with 
+You will need library files to work with Flysystem
 
 Below example of configuring flysystem:
 
@@ -36,7 +36,7 @@ fm_elfinder:
                               options:
                                 dropbox:
                                     app: YourAppname // see dropbox developer site
-                                    token: ToKeN // can be aquired via developer console 
+                                    token: ToKeN // can be aquired via developer console
                           upload_allow: ['all']
                       aws_s3:
                           driver: Flysystem
@@ -84,7 +84,41 @@ fm_elfinder:
                         upload_deny: ['all']
 ```
 
-In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path. 
+In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path.
 
-If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example. 
-Define the variables in your config.yml or set it directly.     
+If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example.
+Define the variables in your config.yml or set it directly.
+
+
+Also possible to define Flysystem adapters as services, it can be useful for self written adapters.
+To use adapter as service, define it under 'services' node in your services.yml (or use DI)
+
+```services.yml
+services:
+    local_adapter:
+        class: League\Flysystem\Adapter\Local
+        arguments: ["%kernel.root_dir%/../web/uploads/"]
+```
+
+and configure flysystem node accordingly to use it
+
+```config.yml
+fm_elfinder:
+    instances:
+        adapter:
+            locale: %locale%
+            editor: simple
+            include_assets: true
+            relative_path: true
+            connector:
+                roots:      
+                    uploads:
+                        show_hidden: false
+                        driver: Flysystem # !set driver to Flysystem
+                        flysystem:
+                            type: custom # !set type to custom, it will tell bundle to use custom driver
+                            adapter_service: 'local_adapter' # select previously configured adapter service
+                            options:
+                        path: ''
+                        upload_allow: ['all']
+```                        
