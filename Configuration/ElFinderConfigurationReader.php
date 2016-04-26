@@ -211,7 +211,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'region'  => $opt['aws_s3_v3']['region'],
                     'version' => $opt['aws_s3_v3']['version'],
                 ));
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name']));
+                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
                 break;
             case 'copy_com':
                 $client = new API(
