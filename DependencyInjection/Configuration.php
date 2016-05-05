@@ -268,6 +268,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('region')->defaultvalue('')->end()
                             ->scalarNode('bucket_name')->defaultvalue('')->end()
                             ->scalarNode('optional_prefix')->defaultvalue('')->end()
+                            ->scalarNode('base_url')->defaultvalue('')->end()
                     ->end()
                 ->end()
                 ->arrayNode('aws_s3_v3')

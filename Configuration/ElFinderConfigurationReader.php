@@ -138,7 +138,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
             if (!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
-            };
+            }
 
             if ($parameter['driver'] == 'Flysystem') {
                 $driverOptions['filesystem'] = $filesystem;
@@ -195,11 +195,15 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)) : new Filesystem(new SftpAdapter($settings));
                 break;
             case 'aws_s3_v2':
-                $client = S3Client::factory(array(
+                $options = array(
                     'key'     => $opt['aws_s3_v2']['key'],
                     'secret'  => $opt['aws_s3_v2']['secret'],
                     'region'  => $opt['aws_s3_v2']['region'],
-                ));
+                );
+                if (isset($opt['aws_s3_v2']['base_url']) && $opt['aws_s3_v2']['base_url']) {
+                    $options['base_url'] = $opt['aws_s3_v2']['base_url'];
+                }
+                $client     = S3Client::factory($options);
                 $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
                 break;
             case 'aws_s3_v3':
