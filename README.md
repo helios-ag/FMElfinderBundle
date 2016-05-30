@@ -131,6 +131,7 @@ security:
 
 ```yaml
 fm_elfinder:
+    #assets_path: / # default is /assets, this is where css/js elfinder files are
     instances:
         default:
             locale: %locale% # defaults to current request locale
@@ -154,7 +155,7 @@ fm_elfinder:
                         #attributes: example of setting attributes permission
                         #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
 ```
-
+* assets_path - this is where css/js files of the bundle are, this options should be the same as composers `component-dir` option.
 * default - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * path - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read and owner permissions to this directory.
 * url - url to be prefixed to image path, for displaying. Can be either absolute or relative. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
