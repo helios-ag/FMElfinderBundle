@@ -79,6 +79,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'copy_from'        => true,
                                 'copy_to'          => true,
                                 'upload_overwrite' => true,
+                                'fileMode'         => 0644,
                                 'attributes'       => array(
                                     'some_pattern' => array(
                                         'pattern' => '/^some_pattern$/',

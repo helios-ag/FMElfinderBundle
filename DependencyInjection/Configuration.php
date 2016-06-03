@@ -93,6 +93,7 @@ class Configuration implements ConfigurationInterface
                                                 ->booleanNode('copy_from')->defaultTrue()->end()
                                                 ->booleanNode('copy_to')->defaultTrue()->end()
                                                 ->booleanNode('upload_overwrite')->defaultTrue()->end()
+                                                ->scalarNode('fileMode')->defaultValue(0644)->end()
                                                 ->arrayNode('upload_allow')
                                                     ->beforeNormalization()
                                                         ->ifTrue(function ($v) { return is_string($v); })
