@@ -34,6 +34,11 @@ class ElFinderController extends Controller
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters   = $efParameters['instances'][$instance];
+        
+        if (empty($parameters['locale'])) {
+            $parameters['locale'] = $request->getLocale();
+        }
+
         $assetsPath   = $efParameters['assets_path'];
         $result       = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
 
