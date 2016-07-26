@@ -36,6 +36,42 @@ fm_elfinder:
   loader: my_loader
 ```
 
+##Custom archivers
+
+Elfinder has the ability to make/extract diffrent type of archives. Using the following configuration you can add/remove/override archive types based on mime type.
+
+```yaml
+fm_elfinder:
+    instances:
+        themes:
+            locale: %locale% # defaults to current request locale
+            cors_support: true
+            editor: simple
+            include_assets: false # disable if you want to handle loading of the javascript and css assets yourself
+            connector:
+                debug: true # defaults to false
+                roots:       # at least one root must be defined
+                    uploads:
+                        driver: LocalFileSystem
+                        path: %theme_root%
+                        upload_allow: ['all']
+                        upload_max_size: 10M
+                        archive_mimes: "application/zip"
+                        archivers:
+                            create:
+                                application/zip:
+                                    cmd: "phpfunction"
+                                    argc: "self::zipArchiveZip"
+                                    ext: "zip"
+                            extract:
+                                application/myzip:
+                                    cmd: "phpfunction"
+                                    argc: "self::zipArchiveUnzip"
+                                    ext: "zip"
+```
+
+
+
 ## Plugins
 
 ElFinder comes with some plugins, like auto-resize, which can be enabled, by the following configuration:
