@@ -171,6 +171,7 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue(array())
                                                 ->end() // archive_mimes
                                                 ->arrayNode('archivers')
+                                                    ->canBeEnabled()
                                                     ->children()
                                                         ->arrayNode('create')
                                                             ->prototype('array')
