@@ -86,10 +86,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $pathAndHomeFolder = sprintf('%s%s', $path, $homeFolder);
             }
             if ($parameter['flysystem']['enabled']) {
-                $adapter     = $parameter['flysystem']['type']; // ftp ex.
-                $opt         = $parameter['flysystem']['options'];
-                $serviceName = $parameter['flysystem']['adapter_service'];
-                $filesystem  = $this->configureFlysystem($opt, $adapter, $serviceName);
+                if ($parameter['flysystem']['filesystem']) {
+                    $serviceName = $parameter['flysystem']['filesystem'];
+                    $filesystem  = $this->getFlysystemFilesystem($serviceName);
+                }
+                else {
+                    $adapter     = $parameter['flysystem']['type']; // ftp ex.
+                    $serviceName = $parameter['flysystem']['adapter_service'];
+                    $opt         = $parameter['flysystem']['options'];
+                    $filesystem  = $this->configureFlysystem($opt, $adapter, $serviceName);
+                }
             }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
@@ -255,6 +261,14 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
         }
 
+        return $filesystem;
+    }
+
+    private function getFlysystemFilesystem($serviceName) {
+        $filesystem = $this->container->get($serviceName);
+        if (!is_object($filesystem) || (!$filesystem instanceof Filesystem)) {
+            throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, Filesystem::class));
+        }
         return $filesystem;
     }
 
