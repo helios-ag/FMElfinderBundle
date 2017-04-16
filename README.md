@@ -1,6 +1,8 @@
 FMElfinderBundle
 ================
 
+[![Join the chat at https://gitter.im/helios-ag/FMElfinderBundle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/helios-ag/FMElfinderBundle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
 
 ### Code Quality Assurance ###
