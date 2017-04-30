@@ -34,7 +34,7 @@ use FM\ElfinderBundle\Form\Type\ElFinderType;
 // ...
 
 $form = $this->createFormBuilder()
-    ->add('elfinder', ElFinderType::class, array('instance'=>'form', 'enable'=>true))
+    ->add('elfinder', ElFinderType::class, ['instance' => 'form', 'enable' => true])
     ->getForm();
 
 ```
@@ -43,8 +43,12 @@ For earlier versions of php use FQCN, i.e.
 
 ```php
 
+use FM\ElfinderBundle\Form\Type\ElFinderType;
+
+...
+
 $form = $this->createFormBuilder()
-    ->add('elfinder', FM\ElfinderBundle\Form\Type\ElFinderType, array('instance'=>'form', 'enable'=>true))
+    ->add('elfinder', ElFinderType, array('instance' => 'form', 'enable'=>true))
     ->getForm();
 ```
 
@@ -53,12 +57,10 @@ For Symfony < 2.8
 ```php
 
 $form = $this->createFormBuilder()
-    ->add('elfinder','elfinder', array('instance'=>'form', 'enable'=>true))
+    ->add('elfinder', 'elfinder', array('instance'=>'form', 'enable'=>true))
     ->getForm();
 
 ```
-
-Third step, render form with twig as usual, please note that you need to include **jQuery (>=1.7)** library on your page
 
 ```jinja
 <form action="" method="post" {{ form_enctype(form) }}>

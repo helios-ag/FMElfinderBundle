@@ -36,7 +36,7 @@ fm_elfinder:
   loader: my_loader
 ```
 
-##Custom archivers
+## Custom archivers
 
 Elfinder has the ability to make/extract diffrent type of archives. Using the following configuration you can add/remove/override archive types based on mime type.
 
