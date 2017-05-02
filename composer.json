@@ -20,7 +20,7 @@
       "exclude": ["/Tests"]
     },
     "require": {
-        "php":                                 ">=5.4",
+        "php":                                 "^5.6|^7.0",
         "symfony/framework-bundle":            "~2.4|~3.0",
         "symfony/twig-bundle":                 "~2.4|~3.0",
         "symfony/form":                        "~2.4|~3.0",
