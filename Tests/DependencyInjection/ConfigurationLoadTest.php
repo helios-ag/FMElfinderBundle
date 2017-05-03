@@ -95,7 +95,11 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'date_format'      => 'j M Y H:i',
                                 'time_format'      => 'H:i',
                                 'archive_mimes'    => array(),
-                                'archivers'        => array(),
+                                'archivers'        => array(
+                                  'enabled' => false,
+                                  'create'  => array(),
+                                  'extract' => array()
+                                ),
                                 'glide_url'        => '',
                                 'glide_key'        => '',
                                 'alias'            => 'foo',
