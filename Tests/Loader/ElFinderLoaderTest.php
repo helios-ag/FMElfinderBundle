@@ -4,7 +4,7 @@ namespace FM\ElfinderBundle\Tests\Loader;
 
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 
-class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
+class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ElFinderLoader
@@ -18,7 +18,7 @@ class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->configuratorMock = $this->getMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
+        $this->configuratorMock = $this->createMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
         $this->configuratorMock->expects($this->any())
                                ->method('getConfiguration')
                                ->will($this->returnValue(array('parameters' => array())));
