@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @package FM\ElfinderBundle\Tests\Configuration
  */
-class ElFinderConfigurationReaderTest extends \PHPUnit_Framework_TestCase
+class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ElFinderConfigurationReader

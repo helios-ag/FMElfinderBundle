@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
 
-class FMElfinderExtensionTest extends \PHPUnit_Framework_TestCase
+class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /** @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
     protected $containerMock;

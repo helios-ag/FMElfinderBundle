@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * Class TwigFormPassTest.
  */
-class TwigFormPassTest extends \PHPUnit_Framework_TestCase
+class TwigFormPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
     {

@@ -9,7 +9,7 @@ use FM\ElfinderBundle\FMElfinderBundle;
  *
  * @package FM\ElfinderBundle\Tests
  */
-class FMElfinderBundleTest extends \PHPUnit_Framework_TestCase
+class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 {
     public function testBundle()
     {

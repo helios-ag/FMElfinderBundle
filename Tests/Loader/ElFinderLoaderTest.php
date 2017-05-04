@@ -4,7 +4,7 @@ namespace FM\ElfinderBundle\Tests\Loader;
 
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 
-class ElFinderLoaderTest extends \PHPUnit_Framework_TestCase
+class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ElFinderLoader
