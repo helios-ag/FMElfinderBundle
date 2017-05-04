@@ -64,7 +64,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
         );
         $view = new FormView();
         $type = new ElFinderType();
-        $form = $this->getMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->createMock('Symfony\Component\Form\Test\FormInterface');
         $type->buildView($view, $form, $options);
         foreach ($options as $name => $value) {
             $this->assertArrayHasKey($name, $view->vars);

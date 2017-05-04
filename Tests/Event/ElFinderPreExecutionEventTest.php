@@ -17,7 +17,7 @@ class ElFinderPreExecutionEventTest extends TestCase
     {
         $command    = 'rm';
         $request    = new Request(array('cmd' => $command));
-        $httpKernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $httpKernel = $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $event      = new ElFinderPreExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder');
         $this->assertEquals($command, $event->getCommand());
     }
@@ -25,7 +25,7 @@ class ElFinderPreExecutionEventTest extends TestCase
     public function testSubRequest()
     {
         $request    = new Request(array('cmd' => 'info'));
-        $httpKernel = $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $httpKernel = $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
         $httpKernel
             ->expects($this->once())
             ->method('handle');

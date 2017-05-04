@@ -18,7 +18,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->configuratorMock = $this->getMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
+        $this->configuratorMock = $this->createMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
         $this->configuratorMock->expects($this->any())
                                ->method('getConfiguration')
                                ->will($this->returnValue(array('parameters' => array())));

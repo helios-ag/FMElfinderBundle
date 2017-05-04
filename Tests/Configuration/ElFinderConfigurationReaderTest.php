@@ -25,9 +25,9 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     private function getConfigurationReader($attributesObject)
     {
         /* @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $containerMock = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $this->elFinderVolumeMock = $this->getMock('FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem');
+        $this->elFinderVolumeMock = $this->createMock('FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem');
 
         $containerMock
             ->expects($this->any())
@@ -41,9 +41,9 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             )));
 
         /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack|\PHPUnit_Framework_MockObject_MockObject */
-        $requestStack = $this->getMock('Symfony\Component\HttpFoundation\RequestStack');
+        $requestStack = $this->createMock('Symfony\Component\HttpFoundation\RequestStack');
         /** @var \Symfony\Component\HttpFoundation\Request $requestObject */
-        $requestObject = $this->getMock('Symfony\Component\HttpFoundation\Request');
+        $requestObject = $this->createMock('Symfony\Component\HttpFoundation\Request');
 
         $requestObject
             ->expects($this->any())
@@ -228,7 +228,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     private function getDefaultAttributesObject()
     {
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
         $attributesObject
             ->expects($this->any())
             ->method('get')
@@ -240,7 +240,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     private function getHomeFolderAwareAttributesObject()
     {
         /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->getMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
         $attributesObject
             ->expects($this->any())
             ->method('get')
