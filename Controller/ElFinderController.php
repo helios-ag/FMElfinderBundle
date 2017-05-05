@@ -34,7 +34,7 @@ class ElFinderController extends Controller
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
         $parameters   = $efParameters['instances'][$instance];
-        
+
         if (empty($parameters['locale'])) {
             $parameters['locale'] = $request->getLocale();
         }

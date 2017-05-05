@@ -141,9 +141,9 @@ EOF;
     /**
      * Normalizes the output by removing the heading whitespaces.
      *
-     * @param string $output The output.
+     * @param string $output the output
      *
-     * @return string The normalized output.
+     * @return string the normalized output
      */
     protected function normalizeOutput($output)
     {

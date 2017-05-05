@@ -49,7 +49,9 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('path_prefix')->defaultValue('/')->end()
                             ->arrayNode('visible_mime_types')
                                 ->beforeNormalization()
-                                    ->ifTrue(function ($v) { return is_string($v); })
+                                    ->ifTrue(function ($v) {
+                                        return is_string($v);
+                                    })
                                     ->then(function ($v) {
                                         return array_map('trim', explode(',', $v));
                                     })
@@ -96,7 +98,9 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('fileMode')->defaultValue(0644)->end()
                                                 ->arrayNode('upload_allow')
                                                     ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->ifTrue(function ($v) {
+                                                            return is_string($v);
+                                                        })
                                                         ->then(function ($v) {
                                                             return array_map('trim', explode(',', $v));
                                                         })
@@ -106,7 +110,9 @@ class Configuration implements ConfigurationInterface
                                                 ->end() // upload_allow
                                                 ->arrayNode('upload_deny')
                                                     ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->ifTrue(function ($v) {
+                                                            return is_string($v);
+                                                        })
                                                         ->then(function ($v) {
                                                             return array_map('trim', explode(',', $v));
                                                         })
@@ -116,7 +122,9 @@ class Configuration implements ConfigurationInterface
                                                 ->end() // upload_deny
                                                 ->arrayNode('upload_order')
                                                     ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->ifTrue(function ($v) {
+                                                            return is_string($v);
+                                                        })
                                                         ->then(function ($v) {
                                                             return array_map('trim', explode(',', $v));
                                                         })
@@ -147,7 +155,9 @@ class Configuration implements ConfigurationInterface
                                                 ->booleanNode('show_hidden')->defaultFalse()->end()
                                                 ->arrayNode('disabled_commands')
                                                     ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->ifTrue(function ($v) {
+                                                            return is_string($v);
+                                                        })
                                                         ->then(function ($v) {
                                                             return array_map('trim', explode(',', $v));
                                                         })
@@ -162,7 +172,9 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('time_format')->defaultValue('H:i')->end()
                                                 ->arrayNode('archive_mimes')
                                                     ->beforeNormalization()
-                                                        ->ifTrue(function ($v) { return is_string($v); })
+                                                        ->ifTrue(function ($v) {
+                                                            return is_string($v);
+                                                        })
                                                         ->then(function ($v) {
                                                             return array_map('trim', explode(',', $v));
                                                         })
@@ -247,7 +259,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The Flysystem node.
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the Flysystem node
      */
     private function createFlysystemNode()
     {
@@ -339,7 +351,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The plugins node.
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the plugins node
      */
     private function createPluginsNode()
     {
@@ -352,7 +364,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The bind node.
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the bind node
      */
     private function createBindsNode()
     {
@@ -365,7 +377,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The bind node.
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the bind node
      */
     private function createDriverOptionsNode()
     {
@@ -380,9 +392,9 @@ class Configuration implements ConfigurationInterface
     /**
      * Creates a node.
      *
-     * @param string $name The node name.
+     * @param string $name the node name
      *
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition The node.
+     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the node
      */
     private function createNode($name)
     {
@@ -392,7 +404,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Creates a tree builder.
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The tree builder.
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder the tree builder
      */
     private function createTreeBuilder()
     {

@@ -98,7 +98,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'archivers'        => array(
                                   'enabled' => false,
                                   'create'  => array(),
-                                  'extract' => array()
+                                  'extract' => array(),
                                 ),
                                 'glide_url'        => '',
                                 'glide_key'        => '',
