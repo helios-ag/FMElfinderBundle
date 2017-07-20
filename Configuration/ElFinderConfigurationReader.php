@@ -5,6 +5,7 @@ namespace FM\ElfinderBundle\Configuration;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use League\Flysystem\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
@@ -78,13 +79,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $options['roots']       = array();
 
         foreach ($parameters['connector']['roots'] as $parameter) {
-            $path       = $parameter['path'];
-            $homeFolder = $request->attributes->get('homeFolder');
-            if ($homeFolder) {
-                $pathAndHomeFolder = sprintf('%s/%s', $path, $homeFolder);
-            } else {
-                $pathAndHomeFolder = sprintf('%s%s', $path, $homeFolder);
-            }
+            $path              = $parameter['path'];
+            $homeFolder        = $request->attributes->get('homeFolder');
+            $pathAndHomeFolder = $homeFolder ? sprintf('%s/%s', $path, $homeFolder) : $path;
+
             if ($parameter['flysystem']['enabled']) {
                 $adapter     = $parameter['flysystem']['type']; // ftp ex.
                 $opt         = $parameter['flysystem']['options'];
@@ -158,13 +156,19 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      *
      * @return string
      */
-    private function getURL($parameter, $request, $homeFolder, $path)
+    private function getURL($parameter, Request $request, $homeFolder, $path)
     {
-        return isset($parameter['url']) && $parameter['url']
-            ? strpos($parameter['url'], 'http') === 0
-                ? $parameter['url']
-                : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $parameter['url'], $homeFolder)
-            : sprintf('%s://%s%s/%s/%s', $request->getScheme(), $request->getHttpHost(), $request->getBasePath(), $path, $homeFolder);
+        if (isset($parameter['url']) && $parameter['url']) {
+            if (strpos($parameter['url'], 'http') === 0) {
+                return $parameter['url'];
+            }
+
+            $path = $parameter['url'].'/'.$homeFolder;
+        } else {
+            $path = $path.'/'.$homeFolder;
+        }
+
+        return $request->getUriForPath('/'.trim($path, '/'));
     }
 
     /**
