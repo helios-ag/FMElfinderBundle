@@ -1,7 +1,7 @@
 FMElfinderBundle
 ================
 
-[ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony2
+[ElFinder](https://github.com/Studio-42/elFinder) integration in Symfony
 
 ### Code Quality Assurance ###
 
