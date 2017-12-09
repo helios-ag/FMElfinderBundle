@@ -16,7 +16,7 @@ env:
     global:
         - COMPOSER_PREFER_LOWEST=false
         - SYMFONY_DEPRECATIONS_HELPER=weak
-
+        - SYMFONY_VERSION=2.8.*
 matrix:
     include:
         - php: 5.6
