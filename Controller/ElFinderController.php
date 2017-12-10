@@ -93,7 +93,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'ckeditor':
-                $result['template'] = 'FMElfinderBundle:Elfinder:ckeditor.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/ckeditor.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
@@ -109,7 +109,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'summernote':
-                $result['template'] = 'FMElfinderBundle:Elfinder:summernote.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/summernote.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
@@ -125,7 +125,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'tinymce':
-                $result['template'] = 'FMElfinderBundle:Elfinder:tinymce.html.twig';
+                $result['template'] = '@FMElfinderBundle/Elfinder/tinymce.html.twig';
                 $result['params']   = array(
                     'locale'             => $locale,
                     'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
@@ -140,7 +140,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'tinymce4':
-                $result['template'] = 'FMElfinderBundle:Elfinder:tinymce4.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/tinymce4.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
@@ -155,7 +155,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'fm_tinymce':
-                $result['template'] = 'FMElfinderBundle:Elfinder:fm_tinymce.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/fm_tinymce.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
@@ -170,7 +170,7 @@ class ElFinderController extends Controller
 
                 return $result;
             case 'form':
-                $result['template'] = 'FMElfinderBundle:Elfinder:elfinder_type.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/elfinder_type.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
@@ -187,7 +187,7 @@ class ElFinderController extends Controller
 
                 return $result;
             default:
-                $result['template'] = 'FMElfinderBundle:Elfinder:simple.html.twig';
+                $result['template'] = '@FMElfinder/Elfinder/simple.html.twig';
                 $result['params']   = array(
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,

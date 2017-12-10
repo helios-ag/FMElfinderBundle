@@ -17,7 +17,7 @@ class TwigFormPass implements CompilerPassInterface
         }
 
         $container->setParameter('twig.form.resources', array_merge(
-            array('FMElfinderBundle:Form:elfinder_widget.html.twig'),
+            array('@FMElfinder/Form/elfinder_widget.html.twig'),
             $container->getParameter('twig.form.resources')
         ));
     }

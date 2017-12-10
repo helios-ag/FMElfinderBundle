@@ -24,6 +24,7 @@
         "symfony/framework-bundle":            "~2.8|~3.0|~4.0",
         "symfony/twig-bundle":                 "~2.8|~3.0|~4.0",
         "symfony/form":                        "~2.8|~3.0|~4.0",
+        "symfony/asset":                       "~2.8|~3.0|~4.0",
         "helios-ag/fm-elfinder-php-connector": "~2.5",
         "components/elfinder":                 "~2.1",
         "robloach/component-installer":        "~0.2"

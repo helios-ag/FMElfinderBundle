@@ -20,7 +20,7 @@ class TwigFormPassTest extends \PHPUnit\Framework\TestCase
         $container->setParameter('twig.form.resources', array());
         $pass->process($container);
         $this->assertEquals(array(
-            'FMElfinderBundle:Form:elfinder_widget.html.twig',
+            '@FMElfinder/Form/elfinder_widget.html.twig',
         ), $container->getParameter('twig.form.resources'));
     }
 }
