@@ -12,7 +12,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * sections are normalized, and merged.
  *
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2016 Al Ganiev
+ * @copyright 2012-2017 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Configuration implements ConfigurationInterface
