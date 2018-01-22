@@ -50,7 +50,7 @@ class FMElfinderExtension extends \Twig_Extension
             throw new \Twig_Error_Runtime('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce.html.twig',
+        return $this->twig->render('@FMElfinder/Elfinder/helper/_tinymce.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],
@@ -73,7 +73,7 @@ class FMElfinderExtension extends \Twig_Extension
             throw new \Twig_Error_Runtime('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_tinymce4.html.twig',
+        return $this->twig->render('@FMElfinder/Elfinder/helper/_tinymce4.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],
@@ -97,7 +97,7 @@ class FMElfinderExtension extends \Twig_Extension
             throw new \Twig_Error_Runtime('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('FMElfinderBundle:Elfinder/helper:_summernote.html.twig',
+        return $this->twig->render('@FMElfinder/Elfinder/helper/_summernote.html.twig',
             array(
                 'instance' => $instance,
                 'selector' => $selector,
