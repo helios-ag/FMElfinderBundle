@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FM\ElfinderBundle\Event\ElFinderEvents;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
@@ -32,6 +33,10 @@ class ElFinderController extends Controller
     public function showAction(Request $request, $instance, $homeFolder)
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
+
+        if (empty($efParameters['instances'][$instance])) {
+            throw new NotFoundHttpException('Instance not found');
+        }
         $parameters   = $efParameters['instances'][$instance];
 
         if (empty($parameters['locale'])) {
