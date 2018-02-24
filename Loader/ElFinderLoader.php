@@ -2,15 +2,14 @@
 
 namespace FM\ElfinderBundle\Loader;
 
-use FM\ElFinderPHP\Connector\ElFinderConnector;
+use FM\ElfinderBundle\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class ElFinderLoader.
- *
- * @package FM\ElfinderBundle\Loader
  */
 class ElFinderLoader
 {
@@ -21,7 +20,7 @@ class ElFinderLoader
 
     /**
      * @var ElFinderConfigurationProviderInterface
-     *                                             Configurator service name
+     * Configurator service name
      */
     protected $configurator;
 
@@ -34,6 +33,9 @@ class ElFinderLoader
      * @var ElFinderBridge
      */
     protected $bridge;
+
+    /** @var SessionInterface */
+    protected $session;
 
     /**
      * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
@@ -69,6 +71,9 @@ class ElFinderLoader
         $this->setInstance($instance);
         $this->config = $this->configure();
         $this->bridge = new ElFinderBridge($this->config);
+        if ($this->session) {
+            $this->bridge->setSession($this->session);
+        }
     }
 
     /**
@@ -143,5 +148,10 @@ class ElFinderLoader
         $volume = $this->bridge->getVolume($hash);
 
         return (!empty($volume)) ? $volume->decode($hash) : false;
+    }
+
+    public function setSession($session)
+    {
+        $this->session = $session;
     }
 }
