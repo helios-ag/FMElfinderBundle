@@ -277,6 +277,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
+            case 'mysql':
+                $settings['host'] = $parameter['mysql_settings']['host'] ?? 'localhost';
+                $settings['user'] = $parameter['mysql_settings']['user'];
+                $settings['pass'] = $parameter['mysql_settings']['password'];
+                $settings['db'] = $parameter['mysql_settings']['db'];
                 break;
             case 'ftpiis':
                 $settings['host'] = $parameter['ftp_settings']['host'];
