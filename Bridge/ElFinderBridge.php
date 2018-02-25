@@ -2,8 +2,9 @@
 
 namespace FM\ElfinderBundle\Bridge;
 
-use FM\ElFinderBundle\ElFinder\ElFinder;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use FM\ElfinderBundle\ElFinder\ElFinder;
+use elFinderVolumeDriver;
 
 /**
  * Class ElFinderBridge.
@@ -26,7 +27,13 @@ class ElFinderBridge extends ElFinder
         }
         parent::__construct($opts);
     }
-    
+
+    /** @param $session */
+    public function setSession($session)
+    {
+        $this->session = $session;
+    }
+
     /**
      * @param array $opts
      */
@@ -36,7 +43,7 @@ class ElFinderBridge extends ElFinder
             $volume = null;
             if (isset($o['service'])) {
                 $driver = $o['service'];
-                if (is_object($driver) && $driver instanceof \elFinderVolumeDriver) {
+                if (is_object($driver) && $driver instanceof elFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
                 }
@@ -55,11 +62,4 @@ class ElFinderBridge extends ElFinder
         parent::mountVolumes($opts);
     }
 
-    /**
-     * @param $session
-     */
-    public function setSession($session)
-    {
-        $this->session = $session;
-    }
 }

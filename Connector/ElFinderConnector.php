@@ -2,6 +2,8 @@
 
 namespace FM\ElfinderBundle\Connector;
 
+use \elFinder;
+
 /**
  * Class ElFinderConnector
  */

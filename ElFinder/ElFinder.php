@@ -3,13 +3,13 @@
 namespace FM\ElfinderBundle\ElFinder;
 
 use elFinder as BaseElFinder;
+use \elFinderSessionInterface;
 
 /**
  * Class ElFinder
  */
 class ElFinder extends BaseElFinder
 {
-
 
     /**
      * Constructor
@@ -102,10 +102,7 @@ class ElFinder extends BaseElFinder
                     'netvolume' => !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes'
                 )
             );
-            if (! class_exists('elFinderSession')) {
-                include_once dirname(__FILE__) . '/elFinderSession.php';
-            }
-            $this->session = new elFinderSession($sessionOpts);
+            $this->session = new \elFinderSession($sessionOpts);
         }
         // try session start | restart
         $this->session->start();
@@ -251,21 +248,36 @@ class ElFinder extends BaseElFinder
     protected function mountVolumes($opts)
     {
         foreach ($opts['roots'] as $i => $o) {
-            $class = 'FM\ElFinderPHP\Driver\ElFinderVolume'.(isset($o['driver']) ? $o['driver'] : '');
+            $class = 'elFinderVolume'.(isset($o['driver']) ? $o['driver'] : '');
+
             if (class_exists($class)) {
                 $volume = new $class();
-                if ($volume->mount($o)) {
-                    // unique volume id (ends on "_") - used as prefix to files hash
-                    $id = $volume->id();
-                    $this->volumes[$id] = $volume;
-                    if (!$this->default && $volume->isReadable()) {
-                        $this->default = $this->volumes[$id];
+
+                try {
+                    if ($this->maxArcFilesSize && (empty($o['maxArcFilesSize']) || $this->maxArcFilesSize < $o['maxArcFilesSize'])) {
+                        $o['maxArcFilesSize'] = $this->maxArcFilesSize;
                     }
-                } else {
-                    $this->mountErrors[] = 'Driver "'.$class.'" : '.implode(' ', $volume->error());
+                    // pass session handler
+                    $volume->setSession($this->session);
+                    if ($volume->mount($o)) {
+                        // unique volume id (ends on "_") - used as prefix to files hash
+                        $id = $volume->id();
+
+                        $this->volumes[$id] = $volume;
+                        if ((!$this->default || $volume->root() !== $volume->defaultPath()) && $volume->isReadable()) {
+                            $this->default = $this->volumes[$id];
+                        }
+                    } else {
+                        $this->removeNetVolume($i, $volume);
+                        $this->mountErrors[] = 'Driver "'.$class.'" : '.implode(' ', $volume->error());
+                    }
+                } catch (Exception $e) {
+                    $this->removeNetVolume($i, $volume);
+                    $this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
                 }
             } else {
-                $this->mountErrors[] = 'Driver "'.$class.'" does not exists';
+                $this->removeNetVolume($i, $volume);
+                $this->mountErrors[] = 'Driver "'.$class.'" does not exist';
             }
         }
     }

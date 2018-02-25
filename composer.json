@@ -25,7 +25,8 @@
         "symfony/twig-bundle":                 "~2.8|~3.0|~4.0",
         "symfony/form":                        "~2.8|~3.0|~4.0",
         "symfony/asset":                       "~2.8|~3.0|~4.0",
-        "components/elfinder":                 "~2.1",
+        "components/elfinder":                 "~3",
+        "studio-42/elfinder":                  "~2.1",
         "robloach/component-installer":        "~0.2"
     },
     "require-dev" : {

@@ -25,7 +25,7 @@ use Dropbox\Client;
 use Barracuda\Copy\API;
 
 /**
- * Class ElFinderConfigurationReader.
+ * Class ElFinderConfigurationReader
  */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
