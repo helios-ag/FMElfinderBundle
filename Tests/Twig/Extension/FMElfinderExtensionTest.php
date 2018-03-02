@@ -114,6 +114,7 @@ EOF;
         }
 </script>
 EOF;
+        $this->assertSame($this->normalizeOutput($expected), $this->normalizeOutput($testData));
     }
 
     public function testName()
