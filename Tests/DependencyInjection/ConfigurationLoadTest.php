@@ -122,6 +122,9 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 's3_settings' => array(
                                     'enabled' => false,
                                 ),
+                                'mysql_settings' => array(
+                                    'enabled' => false,
+                                ),
                             ),
                         ),
                     ),
