@@ -277,11 +277,19 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
+                break;
             case 'mysql':
-                $settings['host'] = $parameter['mysql_settings']['host'] ?? 'localhost';
+                $settings['host'] = $parameter['mysql_settings']['host'];
                 $settings['user'] = $parameter['mysql_settings']['user'];
-                $settings['pass'] = $parameter['mysql_settings']['password'];
+                $settings['pass'] = $parameter['mysql_settings']['pass'];
                 $settings['db'] = $parameter['mysql_settings']['db'];
+                $settings['port'] = $parameter['mysql_settings']['port'];
+                $settings['socket'] = $parameter['mysql_settings']['socket'];
+                $settings['files_table'] = $parameter['mysql_settings']['files_table'];
+                $settings['tmbPath'] = $parameter['mysql_settings']['tmbPath'];
+                $settings['tmpPath'] = $parameter['mysql_settings']['tmpPath'];
+                $settings['rootCssClass'] = $parameter['mysql_settings']['rootCssClass'];
+                $settings['noSessionCache'] = $parameter['mysql_settings']['noSessionCache'];
                 break;
             case 'ftpiis':
                 $settings['host'] = $parameter['ftp_settings']['host'];

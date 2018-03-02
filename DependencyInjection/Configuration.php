@@ -2,6 +2,7 @@
 
 namespace FM\ElfinderBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -12,7 +13,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * sections are normalized, and merged.
  *
  * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2017 Al Ganiev
+ * @copyright 2012-2018 Al Ganiev
  * @license http://www.opensource.org/licenses/mit-license.php MIT License
  */
 class Configuration implements ConfigurationInterface
@@ -253,8 +254,15 @@ class Configuration implements ConfigurationInterface
                                                     ->children()
                                                         ->scalarNode('host')->end()
                                                         ->scalarNode('user')->end()
-                                                        ->scalarNode('password')->end()
+                                                        ->scalarNode('pass')->end()
                                                         ->scalarNode('db')->end()
+                                                        ->scalarNode('port')->defaultNull()->end()
+                                                        ->scalarNode('socket')->defaultNull()->end()
+                                                        ->scalarNode('files_table')->defaultValue('elfinder_file')->end()
+                                                        ->scalarNode('tmbPath')->defaultValue('')->end()
+                                                        ->scalarNode('tmpPath')->defaultValue('')->end()
+                                                        ->scalarNode('rootCssClass')->defaultValue('elfinder-navbar-root-sql')->end()
+                                                        ->scalarNode('noSessionCache')->defaultValue(['hasdirs'])->end()
                                                     ->end()
                                                 ->end()
                                             ->end()
@@ -268,7 +276,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the Flysystem node
+     * @return NodeDefinition the Flysystem node
      */
     private function createFlysystemNode()
     {
