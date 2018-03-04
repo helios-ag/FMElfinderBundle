@@ -79,6 +79,7 @@ class Configuration implements ConfigurationInterface
                                                 ->end() // driver
                                                 ->integerNode('volume_id')->defaultValue(0)->min(0)->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
+                                                ->scalarNode('security_voter')->defaultValue('')->end()
                                                 ->scalarNode('start_path')->defaultValue('')->end()
                                                 ->scalarNode('url')->defaultValue('')->end()
                                                 ->scalarNode('alias')->defaultValue('')->end()

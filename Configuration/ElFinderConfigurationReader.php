@@ -364,7 +364,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 return $commands;
             }
         }
-        
+
         return [];
     }
 }
