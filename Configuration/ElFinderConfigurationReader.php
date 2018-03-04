@@ -289,7 +289,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['tmbPath'] = $parameter['mysql_settings']['tmbPath'];
                 $settings['tmpPath'] = $parameter['mysql_settings']['tmpPath'];
                 $settings['rootCssClass'] = $parameter['mysql_settings']['rootCssClass'];
-                $settings['noSessionCache'] = $parameter['mysql_settings']['noSessionCache'];
+                $settings['noSessionCache'] = explode(',',$parameter['mysql_settings']['noSessionCache']);
                 break;
             case 'ftpiis':
                 $settings['host'] = $parameter['ftp_settings']['host'];

@@ -262,7 +262,7 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('tmbPath')->defaultValue('')->end()
                                                         ->scalarNode('tmpPath')->defaultValue('')->end()
                                                         ->scalarNode('rootCssClass')->defaultValue('elfinder-navbar-root-sql')->end()
-                                                        ->scalarNode('noSessionCache')->defaultValue(['hasdirs'])->end()
+                                                        ->scalarNode('noSessionCache')->defaultValue('hasdirs')->end()
                                                     ->end()
                                                 ->end()
                                             ->end()
