@@ -123,7 +123,14 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'enabled' => false,
                                 ),
                                 'mysql_settings' => array(
-                                    'enabled' => false,
+                                    'enabled' => true,
+                                    'files_table' => 'elfinder_file',
+                                    'port' => null,
+                                    'socket' => null,
+                                    'tmbPath' => '',
+                                    'tmpPath' => '',
+                                    'rootCssClass' => 'elfidner-navbar-root-sql',
+                                    'noSessionCache' => 'hasdirs'
                                 ),
                             ),
                         ),
