@@ -66,6 +66,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'adapter_service' => '',
                                 ),
                                 'start_path'       => '',
+                                'encoding'         => '',
                                 'url'              => '',
                                 'mime_detect'      => 'auto',
                                 'mimefile'         => '',

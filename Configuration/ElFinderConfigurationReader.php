@@ -100,6 +100,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'plugin'            => $parameter['plugins'],
                 'path'              => $pathAndHomeFolder,
                 'startPath'         => $parameter['start_path'],
+                'encoding'          => $parameter['encoding'],
                 'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
                 'alias'             => $parameter['alias'],
                 'mimeDetect'        => $parameter['mime_detect'],

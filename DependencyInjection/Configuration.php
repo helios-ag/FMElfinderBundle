@@ -81,6 +81,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('path')->defaultValue('')->end()
                                                 ->scalarNode('security_voter')->defaultValue('')->end()
                                                 ->scalarNode('start_path')->defaultValue('')->end()
+                                                ->scalarNode('encoding')->defaultValue('')->end()
                                                 ->scalarNode('url')->defaultValue('')->end()
                                                 ->scalarNode('alias')->defaultValue('')->end()
                                                 ->scalarNode('mime_detect')->defaultValue('auto')->end()
