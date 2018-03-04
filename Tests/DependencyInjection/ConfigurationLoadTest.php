@@ -131,6 +131,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'tmbPath' => '',
                                     'tmpPath' => '',
                                     'rootCssClass' => 'elfidner-navbar-root-sql',
+                                    'noSessionCache' => 'hasdirs',
                                 ),
                             ),
                         ),
