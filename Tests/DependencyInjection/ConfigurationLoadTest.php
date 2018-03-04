@@ -124,6 +124,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 ),
                                 'mysql_settings' => array(
                                     'enabled' => true,
+                                    'host' => 'localhost',
                                     'files_table' => 'elfinder_file',
                                     'port' => null,
                                     'socket' => null,

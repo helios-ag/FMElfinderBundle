@@ -25,6 +25,8 @@ fm_elfinder:
                         ftp_settings:
                             host: 127.0.0.1
                             user: root
+                        mysql_settings:
+                            host: localhost
                         attributes:
                             some_pattern:
                                 pattern: '/^some_pattern$/'
