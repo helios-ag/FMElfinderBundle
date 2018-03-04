@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Configuration;
 
 use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
 use League\Flysystem\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -137,6 +138,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
             if (!$parameter['show_hidden']) {
                 $driverOptions['accessControl'] = array($this, 'access');
+            }
+
+            if ($parameter['security_voter']) {
+                /** @var ElfinderSecurityInterface $voter */
+                $voter = $this->container->get($parameter['security_voter']);
+
+                $driverOptions['disabled'] = $this->parseSecurityConfiguration($voter);
             }
 
             if ($parameter['driver'] == 'Flysystem') {
@@ -336,5 +344,27 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
             ? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
             : null;                                    // else elFinder decide it itself
+    }
+
+    /**
+     * @param ElfinderSecurityInterface $voter
+     * @return array
+     * @throws \Exception
+     */
+    protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)
+    {
+        $configuration = $voter->getConfiguration();
+
+        if (!is_array($configuration)) {
+            throw new \Exception('ElfinderSecurityVoter should return array');
+        }
+
+        foreach ($configuration as $role => $commands) {
+            if ($this->container->get('security.authorization_checker')->isGranted($role)) {
+                return $commands;
+            }
+        }
+        
+        return [];
     }
 }
