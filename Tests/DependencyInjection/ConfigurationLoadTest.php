@@ -25,6 +25,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 
     /**
      * @dataProvider getSupportsAllConfigFormatsData
+     * @requires PHP 7
      */
     public function testSupportsAllConfigFormats($path)
     {
