@@ -54,6 +54,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                             'uploads' => array(
                                 'driver'            => 'LocalFileSystem',
                                 'volume_id'         => 0,
+                                'security_voter'    => '',
                                 'disabled_commands' => array(),
                                 'plugins'           => array(),
                                 'driver_options'    => array(),

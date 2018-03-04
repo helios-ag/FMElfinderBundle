@@ -73,6 +73,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 0,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '',
                                 'driver'            => 'LocalFileSystem',
@@ -121,6 +122,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 1,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '/home',
                                 'driver'            => 'LocalFileSystem',
@@ -171,6 +173,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 2,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '',
                                 'driver'            => 'LocalFileSystem',
