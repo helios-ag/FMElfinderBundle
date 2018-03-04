@@ -7,8 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class ElFinderConfigurationReaderTest.
- *
- * @package FM\ElfinderBundle\Tests\Configuration
  */
 class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 {
@@ -43,12 +41,8 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack|\PHPUnit_Framework_MockObject_MockObject */
         $requestStack = $this->createMock('Symfony\Component\HttpFoundation\RequestStack');
         /** @var \Symfony\Component\HttpFoundation\Request $requestObject */
-        $requestObject = $this->createMock('Symfony\Component\HttpFoundation\Request');
+        $requestObject = $this->createPartialMock('Symfony\Component\HttpFoundation\Request', ['getScheme', 'getHttpHost', 'getBaseUrl']);
 
-        $requestObject
-            ->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue(''));
         $requestObject
             ->expects($this->any())
             ->method('getScheme')
@@ -59,7 +53,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             ->will($this->returnValue('test.com'));
         $requestObject
             ->expects($this->any())
-            ->method('getBasePath')
+            ->method('getBaseUrl')
             ->will($this->returnValue('/unit-test'));
 
         $requestObject->attributes = $attributesObject;
@@ -288,7 +282,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $configuration = $reader->getConfiguration('with_path_with_url');
         $this->assertEquals('/home', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url/', $configuration['roots'][0]['URL']);
+        $this->assertEquals('http://test.com/unit-test/home-url', $configuration['roots'][0]['URL']);
 
         // with path and with homeFolder
         $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
@@ -300,7 +294,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url-without-path/', $configuration['roots'][0]['URL']);
+        $this->assertEquals('http://test.com/unit-test/home-url-without-path', $configuration['roots'][0]['URL']);
 
         // without path and with homeFolder
         $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
