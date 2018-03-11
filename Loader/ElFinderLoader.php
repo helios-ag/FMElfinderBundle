@@ -56,6 +56,7 @@ class ElFinderLoader
      * Configure the Bridge to ElFinder.
      *
      * @var string
+     *
      * @throws \Exception
      */
     public function initBridge($instance)
@@ -113,7 +114,7 @@ class ElFinderLoader
     {
         $aPathEncoded = array();
 
-            $volumes = $this->bridge->getVolumes();
+        $volumes = $this->bridge->getVolumes();
 
         foreach ($volumes as $hashId => $volume) {
             $aPathEncoded[$hashId] = $volume->encode($path);

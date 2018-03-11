@@ -22,10 +22,11 @@ class ElFinderController extends Controller
      * Renders Elfinder.
      *
      * @param Request $request
-     * @param string $instance
-     * @param string $homeFolder
+     * @param string  $instance
+     * @param string  $homeFolder
      *
      * @return Response
+     *
      * @throws Exception
      */
     public function showAction(Request $request, $instance, $homeFolder)
