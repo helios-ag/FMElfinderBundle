@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ElFinderSession implements \elFinderSessionInterface
 {
-
     /** @var SessionInterface */
     protected $session;
 
@@ -39,5 +38,4 @@ class ElFinderSession implements \elFinderSessionInterface
     {
         $this->session->remove($key);
     }
-
 }

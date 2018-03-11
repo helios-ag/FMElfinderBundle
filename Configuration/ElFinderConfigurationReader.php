@@ -26,7 +26,7 @@ use Dropbox\Client;
 use Barracuda\Copy\API;
 
 /**
- * Class ElFinderConfigurationReader
+ * Class ElFinderConfigurationReader.
  */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
@@ -148,7 +148,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $driverOptions['disabled'] = $this->parseSecurityConfiguration($voter);
             }
 
-            if ($parameter['driver'] == 'Flysystem') {
+            if ('Flysystem' == $parameter['driver']) {
                 $driverOptions['filesystem'] = $filesystem;
             }
             $options['roots'][] = array_merge($driverOptions, $this->configureDriver($parameter));
@@ -168,7 +168,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     private function getURL($parameter, Request $request, $homeFolder, $path)
     {
         if (isset($parameter['url']) && $parameter['url']) {
-            if (strpos($parameter['url'], 'http') === 0) {
+            if (0 === strpos($parameter['url'], 'http')) {
                 return $parameter['url'];
             }
 
@@ -191,6 +191,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         switch ($adapter) {
             case 'local':
                 $filesystem = new Filesystem(new Local($opt['local']['path']));
+
                 break;
             case 'ftp':
                 $settings = array(
@@ -207,6 +208,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'directoryPerm' => $opt['ftp']['directoryPerm'],
                 );
                 $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)) : new Filesystem(new SftpAdapter($settings));
+
                 break;
             case 'aws_s3_v2':
                 $options = array(
@@ -219,6 +221,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 }
                 $client     = S3Client::factory($options);
                 $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
+
                 break;
             case 'aws_s3_v3':
                 $client = new S3Client(array(
@@ -230,6 +233,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'version' => $opt['aws_s3_v3']['version'],
                 ));
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
+
                 break;
             case 'copy_com':
                 $client = new API(
@@ -239,17 +243,21 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     $opt['copy_com']['token_secret']
                 );
                 $filesystem = new Filesystem(new CopyAdapter($client, $opt['copy_com']['optional_prefix']));
+
                 break;
             case 'gridfs':
                 $mongoClient = new MongoClient();
                 $gridFs      = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
                 $filesystem  = new Filesystem(new GridFSAdapter($gridFs));
+
                 break;
             case 'zip':
                 $filesystem = new Filesystem(new ZipArchiveAdapter($opt['zip']['path']));
+
                 break;
             case 'dropbox':
                 $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'], $opt['dropbox']['app'])));
+
                 break;
             case 'rackspace':
                 $client = new Rackspace(Rackspace::$opt['rackspace']['endpoint'], array(
@@ -259,12 +267,14 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $store      = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
                 $container  = $store->getContainer($opt['rackspace']['container']);
                 $filesystem = new Filesystem(new RackspaceAdapter($container));
+
                 break;
             case 'custom':
                 $adapter = $this->container->get($serviceName);
                 if (is_object($adapter) && $adapter instanceof AdapterInterface) {
                     $filesystem = new Filesystem($adapter);
                 }
+
                 break;
         }
 
@@ -286,25 +296,28 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
+
                 break;
             case 'mysql':
-                $settings['host'] = $parameter['mysql_settings']['host'];
-                $settings['user'] = $parameter['mysql_settings']['user'];
-                $settings['pass'] = $parameter['mysql_settings']['pass'];
-                $settings['db'] = $parameter['mysql_settings']['db'];
-                $settings['port'] = $parameter['mysql_settings']['port'];
-                $settings['socket'] = $parameter['mysql_settings']['socket'];
-                $settings['files_table'] = $parameter['mysql_settings']['files_table'];
-                $settings['tmbPath'] = $parameter['mysql_settings']['tmbPath'];
-                $settings['tmpPath'] = $parameter['mysql_settings']['tmpPath'];
-                $settings['rootCssClass'] = $parameter['mysql_settings']['rootCssClass'];
-                $settings['noSessionCache'] = explode(',',$parameter['mysql_settings']['noSessionCache']);
+                $settings['host']           = $parameter['mysql_settings']['host'];
+                $settings['user']           = $parameter['mysql_settings']['user'];
+                $settings['pass']           = $parameter['mysql_settings']['pass'];
+                $settings['db']             = $parameter['mysql_settings']['db'];
+                $settings['port']           = $parameter['mysql_settings']['port'];
+                $settings['socket']         = $parameter['mysql_settings']['socket'];
+                $settings['files_table']    = $parameter['mysql_settings']['files_table'];
+                $settings['tmbPath']        = $parameter['mysql_settings']['tmbPath'];
+                $settings['tmpPath']        = $parameter['mysql_settings']['tmpPath'];
+                $settings['rootCssClass']   = $parameter['mysql_settings']['rootCssClass'];
+                $settings['noSessionCache'] = explode(',', $parameter['mysql_settings']['noSessionCache']);
+
                 break;
             case 'ftpiis':
                 $settings['host'] = $parameter['ftp_settings']['host'];
                 $settings['user'] = $parameter['ftp_settings']['user'];
                 $settings['pass'] = $parameter['ftp_settings']['password'];
                 $settings['path'] = $parameter['ftp_settings']['path'];
+
                 break;
             case 'dropbox':
                 $settings['consumerKey']       = $parameter['dropbox_settings']['consumer_key'];
@@ -313,6 +326,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['accessTokenSecret'] = $parameter['dropbox_settings']['access_token_secret'];
                 $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];
                 $settings['metaCachePath']     = $parameter['dropbox_settings']['meta_cache_path'];
+
                 break;
             case 's3':
                 $settings['accesskey']   = $parameter['s3_settings']['access_key'];
@@ -321,6 +335,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['tmpPath']     = $parameter['s3_settings']['tmp_path'];
                 $settings['signature']   = $parameter['s3_settings']['signature'];
                 $settings['region']      = $parameter['s3_settings']['region'];
+
                 break;
             default:
                 break;
@@ -342,14 +357,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     public function access($attr, $path, $data, $volume)
     {
-        return strpos(basename($path), '.') === 0       // if file/folder begins with '.' (dot)
-            ? !($attr == 'read' || $attr == 'write')    // set read+write to false, other (locked+hidden) set to true
+        return 0 === strpos(basename($path), '.')       // if file/folder begins with '.' (dot)
+            ? !('read' == $attr || 'write' == $attr)    // set read+write to false, other (locked+hidden) set to true
             : null;                                    // else elFinder decide it itself
     }
 
     /**
      * @param ElfinderSecurityInterface $voter
+     *
      * @return array
+     *
      * @throws \Exception
      */
     protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)

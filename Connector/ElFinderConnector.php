@@ -2,15 +2,16 @@
 
 namespace FM\ElfinderBundle\Connector;
 
-use \elFinder;
+use elFinder;
 
 /**
- * Class ElFinderConnector
+ * Class ElFinderConnector.
  */
 class ElFinderConnector extends \elFinderConnector
 {
-    public function run($queryParameters = null) {
-        if ($queryParameters === null) {
+    public function run($queryParameters = null)
+    {
+        if (null === $queryParameters) {
             $queryParameters = $_GET;
         }
         exit(json_encode($this->execute($queryParameters)));
@@ -18,16 +19,16 @@ class ElFinderConnector extends \elFinderConnector
 
     public function execute($queryParameters)
     {
-        $isPost = $_SERVER["REQUEST_METHOD"] == 'POST';
-        $src    = $_SERVER["REQUEST_METHOD"] == 'POST' ? array_merge($_POST, $queryParameters) : $queryParameters;
+        $isPost = 'POST' == $_SERVER['REQUEST_METHOD'];
+        $src    = 'POST' == $_SERVER['REQUEST_METHOD'] ? array_merge($_POST, $queryParameters) : $queryParameters;
         if ($isPost && !$src && $rawPostData = @file_get_contents('php://input')) {
             // for support IE XDomainRequest()
             $parts = explode('&', $rawPostData);
-            foreach($parts as $part) {
+            foreach ($parts as $part) {
                 list($key, $value) = array_pad(explode('=', $part), 2, '');
-                $src[$key] = rawurldecode($value);
+                $src[$key]         = rawurldecode($value);
             }
-            $_POST = $src;
+            $_POST    = $src;
             $_REQUEST = array_merge_recursive($src, $_REQUEST);
         }
         $cmd    = isset($src['cmd']) ? $src['cmd'] : '';
@@ -35,6 +36,7 @@ class ElFinderConnector extends \elFinderConnector
 
         if (!function_exists('json_encode')) {
             $error = $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_JSON);
+
             return $this->output(array('error' => '{"error":["'.implode('","', $error).'"]}', 'raw' => true));
         }
 
@@ -54,20 +56,20 @@ class ElFinderConnector extends \elFinderConnector
 
         // collect required arguments to exec command
         foreach ($this->elFinder->commandArgsList($cmd) as $name => $req) {
-            $arg = $name == 'FILES'
+            $arg = 'FILES' == $name
                 ? $_FILES
                 : (isset($src[$name]) ? $src[$name] : '');
 
             if (!is_array($arg)) {
                 $arg = trim($arg);
             }
-            if ($req && (!isset($arg) || $arg === '')) {
+            if ($req && (!isset($arg) || '' === $arg)) {
                 return $this->output(array('error' => $this->elFinder->error(elFinder::ERROR_INV_PARAMS, $cmd)));
             }
             $args[$name] = $arg;
         }
 
-        $args['debug'] = isset($src['debug']) ? !!$src['debug'] : false;
+        $args['debug'] = isset($src['debug']) ? (bool) $src['debug'] : false;
 
         return $this->output($this->elFinder->exec($cmd, $this->input_filter($args)));
     }
