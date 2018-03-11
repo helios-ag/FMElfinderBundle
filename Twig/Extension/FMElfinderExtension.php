@@ -38,9 +38,10 @@ class FMElfinderExtension extends \Twig_Extension
 
     /**
      * @param string $instance
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return mixed
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -62,9 +63,10 @@ class FMElfinderExtension extends \Twig_Extension
 
     /**
      * @param string $instance
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return mixed
+     *
      * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
      * @throws \Twig_Error_Syntax
@@ -87,7 +89,7 @@ class FMElfinderExtension extends \Twig_Extension
     /**
      * @param string $instance
      * @param string $selector
-     * @param array $parameters
+     * @param array  $parameters
      *
      * @return mixed
      *
