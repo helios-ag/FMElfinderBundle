@@ -60,4 +60,12 @@ class ElFinderBridge extends ElFinder
         }
         parent::mountVolumes($opts);
     }
+
+    /**
+     * @return array
+     */
+    public function getVolumes()
+    {
+        return $this->volumes;
+    }
 }

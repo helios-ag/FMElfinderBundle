@@ -13,25 +13,16 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 class ElFinderLoader
 {
-    /**
-     * @var
-     */
+    /** @var string */
     protected $instance;
 
-    /**
-     * @var ElFinderConfigurationProviderInterface
-     *                                             Configurator service name
-     */
+    /** @var ElFinderConfigurationProviderInterface */
     protected $configurator;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $config;
 
-    /**
-     * @var ElFinderBridge
-     */
+    /** @var ElFinderBridge */
     protected $bridge;
 
     /** @var SessionInterface */
@@ -65,6 +56,7 @@ class ElFinderLoader
      * Configure the Bridge to ElFinder.
      *
      * @var string
+     * @throws \Exception
      */
     public function initBridge($instance)
     {
@@ -95,7 +87,7 @@ class ElFinderLoader
     }
 
     /**
-     * @param mixed $instance
+     * @param string $instance
      */
     public function setInstance($instance)
     {
@@ -121,7 +113,7 @@ class ElFinderLoader
     {
         $aPathEncoded = array();
 
-        $volumes = $this->bridge->getVolumes();
+            $volumes = $this->bridge->getVolumes();
 
         foreach ($volumes as $hashId => $volume) {
             $aPathEncoded[$hashId] = $volume->encode($path);

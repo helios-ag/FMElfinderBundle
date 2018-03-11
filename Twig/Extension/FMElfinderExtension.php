@@ -38,11 +38,12 @@ class FMElfinderExtension extends \Twig_Extension
 
     /**
      * @param string $instance
-     * @param array  $parameters
-     *
-     * @throws \Twig_Error_Runtime
+     * @param array $parameters
      *
      * @return mixed
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function tinymce($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
     {
@@ -61,11 +62,12 @@ class FMElfinderExtension extends \Twig_Extension
 
     /**
      * @param string $instance
-     * @param array  $parameters
-     *
-     * @throws \Twig_Error_Runtime
+     * @param array $parameters
      *
      * @return mixed
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function tinymce4($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
     {
@@ -85,11 +87,13 @@ class FMElfinderExtension extends \Twig_Extension
     /**
      * @param string $instance
      * @param string $selector
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      *
+     * @throws \Twig_Error_Loader
      * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
     public function summernote($instance = 'default', $selector = '.summenote', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
     {

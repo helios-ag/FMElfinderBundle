@@ -5,6 +5,9 @@ namespace FM\ElfinderBundle\Event;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
+/**
+ * Class ElFinderPostExecutionEvent.
+ */
 class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 {
     /**

@@ -4,6 +4,9 @@ namespace FM\ElfinderBundle\Session;
 
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
+/**
+ * Class ElFinderSession.
+ */
 class ElFinderSession implements \elFinderSessionInterface
 {
     /** @var SessionInterface */

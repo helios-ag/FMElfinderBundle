@@ -66,6 +66,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      * @param $instance
      *
      * @return array
+     * @throws \Exception
      */
     public function getConfiguration($instance)
     {
@@ -183,8 +184,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     /**
      * @param $opt
      * @param $adapter
+     * @param $serviceName
      *
      * @return Filesystem
+     * @throws \MongoConnectionException
      */
     private function configureFlysystem($opt, $adapter, $serviceName)
     {

@@ -14,12 +14,7 @@ use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
 /**
- * Loader service for Elfinder backend
- * displays Elfinder.
- *
- * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2015 Al Ganiev
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * Class ElFinderController.
  */
 class ElFinderController extends Controller
 {
@@ -27,10 +22,11 @@ class ElFinderController extends Controller
      * Renders Elfinder.
      *
      * @param Request $request
-     * @param string  $instance
-     * @param string  $homeFolder
+     * @param string $instance
+     * @param string $homeFolder
      *
      * @return Response
+     * @throws Exception
      */
     public function showAction(Request $request, $instance, $homeFolder)
     {
