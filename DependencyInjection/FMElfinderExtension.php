@@ -9,11 +9,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
- * Registration of the extension via DI.
- *
- * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2016 Al Ganiev
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * Class FMElfinderExtension
  */
 class FMElfinderExtension extends Extension
 {

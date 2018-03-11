@@ -7,14 +7,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle.
- *
- * This information is solely responsible for how the different configuration
- * sections are normalized, and merged.
- *
- * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2018 Al Ganiev
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * Class Configuration
  */
 class Configuration implements ConfigurationInterface
 {
@@ -84,8 +77,8 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('trash_hash')->defaultValue('')->end()
                                                 ->scalarNode('locale')->defaultValue('')->end()
                                                 ->booleanNode('i18n_folder_name')->defaultFalse()->end()
-                                                ->sclarNode('mime_detect')->defaultValue('auto')->end()
-                                                ->sclarNode('mimefile')->defaultValue('')->end()
+                                                ->scalarNode('mime_detect')->defaultValue('auto')->end()
+                                                ->scalarNode('mimefile')->defaultValue('')->end()
                                                 ->scalarNode('security_voter')->defaultValue('')->end()
                                                 ->scalarNode('start_path')->defaultValue('')->end()
                                                 ->scalarNode('encoding')->defaultValue('')->end()
