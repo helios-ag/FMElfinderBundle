@@ -3,7 +3,6 @@
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
-use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

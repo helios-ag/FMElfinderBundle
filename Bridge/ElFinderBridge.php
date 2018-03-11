@@ -7,16 +7,16 @@ use FM\ElfinderBundle\ElFinder\ElFinder;
 use elFinderVolumeDriver;
 
 /**
- * Class ElFinderBridge
+ * Class ElFinderBridge.
  */
 class ElFinderBridge extends ElFinder
 {
-
     /** @var SessionInterface */
     protected $session;
 
     /**
      * ElFinderBridge constructor.
+     *
      * @param $opts
      */
     public function __construct($opts)
@@ -60,5 +60,4 @@ class ElFinderBridge extends ElFinder
         }
         parent::mountVolumes($opts);
     }
-
 }
