@@ -59,17 +59,31 @@ Recommended bundles to use with:
 
 ### Step 1: Installation
 
-Add FMElFinderBundle to your composer.json
+For Symfony Flex installation you need to enable community recipes:
+
+```sh
+  composer config extra.symfony.allow-contrib true
+```
+
+And install
+
+```sh
+  composer require helios-ag/fm-elfinder-bundle
+```
+
+Other way (non flex way) is to add FMElFinderBundle to your composer.json
 
 ```json
 {
     "require": {
-        "helios-ag/fm-elfinder-bundle": "~6",
+        "helios-ag/fm-elfinder-bundle": "~8",
     }
 }
 ```
 
-also add **component-dir** under config node of composer.json
+also add **component-dir** under **config** node of composer.json
+
+(also you can manually copy assets to this directory)
 
 ```json
 {
