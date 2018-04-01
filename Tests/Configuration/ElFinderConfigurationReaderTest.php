@@ -7,8 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class ElFinderConfigurationReaderTest.
- *
- * @package FM\ElfinderBundle\Tests\Configuration
  */
 class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 {
@@ -18,7 +16,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     protected $reader;
 
     /**
-     * @var \FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem
+     * @var \elFinderVolumeLocalFileSystem
      */
     protected $elFinderVolumeMock;
 
@@ -27,7 +25,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         /* @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
         $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $this->elFinderVolumeMock = $this->createMock('FM\ElFinderPHP\Driver\ElFinderVolumeLocalFileSystem');
+        $this->elFinderVolumeMock = $this->createMock('\elFinderVolumeLocalFileSystem');
 
         $containerMock
             ->expects($this->any())
@@ -75,6 +73,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 0,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '',
                                 'driver'            => 'LocalFileSystem',
@@ -82,6 +81,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'glide_key'         => '',
                                 'plugins'           => '',
                                 'start_path'        => '',
+                                'encoding'          => '',
                                 'alias'             => '',
                                 'mime_detect'       => '',
                                 'mimefile'          => '',
@@ -123,6 +123,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 1,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '/home',
                                 'driver'            => 'LocalFileSystem',
@@ -132,6 +133,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'plugins'           => '',
                                 'driver_options'    => '',
                                 'start_path'        => '',
+                                'encoding'          => '',
                                 'alias'             => '',
                                 'mime_detect'       => '',
                                 'mimefile'          => '',
@@ -173,6 +175,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
                                 'volume_id'         => 2,
+                                'security_voter'    => '',
                                 'show_hidden'       => false,
                                 'path'              => '',
                                 'driver'            => 'LocalFileSystem',
@@ -182,6 +185,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'plugins'           => '',
                                 'driver_options'    => '',
                                 'start_path'        => '',
+                                'encoding'          => '',
                                 'alias'             => '',
                                 'mime_detect'       => '',
                                 'mimefile'          => '',

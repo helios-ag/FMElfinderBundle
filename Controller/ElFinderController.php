@@ -3,6 +3,8 @@
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
+use FM\ElfinderBundle\Loader\ElFinderLoader;
+use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,12 +14,7 @@ use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
 /**
- * Loader service for Elfinder backend
- * displays Elfinder.
- *
- * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2015 Al Ganiev
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * Class ElFinderController.
  */
 class ElFinderController extends Controller
 {
@@ -29,6 +26,8 @@ class ElFinderController extends Controller
      * @param string  $homeFolder
      *
      * @return Response
+     *
+     * @throws Exception
      */
     public function showAction(Request $request, $instance, $homeFolder)
     {
@@ -217,7 +216,9 @@ class ElFinderController extends Controller
     {
         $loader = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
-
+        if ($loader instanceof ElFinderLoader) {
+            $loader->setSession(new ElFinderSession($this->get('session')));
+        }
         $httpKernel        = $this->get('http_kernel');
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);

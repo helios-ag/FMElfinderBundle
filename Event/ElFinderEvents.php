@@ -4,6 +4,9 @@ namespace FM\ElfinderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Class ElFinderEvents.
+ */
 abstract class ElFinderEvents extends Event
 {
     /**

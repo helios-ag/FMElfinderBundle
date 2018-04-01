@@ -4,7 +4,7 @@
     "keywords": ["elfinder","file manager","wysiwyg"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/helios-ag/FMElfinderBundle",
-    "minimum-stability": "dev",    
+    "minimum-stability": "dev",
     "license": "MIT",
     "authors": [
         {
@@ -25,8 +25,8 @@
         "symfony/twig-bundle":                 "~2.8|~3.0|~4.0",
         "symfony/form":                        "~2.8|~3.0|~4.0",
         "symfony/asset":                       "~2.8|~3.0|~4.0",
-        "helios-ag/fm-elfinder-php-connector": "~2.5",
-        "components/elfinder":                 "~2.1",
+        "components/elfinder":                 "~3",
+        "studio-42/elfinder":                  "~2.1",
         "robloach/component-installer":        "~0.2"
     },
     "require-dev" : {
@@ -47,7 +47,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "7.0-dev"
+            "dev-master": "8.0-dev"
         }
     }
 }

@@ -2,18 +2,12 @@
 
 namespace FM\ElfinderBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * This class contains the configuration information for the bundle.
- *
- * This information is solely responsible for how the different configuration
- * sections are normalized, and merged.
- *
- * @author Al Ganiev <helios.ag@gmail.com>
- * @copyright 2012-2017 Al Ganiev
- * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * Class Configuration.
  */
 class Configuration implements ConfigurationInterface
 {
@@ -78,11 +72,18 @@ class Configuration implements ConfigurationInterface
                                                 ->end() // driver
                                                 ->integerNode('volume_id')->defaultValue(0)->min(0)->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
-                                                ->scalarNode('start_path')->defaultValue('')->end()
-                                                ->scalarNode('url')->defaultValue('')->end()
-                                                ->scalarNode('alias')->defaultValue('')->end()
+                                                ->booleanNode('autoload')->defaultFalse()->end()
+                                                ->scalarNode('phash')->defaultValue('')->end()
+                                                ->scalarNode('trash_hash')->defaultValue('')->end()
+                                                ->scalarNode('locale')->defaultValue('')->end()
+                                                ->booleanNode('i18n_folder_name')->defaultFalse()->end()
                                                 ->scalarNode('mime_detect')->defaultValue('auto')->end()
                                                 ->scalarNode('mimefile')->defaultValue('')->end()
+                                                ->scalarNode('security_voter')->defaultValue('')->end()
+                                                ->scalarNode('start_path')->defaultValue('')->end()
+                                                ->scalarNode('encoding')->defaultValue('')->end()
+                                                ->scalarNode('url')->defaultValue('')->end()
+                                                ->scalarNode('alias')->defaultValue('')->end()
                                                 ->scalarNode('img_lib')->defaultValue('auto')->end()
                                                 ->scalarNode('tmb_path')->defaultValue('.tmb')->end()
                                                 ->scalarNode('tmb_path_mode')->defaultValue(0777)->end()
@@ -166,7 +167,7 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue(array())
                                                 ->end() // disabled_commands
                                                 ->integerNode('tree_deep')->defaultValue(0)->end()
-                                                ->booleanNode('check_subfolders')->defaultTrue()->end()
+                                                ->integerNode('check_subfolders')->defaultValue(1)->end()
                                                 ->scalarNode('separator')->defaultValue(DIRECTORY_SEPARATOR)->end()
                                                 ->scalarNode('date_format')->defaultValue('j M Y H:i')->end()
                                                 ->scalarNode('time_format')->defaultValue('H:i')->end()
@@ -248,6 +249,22 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('region')->end()
                                                     ->end()
                                                 ->end()
+                                                ->arrayNode('mysql_settings')
+                                                    ->canBeEnabled()
+                                                    ->children()
+                                                        ->scalarNode('host')->end()
+                                                        ->scalarNode('user')->end()
+                                                        ->scalarNode('pass')->end()
+                                                        ->scalarNode('db')->end()
+                                                        ->scalarNode('port')->defaultNull()->end()
+                                                        ->scalarNode('socket')->defaultNull()->end()
+                                                        ->scalarNode('files_table')->defaultValue('elfinder_file')->end()
+                                                        ->scalarNode('tmbPath')->defaultValue('')->end()
+                                                        ->scalarNode('tmpPath')->defaultValue('')->end()
+                                                        ->scalarNode('rootCssClass')->defaultValue('elfinder-navbar-root-sql')->end()
+                                                        ->scalarNode('noSessionCache')->defaultValue('hasdirs')->end()
+                                                    ->end()
+                                                ->end()
                                             ->end()
                                         ->end()
                                     ->end()
@@ -259,7 +276,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the Flysystem node
+     * @return NodeDefinition the Flysystem node
      */
     private function createFlysystemNode()
     {

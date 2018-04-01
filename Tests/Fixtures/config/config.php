@@ -32,6 +32,9 @@ $container->loadFromExtension('fm_elfinder', array(
                             'host' => '127.0.0.1',
                             'user' => 'root',
                         ),
+                        'mysql_settings' => array(
+                            'host' => 'localhost',
+                        ),
                         'attributes' => array(
                             'some_pattern' => array(
                                 'pattern' => '/^some_pattern$/',

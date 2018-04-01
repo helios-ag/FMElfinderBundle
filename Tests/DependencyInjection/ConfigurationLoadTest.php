@@ -25,6 +25,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 
     /**
      * @dataProvider getSupportsAllConfigFormatsData
+     * @requires PHP 7
      */
     public function testSupportsAllConfigFormats($path)
     {
@@ -53,6 +54,11 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                             'uploads' => array(
                                 'driver'            => 'LocalFileSystem',
                                 'volume_id'         => 0,
+                                'security_voter'    => '',
+                                'phash'             => '',
+                                'trash_hash'        => 'trash_hash',
+                                'i18n_folder_name'  => false,
+                                'locale'            => '',
                                 'disabled_commands' => array(),
                                 'plugins'           => array(),
                                 'driver_options'    => array(),
@@ -64,6 +70,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'adapter_service' => '',
                                 ),
                                 'start_path'       => '',
+                                'encoding'         => '',
                                 'url'              => '',
                                 'mime_detect'      => 'auto',
                                 'mimefile'         => '',
@@ -121,6 +128,15 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 ),
                                 's3_settings' => array(
                                     'enabled' => false,
+                                ),
+                                'mysql_settings' => array(
+                                    'enabled'     => true,
+                                    'host'        => 'localhost',
+                                    'files_table' => 'elfinder_file',
+                                    'port'        => null,
+                                    'socket'      => null,
+                                    'tmbPath'     => '',
+                                    'tmpPath'     => '',
                                 ),
                             ),
                         ),
