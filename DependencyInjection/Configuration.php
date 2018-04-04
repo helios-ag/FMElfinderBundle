@@ -81,7 +81,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('mimefile')->defaultValue('')->end()
                                                 ->scalarNode('security_voter')->defaultValue('')->end()
                                                 ->scalarNode('start_path')->defaultValue('')->end()
-                                                ->scalarNode('encoding')->defaultValue('')->end()
+                                                ->scalarNode('encoding')->defaultValue('UTF-8')->end()
                                                 ->scalarNode('url')->defaultValue('')->end()
                                                 ->scalarNode('alias')->defaultValue('')->end()
                                                 ->scalarNode('img_lib')->defaultValue('auto')->end()
