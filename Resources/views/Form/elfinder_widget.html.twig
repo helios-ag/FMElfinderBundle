@@ -2,13 +2,24 @@
     <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} data-type="elfinder-input-field" />
     {% if enable and instance is defined %}
         <script type="text/javascript" charset="utf-8">
-            document.addEventListener("DOMContentLoaded", function(event) {
-                var input = document.querySelector('[data-type="elfinder-input-field"][id="{{ id }}"]');
-                input.addEventListener('click', function (event) {
-                    var childWin = window.open("{{path('elfinder', {'instance': instance, 'homeFolder': homeFolder })}}?id={{ id }}", "popupWindow", "height=450, width=900");
-                })
+            live('click', '[data-type="elfinder-input-field"][id="{{ id }}"]', function (event) {
+                console.warn('Test');
+                var childWin = window.open("{{path('elfinder', {'instance': instance, 'homeFolder': homeFolder })}}?id={{ id }}", "popupWindow", "height=450, width=900");
             });
-
+            function live (eventType, elementQuerySelector, cb) {
+                document.addEventListener(eventType, function (event) {
+                    var qs = document.querySelectorAll(elementQuerySelector);
+                    if (qs) {
+                        var el = event.target, index = -1;
+                        while (el && ((index = Array.prototype.indexOf.call(qs, el)) === -1)) {
+                            el = el.parentElement;
+                        }
+                        if (index > -1) {
+                            cb.call(el, event);
+                        }
+                    }
+                })
+            }
             function setValue(value, element_id) {
                 document.querySelector('[data-type="elfinder-input-field"]' + (element_id ? '[id="'+ element_id +'"]': '')).value = value;
             }
