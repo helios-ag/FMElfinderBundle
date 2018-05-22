@@ -5,9 +5,9 @@ FMElfinderBundle
 
 ### Code Quality Assurance ###
 
-| Gitter | SL Insight | TravisCI | Coverage| License | Version |
+| SL Insight | TravisCI | Coverage| License | Version |
 |----------------| ------------------------|-------------|-----------------|-----------------|----------------|
-|[![Gitter](https://img.shields.io/gitter/room/nwjs/nw.js.svg?style=flat-square)](https://gitter.im/helios-ag/FMElfinderBundle)|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
+|[![SensioLabsInsight](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17/mini.png)](https://insight.sensiolabs.com/projects/604032ab-06ef-4ee2-b0cf-bb5240b9cd17)|[![Build Status](https://secure.travis-ci.org/helios-ag/FMElfinderBundle.png)](http://travis-ci.org/helios-ag/FMElfinderBundle)|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
 
 
 |Dependencies| Downloads |
@@ -21,9 +21,9 @@ Creation is inspired by simplicity and convenience of Finder program used in Mac
 Recommended bundles to use with:
 
 
-| FMTinyMCEBundle | IvoryCKEditorBundle | TrsteelCkeditorBundle| FMSummernoteBundle |
+| FMTinyMCEBundle | FOSCKEditorBundle | TrsteelCkeditorBundle| FMSummernoteBundle |
 | ------------------------|-------------|-----------------|-----------------|
-|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![IvoryCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com/egeloen/IvoryCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
+|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![FOSCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com//FriendsOfSymfony/FOSCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
 
 **Table of contents**
@@ -177,7 +177,7 @@ fm_elfinder:
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
 * **editor** - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor" (to use with IvoryCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
+ "ckeditor" (to use with FOSCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
 * **editor_template** - define template to render when editor is set to "custom".
 * **connector** - root node for defining options for elfinder root directories.

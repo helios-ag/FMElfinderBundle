@@ -40,7 +40,7 @@
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me",
         "helios-ag/fm-summernote-bundle": "Summernote Bundle by me",
-        "egeloen/ckeditor-bundle": "CKEditor Bundle by Egeloen"
+        "friendsofsymfony/ckeditor-bundle": "CKEditor Bundle initially by Egeloen (Maintained by FOS Community)"
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "" }
