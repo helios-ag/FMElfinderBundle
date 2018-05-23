@@ -23,7 +23,7 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('instance')
             ->children()
                 ->scalarNode('configuration_provider')->defaultValue('fm_elfinder.configurator.default')->end()
-                ->scalarNode('assets_path')->defaultValue('/assets')->end()
+                ->scalarNode('assets_path')->defaultValue('assets')->end()
                 ->scalarNode('loader')->defaultValue('fm_elfinder.loader.default')->end()
                 ->arrayNode('instances')
                     ->isRequired()
