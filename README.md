@@ -23,7 +23,7 @@ Recommended bundles to use with:
 
 | FMTinyMCEBundle | FOSCKEditorBundle | TrsteelCkeditorBundle| FMSummernoteBundle |
 | ------------------------|-------------|-----------------|-----------------|
-|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![FOSCKEditorBundle](https://img.shields.io/badge/IvoryCKEditorBundle-download-orange.svg)](https://github.com//FriendsOfSymfony/FOSCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
+|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![FOSCKEditorBundle](https://img.shields.io/badge/FOSCKEditorBundle-download-orange.svg)](https://github.com/FriendsOfSymfony/FOSCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
 
 **Table of contents**
