@@ -31,7 +31,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
     {
         $expectedConfiguration = array(
             'configuration_provider' => 'app.configurator.custom',
-            'assets_path'            => '/assets',
+            'assets_path'            => 'assets',
             'loader'                 => 'fm_elfinder.loader.default',
             'instances'              => array(
                 'default' => array(
