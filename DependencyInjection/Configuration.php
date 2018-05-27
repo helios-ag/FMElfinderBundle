@@ -209,6 +209,7 @@ class Configuration implements ConfigurationInterface
                                                 ->arrayNode('flysystem')
                                                     ->canBeEnabled()
                                                     ->children()
+                                                        ->scalarNode('filesystem')->defaultValue('')->end()
                                                         ->scalarNode('type')->defaultValue('')->end()
                                                         ->scalarNode('adapter_service')->defaultValue('')->end()
                                                         ->append($this->createFlysystemNode())
