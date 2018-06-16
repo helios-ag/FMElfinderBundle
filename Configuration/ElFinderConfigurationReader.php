@@ -90,8 +90,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 if ($parameter['flysystem']['filesystem']) {
                     $serviceName = $parameter['flysystem']['filesystem'];
                     $filesystem  = $this->getFlysystemFilesystem($serviceName);
-                }
-                else {
+                } else {
                     $adapter     = $parameter['flysystem']['type']; // ftp ex.
                     $serviceName = $parameter['flysystem']['adapter_service'];
                     $opt         = $parameter['flysystem']['options'];
@@ -292,11 +291,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $filesystem;
     }
 
-    private function getFlysystemFilesystem($serviceName) {
+    private function getFlysystemFilesystem($serviceName)
+    {
         $filesystem = $this->container->get($serviceName);
         if (!is_object($filesystem) || (!$filesystem instanceof Filesystem)) {
             throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, Filesystem::class));
         }
+
         return $filesystem;
     }
 
