@@ -1,7 +1,7 @@
 {
     "name": "helios-ag/fm-elfinder-bundle",
     "description": "ElFinder bundle, adds ElFinder file manager to your Symfony project",
-    "keywords": ["elfinder","file manager","wysiwyg"],
+    "keywords": ["elfinder", "file manager", "wysiwyg"],
     "type": "symfony-bundle",
     "homepage": "https://github.com/helios-ag/FMElfinderBundle",
     "minimum-stability": "dev",
@@ -17,7 +17,7 @@
         }
     ],
     "archive": {
-      "exclude": ["/Tests"]
+      "exclude": ["/tests", "./github"]
     },
     "require": {
         "php":                                 "^5.6|^7.0",
@@ -38,12 +38,15 @@
         "phpunit/phpunit": "~5"
     },
     "suggest": {
-        "helios-ag/fm-tinymce-bundle": "TinyMCE Bundle by me",
-        "helios-ag/fm-summernote-bundle": "Summernote Bundle by me",
-        "friendsofsymfony/ckeditor-bundle": "CKEditor Bundle initially by Egeloen (Maintained by FOS Community)"
+        "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",
+        "helios-ag/fm-summernote-bundle": "FMSummernoteBundle WYSIWYG Editor Bundle",
+        "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle"
     },
     "autoload": {
-        "psr-4": { "FM\\ElfinderBundle\\": "" }
+        "psr-4": { "FM\\ElfinderBundle\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "FM\\ElfinderBundle\\Tests\\": "tests/" }
     },
     "extra": {
         "branch-alias": {
