@@ -29,7 +29,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp()
     {
-        $this->twig      = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../Resources/views/Elfinder/helper')));
+        $this->twig      = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../src/Resources/views/Elfinder/helper')));
         $this->extension = new FMElfinderExtension($this->twig);
         $this->twig->addExtension($this->extension);
         $loader     = new YamlFileLoader(new FileLocator(__DIR__.'/../../../Resources/config'));
