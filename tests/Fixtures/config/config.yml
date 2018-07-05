@@ -16,6 +16,8 @@ fm_elfinder:
                         driver: LocalFileSystem
                         path: uploads
                         show_hidden: true
+                        trash_hash: trash_hash
+                        check_subfolders: true
                         alias: foo
                         tree_deep: 1
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']

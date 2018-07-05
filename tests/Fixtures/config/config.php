@@ -19,6 +19,7 @@ $container->loadFromExtension('fm_elfinder', array(
                         'driver'           => 'LocalFileSystem',
                         'path'             => 'uploads',
                         'show_hidden'      => true,
+                        'trash_hash'       => 'trash_hash',
                         'alias'            => 'foo',
                         'tree_deep'        => 1,
                         'upload_allow'     => array('image/png', 'image/jpg', 'image/jpeg'),

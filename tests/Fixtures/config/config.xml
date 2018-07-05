@@ -17,6 +17,8 @@
                                   driver="LocalFileSystem"
                                   path="uploads"
                                   show-hidden="true"
+                                  trash-hash="trash_hash"
+                                  check-subfolders="true"
                                   alias="foo"
                                   tree-deep="1"
                                   upload-allow="image/png, image/jpg, image/jpeg"
