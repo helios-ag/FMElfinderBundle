@@ -98,7 +98,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     ),
                                 ),
                                 'accepted_name'    => '/^\w[\w\s\.\%\-]*$/u',
-                                'check_subfolders' => true,
+                                'check_subfolders' => 1,
                                 'separator'        => DIRECTORY_SEPARATOR,
                                 'date_format'      => 'j M Y H:i',
                                 'time_format'      => 'H:i',
