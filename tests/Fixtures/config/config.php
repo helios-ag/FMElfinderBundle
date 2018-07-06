@@ -21,6 +21,7 @@ $container->loadFromExtension('fm_elfinder', array(
                         'show_hidden'      => true,
                         'trash_hash'       => 'trash_hash',
                         'alias'            => 'foo',
+                        'check_subfolders' => 1,
                         'tree_deep'        => 1,
                         'upload_allow'     => array('image/png', 'image/jpg', 'image/jpeg'),
                         'upload_deny'      => array('all'),

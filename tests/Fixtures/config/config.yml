@@ -17,7 +17,7 @@ fm_elfinder:
                         path: uploads
                         show_hidden: true
                         trash_hash: trash_hash
-                        check_subfolders: true
+                        check_subfolders: 1
                         alias: foo
                         tree_deep: 1
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
