@@ -36,24 +36,24 @@ Recommended bundles to use with:
 - [Basic configuration](#basic-configuration)
     - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
     - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
-- [CORS support](/Resources/doc/cors-support.md)
-- [Events listeners / subscribers](/Resources/doc/events-listeners-subscribers.md)
-    - [Events](/Resources/doc/events-listeners-subscribers.md#events)
-    - [Sub requests](/Resources/doc/events-listeners-subscribers.md#sub-requests)
-- [Elfinder Form Type](/Resources/doc/elfinder-form-type.md)
-- [CKEditor integration](/Resources/doc/ckeditor-integration.md)
-    - [Installation](/Resources/doc/ckeditor-integration.md#step-1-installation)
-    - [Configuration](/Resources/doc/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
-- [TinyMCE integration](/Resources/doc/tinymce-integration.md)
-    - [Integration with TinyMCE 3](/Resources/doc/tinymce-integration.md#tinymce-3x)
-    - [Integration with TinyMCE 4](/Resources/doc/tinymce-integration.md#tinymce-4x)
-- [Summernote integration](/Resources/doc/summernote-integration.md)
-- [Advanced configuration](/Resources/doc/advanced-configuration.md)
-    - [Custom configuration provider](/Resources/doc/advanced-configuration.md#custom-configuration-provider)
-    - [Custom loader](/Resources/doc/advanced-configuration.md#custom-loader)
-    - [Plugins](/Resources/doc/advanced-configuration.md#plugins)
-    - [Service as volume driver](/Resources/doc/advanced-configuration.md#symfony-service-as-a-volume-driver)
-    - [Flysystem configuration](/Resources/doc/advanced-configuration.md#flysystem-configuration)
+- [CORS support](/docs/cors-support.md)
+- [Events listeners / subscribers](/docs/events-listeners-subscribers.md)
+    - [Events](/docs/events-listeners-subscribers.md#events)
+    - [Sub requests](/docs/events-listeners-subscribers.md#sub-requests)
+- [Elfinder Form Type](/docs/elfinder-form-type.md)
+- [CKEditor integration](/docs/ckeditor-integration.md)
+    - [Installation](/docs/ckeditor-integration.md#step-1-installation)
+    - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
+- [TinyMCE integration](/docs/tinymce-integration.md)
+    - [Integration with TinyMCE 3](/docs/tinymce-integration.md#tinymce-3x)
+    - [Integration with TinyMCE 4](/docs/tinymce-integration.md#tinymce-4x)
+- [Summernote integration](/docs/summernote-integration.md)
+- [Advanced configuration](/docs/advanced-configuration.md)
+    - [Custom configuration provider](/docs/advanced-configuration.md#custom-configuration-provider)
+    - [Custom loader](/docs/advanced-configuration.md#custom-loader)
+    - [Plugins](/docs/advanced-configuration.md#plugins)
+    - [Service as volume driver](/docs/advanced-configuration.md#symfony-service-as-a-volume-driver)
+    - [Flysystem configuration](/docs/advanced-configuration.md#flysystem-configuration)
 
 ## Installation
 
@@ -193,7 +193,7 @@ fm_elfinder:
 * **upload_max_size**: 2M
 
 You can see the full list of roots options [here](https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options#root-options "connector options list"). To use them,
-convert camelCased option name to under_scored name.
+convert camelCased option name to snake_case name.
 
 ### Use multiple upload folder by instance
 

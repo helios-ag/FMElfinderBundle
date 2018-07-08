@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit colors="true" bootstrap="vendor/autoload.php">
+<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/autoload.php"
+>
     <php>
-        <server name="KERNEL_DIR" value="./Tests/Functional" />
+        <server name="KERNEL_DIR" value="./tests/Functional" />
+        <ini name="error_reporting" value="-1" />
     </php>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
+
     <testsuites>
-        <testsuite name="FMElfinderBundle test suite">
-            <directory suffix="Test.php">./Tests</directory>
+        <testsuite name="FMRFMBundle test suite">
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
 
@@ -14,9 +26,9 @@
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>./</directory>
             <exclude>
-                <directory>./Controller</directory>
-                <directory>./Resources</directory>
-                <directory>./Tests</directory>
+                <directory>./src/Controller</directory>
+                <directory>./src/Resources</directory>
+                <directory>./tests</directory>
                 <directory>./vendor</directory>
             </exclude>
         </whitelist>
@@ -27,4 +39,3 @@
         <log type="coverage-clover" target="./clover.xml"/>
     </logging>
 </phpunit>
-
