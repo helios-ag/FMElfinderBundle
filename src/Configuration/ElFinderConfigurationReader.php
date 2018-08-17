@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Adapter\Ftp;
-use League\Flysystem\Dropbox\DropboxAdapter;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 use League\Flysystem\Sftp\SftpAdapter;
 use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
 use League\Flysystem\AwsS3v3\AwsS3Adapter as AwsS3v3;
@@ -22,7 +22,7 @@ use MongoClient;
 use League\Flysystem\Copy\CopyAdapter;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use Aws\S3\S3Client;
-use Dropbox\Client;
+use Spatie\Dropbox\Client;
 use Barracuda\Copy\API;
 
 /**
@@ -266,7 +266,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'dropbox':
-                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'], $opt['dropbox']['app'])));
+                $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'])));
 
                 break;
             case 'rackspace':
