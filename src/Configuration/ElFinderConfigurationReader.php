@@ -340,8 +340,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'dropbox':
-                $settings['consumerKey']       = $parameter['dropbox_settings']['consumer_key'];
-                $settings['consumerSecret']    = $parameter['dropbox_settings']['consumer_secret'];
+                $settings['consumerKey']       = $parameter['dropbox_settings']['app_key'] ?: $parameter['dropbox_settings']['consumer_key'];
+                $settings['consumerSecret']    = $parameter['dropbox_settings']['app_secret'] ?: $parameter['dropbox_settings']['consumer_secret'];
                 $settings['accessToken']       = $parameter['dropbox_settings']['access_token'];
                 $settings['accessTokenSecret'] = $parameter['dropbox_settings']['access_token_secret'];
                 $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];

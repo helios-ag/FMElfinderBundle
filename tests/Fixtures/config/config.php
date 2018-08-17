@@ -29,6 +29,8 @@ $container->loadFromExtension('fm_elfinder', array(
                         'dropbox_settings' => array(
                             'consumer_key'    => 'some_consumer',
                             'consumer_secret' => 'con$umer',
+                            'app_key'         => 'some_consumer',
+                            'app_secret'      => 'con$umer',
                         ),
                         'ftp_settings' => array(
                             'host' => '127.0.0.1',
