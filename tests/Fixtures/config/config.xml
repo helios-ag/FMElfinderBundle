@@ -28,6 +28,8 @@
                     <fm-elfinder:dropbox-settings
                             consumer-key="some_consumer"
                             consumer-secret="con$umer"
+                            app-key="some_consumer"
+                            app-secret="con$umer"
                             />
                     <fm-elfinder:ftp-settings
                             host="127.0.0.1"

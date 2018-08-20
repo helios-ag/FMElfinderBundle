@@ -120,6 +120,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'dropbox_settings' => array(
                                     'consumer_key'    => 'some_consumer',
                                     'consumer_secret' => 'con$umer',
+                                    'app_key'         => 'some_consumer',
+                                    'app_secret'      => 'con$umer',
                                     'enabled'         => true,
                                 ),
                                 'ftp_settings' => array(
