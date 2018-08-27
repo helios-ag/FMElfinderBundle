@@ -39,7 +39,9 @@
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",
         "helios-ag/fm-summernote-bundle": "FMSummernoteBundle WYSIWYG Editor Bundle",
-        "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle"
+        "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle",
+        "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
+        "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "src/" }
@@ -49,7 +51,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "8.0-dev"
+            "dev-master": "9.0-dev"
         }
     }
 }
