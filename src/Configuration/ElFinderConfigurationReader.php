@@ -380,7 +380,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['acceptedName']      = $parameter['box_settings']['acceptedName'];
                 $settings['rootCssClass']      = $parameter['box_settings']['rootCssClass'];
 
-                break:
+                break;
             case 's3':
                 $settings['accesskey']   = $parameter['s3_settings']['access_key'];
                 $settings['secretkey']   = $parameter['s3_settings']['secret_key'];
