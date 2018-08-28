@@ -339,15 +339,48 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['path'] = $parameter['ftp_settings']['path'];
 
                 break;
-            case 'dropbox':
-                $settings['consumerKey']       = $parameter['dropbox_settings']['app_key'] ?: $parameter['dropbox_settings']['consumer_key'];
-                $settings['consumerSecret']    = $parameter['dropbox_settings']['app_secret'] ?: $parameter['dropbox_settings']['consumer_secret'];
-                $settings['accessToken']       = $parameter['dropbox_settings']['access_token'];
-                $settings['accessTokenSecret'] = $parameter['dropbox_settings']['access_token_secret'];
-                $settings['dropboxUid']        = $parameter['dropbox_settings']['dropbox_uid'];
-                $settings['metaCachePath']     = $parameter['dropbox_settings']['meta_cache_path'];
+            case 'dropbox2':
+                $settings['app_key']           = $parameter['dropbox2_settings']['app_key'];
+                $settings['app_secret']        = $parameter['dropbox2_settings']['app_secret'];
+                $settings['access_token']      = $parameter['dropbox2_settings']['access_token'];
+                $settings['aliasFormat']       = $parameter['dropbox2_settings']['aliasFormat'];
+                $settings['path']              = $parameter['dropbox2_settings']['path'];
+                $settings['separator']         = $parameter['dropbox2_settings']['separator'];
+                $settings['acceptedName']      = $parameter['dropbox2_settings']['acceptedName'];
+                $settings['rootCssClass']      = $parameter['dropbox2_settings']['rootCssClass'];
+                $settings['publishPermission'] = $parameter['dropbox2_settings']['publishPermission'];
+                $settings['getThumbSize']      = $parameter['dropbox2_settings']['getThumbSize'];
 
                 break;
+            case 'onedrive':
+                $settings['client_id']         = $parameter['onedrive_settings']['client_id'];
+                $settings['client_secret']     = $parameter['onedrive_settings']['client_secret'];
+                $settings['accessToken']       = $parameter['onedrive_settings']['accessToken'];
+                $settings['root']              = $parameter['onedrive_settings']['root'];
+                $settings['OneDriveApiClient'] = $parameter['onedrive_settings']['OneDriveApiClient'];
+                $settings['path']              = $parameter['onedrive_settings']['path'];
+                $settings['separator']         = $parameter['onedrive_settings']['separator'];
+                $settings['tmbPath']           = $parameter['onedrive_settings']['tmbPath'];
+                $settings['tmbURL']            = $parameter['onedrive_settings']['tmbURL'];
+                $settings['tmpPath']           = $parameter['onedrive_settings']['tmpPath'];
+                $settings['acceptedName']      = $parameter['onedrive_settings']['acceptedName'];
+                $settings['rootCssClass']      = $parameter['onedrive_settings']['rootCssClass'];
+                $settings['useApiThumbnail']   = $parameter['onedrive_settings']['useApiThumbnail'];
+
+                break;
+            case 'box':
+                $settings['client_id']         = $parameter['box_settings']['client_id'];
+                $settings['client_secret']     = $parameter['box_settings']['client_secret'];
+                $settings['accessToken']       = $parameter['box_settings']['accessToken'];
+                $settings['root']              = $parameter['box_settings']['root'];
+                $settings['path']              = $parameter['box_settings']['path'];
+                $settings['separator']         = $parameter['box_settings']['separator'];
+                $settings['tmbPath']           = $parameter['box_settings']['tmbPath'];
+                $settings['tmbURL']            = $parameter['box_settings']['tmbURL'];
+                $settings['acceptedName']      = $parameter['box_settings']['acceptedName'];
+                $settings['rootCssClass']      = $parameter['box_settings']['rootCssClass'];
+
+                break:
             case 's3':
                 $settings['accesskey']   = $parameter['s3_settings']['access_key'];
                 $settings['secretkey']   = $parameter['s3_settings']['secret_key'];

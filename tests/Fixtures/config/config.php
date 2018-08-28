@@ -26,11 +26,19 @@ $container->loadFromExtension('fm_elfinder', array(
                         'upload_allow'     => array('image/png', 'image/jpg', 'image/jpeg'),
                         'upload_deny'      => array('all'),
                         'upload_max_size'  => 0,
-                        'dropbox_settings' => array(
-                            'consumer_key'    => 'some_consumer',
-                            'consumer_secret' => 'con$umer',
+                        'dropbox2_settings' => array(
                             'app_key'         => 'some_consumer',
                             'app_secret'      => 'con$umer',
+                        ),
+                        'box_settings' => array(
+                            'client_id'       => 'some_consumer',
+                            'client_secret'   => 'con$umer',
+                            'accessToken'     => 'token'
+                        ),
+                        'onedrive_settings' => array(
+                            'client_id'       => 'some_consumer',
+                            'client_secret'   => 'con$umer',
+                            'accessToken'     => 'token'
                         ),
                         'ftp_settings' => array(
                             'host' => '127.0.0.1',
