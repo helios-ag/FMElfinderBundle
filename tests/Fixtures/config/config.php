@@ -16,16 +16,16 @@ $container->loadFromExtension('fm_elfinder', array(
                 'debug' => true,
                 'roots' => array(
                     'uploads' => array(
-                        'driver'           => 'LocalFileSystem',
-                        'path'             => 'uploads',
-                        'show_hidden'      => true,
-                        'trash_hash'       => 'trash_hash',
-                        'alias'            => 'foo',
-                        'check_subfolders' => 1,
-                        'tree_deep'        => 1,
-                        'upload_allow'     => array('image/png', 'image/jpg', 'image/jpeg'),
-                        'upload_deny'      => array('all'),
-                        'upload_max_size'  => 0,
+                        'driver'            => 'LocalFileSystem',
+                        'path'              => 'uploads',
+                        'show_hidden'       => true,
+                        'trash_hash'        => 'trash_hash',
+                        'alias'             => 'foo',
+                        'check_subfolders'  => 1,
+                        'tree_deep'         => 1,
+                        'upload_allow'      => array('image/png', 'image/jpg', 'image/jpeg'),
+                        'upload_deny'       => array('all'),
+                        'upload_max_size'   => 0,
                         'dropbox2_settings' => array(
                             'app_key'         => 'some_consumer',
                             'app_secret'      => 'con$umer',
@@ -33,12 +33,12 @@ $container->loadFromExtension('fm_elfinder', array(
                         'box_settings' => array(
                             'client_id'       => 'some_consumer',
                             'client_secret'   => 'con$umer',
-                            'accessToken'     => 'token'
+                            'accessToken'     => 'token',
                         ),
                         'onedrive_settings' => array(
                             'client_id'       => 'some_consumer',
                             'client_secret'   => 'con$umer',
-                            'accessToken'     => 'token'
+                            'accessToken'     => 'token',
                         ),
                         'ftp_settings' => array(
                             'host' => '127.0.0.1',
