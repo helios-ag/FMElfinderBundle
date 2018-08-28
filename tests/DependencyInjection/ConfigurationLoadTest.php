@@ -150,7 +150,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'tmbPath'           => '',
                                     'tmbURL'            => '',
                                     'acceptedName'      => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
-                                    'rootCssClass'      => 'elfinder-navbar-onedrive',
+                                    'rootCssClass'      => 'elfinder-navbar-root-onedrive',
+                                    'useApiThumbnail'   => true,
                                     'enabled'           => true,
                                 ),
                                 'ftp_settings' => array(
