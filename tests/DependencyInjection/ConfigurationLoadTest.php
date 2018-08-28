@@ -116,6 +116,12 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'upload_deny'      => array('all'),
                                 'upload_max_size'  => 0,
                                 'dropbox2_settings' => array(
+                                    'aliasFormat'     => '%s@Dropbox',
+                                    'path'            => '/',
+                                    'separator'       => '/',
+                                    'acceptedName'    => '%s@Dropbox',
+                                    'rootCssClass'    => 'rootCssClass',
+                                    'getThumbSize'    => 'medium',
                                     'app_key'         => 'some_consumer',
                                     'app_secret'      => 'con$umer',
                                     'enabled'         => true,
