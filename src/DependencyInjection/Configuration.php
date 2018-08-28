@@ -233,6 +233,7 @@ class Configuration implements ConfigurationInterface
                                                         ->arrayNode('publishPermission')
                                                             ->children()
                                                                 ->scalarNode('requested_visibility')->defaultValue('public')->end()
+                                                            ->end()
                                                         ->end()
                                                         ->scalarNode('getThumbSize')->defaultValue('medium')->end()
                                                     ->end()
