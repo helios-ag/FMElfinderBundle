@@ -76,7 +76,7 @@ Other way (non flex way) is to add FMElFinderBundle to your composer.json
 ```json
 {
     "require": {
-        "helios-ag/fm-elfinder-bundle": "~8",
+        "helios-ag/fm-elfinder-bundle": "~9",
     }
 }
 ```
