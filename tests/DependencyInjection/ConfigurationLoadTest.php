@@ -8,8 +8,6 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurati
 
 /**
  * Class ConfigurationLoadTest.
- *
- * @package FM\ElfinderBundle\Tests\DependencyInjection
  */
 class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 {
@@ -108,21 +106,54 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                   'create'  => array(),
                                   'extract' => array(),
                                 ),
-                                'glide_url'        => '',
-                                'glide_key'        => '',
-                                'alias'            => 'foo',
-                                'tree_deep'        => 1,
-                                'upload_allow'     => array('image/png', 'image/jpg', 'image/jpeg'),
-                                'upload_order'     => array('deny', 'allow'),
-                                'defaults'         => array('read' => true, 'write' => true),
-                                'upload_deny'      => array('all'),
-                                'upload_max_size'  => 0,
-                                'dropbox_settings' => array(
-                                    'consumer_key'    => 'some_consumer',
-                                    'consumer_secret' => 'con$umer',
+                                'glide_url'         => '',
+                                'glide_key'         => '',
+                                'alias'             => 'foo',
+                                'tree_deep'         => 1,
+                                'upload_allow'      => array('image/png', 'image/jpg', 'image/jpeg'),
+                                'upload_order'      => array('deny', 'allow'),
+                                'defaults'          => array('read' => true, 'write' => true),
+                                'upload_deny'       => array('all'),
+                                'upload_max_size'   => 0,
+                                'dropbox2_settings' => array(
+                                    'aliasFormat'     => '%s@Dropbox',
+                                    'path'            => '/',
+                                    'separator'       => '/',
+                                    'acceptedName'    => '%s@Dropbox',
+                                    'rootCssClass'    => 'elfinder-navbar-root-dropbox',
+                                    'getThumbSize'    => 'medium',
                                     'app_key'         => 'some_consumer',
                                     'app_secret'      => 'con$umer',
                                     'enabled'         => true,
+                                ),
+                                'box_settings' => array(
+                                    'client_id'      => 'some_consumer',
+                                    'client_secret'  => 'con$umer',
+                                    'accessToken'    => 'token',
+                                    'root'           => 'Box.com',
+                                    'path'           => '/',
+                                    'separator'      => '/',
+                                    'tmbPath'        => '',
+                                    'tmbURL'         => '',
+                                    'tmpPath'        => '',
+                                    'acceptedName'   => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
+                                    'rootCssClass'   => 'elfinder-navbar-root-box',
+                                    'enabled'        => true,
+                                ),
+                                'onedrive_settings' => array(
+                                    'client_id'         => 'some_consumer',
+                                    'client_secret'     => 'con$umer',
+                                    'accessToken'       => 'token',
+                                    'root'              => 'OneDrive.com',
+                                    'OneDriveApiClient' => '',
+                                    'path'              => '/',
+                                    'separator'         => '/',
+                                    'tmbPath'           => '',
+                                    'tmbURL'            => '',
+                                    'acceptedName'      => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
+                                    'rootCssClass'      => 'elfinder-navbar-root-onedrive',
+                                    'useApiThumbnail'   => true,
+                                    'enabled'           => true,
                                 ),
                                 'ftp_settings' => array(
                                     'host'    => '127.0.0.1',

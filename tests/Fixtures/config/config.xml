@@ -25,11 +25,19 @@
                                   upload-deny="all"
                                   upload-max-size="0"
                         >
-                    <fm-elfinder:dropbox-settings
-                            consumer-key="some_consumer"
-                            consumer-secret="con$umer"
+                    <fm-elfinder:dropbox2-settings
                             app-key="some_consumer"
                             app-secret="con$umer"
+                            />
+                    <fm-elfinder:onedrive-settings
+                            client-id="some_consumer"
+                            client-secret="con$umer"
+                            accessToken="token"
+                            />
+                    <fm-elfinder:box-settings
+                            client-id="some_consumer"
+                            client-secret="con$umer"
+                            accessToken="token"
                             />
                     <fm-elfinder:ftp-settings
                             host="127.0.0.1"
