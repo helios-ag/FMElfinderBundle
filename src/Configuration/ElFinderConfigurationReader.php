@@ -222,13 +222,13 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'sftp':
                 $settings = array(
-                  'host' => $opt['sftp']['host'],
-                  'port' => $opt['sftp']['port'],
-                  'username' => $opt['sftp']['username'],
-                  'password' => $opt['sftp']['password'],
+                  'host'       => $opt['sftp']['host'],
+                  'port'       => $opt['sftp']['port'],
+                  'username'   => $opt['sftp']['username'],
+                  'password'   => $opt['sftp']['password'],
                   'privateKey' => $opt['sftp']['privateKey'],
-                  'root' => $opt['sftp']['root'],
-                  'timeout' => $opt['sftp']['timeout'],
+                  'root'       => $opt['sftp']['root'],
+                  'timeout'    => $opt['sftp']['timeout'],
                 );
                 $filesystem = new Filesystem(new SftpAdapter($settings));
 
