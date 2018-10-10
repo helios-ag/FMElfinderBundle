@@ -217,7 +217,20 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'timeout'       => $opt['ftp']['timeout'],
                     'directoryPerm' => $opt['ftp']['directoryPerm'],
                 );
-                $filesystem = (!$opt['ftp']['sftp']) ? new Filesystem(new Ftp($settings)) : new Filesystem(new SftpAdapter($settings));
+                $filesystem = new Filesystem(new Ftp($settings));
+
+                break;
+            case 'sftp':
+                $settings = array(
+                  'host' => $opt['sftp']['host'],
+                  'port' => $opt['sftp']['port'],
+                  'username' => $opt['sftp']['username'],
+                  'password' => $opt['sftp']['password'],
+                  'privateKey' => $opt['sftp']['privateKey'],
+                  'root' => $opt['sftp']['root'],
+                  'timeout' => $opt['sftp']['timeout'],
+                );
+                $filesystem = new Filesystem(new SftpAdapter($settings));
 
                 break;
             case 'aws_s3_v2':
