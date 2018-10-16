@@ -24,6 +24,8 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use Aws\S3\S3Client;
 use Spatie\Dropbox\Client;
 use Barracuda\Copy\API;
+use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
 
 /**
  * Class ElFinderConfigurationReader.
@@ -231,6 +233,14 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                   'timeout'    => $opt['sftp']['timeout'],
                 );
                 $filesystem = new Filesystem(new SftpAdapter($settings));
+
+                break;
+            case 'azure':
+                $client = BlobRestProxy::createBlobService(
+                    sprintf('DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;', $opt['azure']['account_name'], $opt['azure']['account_key'])
+                );
+                $adapter    = new AzureBlobStorageAdapter($client, $opt['azure']['container_name']);
+                $filesystem = new Filesystem($adapter);
 
                 break;
             case 'aws_s3_v2':
