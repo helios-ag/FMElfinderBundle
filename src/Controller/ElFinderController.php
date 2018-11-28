@@ -75,7 +75,7 @@ class ElFinderController extends Controller
                               : '[]';
         $result         = array();
 
-        switch ($editor) {
+        switch ($instance) {
             case 'custom':
                 if (empty($parameters['editor_template'])) {
                     throw new Exception("Configuration error : 'custom' editor must define 'editor_template' parameter");
