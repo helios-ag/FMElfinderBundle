@@ -62,7 +62,6 @@ class ElFinderController extends Controller
      */
     private function selectEditor($parameters, $instance, $homeFolder, $assetsPath, $formTypeId = null)
     {
-        $editor         = $parameters['editor'];
         $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullScreen     = $parameters['fullscreen'];
         $relativePath   = $parameters['relative_path'];
