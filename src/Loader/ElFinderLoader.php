@@ -140,7 +140,8 @@ class ElFinderLoader
     {
         $volume = $this->bridge->getVolume($hash);
 
-        return (!empty($volume)) ? $volume->decode($hash) : false;
+        /** @var $volume \elFinderVolumeDriver */
+        return (!empty($volume)) ? $volume->getPath($hash) : false;
     }
 
     public function setSession($session)
