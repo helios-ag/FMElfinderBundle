@@ -1,7 +1,5 @@
 language: php
 
-sudo: false
-
 cache:
     directories:
         - vendor
@@ -25,7 +23,9 @@ matrix:
           env: SYMFONY_VERSION=4.0.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
         - php: 7.2
           env: SYMFONY_VERSION=4.0.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-
+        - php: 7.1
+        - php: 7.2
+        - php: 7.3
 install:
   - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
   - composer require --no-update symfony/form:${SYMFONY_VERSION}
@@ -37,3 +37,6 @@ script:
 
 notifications:
   email: helios.ag@gmail.com
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
