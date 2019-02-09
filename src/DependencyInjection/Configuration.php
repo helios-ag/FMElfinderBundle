@@ -16,9 +16,12 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('fm_elfinder');
-
+        $treeBuilder = new TreeBuilder('fm_elfinder');
+        if (\method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root('fm_elfinder');
+        }
         $rootNode
             ->fixXmlConfig('instance')
             ->children()
