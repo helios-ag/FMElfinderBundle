@@ -73,4 +73,13 @@ class ElFinderConnector extends \elFinderConnector
 
         return $this->output($this->elFinder->exec($cmd, $this->input_filter($args)));
     }
+
+    protected function output(array $data)
+    {
+        if (isset($data['pointer'])) {
+            parent::output($data);
+        } else {
+            return $data;
+        }
+    }
 }
