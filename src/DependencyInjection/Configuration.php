@@ -480,16 +480,13 @@ class Configuration implements ConfigurationInterface
      */
     private function createNode($name)
     {
-        return $this->createTreeBuilder()->root($name);
-    }
+        $treeBuilder = new TreeBuilder($name);
+        if (\method_exists($treeBuilder, 'getRootNode')) {
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $rootNode = $treeBuilder->root($name);
+        }
 
-    /**
-     * Creates a tree builder.
-     *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder the tree builder
-     */
-    private function createTreeBuilder()
-    {
-        return new TreeBuilder();
+        return $rootNode;
     }
 }
