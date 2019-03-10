@@ -269,6 +269,7 @@ class Configuration implements ConfigurationInterface
                                                         ->scalarNode('separator')->defaultValue('/')->end()
                                                         ->scalarNode('tmbPath')->defaultValue('')->end()
                                                         ->scalarNode('tmbURL')->defaultValue('')->end()
+                                                        ->scalarNode('tmpPath')->defaultValue('')->end()
                                                         ->scalarNode('acceptedName')->defaultValue('#^[^/\\?*:|"<>]*[^./\\?*:|"<>]$#')->end()
                                                         ->scalarNode('rootCssClass')->defaultValue('elfinder-navbar-root-onedrive')->end()
                                                         ->booleanNode('useApiThumbnail')->defaultTrue()->end()
