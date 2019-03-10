@@ -150,7 +150,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'separator'         => '/',
                                     'tmbPath'           => '',
                                     'tmbURL'            => '',
-                                    'tmpPath'            => '',
+                                    'tmpPath'           => '',
                                     'acceptedName'      => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
                                     'rootCssClass'      => 'elfinder-navbar-root-onedrive',
                                     'useApiThumbnail'   => true,
