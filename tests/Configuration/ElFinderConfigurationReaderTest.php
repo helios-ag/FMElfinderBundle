@@ -68,7 +68,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                 'default'  => array(
                     'cors_support' => '',
                     'connector'    => array(
-                        'debug' => '', 'binds' => '', 'plugin' => '',
+                        'debug' => '', 'binds' => '', 'plugins' => '',
                         'roots' => array(
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
@@ -79,7 +79,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'driver'            => 'LocalFileSystem',
                                 'glide_url'         => '',
                                 'glide_key'         => '',
-                                'plugin'            => '',
+                                'plugins'           => '',
                                 'start_path'        => '',
                                 'encoding'          => '',
                                 'alias'             => '',
@@ -118,7 +118,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                 'with_path_with_url'  => array(
                     'cors_support' => true,
                     'connector'    => array(
-                        'debug' => '', 'binds' => '', 'plugin' => '',
+                        'debug' => '', 'binds' => '', 'plugins' => '',
                         'roots' => array(
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
@@ -130,7 +130,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'url'               => 'home-url',
                                 'glide_url'         => '',
                                 'glide_key'         => '',
-                                'plugin'            => '',
+                                'plugins'           => '',
                                 'driver_options'    => '',
                                 'start_path'        => '',
                                 'encoding'          => '',
@@ -170,7 +170,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                 'without_path_with_url'  => array(
                     'cors_support' => true,
                     'connector'    => array(
-                        'debug' => '', 'binds' => '', 'plugin' => '',
+                        'debug' => '', 'binds' => '', 'plugins' => '',
                         'roots' => array(
                             'uploads' => array(
                                 'flysystem'         => array('enabled' => false),
@@ -182,7 +182,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                                 'url'               => 'home-url-without-path',
                                 'glide_url'         => '',
                                 'glide_key'         => '',
-                                'plugin'            => '',
+                                'plugins'           => '',
                                 'driver_options'    => '',
                                 'start_path'        => '',
                                 'encoding'          => '',
