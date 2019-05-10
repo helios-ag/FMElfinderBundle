@@ -178,7 +178,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     {
         if (isset($parameter['url']) && $parameter['url']) {
             if (0 === strpos($parameter['url'], 'http')) {
-                return $parameter['url'];
+                return str_replace('{homeFolder}', $homeFolder, $parameter['url']);
             }
 
             $path = $parameter['url'].'/'.$homeFolder;

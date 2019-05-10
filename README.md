@@ -172,7 +172,7 @@ fm_elfinder:
 * **assets_path** - this is where css/js files of the bundle are, this options should be the same as composers `component-dir` option.
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * **path** - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read and owner permissions to this directory.
-* **url** - url to be prefixed to image path, for displaying. Can be either `absolute` or `relative`. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
+* **url** - url to be prefixed to image path, for displaying. Can be either `absolute` or `relative`. If absolute, you can use `{homeFolder}` string as placeholder which will be replaced automatically. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
 * **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration   
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
