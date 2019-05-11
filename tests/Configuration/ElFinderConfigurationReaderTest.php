@@ -219,6 +219,58 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                         ),
                     ),
                 ),
+                'without_path_with_url_absolute_homeFolder'  => array(
+                    'cors_support' => true,
+                    'connector'    => array(
+                        'debug' => '', 'binds' => '', 'plugins' => '',
+                        'roots' => array(
+                            'uploads' => array(
+                                'flysystem'         => array('enabled' => false),
+                                'volume_id'         => 2,
+                                'security_voter'    => '',
+                                'show_hidden'       => false,
+                                'path'              => '',
+                                'driver'            => 'LocalFileSystem',
+                                'url'               => 'https://test.com/{homeFolder}',
+                                'glide_url'         => '',
+                                'glide_key'         => '',
+                                'plugins'           => '',
+                                'driver_options'    => '',
+                                'start_path'        => '',
+                                'encoding'          => '',
+                                'alias'             => '',
+                                'mime_detect'       => '',
+                                'mimefile'          => '',
+                                'img_lib'           => '',
+                                'tmb_path'          => '',
+                                'tmb_path_mode'     => '',
+                                'tmb_url'           => '',
+                                'tmb_size'          => '',
+                                'tmb_crop'          => '',
+                                'tmb_bg_color'      => '',
+                                'copy_overwrite'    => '',
+                                'copy_join'         => '',
+                                'copy_from'         => '',
+                                'copy_to'           => '',
+                                'upload_overwrite'  => '',
+                                'upload_allow'      => '',
+                                'upload_deny'       => '',
+                                'upload_max_size'   => '',
+                                'defaults'          => '',
+                                'attributes'        => '',
+                                'accepted_name'     => '',
+                                'disabled_commands' => '',
+                                'tree_deep'         => '',
+                                'check_subfolders'  => '',
+                                'separator'         => '',
+                                'time_format'       => '',
+                                'archive_mimes'     => '',
+                                'archivers'         => '',
+                                'fileMode'          => '',
+                            ),
+                        ),
+                    ),
+                ),
             ),
         );
 
@@ -307,6 +359,12 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url-without-path/bob', $configuration['roots'][0]['URL']);
+
+        // without path and with url absolute and homeFolder
+        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $configuration = $reader->getConfiguration('without_path_with_url_absolute_homeFolder');
+        $this->assertEquals('/bob', $configuration['roots'][0]['path']);
+        $this->assertEquals('https://test.com/bob', $configuration['roots'][0]['URL']);
     }
 
     public function testAccessTmbURLOption()
