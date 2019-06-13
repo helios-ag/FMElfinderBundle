@@ -389,6 +389,8 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('version')->defaultvalue('')->end()
                             ->scalarNode('bucket_name')->defaultvalue('')->end()
                             ->scalarNode('optional_prefix')->defaultvalue('')->end()
+                            ->scalarNode('endpoint')->defaultvalue('')->end()
+                            ->scalarNode('use_path_style_endpoint')->defaultValue('')->end()
                     ->end()
                 ->end()
                 ->arrayNode('copy_com')
