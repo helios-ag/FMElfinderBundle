@@ -262,9 +262,9 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                         'key'     => $opt['aws_s3_v3']['key'],
                         'secret'  => $opt['aws_s3_v3']['secret'],
                     ),
-                    'region'  => $opt['aws_s3_v3']['region'],
-                    'version' => $opt['aws_s3_v3']['version'],
-                    'endpoint' => $opt['aws_s3_v3']['endpoint'],
+                    'region'                  => $opt['aws_s3_v3']['region'],
+                    'version'                 => $opt['aws_s3_v3']['version'],
+                    'endpoint'                => $opt['aws_s3_v3']['endpoint'],
                     'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
                 ));
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], $opt['aws_s3_v3']['options']));
