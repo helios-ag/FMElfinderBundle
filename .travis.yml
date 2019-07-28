@@ -17,14 +17,6 @@ env:
 matrix:
     fast_finish: true
     include:
-        - php: 7.1
-          env: SYMFONY_VERSION=3.4.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.1
-          env: SYMFONY_VERSION=4.0.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.2
-          env: SYMFONY_VERSION=4.0.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.1
-          env: SYMFONY_VERSION=4.1.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.1.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
         - php: 7.2
           env: SYMFONY_VERSION=4.1.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.1.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
         - php: 7.3
@@ -38,7 +30,7 @@ matrix:
 
 before_install:
   - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  
+
 install:
   - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
   - composer require --no-update symfony/form:${SYMFONY_VERSION}
