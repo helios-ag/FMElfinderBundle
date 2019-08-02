@@ -88,7 +88,7 @@ also add **component-dir** under **config** node of composer.json
 ```json
 {
     "config": {
-        "component-dir": "web/assets"
+        "component-dir": "public/assets"
     }
 }
 ```
