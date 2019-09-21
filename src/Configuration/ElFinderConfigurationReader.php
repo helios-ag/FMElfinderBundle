@@ -357,13 +357,6 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['noSessionCache'] = explode(',', $parameter['mysql_settings']['noSessionCache']);
 
                 break;
-            case 'ftpiis':
-                $settings['host'] = $parameter['ftp_settings']['host'];
-                $settings['user'] = $parameter['ftp_settings']['user'];
-                $settings['pass'] = $parameter['ftp_settings']['password'];
-                $settings['path'] = $parameter['ftp_settings']['path'];
-
-                break;
             case 'dropbox2':
                 $settings['app_key']           = $parameter['dropbox2_settings']['app_key'];
                 $settings['app_secret']        = $parameter['dropbox2_settings']['app_secret'];
@@ -404,15 +397,6 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $settings['tmbURL']            = $parameter['box_settings']['tmbURL'];
                 $settings['acceptedName']      = $parameter['box_settings']['acceptedName'];
                 $settings['rootCssClass']      = $parameter['box_settings']['rootCssClass'];
-
-                break;
-            case 's3':
-                $settings['accesskey']   = $parameter['s3_settings']['access_key'];
-                $settings['secretkey']   = $parameter['s3_settings']['secret_key'];
-                $settings['bucket']      = $parameter['s3_settings']['bucket'];
-                $settings['tmpPath']     = $parameter['s3_settings']['tmp_path'];
-                $settings['signature']   = $parameter['s3_settings']['signature'];
-                $settings['region']      = $parameter['s3_settings']['region'];
 
                 break;
             default:

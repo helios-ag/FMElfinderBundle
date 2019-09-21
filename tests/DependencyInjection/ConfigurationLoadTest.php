@@ -161,9 +161,6 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'user'    => 'root',
                                     'enabled' => true,
                                 ),
-                                's3_settings' => array(
-                                    'enabled' => false,
-                                ),
                                 'mysql_settings' => array(
                                     'enabled'        => true,
                                     'host'           => 'localhost',
