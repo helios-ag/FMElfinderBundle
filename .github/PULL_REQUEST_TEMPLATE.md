@@ -1,9 +1,6 @@
-| Q             | A
-| ------------- | ---
-| Bug fix?      | [yes/no]
-| New feature?  | [yes/no]
-| BC breaks?    | [yes/no]
-| Deprecations? | [yes/no]
-| Tests pass?   | [yes/no]
-| Fixed tickets | [comma-separated list of tickets fixed by the PR, if any]
-| License       | MIT
+<!--
+Thanks for your contribution! If you are proposing a new feature that is complex,
+please open an issue first so we can discuss about it.
+
+Note: all your contributions adhere implicitly to the MIT license
+-->
