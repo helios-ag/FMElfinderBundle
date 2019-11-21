@@ -17,9 +17,19 @@
             onlyMimes: {{ onlyMimes|raw }},
             destroyOnClose : true,
             getFileCallback : function(files, fm) {
-                window.opener.$('.summernote').summernote('editor.insertImage',files.url);
-                window.close();
-            }
+                            if (files.mime.match('application')) {
+                                window.opener.$('.summernote').summernote('createLink', {
+                                    text: files.name,
+                                    url: files.url,
+                                    newWindow: true
+                                });
+                                window.close();
+                            }
+                            if(files.mime.match('image')){
+                                window.opener.$('.summernote').summernote('editor.insertImage', files.url);
+                                window.close();
+                            }
+                        }
         }).elfinder('instance');
     });
 </script>
