@@ -9,6 +9,9 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouteCollection;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\Template;
 
 class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 {
@@ -21,15 +24,15 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var \FM\ElfinderBundle\Twig\Extension\FMElFinderExtension */
     protected $extension;
 
-    /** @var \Twig_Environment */
+    /** @var Environment */
     protected $twig;
 
-    /** @var \Twig_Template */
+    /** @var Template */
     protected $template;
 
     protected function setUp()
     {
-        $this->twig      = new \Twig_Environment(new \Twig_Loader_Filesystem(array(__DIR__.'/../../../src/Resources/views/Elfinder/helper')));
+        $this->twig      = new Environment(new FilesystemLoader(array(__DIR__.'/../../../src/Resources/views/Elfinder/helper')));
         $this->extension = new FMElfinderExtension($this->twig);
         $this->twig->addExtension($this->extension);
         $loader     = new YamlFileLoader(new FileLocator(__DIR__.'/../../../src/Resources/config'));
@@ -41,8 +44,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testRenderTinyMCE3()
     {
-        $this->template = $this->twig->loadTemplate('_tinymce.html.twig');
-        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
+        $testData = $this->twig->render('_tinymce.html.twig', array('instance' => 'minimal'));
 
         $expected = <<<'EOF'
 <script type="text/javascript">
@@ -72,8 +74,7 @@ EOF;
 
     public function testRenderTinyMCE4()
     {
-        $this->template = $this->twig->loadTemplate('_tinymce4.html.twig');
-        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
+        $testData = $this->twig->render('_tinymce4.html.twig', array('instance' => 'minimal'));
 
         $expected = <<<'EOF'
 <script type="text/javascript">
@@ -99,8 +100,7 @@ EOF;
 
     public function testRenderSummernote()
     {
-        $this->template = $this->twig->loadTemplate('_summernote.html.twig');
-        $testData       = $this->renderTemplate(array('instance' => 'minimal'));
+        $testData = $this->twig->render('_summernote.html.twig', array('instance' => 'minimal'));
 
         $expected  = <<<'EOF'
 <script type="text/javascript">
@@ -132,14 +132,6 @@ EOF;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function renderTemplate(array $context = array())
-    {
-        return $this->template->render($context);
-    }
-
-    /**
      * Normalizes the output by removing the heading whitespaces.
      *
      * @param string $output the output
@@ -155,11 +147,11 @@ EOF;
     {
         $rc = new \ReflectionClass('FM\ElfinderBundle\Twig\Extension\FMElfinderExtension');
 
-        $this->assertTrue($rc->isSubclassOf('Twig_Extension'));
+        $this->assertTrue($rc->isSubclassOf('Twig\Extension\AbstractExtension'));
     }
 
     /**
-     * @expectedException \Twig_Error_Runtime
+     * @expectedException \Twig\Error\RuntimeError
      * @expectedExceptionMessage The function can be applied to strings only.
      */
     public function testSummernoteInstanceNotString()
@@ -168,7 +160,7 @@ EOF;
     }
 
     /**
-     * @expectedException \Twig_Error_Runtime
+     * @expectedException \Twig\Error\RuntimeError
      * @expectedExceptionMessage The function can be applied to strings only.
      */
     public function testTinyMCEInstanceNotString()
@@ -177,7 +169,7 @@ EOF;
     }
 
     /**
-     * @expectedException \Twig_Error_Runtime
+     * @expectedException \Twig\Error\RuntimeError
      * @expectedExceptionMessage The function can be applied to strings only.
      */
     public function testTinyMCE4InstanceNotString()
@@ -190,7 +182,7 @@ EOF;
         $twigFunctions = $this->extension->getFunctions();
 
         foreach ($twigFunctions as $twigFunction) {
-            $this->assertInstanceOf('Twig_SimpleFunction', $twigFunction);
+            $this->assertInstanceOf('Twig\TwigFunction', $twigFunction);
         }
     }
 }
