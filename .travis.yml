@@ -32,7 +32,7 @@ install:
   - composer update $COMPOSER_FLAGS --prefer-dist
 
 script:
-  - vendor/bin/phpunit -v
+  - ./vendor/bin/phpunit --coverage-text --colors
 
 notifications:
   email: helios.ag@gmail.com
