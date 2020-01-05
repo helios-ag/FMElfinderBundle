@@ -34,7 +34,7 @@
         "matthiasnoback/symfony-config-test":  "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "symfony/finder": "^4.4 || ^5.0",
-        "satooshi/php-coveralls": "~2",
+        "php-coveralls/php-coveralls": "~2",
         "phpunit/phpunit": "^8.5"
     },
     "suggest": {

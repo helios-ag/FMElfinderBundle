@@ -6,17 +6,11 @@ use FM\ElfinderBundle\Loader\ElFinderLoader;
 
 class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ElFinderLoader
-     */
-    protected $loader;
 
-    /**
-     * @var
-     */
+    protected $loader;
     protected $configuratorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->configuratorMock = $this->createMock('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface');
         $this->configuratorMock->expects($this->any())
