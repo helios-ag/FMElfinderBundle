@@ -5,18 +5,20 @@ namespace FM\ElfinderBundle\Tests\DependencyInjection;
 use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use FM\ElfinderBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * Class ConfigurationLoadTest.
  */
 class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 {
-    protected function getContainerExtension()
+    protected function getContainerExtension(): ExtensionInterface
     {
         return new FMElfinderExtension();
     }
 
-    protected function getConfiguration()
+    protected function getConfiguration(): ConfigurationInterface
     {
         return new Configuration();
     }

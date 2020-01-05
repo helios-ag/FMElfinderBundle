@@ -4,11 +4,6 @@ namespace FM\ElfinderBundle\Tests;
 
 use FM\ElfinderBundle\FMElfinderBundle;
 
-/**
- * Class FMElfinderBundleTest.
- *
- * @package FM\ElfinderBundle\Tests
- */
 class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 {
     public function testBundle()
