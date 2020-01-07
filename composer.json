@@ -21,6 +21,7 @@
     },
     "require": {
         "php":                                 "^7.2",
+        "ext-json":                            "*",
         "symfony/framework-bundle":            "^4.4 || ^5.0",
         "symfony/twig-bundle":                 "^4.4 || ^5.0",
         "symfony/form":                        "^4.4 || ^5.0",
@@ -34,7 +35,7 @@
         "matthiasnoback/symfony-config-test":  "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "symfony/finder": "^4.4 || ^5.0",
-        "php-coveralls/php-coveralls": "~2",
+        "php-coveralls/php-coveralls": "^2.0",
         "phpunit/phpunit": "^8.5"
     },
     "suggest": {
@@ -52,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "9.0-dev"
+            "dev-master": "10.0-dev"
         }
     }
 }

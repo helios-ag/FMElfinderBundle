@@ -8,9 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * Class ElFinderType.
- */
 class ElFinderType extends AbstractType
 {
     /**

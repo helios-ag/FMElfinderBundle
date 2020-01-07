@@ -5,19 +5,18 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FM\ElfinderBundle\Event\ElFinderEvents;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
+use Symfony\Component\HttpKernel\HttpKernel;
 
-/**
- * Class ElFinderController.
- */
-class ElFinderController extends Controller
+class ElFinderController extends AbstractController
 {
     /**
      * Renders Elfinder.
@@ -132,7 +131,7 @@ class ElFinderController extends Controller
                 $result['template'] = '@FMElfinderBundle/Elfinder/tinymce.html.twig';
                 $result['params']   = array(
                     'locale'             => $locale,
-                    'tinymce_popup_path' => $this->getAssetsUrl($parameters['tinymce_popup_path']),
+                    'tinymce_popup_path' => $parameters['tinymce_popup_path'],
                     'includeAssets'      => $includeAssets,
                     'instance'           => $instance,
                     'homeFolder'         => $homeFolder,
@@ -211,50 +210,33 @@ class ElFinderController extends Controller
     /**
      * Loader service init.
      *
+     * @param SessionInterface $session
+     * @param HttpKernel $httpKernel
      * @param Request $request
-     * @param string  $instance
-     * @param string  $homeFolder
+     * @param string $instance
+     * @param string $homeFolder
      *
      * @return JsonResponse/void
      */
-    public function loadAction(Request $request, $instance, $homeFolder)
+    public function loadAction(SessionInterface $session, HttpKernel $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, $instance, $homeFolder)
     {
         $loader = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
+
         if ($loader instanceof ElFinderLoader) {
-            $loader->setSession(new ElFinderSession($this->get('session')));
+            $loader->setSession(new ElFinderSession($session));
         }
-        $httpKernel        = $this->get('http_kernel');
+
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
-        $this->get('event_dispatcher')->dispatch(ElFinderEvents::PRE_EXECUTION, $preExecutionEvent);
+        $eventDispatcher->dispatch($preExecutionEvent);
 
         $result = $loader->load($request); // the instance is already set
 
         $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
-        $this->get('event_dispatcher')->dispatch(ElFinderEvents::POST_EXECUTION, $postExecutionEvent);
+        $eventDispatcher->dispatch($postExecutionEvent);
 
         // returning result (who may have been modified by a post execution event listener)
         return new JsonResponse($postExecutionEvent->getResult());
     }
 
-    /**
-     * Get url from config string.
-     *
-     * @param string $inputUrl
-     *
-     * @return string
-     */
-    protected function getAssetsUrl($inputUrl)
-    {
-        /** @var $assets \Symfony\Component\Templating\Helper\CoreAssetsHelper */
-        $assets = $this->container->get('templating.helper.assets');
-
-        $url = preg_replace('/^asset\[(.+)\]$/i', '$1', $inputUrl);
-
-        if ($inputUrl !== $url) {
-            return $assets->getUrl($url);
-        }
-
-        return $inputUrl;
-    }
 }

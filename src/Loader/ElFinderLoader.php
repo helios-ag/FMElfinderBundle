@@ -28,9 +28,6 @@ class ElFinderLoader
     /** @var SessionInterface */
     protected $session;
 
-    /**
-     * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
-     */
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
         $this->configurator = $configurator;
@@ -47,9 +44,7 @@ class ElFinderLoader
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
             throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
         }
-        $parameters = $configurator->getConfiguration($this->instance);
-
-        return $parameters;
+        return $configurator->getConfiguration($this->instance);
     }
 
     /**
@@ -95,9 +90,6 @@ class ElFinderLoader
         $this->instance = $instance;
     }
 
-    /**
-     * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
-     */
     public function setConfigurator(ElFinderConfigurationProviderInterface $configurator)
     {
         $this->configurator = $configurator;
