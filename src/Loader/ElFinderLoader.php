@@ -4,7 +4,7 @@ namespace FM\ElfinderBundle\Loader;
 
 use FM\ElfinderBundle\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
