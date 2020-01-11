@@ -312,7 +312,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     {
         $rc = new \ReflectionClass('FM\ElfinderBundle\Configuration\ElFinderConfigurationReader');
 
-        $this->assertTrue($rc->isSubclassOf('FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface'));
+        $this->assertTrue($rc->isSubclassOf('FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface'));
     }
 
     public function testAccessHidden()
