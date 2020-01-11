@@ -40,7 +40,6 @@ instances:
     default:
       locale: '%locale%'
       editor: simple # other choices are tinymce or simple
-      include_assets: true
       fullscreen: true
       connector:
           debug: true # defaults to false

@@ -40,7 +40,6 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'theme'              => 'smoothness',
                     'editor_template'    => 'Elfinder/editor.html.twig',
                     'fullscreen'         => false,
-                    'include_assets'     => false,
                     'cors_support'       => false,
                     'tinymce_popup_path' => '/pop-up',
                     'relative_path'      => false,

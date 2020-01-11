@@ -37,7 +37,6 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('editor_template')->defaultNull()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
                             ->scalarNode('theme')->defaultValue('smoothness')->end() // jQuery UI theme name
-                            ->booleanNode('include_assets')->defaultTrue()->end()
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
                             ->scalarNode('path_prefix')->defaultValue('/')->end()

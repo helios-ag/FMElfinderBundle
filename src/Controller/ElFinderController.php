@@ -68,7 +68,6 @@ class ElFinderController extends AbstractController
         $fullScreen     = $parameters['fullscreen'];
         $relativePath   = $parameters['relative_path'];
         $pathPrefix     = $parameters['path_prefix'];
-        $includeAssets  = $parameters['include_assets'];
         $theme          = $parameters['theme'];
         // convert to javascript array
         $onlyMimes      = count($parameters['visible_mime_types'])
@@ -86,7 +85,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
@@ -102,7 +100,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
@@ -118,7 +115,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
@@ -134,7 +130,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'             => $locale,
                     'tinymce_popup_path' => $parameters['tinymce_popup_path'],
-                    'includeAssets'      => $includeAssets,
                     'instance'           => $instance,
                     'homeFolder'         => $homeFolder,
                     'prefix'             => $assetsPath,
@@ -148,7 +143,6 @@ class ElFinderController extends AbstractController
                 $result['template'] = '@FMElfinder/Elfinder/tinymce4.html.twig';
                 $result['params']   = [
                     'locale'        => $locale,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
@@ -163,7 +157,6 @@ class ElFinderController extends AbstractController
                 $result['template'] = '@FMElfinder/Elfinder/fm_tinymce.html.twig';
                 $result['params']   = [
                     'locale'        => $locale,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'relative_path' => $relativePath,
@@ -179,7 +172,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'id'            => $formTypeId,
@@ -196,7 +188,6 @@ class ElFinderController extends AbstractController
                 $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
-                    'includeAssets' => $includeAssets,
                     'instance'      => $instance,
                     'homeFolder'    => $homeFolder,
                     'prefix'        => $assetsPath,
