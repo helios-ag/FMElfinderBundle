@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace FM\ElfinderBundle\Model;
+namespace FM\ElfinderBundle\Configuration;
 
 /**
  * Interface ElFinderConfigurationProviderInterface.

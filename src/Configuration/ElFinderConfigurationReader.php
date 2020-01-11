@@ -2,7 +2,6 @@
 
 namespace FM\ElfinderBundle\Configuration;
 
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
 use League\Flysystem\AdapterInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
