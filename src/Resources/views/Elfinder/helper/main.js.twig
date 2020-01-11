@@ -1,9 +1,3 @@
-/**
- * elFinder client options and main script for RequireJS
- *
- * Rename "main.default.js" to "main.js" and edit it if you need configure elFInder options or any things. And use that in elfinder.html.
- * e.g. `<script data-main="./main.js" src="./require.js"></script>`
- **/
 (function(){
     "use strict";
     var // jQuery and jQueryUI version
@@ -101,8 +95,7 @@
 
         // JavaScript loader (REQUIRED)
         load = function() {
-            require(
-                [
+            require([
                     'elfinder'
                     , 'extras/editors.default.min'               // load text, image editors
                     , 'elFinderConfig'
@@ -122,7 +115,7 @@
 
     // config of RequireJS (REQUIRED)
     require.config({
-        baseUrl : 'bundles/fmelfinder/elfinder/js',
+        baseUrl : 'bundles/fmelfinder/js',
         paths : {
             'jquery'   : '//cdnjs.cloudflare.com/ajax/libs/jquery/'+(old? '1.12.4' : jqver)+'/jquery.min',
             'jquery-ui': '//cdnjs.cloudflare.com/ajax/libs/jqueryui/'+uiver+'/jquery-ui.min',
@@ -131,43 +124,6 @@
         },
         waitSeconds : 10 // optional
     });
-
-    // check elFinderConfig and fallback
-    // This part don't used if you are using elfinder.html, see elfinder.html
-    if (! require.defined('elFinderConfig')) {
-        define('elFinderConfig', {
-            // elFinder options (REQUIRED)
-            // Documentation for client options:
-            // https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
-            defaultOpts : {
-                url : 'php/connector.minimal.php' // connector URL (REQUIRED)
-                ,commandsOptions : {
-                    edit : {
-                        extraOptions : {
-                            // set API key to enable Creative Cloud image editor
-                            // see https://console.adobe.io/
-                            creativeCloudApiKey : '',
-                            // browsing manager URL for CKEditor, TinyMCE
-                            // uses self location with the empty value
-                            managerUrl : ''
-                        }
-                    }
-                    ,quicklook : {
-                        // to enable CAD-Files and 3D-Models preview with sharecad.org
-                        sharecadMimes : ['image/vnd.dwg', 'image/vnd.dxf', 'model/vnd.dwf', 'application/vnd.hp-hpgl', 'application/plt', 'application/step', 'model/iges', 'application/vnd.ms-pki.stl', 'application/sat', 'image/cgm', 'application/x-msmetafile'],
-                        // to enable preview with Google Docs Viewer
-                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/postscript', 'application/rtf'],
-                        // to enable preview with Microsoft Office Online Viewer
-                        // these MIME types override "googleDocsMimes"
-                        officeOnlineMimes : ['application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/vnd.oasis.opendocument.text', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.presentation']
-                    }
-                }
-            },
-            managers : {
-                'elfinder': {},
-            }
-        });
-    }
 
     // load JavaScripts (REQUIRED)
     load();

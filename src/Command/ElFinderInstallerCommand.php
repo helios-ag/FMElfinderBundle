@@ -39,7 +39,7 @@ final class ElFinderInstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $publicDir = $this->parameterBag->get('kernel.project_dir') . '/public/elfinder';
+        $publicDir = $this->parameterBag->get('kernel.project_dir') . '/public/bundles/fmelfinder';
 
         $this->fileSystem->mirror(self::ELFINDER_CSS_DIR, $publicDir . '/css');
         $this->fileSystem->mirror(self::ELFINDER_IMG_DIR, $publicDir . '/img');
