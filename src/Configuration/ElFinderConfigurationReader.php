@@ -32,46 +32,26 @@ use MicrosoftAzure\Storage\Blob\BlobRestProxy;
  */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
-    /**
-     * @var array
-     */
-    protected $options = array();
+    /** @var array */
+    protected $options = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $parameters;
 
-    /**
-     * @var RequestStack
-     */
+    /** @var RequestStack */
     protected $requestStack;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @param $parameters
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
-     * @param ContainerInterface                             $container
-     */
-    public function __construct($parameters, RequestStack $requestStack, ContainerInterface $container)
+    public function __construct(array $parameters, RequestStack $requestStack, ContainerInterface $container)
     {
         $this->parameters   = $parameters;
         $this->requestStack = $requestStack;
         $this->container    = $container;
     }
 
-    /**
-     * @param $instance
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    public function getConfiguration($instance)
+    public function getConfiguration(string $instance): array
     {
         $request                = $this->requestStack->getCurrentRequest();
         $efParameters           = $this->parameters;
@@ -166,15 +146,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $options;
     }
 
-    /**
-     * @param $parameter
-     * @param $request
-     * @param $homeFolder
-     * @param $path
-     *
-     * @return string
-     */
-    private function getURL($parameter, Request $request, $homeFolder, $path)
+    private function getURL(array $parameter, Request $request, string $homeFolder, string $path): string
     {
         if (isset($parameter['url']) && $parameter['url']) {
             if (0 === strpos($parameter['url'], 'http')) {
@@ -195,8 +167,6 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      * @param $serviceName
      *
      * @return Filesystem
-     *
-     * @throws \MongoConnectionException
      */
     private function configureFlysystem($opt, $adapter, $serviceName)
     {
@@ -316,7 +286,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $filesystem;
     }
 
-    private function getFlysystemFilesystem($serviceName)
+    private function getFlysystemFilesystem(string $serviceName)
     {
         $filesystem = $this->container->get($serviceName);
         if (!is_object($filesystem) || (!$filesystem instanceof Filesystem)) {
@@ -326,14 +296,9 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $filesystem;
     }
 
-    /**
-     * @param array $parameter
-     *
-     * @return array
-     */
-    private function configureDriver(array $parameter)
+    private function configureDriver(array $parameter): array
     {
-        $settings = array();
+        $settings = [];
 
         switch (strtolower($parameter['driver'])) {
             case 'ftp':

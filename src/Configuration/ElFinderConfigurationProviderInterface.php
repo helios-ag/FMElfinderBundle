@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FM\ElfinderBundle\Model;
 
 /**
@@ -7,10 +9,5 @@ namespace FM\ElfinderBundle\Model;
  */
 interface ElFinderConfigurationProviderInterface
 {
-    /**
-     * @param $instance
-     *
-     * @return array
-     */
-    public function getConfiguration($instance);
+    public function getConfiguration(string $instance): array;
 }

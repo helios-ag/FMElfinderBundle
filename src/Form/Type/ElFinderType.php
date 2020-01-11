@@ -42,14 +42,14 @@ class ElFinderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'enable'        => true,
                 'instance'      => 'default',
                 'homeFolder'    => '',
-            ))
+            ])
             ->setAllowedTypes('enable', 'bool')
-            ->setAllowedTypes('instance', array('string', 'null'))
-            ->setAllowedTypes('homeFolder', array('string', 'null'));
+            ->setAllowedTypes('instance', ['string', 'null'])
+            ->setAllowedTypes('homeFolder', ['string', 'null']);
     }
 
     /**

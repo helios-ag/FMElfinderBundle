@@ -6,7 +6,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\HttpKernel\Kernel;
 
 final class FMElfinderExtension extends Extension
 {
@@ -25,12 +24,6 @@ final class FMElfinderExtension extends Extension
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
         $container->setAlias('fm_elfinder.loader', $config['loader']);
         $container->getAlias('fm_elfinder.loader')->setPublic(true);
-
-        if (Kernel::VERSION_ID < 30000) {
-            $container->getDefinition('fm_elfinder.form.type')
-                ->clearTag('form.type')
-                ->addTag('form.type', array('alias' => 'elfinder'));
-        }
     }
 
     public function getNamespace(): string

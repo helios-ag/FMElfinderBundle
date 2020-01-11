@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
@@ -29,7 +31,7 @@ class ElFinderController extends AbstractController
      *
      * @throws Exception
      */
-    public function showAction(Request $request, $instance, $homeFolder)
+    public function show(Request $request, string $instance, string $homeFolder): Response
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
 
@@ -49,17 +51,17 @@ class ElFinderController extends AbstractController
     }
 
     /**
-     * @param array  $parameters
+     * @param array $parameters
      * @param string $instance
      * @param string $homeFolder
-     * @param $assetsPath
-     * @param null $formTypeId
+     * @param string $assetsPath
+     * @param string $formTypeId
      *
      * @return array
      *
      * @throws Exception
      */
-    private function selectEditor($parameters, $instance, $homeFolder, $assetsPath, $formTypeId = null)
+    private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
     {
         $editor         = $parameters['editor'];
         $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
@@ -72,7 +74,7 @@ class ElFinderController extends AbstractController
         $onlyMimes      = count($parameters['visible_mime_types'])
                               ? "['".implode("','", $parameters['visible_mime_types'])."']"
                               : '[]';
-        $result         = array();
+        $result         = [];
 
         switch ($editor) {
             case 'custom':
@@ -81,7 +83,7 @@ class ElFinderController extends AbstractController
                 }
 
                 $result['template'] = $parameters['editor_template'];
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -92,12 +94,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'ckeditor':
                 $result['template'] = '@FMElfinder/Elfinder/ckeditor.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -108,12 +110,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'summernote':
                 $result['template'] = '@FMElfinder/Elfinder/summernote.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -124,12 +126,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'tinymce':
                 $result['template'] = '@FMElfinderBundle/Elfinder/tinymce.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'             => $locale,
                     'tinymce_popup_path' => $parameters['tinymce_popup_path'],
                     'includeAssets'      => $includeAssets,
@@ -139,12 +141,12 @@ class ElFinderController extends AbstractController
                     'theme'              => $theme,
                     'pathPrefix'         => $pathPrefix,
                     'onlyMimes'          => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'tinymce4':
                 $result['template'] = '@FMElfinder/Elfinder/tinymce4.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
@@ -154,12 +156,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'fm_tinymce':
                 $result['template'] = '@FMElfinder/Elfinder/fm_tinymce.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'includeAssets' => $includeAssets,
                     'instance'      => $instance,
@@ -169,12 +171,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             case 'form':
                 $result['template'] = '@FMElfinder/Elfinder/elfinder_type.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -186,12 +188,12 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
-                );
+                ];
 
                 return $result;
             default:
                 $result['template'] = '@FMElfinder/Elfinder/simple.html.twig';
-                $result['params']   = array(
+                $result['params']   = [
                     'locale'        => $locale,
                     'fullscreen'    => $fullScreen,
                     'includeAssets' => $includeAssets,
@@ -201,24 +203,22 @@ class ElFinderController extends AbstractController
                     'onlyMimes'     => $onlyMimes,
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
-                );
+                ];
 
                 return $result;
         }
     }
 
     /**
-     * Loader service init.
-     *
      * @param SessionInterface $session
-     * @param HttpKernel $httpKernel
+     * @param EventDispatcherInterface $eventDispatcher
      * @param Request $request
      * @param string $instance
      * @param string $homeFolder
      *
-     * @return JsonResponse/void
+     * @return JsonResponse
      */
-    public function loadAction(SessionInterface $session, HttpKernel $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, $instance, $homeFolder)
+    public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
         $loader = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
@@ -226,7 +226,8 @@ class ElFinderController extends AbstractController
         if ($loader instanceof ElFinderLoader) {
             $loader->setSession(new ElFinderSession($session));
         }
-
+        /** @var HttpKernel $httpKernel */
+        $httpKernel        = $this->get('http_kernel');
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $eventDispatcher->dispatch($preExecutionEvent);
 
@@ -239,4 +240,8 @@ class ElFinderController extends AbstractController
         return new JsonResponse($postExecutionEvent->getResult());
     }
 
+    public function mainJS()
+    {
+        return $this->render('@FMElfinder/Elfinder/helper/main.js.twig');
+    }
 }

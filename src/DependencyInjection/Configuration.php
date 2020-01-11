@@ -17,11 +17,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('fm_elfinder');
-        if (\method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->getRootNode();
-        } else {
-            $rootNode = $treeBuilder->root('fm_elfinder');
-        }
+        $rootNode = $treeBuilder->getRootNode();
+
         $rootNode
             ->fixXmlConfig('instance')
             ->children()
@@ -431,7 +428,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the plugins node
+     * @return NodeDefinition the plugins node
      */
     private function createPluginsNode()
     {
@@ -444,7 +441,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the bind node
+     * @return NodeDefinition the bind node
      */
     private function createBindsNode()
     {
@@ -457,7 +454,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the bind node
+     * @return NodeDefinition the bind node
      */
     private function createDriverOptionsNode()
     {
@@ -470,11 +467,8 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Creates a node.
-     *
      * @param string $name the node name
-     *
-     * @return \Symfony\Component\Config\Definition\Builder\NodeDefinition the node
+     * @return NodeDefinition the node
      */
     private function createNode($name)
     {

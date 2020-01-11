@@ -5,9 +5,6 @@ namespace FM\ElfinderBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
-/**
- * Class TwigFormPass.
- */
 class TwigFormPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
@@ -17,7 +14,7 @@ class TwigFormPass implements CompilerPassInterface
         }
 
         $container->setParameter('twig.form.resources', array_merge(
-            array('@FMElfinder/Form/elfinder_widget.html.twig'),
+            ['@FMElfinder/Form/elfinder_widget.html.twig'],
             $container->getParameter('twig.form.resources')
         ));
     }
