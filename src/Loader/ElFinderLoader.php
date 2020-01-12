@@ -109,7 +109,7 @@ class ElFinderLoader
         $volumes = $this->bridge->getVolumes();
 
         foreach ($volumes as $hashId => $volume) {
-            $aPathEncoded[$hashId] = $volume->getPath($path);
+            $aPathEncoded[$hashId] = $volume->getHash($path);
         }
 
         if (1 == count($aPathEncoded)) {
