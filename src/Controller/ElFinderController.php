@@ -51,7 +51,7 @@ class ElFinderController extends AbstractController
     }
 
     /**
-     * @param array $parameters
+     * @param array  $parameters
      * @param string $instance
      * @param string $homeFolder
      * @param string $assetsPath
@@ -201,11 +201,11 @@ class ElFinderController extends AbstractController
     }
 
     /**
-     * @param SessionInterface $session
+     * @param SessionInterface         $session
      * @param EventDispatcherInterface $eventDispatcher
-     * @param Request $request
-     * @param string $instance
-     * @param string $homeFolder
+     * @param Request                  $request
+     * @param string                   $instance
+     * @param string                   $homeFolder
      *
      * @return JsonResponse
      */

@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('fm_elfinder');
-        $rootNode = $treeBuilder->getRootNode();
+        $rootNode    = $treeBuilder->getRootNode();
 
         $rootNode
             ->fixXmlConfig('instance')
@@ -467,6 +467,7 @@ class Configuration implements ConfigurationInterface
 
     /**
      * @param string $name the node name
+     *
      * @return NodeDefinition the node
      */
     private function createNode($name)

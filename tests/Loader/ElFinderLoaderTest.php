@@ -7,8 +7,8 @@ use FM\ElfinderBundle\Loader\ElFinderLoader;
 
 class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 {
-
     protected $loader;
+
     protected $configuratorMock;
 
     public function setUp(): void
