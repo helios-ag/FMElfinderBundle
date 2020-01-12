@@ -390,6 +390,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
     /**
      * @param ElfinderSecurityInterface $voter
+     *
      * @return array
      */
     protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)

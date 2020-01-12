@@ -44,6 +44,7 @@ class ElFinderLoader
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
             throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
         }
+
         return $configurator->getConfiguration($this->instance);
     }
 
