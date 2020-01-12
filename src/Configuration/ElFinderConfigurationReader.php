@@ -80,7 +80,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
-            $driverOptions = [
+            $driverOptions = array(
                 'driver'            => $parameter['driver'],
                 'service'           => $driver,
                 'glideURL'          => $parameter['glide_url'],
@@ -89,7 +89,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'path'              => $pathAndHomeFolder,
                 'startPath'         => $parameter['start_path'],
                 'encoding'          => $parameter['encoding'],
-                'URL'               => $this->getURL($parameter, $homeFolder, $path),
+                'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
                 'alias'             => $parameter['alias'],
                 'mimeDetect'        => $parameter['mime_detect'],
                 'mimefile'          => $parameter['mimefile'],
@@ -119,7 +119,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'archiveMimes'      => $parameter['archive_mimes'],
                 'archivers'         => $parameter['archivers'],
                 'fileMode'          => $parameter['fileMode'],
-            ];
+            );
 
             if ($parameter['volume_id'] > 0) {
                 $driverOptions['id'] = $parameter['volume_id'];
@@ -145,7 +145,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $options;
     }
 
-    private function getURL(array $parameter, string $homeFolder, string $path): string
+    private function getURL(array $parameter, Request $request, string $homeFolder, string $path): string
     {
         if (isset($parameter['url']) && $parameter['url']) {
             if (0 === strpos($parameter['url'], 'http')) {
@@ -157,7 +157,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $path = $path.'/'.$homeFolder;
         }
 
-        return '/'.trim($path, '/');
+        return $request->getUriForPath('/'.trim($path, '/'));
     }
 
     /**
