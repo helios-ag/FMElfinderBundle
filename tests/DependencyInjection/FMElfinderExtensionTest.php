@@ -7,14 +7,9 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Parser;
 
-/**
- * Class FMElfinderExtensionTest.
- *
- * @package FM\ElfinderBundle\Tests\DependencyInjection
- */
 class FMElfinderExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
         return array(
             new FMElfinderExtension(),
@@ -38,14 +33,13 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 
-    protected function getMinimalConfiguration()
+    protected function getMinimalConfiguration(): array
     {
         $yaml = <<<'EOF'
 instances:
     default:
       locale: '%locale%'
       editor: simple # other choices are tinymce or simple
-      include_assets: true
       fullscreen: true
       connector:
           debug: true # defaults to false

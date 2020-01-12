@@ -7,11 +7,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Form\FormView;
 
-/**
- * Class ElFinderTypeTest.
- *
- * @package FM\ElfinderBundle\Tests
- */
 class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetName()

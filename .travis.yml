@@ -6,39 +6,24 @@ cache:
         - $HOME/.composer/cache
         - $HOME/symfony-bridge/.phpunit
 
-env:
-    global:
-        - COMPOSER_PREFER_LOWEST=false
-        - SYMFONY_DEPRECATIONS_HELPER=weak_vendors
-        - SYMFONY_PHPUNIT_BRIDGE_VERSION=4.0.*
-        - SYMFONY_VERSION=3.4.*
-        - PHPUNIT_FLAGS="-v"
-        - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
 matrix:
     fast_finish: true
     include:
-        - php: 7.2
-          env: SYMFONY_VERSION=4.1.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.1.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.3
-          env: SYMFONY_VERSION=4.1.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.1.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.1
-          env: SYMFONY_VERSION=4.2.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.2.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.2
-          env: SYMFONY_VERSION=4.2.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.2.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
-        - php: 7.3
-          env: SYMFONY_VERSION=4.2.* SYMFONY_PHPUNIT_BRIDGE_VERSION=4.2.* SYMFONY_DEPRECATIONS_HELPER=weak_vendors LEVEL=0
+      - php: 7.2
+        env: SYMFONY_VERSION="^4.4.0"
+      - php: 7.3
+        env: SYMFONY_VERSION="^5.0.0"
 
 before_install:
-  - echo "memory_limit=2G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo "memory_limit=4G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - phpenv config-rm xdebug.ini || true
+  - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+  - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update "symfony/framework-bundle:${SYMFONY_VERSION}"; fi;
 
-install:
-  - composer require --no-update symfony/symfony:${SYMFONY_VERSION}
-  - composer require --no-update symfony/form:${SYMFONY_VERSION}
-  - composer require --dev --no-update symfony/phpunit-bridge:${SYMFONY_PHPUNIT_BRIDGE_VERSION}
-  - composer update --prefer-source `if [[ $COMPOSER_PREFER_LOWEST = true ]]; then echo "--prefer-lowest --prefer-stable"; fi`
+install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS --no-suggest
 
 script:
-  - SYMFONY_PHPUNIT_VERSION=6.5 ./vendor/bin/simple-phpunit $PHPUNIT_FLAGS
+  - ./vendor/bin/phpunit --coverage-text --colors
 
 notifications:
   email: helios.ag@gmail.com

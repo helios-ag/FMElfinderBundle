@@ -9,9 +9,6 @@ use Twig\Error\SyntaxError;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
-/**
- * Class FMElfinderExtension.
- */
 class FMElfinderExtension extends AbstractExtension
 {
     /**

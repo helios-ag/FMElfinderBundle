@@ -8,7 +8,6 @@
                               editor="tinymce"
                               editor-template="Elfinder/editor.html.twig"
                               fullscreen="false"
-                              include-assets="false"
                               tinymce-popup-path="/pop-up"
                               relative-path="false"
                 >

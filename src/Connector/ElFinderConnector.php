@@ -4,9 +4,6 @@ namespace FM\ElfinderBundle\Connector;
 
 use elFinder;
 
-/**
- * Class ElFinderConnector.
- */
 class ElFinderConnector extends \elFinderConnector
 {
     public function run($queryParameters = null)

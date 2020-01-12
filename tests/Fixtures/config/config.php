@@ -9,7 +9,6 @@ $container->loadFromExtension('fm_elfinder', array(
             'editor'             => 'tinymce',
             'editor_template'    => 'Elfinder/editor.html.twig',
             'fullscreen'         => false,
-            'include_assets'     => false,
             'tinymce_popup_path' => '/pop-up',
             'relative_path'      => false,
             'connector'          => array(

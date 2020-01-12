@@ -30,7 +30,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
     /** @var Template */
     protected $template;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->twig      = new Environment(new FilesystemLoader(array(__DIR__.'/../../../src/Resources/views/Elfinder/helper')));
         $this->extension = new FMElfinderExtension($this->twig);
@@ -125,7 +125,7 @@ EOF;
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         unset($this->template);
         unset($this->twig);

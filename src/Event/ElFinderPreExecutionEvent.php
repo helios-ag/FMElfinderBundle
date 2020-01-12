@@ -4,11 +4,9 @@ namespace FM\ElfinderBundle\Event;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
-/**
- * Class ElFinderPreExecutionEvent.
- */
-class ElFinderPreExecutionEvent extends ElFinderEvents
+class ElFinderPreExecutionEvent extends Event
 {
     /**
      * Request object containing ElFinder command and parameters.

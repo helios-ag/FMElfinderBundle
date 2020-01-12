@@ -65,44 +65,22 @@ For Symfony Flex installation you need to enable community recipes:
   composer config extra.symfony.allow-contrib true
 ```
 
-And install
+Install
 
 ```sh
   composer require helios-ag/fm-elfinder-bundle
 ```
 
-Other way (non flex way) is to add FMElFinderBundle to your composer.json
-
-```json
-{
-    "require": {
-        "helios-ag/fm-elfinder-bundle": "~9",
-    }
-}
-```
-
-also add **component-dir** under **config** node of composer.json
-
-(also you can manually copy assets to this directory)
-
-```json
-{
-    "config": {
-        "component-dir": "public/assets"
-    }
-}
-```
-
-Now tell composer to download the bundle by running the command:
-
+Copy elfinder assets to public folder
 
 ```sh
-composer update helios-ag/fm-elfinder-bundle
+  bin/console elfinder:install
 ```
 
-### Step 2: Enable the bundle
 
-Enable the bundle in the kernel:
+### Step 2: Enable the bundle (Optional)
+
+Enable the bundle in the kernel (not needed with symfony flex):
 
 ```php
 <?php
@@ -169,7 +147,6 @@ fm_elfinder:
                         #attributes: example of setting attributes permission
                         #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
 ```
-* **assets_path** - this is where css/js files of the bundle are, this options should be the same as composers `component-dir` option.
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * **path** - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read and owner permissions to this directory.
 * **url** - url to be prefixed to image path, for displaying. Can be either `absolute` or `relative`. If absolute, you can use `{homeFolder}` string as placeholder which will be replaced automatically. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter

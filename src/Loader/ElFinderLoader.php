@@ -4,7 +4,7 @@ namespace FM\ElfinderBundle\Loader;
 
 use FM\ElfinderBundle\Connector\ElFinderConnector;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
-use FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface;
+use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -28,9 +28,6 @@ class ElFinderLoader
     /** @var SessionInterface */
     protected $session;
 
-    /**
-     * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
-     */
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
         $this->configurator = $configurator;
@@ -47,9 +44,8 @@ class ElFinderLoader
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
             throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
         }
-        $parameters = $configurator->getConfiguration($this->instance);
 
-        return $parameters;
+        return $configurator->getConfiguration($this->instance);
     }
 
     /**
@@ -95,9 +91,6 @@ class ElFinderLoader
         $this->instance = $instance;
     }
 
-    /**
-     * @param \FM\ElfinderBundle\Model\ElFinderConfigurationProviderInterface $configurator
-     */
     public function setConfigurator(ElFinderConfigurationProviderInterface $configurator)
     {
         $this->configurator = $configurator;
@@ -117,7 +110,7 @@ class ElFinderLoader
         $volumes = $this->bridge->getVolumes();
 
         foreach ($volumes as $hashId => $volume) {
-            $aPathEncoded[$hashId] = $volume->getPath($path);
+            $aPathEncoded[$hashId] = $volume->getHash($path);
         }
 
         if (1 == count($aPathEncoded)) {

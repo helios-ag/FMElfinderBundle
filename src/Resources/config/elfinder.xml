@@ -21,5 +21,11 @@
             <argument type="service" id="twig"/>
             <tag name="twig.extension" alias="fm_elfinder_init" />
         </service>
+        <service id="FM\ElfinderBundle\Controller\ElFinderController">
+            <tag name="controller.service_arguments" />
+            <call method="setContainer">
+                <argument type="service" id="service_container"/>
+            </call>
+        </service>
     </services>
 </container>

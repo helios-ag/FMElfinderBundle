@@ -6,19 +6,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use FM\ElfinderBundle\ElFinder\ElFinder;
 use elFinderVolumeDriver;
 
-/**
- * Class ElFinderBridge.
- */
 class ElFinderBridge extends ElFinder
 {
     /** @var SessionInterface */
     protected $session;
 
-    /**
-     * ElFinderBridge constructor.
-     *
-     * @param $opts
-     */
     public function __construct($opts)
     {
         if ($this->session) {

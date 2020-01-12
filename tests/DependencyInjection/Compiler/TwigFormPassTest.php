@@ -5,9 +5,6 @@ namespace FM\ElfinderBundle\Tests\DependencyInjection\Compiler;
 use FM\ElfinderBundle\DependencyInjection\Compiler\TwigFormPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/**
- * Class TwigFormPassTest.
- */
 class TwigFormPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
