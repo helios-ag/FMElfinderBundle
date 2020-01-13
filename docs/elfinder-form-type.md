@@ -12,7 +12,6 @@ fm_elfinder:
             editor: form # other choices are tinymce or simple, and form
             show_hidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
-            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
