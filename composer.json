@@ -22,7 +22,7 @@
     "require": {
         "php":                                 "^7.2",
         "ext-json":                            "*",
-        "symfony/framework-bundle":            "^4.4 || ^5.0",
+        "symfony/framework-bundle":            "^4.4.x-dev",
         "symfony/twig-bundle":                 "^4.4 || ^5.0",
         "symfony/form":                        "^4.4 || ^5.0",
         "symfony/asset":                       "^4.4 || ^5.0",
