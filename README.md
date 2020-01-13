@@ -132,7 +132,6 @@ fm_elfinder:
             #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
             #fullscreen: true|false # default is true, applies to simple and ckeditor editors
             #theme: smoothness # jquery theme, default is 'smoothness'
-            include_assets: true # disable if you want to manage loading of javascript and css assets manually
             #visible_mime_types: ['image/png', 'image/jpg', 'image/jpeg'] # only show these mime types, defaults to show all
             connector:
                 #debug: true|false # defaults to false
