@@ -47,7 +47,6 @@ fm_elfinder:
             locale: %locale% # defaults to current request locale
             cors_support: true
             editor: simple
-            include_assets: false # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: true # defaults to false
                 roots:       # at least one root must be defined
@@ -82,7 +81,6 @@ fm_elfinder:
     tinymce:
       locale: %locale%
       editor: tinymce4
-      include_assets: true
       relative_path: true
       fullscreen: true
       connector:
