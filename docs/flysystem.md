@@ -24,7 +24,6 @@ fm_elfinder:
             locale: %locale% # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: true # defaults true, applies to simple and ckeditor editors
-            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
@@ -76,7 +75,6 @@ fm_elfinder:
             locale: %locale%
             editor: ckeditor
             fullscreen: true
-            include_assets: true
             relative_path: false
             connector:
                 debug: false
@@ -120,7 +118,6 @@ fm_elfinder:
         adapter:
             locale: %locale%
             editor: simple
-            include_assets: true
             relative_path: true
             connector:
                 roots:      
