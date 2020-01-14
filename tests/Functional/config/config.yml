@@ -1,7 +1,7 @@
 framework:
     secret:          "thisismysecret"
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.root_dir%/config/routing.yaml"
         strict_requirements: ~
     form:            ~
     csrf_protection: ~

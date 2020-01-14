@@ -37,7 +37,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
         $this->twig->addExtension($this->extension);
         $loader     = new YamlFileLoader(new FileLocator(__DIR__.'/../../../src/Resources/config'));
         $routes     = new RouteCollection();
-        $collection = $loader->load('routing.yml');
+        $collection = $loader->load('routing.yaml');
         $routes->addCollection($collection);
         $this->twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
     }
