@@ -52,13 +52,17 @@ fm_elfinder:
                       aws_s3:
                           driver: Flysystem
                           path: uploads
+                          url: 'http://[my-bucket-name].s3.[region].amazonaws.com'
+                          tmb_url: 'self' # For thumbnail generation on aws
                           flysystem:
-                              type: dropbox
+                              type: aws_s3_v2
                               options:
                                 aws_s3_v2:
-                                    key: 1
-                                    secret: 1
-                                    region: 1
+                                    verion: 'latest'
+                                    key: 'MY_AWS_KEY'
+                                    secret: 'MY_AWS_SECRET'
+                                    region: 'MY_AWS_REGION'
+                                    bucket_name: 'MY_BUCKET_NAME'
                           upload_allow: ['all']
 ```                          
 
