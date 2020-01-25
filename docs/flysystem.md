@@ -55,9 +55,9 @@ fm_elfinder:
                           url: 'http://[my-bucket-name].s3.[region].amazonaws.com'
                           tmb_url: 'self' # For thumbnail generation on aws
                           flysystem:
-                              type: aws_s3_v2
+                              type: aws_s3_v3
                               options:
-                                aws_s3_v2:
+                                aws_s3_v3:
                                     verion: 'latest'
                                     key: 'MY_AWS_KEY'
                                     secret: 'MY_AWS_SECRET'
@@ -83,19 +83,21 @@ fm_elfinder:
             connector:
                 debug: false
                 roots:
-                    aws_s3:
-                        driver: Flysystem
-                        url: %aws.cdn.content.url%
-                        flysystem:
-                            type: aws_s3_v2
-                            options:
-                                aws_s3_v2:
-                                    key: %aws.key%
-                                    secret: %aws.secret%
-                                    region: %aws.region%
-                                    bucket_name: %aws.cdn.content.bucket%
-                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                        upload_deny: ['all']
+                  aws_s3:
+                      driver: Flysystem
+                      path: uploads
+                      url: 'http://[my-bucket-name].s3.[region].amazonaws.com'
+                      tmb_url: 'self' # For thumbnail generation on aws
+                      flysystem:
+                          type: aws_s3_v3
+                          options:
+                            aws_s3_v3:
+                                verion: 'latest'
+                                key: 'MY_AWS_KEY'
+                                secret: 'MY_AWS_SECRET'
+                                region: 'MY_AWS_REGION'
+                                bucket_name: 'MY_BUCKET_NAME'
+                      upload_allow: ['all']
 ```
 
 In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path.
