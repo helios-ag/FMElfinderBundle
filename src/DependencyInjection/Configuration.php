@@ -133,6 +133,7 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue(array('deny', 'allow'))
                                                 ->end() // upload_order
                                                 ->scalarNode('upload_max_size')->defaultValue(0)->end()
+                                                ->integerNode('upload_max_conn')->defaultValue(3)->end()
                                                 ->arrayNode('defaults')
                                                     ->useAttributeAsKey('defaults')
                                                     ->normalizeKeys(false)
