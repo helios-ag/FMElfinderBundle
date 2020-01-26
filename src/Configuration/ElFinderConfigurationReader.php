@@ -108,6 +108,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'uploadAllow'       => $parameter['upload_allow'],
                 'uploadDeny'        => $parameter['upload_deny'],
                 'uploadMaxSize'     => $parameter['upload_max_size'],
+                'uploadMaxConn'     => $parameter['upload_max_conn'],
                 'defaults'          => $parameter['defaults'],
                 'attributes'        => $parameter['attributes'],
                 'acceptedName'      => $parameter['accepted_name'],

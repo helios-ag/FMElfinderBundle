@@ -25,6 +25,7 @@ $container->loadFromExtension('fm_elfinder', array(
                         'upload_allow'      => array('image/png', 'image/jpg', 'image/jpeg'),
                         'upload_deny'       => array('all'),
                         'upload_max_size'   => 0,
+                        'upload_max_conn'   => 3,
                         'dropbox2_settings' => array(
                             'app_key'         => 'some_consumer',
                             'app_secret'      => 'con$umer',
