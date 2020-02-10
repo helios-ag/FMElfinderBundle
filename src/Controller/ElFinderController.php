@@ -233,6 +233,9 @@ class ElFinderController extends AbstractController
 
     public function mainJS()
     {
-        return $this->render('@FMElfinder/Elfinder/helper/main.js.twig');
+        return new Response(
+            $this->renderView('@FMElfinder/Elfinder/helper/main.js.twig'), 200, [
+                'Content-type' => 'text/javascript',
+            ]);
     }
 }
