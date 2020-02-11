@@ -30,11 +30,11 @@ Recommended bundles to use with:
 
 - [Installation](#installation)
     - [Step 1: Installation](#step-1-installation)
-    - [Step 2: Enable the bundle](#step-2-enable-the-bundle)
+    - [Step 2: Enable the bundle](#step-2-enable-the-bundle-optional)
     - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
-    - [Step 4: Securing paths](#step-4-configure-your-applications-securityyml)
+    - [Step 4: Securing paths](#step-4-configure-your-applications-securityyaml)
 - [Basic configuration](#basic-configuration)
-    - [Add configuration options to your config.yml](#add-configuration-options-to-your-configyml)
+    - [Add configuration options to your config.yaml](#add-configuration-options-to-your-configyaml)
     - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
 - [CORS support](/docs/cors-support.md)
 - [Events listeners / subscribers](/docs/events-listeners-subscribers.md)
@@ -98,16 +98,16 @@ public function registerBundles()
 ### Step 3: Import FMElfinderBundle routing file
 
 ``` yaml
-# app/config/routing.yml
+# app/config/routing.yaml
 elfinder:
-     resource: "@FMElfinderBundle/Resources/config/routing.yml"
+     resource: "@FMElfinderBundle/Resources/config/routing.yaml"
 ```
 
-### Step 4: Configure your application's security.yml
+### Step 4: Configure your application's security.yaml
 
 Secure ElFinder with access_control:
 ``` yaml
-# app/config/security.yml
+# app/config/security.yaml
 security:
 
     //....
@@ -119,7 +119,7 @@ security:
 
 ## Basic configuration
 
-### Add configuration options to your config.yml
+### Add configuration options to your config.yaml
 
 ```yaml
 fm_elfinder:
