@@ -126,7 +126,7 @@ fm_elfinder:
     #assets_path: / # default is /assets, this is where css/js elfinder files are
     instances:
         default:
-            locale: %locale% # defaults to current request locale
+            locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
             #editor_template: custom template for your editor # default null
             #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
