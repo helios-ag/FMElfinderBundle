@@ -8,7 +8,7 @@ First, define instance with editor set to "form":
 fm_elfinder:
     instances:
         form:
-            locale: "%locale%" # defaults to current request locale
+            locale: '%locale%' # defaults to current request locale
             editor: form # other choices are tinymce or simple, and form
             show_hidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
