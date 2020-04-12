@@ -122,6 +122,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'fileMode'          => $parameter['fileMode'],
             );
 
+            if (null !== $parameter['quarantine']) {
+                $driverOptions['quarantine'] = $parameter['quarantine'];
+            }
+
             if ($parameter['volume_id'] > 0) {
                 $driverOptions['id'] = $parameter['volume_id'];
             }
