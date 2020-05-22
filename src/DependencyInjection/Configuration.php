@@ -361,6 +361,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('key')->defaultvalue('')->end()
                             ->scalarNode('secret')->defaultvalue('')->end()
                             ->scalarNode('region')->defaultvalue('')->end()
+                            ->scalarNode('version')->defaultvalue('2006-03-01')->end()
                             ->scalarNode('bucket_name')->defaultvalue('')->end()
                             ->scalarNode('optional_prefix')->defaultvalue('')->end()
                             ->scalarNode('base_url')->defaultvalue('')->end()
