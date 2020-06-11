@@ -55,7 +55,7 @@ class ElFinderLoader
      *
      * @throws \Exception
      */
-    public function initBridge($instance, array $efParameters)
+    public function initBridge($instance, bool $multiHome, string $separator)
     {
         $this->setInstance($instance);
 

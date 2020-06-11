@@ -39,7 +39,7 @@ class ElFinderController extends AbstractController
         }
 
         $assetsPath      = $efParameters['assets_path'];
-        $result          = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
+        $result          = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'), $multiHomeFolder);
 
         return $this->render($result['template'], $result['params']);
     }
@@ -47,11 +47,14 @@ class ElFinderController extends AbstractController
     /**
      * @param string $formTypeId
      * @param bool   $multiHomeFolder
+     * 
+     * @return array
      *
      * @throws Exception
      */
     private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
     {
+        
         $editor         = $parameters['editor'];
         $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullScreen     = $parameters['fullscreen'];
@@ -192,9 +195,13 @@ class ElFinderController extends AbstractController
 
     public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
-        $efParameters = $this->container->getParameter('fm_elfinder');
-        $loader       = $this->get('fm_elfinder.loader');
-        $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
+        $multiHomeFolder = $efParameters['multi_home_folder'];
+        $separator       = $efParameters['folder_separator'];
+        $loader = $this->get('fm_elfinder.loader');
+        $loader->initBridge($instance, $multiHomeFolder, $separator); // builds up the Bridge object for the loader with the given instance
+
+
+
 
         if ($loader instanceof ElFinderLoader) {
             $loader->setSession(new ElFinderSession($session));

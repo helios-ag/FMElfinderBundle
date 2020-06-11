@@ -84,6 +84,8 @@ class Configuration implements ConfigurationInterface
                                                     ->defaultValue('LocalFileSystem')
                                                 ->end() // driver
                                                 ->integerNode('volume_id')->defaultValue(0)->min(0)->end()
+                                                ->booleanNode('multi_home_folder')->defaultFalse()->end()
+                                                ->scalarNode('folder_separator')->defaultValue('')->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
                                                 ->booleanNode('autoload')->defaultFalse()->end()
                                                 ->scalarNode('phash')->defaultValue('')->end()
