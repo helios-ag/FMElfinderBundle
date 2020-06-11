@@ -55,10 +55,14 @@ class ElFinderLoader
      *
      * @throws \Exception
      */
-    public function initBridge($instance)
+    public function initBridge($instance, bool $multiHome, string $separator)
     {
         $this->setInstance($instance);
         $this->config = $this->configure();
+        if ($multiHome) {
+            $this->config['roots'][0]['path'] = str_replace($separator, '/', $this->config['roots'][0]['path']);
+            $this->config['roots'][0]['URL'] = str_replace($separator, '/', $this->config['roots'][0]['URL']);
+        }
         $this->bridge = new ElFinderBridge($this->config);
         if ($this->session) {
             $this->bridge->setSession($this->session);
