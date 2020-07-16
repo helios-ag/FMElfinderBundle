@@ -44,8 +44,8 @@ class ElFinderController extends AbstractController
             $parameters['locale'] = $request->getLocale();
         }
 
-        $assetsPath   = $efParameters['assets_path'];
-        $result       = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
+        $assetsPath      = $efParameters['assets_path'];
+        $result          = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
 
         return $this->render($result['template'], $result['params']);
     }
@@ -56,13 +56,15 @@ class ElFinderController extends AbstractController
      * @param string $homeFolder
      * @param string $assetsPath
      * @param string $formTypeId
-     *
+     * @param bool   $multiHomeFolder
+     * 
      * @return array
      *
      * @throws Exception
      */
     private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
     {
+        
         $editor         = $parameters['editor'];
         $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullScreen     = $parameters['fullscreen'];
@@ -211,8 +213,9 @@ class ElFinderController extends AbstractController
      */
     public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
+        $efParameters = $this->container->getParameter('fm_elfinder');
         $loader = $this->get('fm_elfinder.loader');
-        $loader->initBridge($instance); // builds up the Bridge object for the loader with the given instance
+        $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
         if ($loader instanceof ElFinderLoader) {
             $loader->setSession(new ElFinderSession($session));

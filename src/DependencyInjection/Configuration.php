@@ -36,10 +36,24 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('editor')->defaultValue('simple')->end()
                             ->scalarNode('editor_template')->defaultNull()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
+                            ->booleanNode('multi_home_folder')->defaultFalse()->end()
+                            ->scalarNode('folder_separator')->defaultValue('')->end()
                             ->scalarNode('theme')->defaultValue('smoothness')->end() // jQuery UI theme name
                             ->scalarNode('tinymce_popup_path')->defaultValue('')->end()
                             ->booleanNode('relative_path')->defaultTrue()->end()
                             ->scalarNode('path_prefix')->defaultValue('/')->end()
+                            ->arrayNode('where_is_multi')
+                                ->beforeNormalization()
+                                    ->ifTrue(function ($v) {
+                                        return is_string($v);
+                                    })
+                                    ->then(function ($v) {
+                                        return array_map('trim', explode(',', $v));
+                                    })
+                                ->end()
+                                ->prototype('scalar')->end()
+                                ->defaultValue(array())
+                            ->end()
                             ->arrayNode('visible_mime_types')
                                 ->beforeNormalization()
                                     ->ifTrue(function ($v) {

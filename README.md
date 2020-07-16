@@ -190,3 +190,45 @@ To use this feature, you **must** provide the instance name in the URL,
 and of course be sure to set proper write/read permissions on home folders.
 
 **Note:** this feature is only available with `LocalFileSystem` driver.
+
+
+## If I want more one home folder is possible ?
+
+Yes you can with this configuration in your fm_elfinder.yaml
+
+
+where_is_multi: 
+    {connector}: {index of the connector}
+multi_home_folder: true
+folder_separator: {one char other of /}
+
+### Exemple
+fm_elfinder:
+    instances:
+        default:
+            locale: fr # defaults to current request locale
+            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            #editor_template: custom template for your editor # default null
+            #path_prefix: http://localhost/ # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
+            fullscreen: false # default is true, applies to simple and ckeditor editors
+            where_is_multi: 
+                roots: 0
+            multi_home_folder: true
+            folder_separator: "|"
+            #theme: smoothness # jquery theme, default is 'smoothness'
+            #visible_mime_types: ['image/png', 'image/jpg', 'image/jpeg'] # only show these mime types, defaults to show all
+            connector:
+                #debug: true|false # defaults to false
+                roots:       # at least one root must be defined, defines root filemanager directories
+                    uploads:
+                        #show_hidden: true|false # defaults to false, hides dotfiles
+                        driver: LocalFileSystem
+                        path: "/var"
+                        alias: Bibliothèque générale
+                        upload_allow: ['all']
+                        #upload_deny: ['all']
+                        upload_max_size: 500M # also file upload sizes restricted in php.ini
+                        attributes:
+                            - {pattern: '..', read: true, write: true, locked: false}
+                        #attributes: example of setting attributes permission
+                        #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
