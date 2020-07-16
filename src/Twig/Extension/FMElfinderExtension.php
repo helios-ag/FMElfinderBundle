@@ -56,13 +56,15 @@ class FMElfinderExtension extends AbstractExtension
             throw new RuntimeError('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('@FMElfinder/Elfinder/helper/_tinymce.html.twig',
+        return $this->twig->render(
+            '@FMElfinder/Elfinder/helper/_tinymce.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            ));
+            )
+        );
     }
 
     /**
@@ -81,13 +83,15 @@ class FMElfinderExtension extends AbstractExtension
             throw new RuntimeError('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('@FMElfinder/Elfinder/helper/_tinymce4.html.twig',
+        return $this->twig->render(
+            '@FMElfinder/Elfinder/helper/_tinymce4.html.twig',
             array(
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            ));
+            )
+        );
     }
 
     /**
@@ -107,14 +111,16 @@ class FMElfinderExtension extends AbstractExtension
             throw new RuntimeError('The function can be applied to strings only.');
         }
 
-        return $this->twig->render('@FMElfinder/Elfinder/helper/_summernote.html.twig',
+        return $this->twig->render(
+            '@FMElfinder/Elfinder/helper/_summernote.html.twig',
             array(
                 'instance' => $instance,
                 'selector' => $selector,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            ));
+            )
+        );
     }
 
     /**
