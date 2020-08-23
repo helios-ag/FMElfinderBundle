@@ -54,6 +54,7 @@ Recommended bundles to use with:
     - [Plugins](/docs/advanced-configuration.md#plugins)
     - [Service as volume driver](/docs/advanced-configuration.md#symfony-service-as-a-volume-driver)
     - [Flysystem configuration](/docs/advanced-configuration.md#flysystem-configuration)
+- [Configuration dump](/docs/configuration-dump.md)
 
 ## Installation
 
@@ -128,6 +129,7 @@ fm_elfinder:
         default:
             locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            relative_path: false #default true, will produce absolute urls to specified file(s) 
             #editor_template: custom template for your editor # default null
             #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
             #fullscreen: true|false # default is true, applies to simple and ckeditor editors
