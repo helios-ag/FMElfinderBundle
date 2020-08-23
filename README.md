@@ -41,6 +41,8 @@ Recommended bundles to use with:
     - [Events](/docs/events-listeners-subscribers.md#events)
     - [Sub requests](/docs/events-listeners-subscribers.md#sub-requests)
 - [Elfinder Form Type](/docs/elfinder-form-type.md)
+    - [Configuration](/docs/elfinder-form-type.md#configuration)
+    - [EasyAdmin 2.x](/docs/elfinder-form-type.md#easyadmin-2x-integration)
 - [CKEditor integration](/docs/ckeditor-integration.md)
     - [Installation](/docs/ckeditor-integration.md#step-1-installation)
     - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
