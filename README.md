@@ -207,6 +207,7 @@ multi_home_folder: true
 folder_separator: {one char other of /}
 
 ### Exemple
+```
 fm_elfinder:
     instances:
         default:
