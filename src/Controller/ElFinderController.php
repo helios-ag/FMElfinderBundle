@@ -214,13 +214,8 @@ class ElFinderController extends AbstractController
     public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
-        //$multiHomeFolder = $efParameters['multi_home_folder'];
-        //$separator       = $efParameters['folder_separator'];
         $loader = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
-
-
-
 
         if ($loader instanceof ElFinderLoader) {
             $loader->setSession(new ElFinderSession($session));
