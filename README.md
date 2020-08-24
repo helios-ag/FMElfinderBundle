@@ -41,6 +41,8 @@ Recommended bundles to use with:
     - [Events](/docs/events-listeners-subscribers.md#events)
     - [Sub requests](/docs/events-listeners-subscribers.md#sub-requests)
 - [Elfinder Form Type](/docs/elfinder-form-type.md)
+    - [Configuration](/docs/elfinder-form-type.md#configuration)
+    - [EasyAdmin 2.x](/docs/elfinder-form-type.md#easyadmin-2x-integration)
 - [CKEditor integration](/docs/ckeditor-integration.md)
     - [Installation](/docs/ckeditor-integration.md#step-1-installation)
     - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
@@ -54,6 +56,7 @@ Recommended bundles to use with:
     - [Plugins](/docs/advanced-configuration.md#plugins)
     - [Service as volume driver](/docs/advanced-configuration.md#symfony-service-as-a-volume-driver)
     - [Flysystem configuration](/docs/advanced-configuration.md#flysystem-configuration)
+- [Configuration dump](/docs/configuration-dump.md)
 
 ## Installation
 
@@ -126,8 +129,9 @@ fm_elfinder:
     #assets_path: / # default is /assets, this is where css/js elfinder files are
     instances:
         default:
-            locale: %locale% # defaults to current request locale
+            locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            relative_path: false #default true, will produce absolute urls to specified file(s) 
             #editor_template: custom template for your editor # default null
             #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
             #fullscreen: true|false # default is true, applies to simple and ckeditor editors

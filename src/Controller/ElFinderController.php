@@ -214,7 +214,7 @@ class ElFinderController extends AbstractController
     public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
         $efParameters = $this->container->getParameter('fm_elfinder');
-        $loader = $this->get('fm_elfinder.loader');
+        $loader       = $this->get('fm_elfinder.loader');
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
         if ($loader instanceof ElFinderLoader) {
@@ -237,8 +237,11 @@ class ElFinderController extends AbstractController
     public function mainJS()
     {
         return new Response(
-            $this->renderView('@FMElfinder/Elfinder/helper/main.js.twig'), 200, [
+            $this->renderView('@FMElfinder/Elfinder/helper/main.js.twig'),
+            200,
+            [
                 'Content-type' => 'text/javascript',
-            ]);
+            ]
+        );
     }
 }

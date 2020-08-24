@@ -104,6 +104,7 @@ class Configuration implements ConfigurationInterface
                                                 ->integerNode('tmb_size')->defaultValue(48)->end()
                                                 ->booleanNode('tmb_crop')->defaultTrue()->end()
                                                 ->scalarNode('tmb_bg_color')->defaultValue('#ffffff')->end()
+                                                ->scalarNode('quarantine')->defaultNull()->end()
                                                 ->booleanNode('copy_overwrite')->defaultTrue()->end()
                                                 ->booleanNode('copy_join')->defaultTrue()->end()
                                                 ->booleanNode('copy_from')->defaultTrue()->end()
