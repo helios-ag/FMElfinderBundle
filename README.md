@@ -203,6 +203,7 @@ multi_home_folder: true
 folder_separator: {one char other of /}
 
 ### Exemple
+```
 fm_elfinder:
     instances:
         default:
@@ -232,3 +233,4 @@ fm_elfinder:
                             - {pattern: '..', read: true, write: true, locked: false}
                         #attributes: example of setting attributes permission
                         #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
+```
