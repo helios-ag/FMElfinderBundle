@@ -206,7 +206,7 @@ where_is_multi:
 multi_home_folder: true
 folder_separator: {one char other of /}
 
-### Exemple
+### Example
 ```
 fm_elfinder:
     instances:
