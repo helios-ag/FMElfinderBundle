@@ -93,6 +93,7 @@ class ElFinderController extends AbstractController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
+                    'id'            => $formTypeId,
                 ];
 
                 return $result;
