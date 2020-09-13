@@ -52,11 +52,11 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildView()
     {
-        $options = array(
+        $options = [
             'instance'   => 'default1',
             'enable'     => true,
             'homeFolder' => '/home',
-        );
+        ];
         $view = new FormView();
         $type = new ElFinderType();
         $form = $this->createMock('Symfony\Component\Form\Test\FormInterface');

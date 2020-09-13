@@ -55,12 +55,12 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $request                = $this->requestStack->getCurrentRequest();
         $efParameters           = $this->parameters;
         $parameters             = $efParameters['instances'][$instance];
-        $options                = array();
+        $options                = [];
         $options['corsSupport'] = $parameters['cors_support'];
         $options['debug']       = $parameters['connector']['debug'];
         $options['bind']        = $parameters['connector']['binds'];
         $options['plugin']      = $parameters['connector']['plugins'];
-        $options['roots']       = array();
+        $options['roots']       = [];
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path              = $parameter['path'];
@@ -80,7 +80,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             }
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
 
-            $driverOptions = array(
+            $driverOptions = [
                 'driver'            => $parameter['driver'],
                 'service'           => $driver,
                 'glideURL'          => $parameter['glide_url'],
@@ -120,7 +120,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'archiveMimes'      => $parameter['archive_mimes'],
                 'archivers'         => $parameter['archivers'],
                 'fileMode'          => $parameter['fileMode'],
-            );
+            ];
 
             if (null !== $parameter['quarantine']) {
                 $driverOptions['quarantine'] = $parameter['quarantine'];
@@ -131,7 +131,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             }
 
             if (!$parameter['show_hidden']) {
-                $driverOptions['accessControl'] = array($this, 'access');
+                $driverOptions['accessControl'] = [$this, 'access'];
             }
 
             if ($parameter['security_voter']) {
@@ -180,7 +180,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'ftp':
-                $settings = array(
+                $settings = [
                     'host'     => $opt['ftp']['host'],
                     'username' => $opt['ftp']['username'],
                     'password' => $opt['ftp']['password'],
@@ -192,12 +192,12 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'ssl'           => $opt['ftp']['ssl'],
                     'timeout'       => $opt['ftp']['timeout'],
                     'directoryPerm' => $opt['ftp']['directoryPerm'],
-                );
+                ];
                 $filesystem = new Filesystem(new Ftp($settings));
 
                 break;
             case 'sftp':
-                $settings = array(
+                $settings = [
                   'host'       => $opt['sftp']['host'],
                   'port'       => $opt['sftp']['port'],
                   'username'   => $opt['sftp']['username'],
@@ -205,7 +205,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                   'privateKey' => $opt['sftp']['privateKey'],
                   'root'       => $opt['sftp']['root'],
                   'timeout'    => $opt['sftp']['timeout'],
-                );
+                ];
                 $filesystem = new Filesystem(new SftpAdapter($settings));
 
                 break;
@@ -218,11 +218,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'aws_s3_v2':
-                $options = array(
+                $options = [
                     'key'     => $opt['aws_s3_v2']['key'],
                     'secret'  => $opt['aws_s3_v2']['secret'],
                     'region'  => $opt['aws_s3_v2']['region'],
-                );
+                ];
                 if (isset($opt['aws_s3_v2']['base_url']) && $opt['aws_s3_v2']['base_url']) {
                     $options['base_url'] = $opt['aws_s3_v2']['base_url'];
                 }
@@ -231,16 +231,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'aws_s3_v3':
-                $client = new S3Client(array(
-                    'credentials' => array(
+                $client = new S3Client([
+                    'credentials' => [
                         'key'     => $opt['aws_s3_v3']['key'],
                         'secret'  => $opt['aws_s3_v3']['secret'],
-                    ),
+                    ],
                     'region'                  => $opt['aws_s3_v3']['region'],
                     'version'                 => $opt['aws_s3_v3']['version'],
                     'endpoint'                => $opt['aws_s3_v3']['endpoint'],
                     'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
-                ));
+                ]);
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], $opt['aws_s3_v3']['options']));
 
                 break;
@@ -269,10 +269,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'rackspace':
-                $client = new Rackspace(Rackspace::$opt['rackspace']['endpoint'], array(
+                $client = new Rackspace(Rackspace::$opt['rackspace']['endpoint'], [
                     'username' => $opt['rackspace']['username'],
                     'apiKey'   => $opt['rackspace']['apikey'],
-                ));
+                ]);
                 $store      = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
                 $container  = $store->getContainer($opt['rackspace']['container']);
                 $filesystem = new Filesystem(new RackspaceAdapter($container));
@@ -394,8 +394,6 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     }
 
     /**
-     * @param ElfinderSecurityInterface $voter
-     *
      * @return array
      */
     protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)

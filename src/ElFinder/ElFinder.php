@@ -51,9 +51,9 @@ class ElFinder extends BaseElFinder
         set_error_handler('elFinder::phpErrorHandler', $errLevel);
 
         // Associative array of files to delete at the end of script: ['temp file path' => true]
-        $GLOBALS['elFinderTempFiles'] = array();
+        $GLOBALS['elFinderTempFiles'] = [];
         // regist Shutdown function
-        register_shutdown_function(array('elFinder', 'onShutdown'));
+        register_shutdown_function(['elFinder', 'onShutdown']);
 
         // convert PATH_INFO to GET query
         if (!empty($_SERVER['PATH_INFO'])) {
@@ -97,19 +97,19 @@ class ElFinder extends BaseElFinder
         if (!empty($opts['session']) && $opts['session'] instanceof elFinderSessionInterface) {
             $this->session = $opts['session'];
         } else {
-            $sessionOpts = array(
+            $sessionOpts = [
                 'base64encode' => !empty($opts['base64encodeSessionData']),
-                'keys'         => array(
+                'keys'         => [
                     'default'   => !empty($opts['sessionCacheKey']) ? $opts['sessionCacheKey'] : 'elFinderCaches',
                     'netvolume' => !empty($opts['netVolumesSessionKey']) ? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes',
-                ),
-            );
+                ],
+            ];
             $this->session = new \elFinderSession($sessionOpts);
         }
         // try session start | restart
         $this->session->start();
 
-        $sessionUseCmds = array();
+        $sessionUseCmds = [];
         if (isset($opts['sessionUseCmds']) && is_array($opts['sessionUseCmds'])) {
             $sessionUseCmds = $opts['sessionUseCmds'];
         }
@@ -152,7 +152,7 @@ class ElFinder extends BaseElFinder
             self::$textMimes = $opts['textMimes'];
         }
         $this->maxArcFilesSize   = isset($opts['maxArcFilesSize']) ? intval($opts['maxArcFilesSize']) : 0;
-        $this->optionsNetVolumes = (isset($opts['optionsNetVolumes']) && is_array($opts['optionsNetVolumes'])) ? $opts['optionsNetVolumes'] : array();
+        $this->optionsNetVolumes = (isset($opts['optionsNetVolumes']) && is_array($opts['optionsNetVolumes'])) ? $opts['optionsNetVolumes'] : [];
         if (isset($opts['itemLockExpire'])) {
             $this->itemLockExpire = intval($opts['itemLockExpire']);
         }
@@ -188,10 +188,10 @@ class ElFinder extends BaseElFinder
                 if ($doRegist) {
                     // for backward compatibility
                     if (!is_array($handlers)) {
-                        $handlers = array($handlers);
+                        $handlers = [$handlers];
                     } else {
                         if (2 === count($handlers) && is_object($handlers[0])) {
-                            $handlers = array($handlers);
+                            $handlers = [$handlers];
                         }
                     }
                     foreach ($handlers as $handler) {
@@ -199,9 +199,9 @@ class ElFinder extends BaseElFinder
                             if (is_string($handler) && strpos($handler, '.')) {
                                 list($_domain, $_name, $_method) = array_pad(explode('.', $handler), 3, '');
                                 if (0 === strcasecmp($_domain, 'plugin')) {
-                                    if ($plugin = $this->getPluginInstance($_name, isset($opts['plugin'][$_name]) ? $opts['plugin'][$_name] : array())
+                                    if ($plugin = $this->getPluginInstance($_name, isset($opts['plugin'][$_name]) ? $opts['plugin'][$_name] : [])
                                         and method_exists($plugin, $_method)) {
-                                        $this->bind($cmd, array($plugin, $_method));
+                                        $this->bind($cmd, [$plugin, $_method]);
                                     }
                                 }
                             } else {
@@ -214,7 +214,7 @@ class ElFinder extends BaseElFinder
         }
 
         if (!isset($opts['roots']) || !is_array($opts['roots'])) {
-            $opts['roots'] = array();
+            $opts['roots'] = [];
         }
 
         // check for net volumes stored in session

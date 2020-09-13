@@ -7,11 +7,11 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new FM\ElfinderBundle\FMElfinderBundle(),
-        );
+        ];
 
         return $bundles;
     }

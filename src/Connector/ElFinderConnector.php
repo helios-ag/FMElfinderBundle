@@ -29,26 +29,26 @@ class ElFinderConnector extends \elFinderConnector
             $_REQUEST = array_merge_recursive($src, $_REQUEST);
         }
         $cmd    = isset($src['cmd']) ? $src['cmd'] : '';
-        $args   = array();
+        $args   = [];
 
         if (!function_exists('json_encode')) {
             $error = $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_JSON);
 
-            return $this->output(array('error' => '{"error":["'.implode('","', $error).'"]}', 'raw' => true));
+            return $this->output(['error' => '{"error":["'.implode('","', $error).'"]}', 'raw' => true]);
         }
 
         if (!$this->elFinder->loaded()) {
-            return $this->output(array('error' => $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_VOL), 'debug' => $this->elFinder->mountErrors));
+            return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_CONF, elFinder::ERROR_CONF_NO_VOL), 'debug' => $this->elFinder->mountErrors]);
         }
 
         // telepat_mode: on
         if (!$cmd && $isPost) {
-            return $this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UPLOAD, elFinder::ERROR_UPLOAD_TOTAL_SIZE), 'header' => 'Content-Type: text/html'));
+            return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_UPLOAD, elFinder::ERROR_UPLOAD_TOTAL_SIZE), 'header' => 'Content-Type: text/html']);
         }
         // telepat_mode: off
 
         if (!$this->elFinder->commandExists($cmd)) {
-            return $this->output(array('error' => $this->elFinder->error(elFinder::ERROR_UNKNOWN_CMD)));
+            return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_UNKNOWN_CMD)]);
         }
 
         // collect required arguments to exec command
@@ -61,7 +61,7 @@ class ElFinderConnector extends \elFinderConnector
                 $arg = trim($arg);
             }
             if ($req && (!isset($arg) || '' === $arg)) {
-                return $this->output(array('error' => $this->elFinder->error(elFinder::ERROR_INV_PARAMS, $cmd)));
+                return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_INV_PARAMS, $cmd)]);
             }
             $args[$name] = $arg;
         }

@@ -16,9 +16,6 @@ class FMElfinderExtension extends AbstractExtension
      */
     protected $twig;
 
-    /**
-     * @param Environment $twig
-     */
     public function __construct(Environment $twig)
     {
         $this->twig = $twig;
@@ -31,13 +28,13 @@ class FMElfinderExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        $options = array('is_safe' => array('html'));
+        $options = ['is_safe' => ['html']];
 
-        return array(
-            new TwigFunction('elfinder_tinymce_init', array($this, 'tinymce'), $options),
-            new TwigFunction('elfinder_tinymce_init4', array($this, 'tinymce4'), $options),
-            new TwigFunction('elfinder_summernote_init', array($this, 'summernote'), $options),
-        );
+        return [
+            new TwigFunction('elfinder_tinymce_init', [$this, 'tinymce'], $options),
+            new TwigFunction('elfinder_tinymce_init4', [$this, 'tinymce4'], $options),
+            new TwigFunction('elfinder_summernote_init', [$this, 'summernote'], $options),
+        ];
     }
 
     /**
@@ -50,7 +47,7 @@ class FMElfinderExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function tinymce($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
+    public function tinymce($instance = 'default', $parameters = ['width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'])
     {
         if (!is_string($instance)) {
             throw new RuntimeError('The function can be applied to strings only.');
@@ -58,12 +55,12 @@ class FMElfinderExtension extends AbstractExtension
 
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_tinymce.html.twig',
-            array(
+            [
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            )
+            ]
         );
     }
 
@@ -77,7 +74,7 @@ class FMElfinderExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function tinymce4($instance = 'default', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
+    public function tinymce4($instance = 'default', $parameters = ['width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'])
     {
         if (!is_string($instance)) {
             throw new RuntimeError('The function can be applied to strings only.');
@@ -85,12 +82,12 @@ class FMElfinderExtension extends AbstractExtension
 
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_tinymce4.html.twig',
-            array(
+            [
                 'instance' => $instance,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            )
+            ]
         );
     }
 
@@ -105,7 +102,7 @@ class FMElfinderExtension extends AbstractExtension
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function summernote($instance = 'default', $selector = '.summenote', $parameters = array('width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'))
+    public function summernote($instance = 'default', $selector = '.summenote', $parameters = ['width' => 900, 'height' => 450, 'title' => 'elFinder 2.0'])
     {
         if (!is_string($instance)) {
             throw new RuntimeError('The function can be applied to strings only.');
@@ -113,13 +110,13 @@ class FMElfinderExtension extends AbstractExtension
 
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_summernote.html.twig',
-            array(
+            [
                 'instance' => $instance,
                 'selector' => $selector,
                 'width'    => $parameters['width'],
                 'height'   => $parameters['height'],
                 'title'    => $parameters['title'],
-            )
+            ]
         );
     }
 

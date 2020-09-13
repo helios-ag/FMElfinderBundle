@@ -1,9 +1,9 @@
 <?php
 
-$container->loadFromExtension('fm_elfinder', array(
+$container->loadFromExtension('fm_elfinder', [
     'configuration_provider' => 'app.configurator.custom',
-    'instances'              => array(
-        'default' => array(
+    'instances'              => [
+        'default' => [
             'locale'             => 'en',
             'cors_support'       => false,
             'editor'             => 'tinymce',
@@ -11,10 +11,10 @@ $container->loadFromExtension('fm_elfinder', array(
             'fullscreen'         => false,
             'tinymce_popup_path' => '/pop-up',
             'relative_path'      => false,
-            'connector'          => array(
+            'connector'          => [
                 'debug' => true,
-                'roots' => array(
-                    'uploads' => array(
+                'roots' => [
+                    'uploads' => [
                         'driver'            => 'LocalFileSystem',
                         'path'              => 'uploads',
                         'show_hidden'       => true,
@@ -22,43 +22,43 @@ $container->loadFromExtension('fm_elfinder', array(
                         'alias'             => 'foo',
                         'check_subfolders'  => 1,
                         'tree_deep'         => 1,
-                        'upload_allow'      => array('image/png', 'image/jpg', 'image/jpeg'),
-                        'upload_deny'       => array('all'),
+                        'upload_allow'      => ['image/png', 'image/jpg', 'image/jpeg'],
+                        'upload_deny'       => ['all'],
                         'upload_max_size'   => 0,
                         'upload_max_conn'   => 3,
-                        'dropbox2_settings' => array(
+                        'dropbox2_settings' => [
                             'app_key'         => 'some_consumer',
                             'app_secret'      => 'con$umer',
-                        ),
-                        'box_settings' => array(
+                        ],
+                        'box_settings' => [
                             'client_id'       => 'some_consumer',
                             'client_secret'   => 'con$umer',
                             'accessToken'     => 'token',
-                        ),
-                        'onedrive_settings' => array(
+                        ],
+                        'onedrive_settings' => [
                             'client_id'       => 'some_consumer',
                             'client_secret'   => 'con$umer',
                             'accessToken'     => 'token',
-                        ),
-                        'ftp_settings' => array(
+                        ],
+                        'ftp_settings' => [
                             'host' => '127.0.0.1',
                             'user' => 'root',
-                        ),
-                        'mysql_settings' => array(
+                        ],
+                        'mysql_settings' => [
                             'host' => 'localhost',
-                        ),
-                        'attributes' => array(
-                            'some_pattern' => array(
+                        ],
+                        'attributes' => [
+                            'some_pattern' => [
                                 'pattern' => '/^some_pattern$/',
                                 'read'    => true,
                                 'write'   => true,
                                 'locked'  => false,
                                 'hidden'  => false,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    ),
-));
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
+]);

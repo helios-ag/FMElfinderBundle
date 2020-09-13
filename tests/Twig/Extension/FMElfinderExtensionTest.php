@@ -32,7 +32,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->twig      = new Environment(new FilesystemLoader(array(__DIR__.'/../../../src/Resources/views/Elfinder/helper')));
+        $this->twig      = new Environment(new FilesystemLoader([__DIR__.'/../../../src/Resources/views/Elfinder/helper']));
         $this->extension = new FMElfinderExtension($this->twig);
         $this->twig->addExtension($this->extension);
         $loader     = new YamlFileLoader(new FileLocator(__DIR__.'/../../../src/Resources/config'));
@@ -44,7 +44,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testRenderTinyMCE3()
     {
-        $testData = $this->twig->render('_tinymce.html.twig', array('instance' => 'minimal'));
+        $testData = $this->twig->render('_tinymce.html.twig', ['instance' => 'minimal']);
 
         $expected = <<<'EOF'
 <script type="text/javascript">
@@ -74,7 +74,7 @@ EOF;
 
     public function testRenderTinyMCE4()
     {
-        $testData = $this->twig->render('_tinymce4.html.twig', array('instance' => 'minimal'));
+        $testData = $this->twig->render('_tinymce4.html.twig', ['instance' => 'minimal']);
 
         $expected = <<<'EOF'
 <script type="text/javascript">
@@ -100,7 +100,7 @@ EOF;
 
     public function testRenderSummernote()
     {
-        $testData = $this->twig->render('_summernote.html.twig', array('instance' => 'minimal'));
+        $testData = $this->twig->render('_summernote.html.twig', ['instance' => 'minimal']);
 
         $expected  = <<<'EOF'
 <script type="text/javascript">
@@ -156,7 +156,7 @@ EOF;
      */
     public function testSummernoteInstanceNotString()
     {
-        $this->extension->summernote(array());
+        $this->extension->summernote([]);
     }
 
     /**
@@ -165,7 +165,7 @@ EOF;
      */
     public function testTinyMCEInstanceNotString()
     {
-        $this->extension->tinymce(array());
+        $this->extension->tinymce([]);
     }
 
     /**
@@ -174,7 +174,7 @@ EOF;
      */
     public function testTinyMCE4InstanceNotString()
     {
-        $this->extension->tinymce4(array());
+        $this->extension->tinymce4([]);
     }
 
     public function testGetFunctions()

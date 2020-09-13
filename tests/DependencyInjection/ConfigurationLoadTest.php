@@ -29,31 +29,31 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
      */
     public function testSupportsAllConfigFormats($path)
     {
-        $expectedConfiguration = array(
+        $expectedConfiguration = [
             'configuration_provider' => 'app.configurator.custom',
             'assets_path'            => 'assets',
             'loader'                 => 'fm_elfinder.loader.default',
-            'instances'              => array(
-                'default' => array(
+            'instances'              => [
+                'default' => [
                     'locale'             => 'en',
                     'editor'             => 'tinymce',
                     'theme'              => 'smoothness',
                     'editor_template'    => 'Elfinder/editor.html.twig',
                     'fullscreen'         => false,
-                    'where_is_multi'     => array(),
+                    'where_is_multi'     => [],
                     'multi_home_folder'  => false,
                     'folder_separator'   => '',
                     'cors_support'       => false,
                     'tinymce_popup_path' => '/pop-up',
                     'relative_path'      => false,
                     'path_prefix'        => '/',
-                    'visible_mime_types' => array(),
-                    'connector'          => array(
+                    'visible_mime_types' => [],
+                    'connector'          => [
                         'debug'   => true,
-                        'binds'   => array(),
-                        'plugins' => array(),
-                        'roots'   => array(
-                            'uploads' => array(
+                        'binds'   => [],
+                        'plugins' => [],
+                        'roots'   => [
+                            'uploads' => [
                                 'driver'            => 'LocalFileSystem',
                                 'volume_id'         => 0,
                                 'security_voter'    => '',
@@ -61,17 +61,17 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'trash_hash'        => 'trash_hash',
                                 'i18n_folder_name'  => false,
                                 'locale'            => '',
-                                'disabled_commands' => array(),
-                                'plugins'           => array(),
-                                'driver_options'    => array(),
+                                'disabled_commands' => [],
+                                'plugins'           => [],
+                                'driver_options'    => [],
                                 'path'              => 'uploads',
                                 'show_hidden'       => true,
-                                'flysystem'         => array(
+                                'flysystem'         => [
                                     'filesystem'      => '',
                                     'enabled'         => false,
                                     'type'            => '',
                                     'adapter_service' => '',
-                                ),
+                                ],
                                 'start_path'       => '',
                                 'encoding'         => 'UTF-8',
                                 'url'              => '',
@@ -90,37 +90,37 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'copy_to'          => true,
                                 'upload_overwrite' => true,
                                 'fileMode'         => 0644,
-                                'attributes'       => array(
-                                    'some_pattern' => array(
+                                'attributes'       => [
+                                    'some_pattern' => [
                                         'pattern' => '/^some_pattern$/',
                                         'read'    => true,
                                         'write'   => true,
                                         'locked'  => false,
                                         'hidden'  => false,
-                                    ),
-                                ),
+                                    ],
+                                ],
                                 'accepted_name'    => '/^\w[\w\s\.\%\-]*$/u',
                                 'check_subfolders' => 1,
                                 'separator'        => DIRECTORY_SEPARATOR,
                                 'date_format'      => 'j M Y H:i',
                                 'time_format'      => 'H:i',
-                                'archive_mimes'    => array(),
-                                'archivers'        => array(
+                                'archive_mimes'    => [],
+                                'archivers'        => [
                                   'enabled' => false,
-                                  'create'  => array(),
-                                  'extract' => array(),
-                                ),
+                                  'create'  => [],
+                                  'extract' => [],
+                                ],
                                 'glide_url'         => '',
                                 'glide_key'         => '',
                                 'alias'             => 'foo',
                                 'tree_deep'         => 1,
-                                'upload_allow'      => array('image/png', 'image/jpg', 'image/jpeg'),
-                                'upload_order'      => array('deny', 'allow'),
-                                'defaults'          => array('read' => true, 'write' => true),
-                                'upload_deny'       => array('all'),
+                                'upload_allow'      => ['image/png', 'image/jpg', 'image/jpeg'],
+                                'upload_order'      => ['deny', 'allow'],
+                                'defaults'          => ['read' => true, 'write' => true],
+                                'upload_deny'       => ['all'],
                                 'upload_max_size'   => 0,
                                 'upload_max_conn'   => 3,
-                                'dropbox2_settings' => array(
+                                'dropbox2_settings' => [
                                     'aliasFormat'     => '%s@Dropbox',
                                     'path'            => '/',
                                     'separator'       => '/',
@@ -130,8 +130,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'app_key'         => 'some_consumer',
                                     'app_secret'      => 'con$umer',
                                     'enabled'         => true,
-                                ),
-                                'box_settings' => array(
+                                ],
+                                'box_settings' => [
                                     'client_id'      => 'some_consumer',
                                     'client_secret'  => 'con$umer',
                                     'accessToken'    => 'token',
@@ -144,8 +144,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'acceptedName'   => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
                                     'rootCssClass'   => 'elfinder-navbar-root-box',
                                     'enabled'        => true,
-                                ),
-                                'onedrive_settings' => array(
+                                ],
+                                'onedrive_settings' => [
                                     'client_id'         => 'some_consumer',
                                     'client_secret'     => 'con$umer',
                                     'accessToken'       => 'token',
@@ -160,13 +160,13 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'rootCssClass'      => 'elfinder-navbar-root-onedrive',
                                     'useApiThumbnail'   => true,
                                     'enabled'           => true,
-                                ),
-                                'ftp_settings' => array(
+                                ],
+                                'ftp_settings' => [
                                     'host'    => '127.0.0.1',
                                     'user'    => 'root',
                                     'enabled' => true,
-                                ),
-                                'mysql_settings' => array(
+                                ],
+                                'mysql_settings' => [
                                     'enabled'        => true,
                                     'host'           => 'localhost',
                                     'files_table'    => 'elfinder_file',
@@ -176,25 +176,25 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                     'tmpPath'        => '',
                                     'rootCssClass'   => 'elfinder-navbar-root-sql',
                                     'noSessionCache' => 'hasdirs',
-                                ),
+                                ],
                                 'autoload'   => false,
                                 'quarantine' => null,
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        );
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
-        $this->assertProcessedConfigurationEquals($expectedConfiguration, array(__DIR__.'/../Fixtures/'.$path));
+        $this->assertProcessedConfigurationEquals($expectedConfiguration, [__DIR__.'/../Fixtures/'.$path]);
     }
 
     public function getSupportsAllConfigFormatsData()
     {
-        return array(
-            'yml' => array('config/config.yml'),
-            'php' => array('config/config.php'),
-            'xml' => array('config/config.xml'),
-        );
+        return [
+            'yml' => ['config/config.yml'],
+            'php' => ['config/config.php'],
+            'xml' => ['config/config.xml'],
+        ];
     }
 }
