@@ -39,10 +39,8 @@ class ElFinderPreExecutionEvent extends Event
     /**
      * Constructor.
      *
-     * @param Request             $request
-     * @param HttpKernelInterface $httpKernel
-     * @param string              $instance
-     * @param string              $homeFolder
+     * @param string $instance
+     * @param string $homeFolder
      */
     public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder)
     {

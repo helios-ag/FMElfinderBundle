@@ -16,7 +16,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $this->configuratorMock = $this->createMock(ElFinderConfigurationProviderInterface::class);
         $this->configuratorMock->expects($this->any())
                                ->method('getConfiguration')
-                               ->will($this->returnValue(array('parameters' => array())));
+                               ->will($this->returnValue(['parameters' => []]));
         $this->loader = new ElFinderLoader($this->configuratorMock);
         $this->loader->setInstance('minimal');
     }
@@ -24,6 +24,6 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
     public function testConfigure()
     {
         $this->loader->configure();
-        $this->assertEquals(array('parameters' => array()), $this->configuratorMock->getConfiguration('minimal'));
+        $this->assertEquals(['parameters' => []], $this->configuratorMock->getConfiguration('minimal'));
     }
 }

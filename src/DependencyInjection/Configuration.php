@@ -52,7 +52,7 @@ class Configuration implements ConfigurationInterface
                                     })
                                 ->end()
                                 ->prototype('scalar')->end()
-                                ->defaultValue(array())
+                                ->defaultValue([])
                             ->end()
                             ->arrayNode('visible_mime_types')
                                 ->beforeNormalization()
@@ -64,7 +64,7 @@ class Configuration implements ConfigurationInterface
                                     })
                                 ->end()
                                 ->prototype('scalar')->end()
-                                ->defaultValue(array())
+                                ->defaultValue([])
                             ->end()
                             ->arrayNode('connector')
                                 ->addDefaultsIfNotSet()
@@ -121,7 +121,7 @@ class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(array('image'))
+                                                    ->defaultValue(['image'])
                                                 ->end() // upload_allow
                                                 ->arrayNode('upload_deny')
                                                     ->beforeNormalization()
@@ -133,7 +133,7 @@ class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(array('all'))
+                                                    ->defaultValue(['all'])
                                                 ->end() // upload_deny
                                                 ->arrayNode('upload_order')
                                                     ->beforeNormalization()
@@ -145,7 +145,7 @@ class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(array('deny', 'allow'))
+                                                    ->defaultValue(['deny', 'allow'])
                                                 ->end() // upload_order
                                                 ->scalarNode('upload_max_size')->defaultValue(0)->end()
                                                 ->integerNode('upload_max_conn')->defaultValue(3)->end()
@@ -153,7 +153,7 @@ class Configuration implements ConfigurationInterface
                                                     ->useAttributeAsKey('defaults')
                                                     ->normalizeKeys(false)
                                                     ->prototype('boolean')->end()
-                                                    ->defaultValue(array('read' => true, 'write' => true))
+                                                    ->defaultValue(['read' => true, 'write' => true])
                                                 ->end() // defaults
                                                 ->arrayNode('attributes')
                                                     ->prototype('array')
@@ -165,7 +165,7 @@ class Configuration implements ConfigurationInterface
                                                             ->scalarNode('hidden')->defaultValue(false)->end()
                                                         ->end()
                                                     ->end()
-                                                    ->defaultValue(array())
+                                                    ->defaultValue([])
                                                 ->end() // attributes
                                                 ->scalarNode('accepted_name')->defaultValue('/^\w[\w\s\.\%\-]*$/u')->end()
                                                 ->booleanNode('show_hidden')->defaultFalse()->end()
@@ -179,7 +179,7 @@ class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(array())
+                                                    ->defaultValue([])
                                                 ->end() // disabled_commands
                                                 ->integerNode('tree_deep')->defaultValue(0)->end()
                                                 ->integerNode('check_subfolders')->defaultValue(1)->end()
@@ -196,7 +196,7 @@ class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(array())
+                                                    ->defaultValue([])
                                                 ->end() // archive_mimes
                                                 ->arrayNode('archivers')
                                                     ->canBeEnabled()

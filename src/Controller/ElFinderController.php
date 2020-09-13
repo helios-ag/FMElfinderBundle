@@ -23,12 +23,6 @@ class ElFinderController extends AbstractController
     /**
      * Renders Elfinder.
      *
-     * @param Request $request
-     * @param string  $instance
-     * @param string  $homeFolder
-     *
-     * @return Response
-     *
      * @throws Exception
      */
     public function show(Request $request, string $instance, string $homeFolder): Response
@@ -51,14 +45,8 @@ class ElFinderController extends AbstractController
     }
 
     /**
-     * @param array  $parameters
-     * @param string $instance
-     * @param string $homeFolder
-     * @param string $assetsPath
      * @param string $formTypeId
      * @param bool   $multiHomeFolder
-     *
-     * @return array
      *
      * @throws Exception
      */
@@ -202,15 +190,6 @@ class ElFinderController extends AbstractController
         }
     }
 
-    /**
-     * @param SessionInterface         $session
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param Request                  $request
-     * @param string                   $instance
-     * @param string                   $homeFolder
-     *
-     * @return JsonResponse
-     */
     public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
         $efParameters = $this->container->getParameter('fm_elfinder');

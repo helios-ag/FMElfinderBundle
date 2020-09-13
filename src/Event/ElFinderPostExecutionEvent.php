@@ -17,11 +17,8 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
     /**
      * Constructor.
      *
-     * @param Request             $request
-     * @param HttpKernelInterface $httpKernel
-     * @param string              $instance
-     * @param string              $homeFolder
-     * @param array               $result
+     * @param string $instance
+     * @param string $homeFolder
      */
     public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder, array $result)
     {
@@ -48,9 +45,6 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
         return $this->result;
     }
 
-    /**
-     * @param array $result
-     */
     public function setResult(array $result)
     {
         $this->result = $result;

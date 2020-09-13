@@ -11,9 +11,9 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
 {
     protected function getContainerExtensions(): array
     {
-        return array(
+        return [
             new FMElfinderExtension(),
-        );
+        ];
     }
 
     public function testServices()
@@ -29,7 +29,7 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
     {
         $this->container = new ContainerBuilder();
         $loader          = new FMElfinderExtension();
-        $loader->load(array($this->getMinimalConfiguration()), $this->container);
+        $loader->load([$this->getMinimalConfiguration()], $this->container);
         $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 

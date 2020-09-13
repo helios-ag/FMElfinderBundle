@@ -14,10 +14,10 @@ class TwigFormPassTest extends \PHPUnit\Framework\TestCase
         $pass->process($container);
         $this->assertFalse($container->hasParameter('twig.form.resources'));
         $container = new ContainerBuilder();
-        $container->setParameter('twig.form.resources', array());
+        $container->setParameter('twig.form.resources', []);
         $pass->process($container);
-        $this->assertEquals(array(
+        $this->assertEquals([
             '@FMElfinder/Form/elfinder_widget.html.twig',
-        ), $container->getParameter('twig.form.resources'));
+        ], $container->getParameter('twig.form.resources'));
     }
 }

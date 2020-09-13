@@ -121,7 +121,7 @@ class ElFinderLoader
      **/
     public function encode($path)
     {
-        $aPathEncoded = array();
+        $aPathEncoded = [];
 
         $volumes = $this->bridge->getVolumes();
 

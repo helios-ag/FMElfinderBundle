@@ -8,4 +8,4 @@ if (!file_exists($file = __DIR__.'/../vendor/autoload.php')) {
 
 $loader = require $file;
 
-AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
+AnnotationRegistry::registerLoader([$loader, 'loadClass']);
