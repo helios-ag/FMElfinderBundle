@@ -44,17 +44,20 @@ class ElFinderController extends AbstractController
         return $this->render($result['template'], $result['params']);
     }
 
-    /**
-     * @param string $formTypeId
-     * @param bool   $multiHomeFolder
-     * 
-     * @return array
-     *
-     * @throws Exception
-     */
+	/**
+	 * @param array       $parameters
+	 * @param string      $instance
+	 * @param string      $homeFolder
+	 * @param string      $assetsPath
+	 * @param string|null $formTypeId
+	 *
+	 * @return array
+	 *
+	 * @throws Exception
+	 */
     private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
     {
-        
+
         $editor         = $parameters['editor'];
         $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullScreen     = $parameters['fullscreen'];
