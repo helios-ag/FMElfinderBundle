@@ -20,19 +20,20 @@
       "exclude": ["/tests", "./github"]
     },
     "require": {
-        "php":                                 "^7.2",
+        "php":                                 "^7.2 || ^8.0",
         "ext-json":                            "*",
-        "symfony/framework-bundle":            "^4.4 || ^5.0",
-        "symfony/twig-bundle":                 "^4.4 || ^5.0",
-        "symfony/form":                        "^4.4 || ^5.0",
-        "symfony/asset":                       "^4.4 || ^5.0",
+        "symfony/framework-bundle":            "^4.4 || ^5.0 || ^5.2",
+        "symfony/twig-bundle":                 "^4.4 || ^5.0 || ^5.2",
+        "symfony/form":                        "^4.4 || ^5.0 || ^5.2",
+        "symfony/asset":                       "^4.4 || ^5.0 || ^5.2",
+        "symfony/flex":                        "1.*",
         "studio-42/elfinder":                  "~2.1"
     },
     "require-dev" : {
-        "symfony/phpunit-bridge": "^4.1 || ^5.0",
+        "symfony/phpunit-bridge": "^4.1 || ^5.0 || ^5.2",
         "matthiasnoback/symfony-config-test":  "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "symfony/finder": "^4.4 || ^5.0",
+        "symfony/finder": "^4.4 || ^5.0 || ^5.2",
         "php-coveralls/php-coveralls": "^2.0",
         "phpunit/phpunit": "^8.5"
     },

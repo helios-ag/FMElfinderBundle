@@ -13,11 +13,13 @@ matrix:
         env: SYMFONY_VERSION="^4.4.0"
       - php: 7.3
         env: SYMFONY_VERSION="^5.0.0"
+      - php: 8.0
+        env: SYMFONY_VERSION="^5.2.0"
 
 before_install:
   - echo "memory_limit=4G" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
   - phpenv config-rm xdebug.ini || true
-  - composer global require --no-progress --no-scripts --no-plugins symfony/flex dev-master
+  - composer install
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require --no-update "symfony/framework-bundle:${SYMFONY_VERSION}"; fi;
 
 install: php -d memory_limit=-1 $(phpenv which composer) update $COMPOSER_FLAGS --no-suggest
