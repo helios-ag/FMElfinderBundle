@@ -42,12 +42,13 @@ final class ElFinderInstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $publicDir = $this->parameterBag->get('kernel.project_dir').'/public/bundles/fmelfinder';
+        $rootDir = $this->parameterBag->get('kernel.project_dir');
+        $publicDir = $rootDir.'/public/bundles/fmelfinder';
 
-        $this->fileSystem->mirror(self::ELFINDER_CSS_DIR, $publicDir.'/css');
-        $this->fileSystem->mirror(self::ELFINDER_IMG_DIR, $publicDir.'/img');
-        $this->fileSystem->mirror(self::ELFINDER_JS_DIR, $publicDir.'/js');
-        $this->fileSystem->mirror(self::ELFINDER_SOUNDS_DIR, $publicDir.'/sounds');
+        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_CSS_DIR, $publicDir.'/css');
+        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_IMG_DIR, $publicDir.'/img');
+        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_JS_DIR, $publicDir.'/js');
+        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_SOUNDS_DIR, $publicDir.'/sounds');
 
         $output->writeln('elFinder assets successfully installed');
 
