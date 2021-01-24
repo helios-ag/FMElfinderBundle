@@ -59,24 +59,22 @@ class ElFinderLoader
     {
         $this->setInstance($instance);
 
-        $arrayInstance = $efParameters['instances'][$instance]; 
-        $whereIsMulti = $arrayInstance['where_is_multi'];
-        $multiHome = $arrayInstance['multi_home_folder'];
-        $separator = $arrayInstance['folder_separator'];
+        $arrayInstance = $efParameters['instances'][$instance];
+        $whereIsMulti  = $arrayInstance['where_is_multi'];
+        $multiHome     = $arrayInstance['multi_home_folder'];
+        $separator     = $arrayInstance['folder_separator'];
 
         $this->config = $this->configure();
-        
-        if (count($whereIsMulti) > 0)
-        {
-            foreach($whereIsMulti as $key => $value)
-            {
+
+        if (count($whereIsMulti) > 0) {
+            foreach ($whereIsMulti as $key => $value) {
                 if ($multiHome) {
                     $this->config[$key][$value]['path'] = str_replace($separator, '/', $this->config[$key][$value]['path']);
-                    $this->config[$key][$value]['URL'] = str_replace($separator, '/', $this->config[$key][$value]['URL']);
+                    $this->config[$key][$value]['URL']  = str_replace($separator, '/', $this->config[$key][$value]['URL']);
                 }
             }
         }
-        
+
         $this->bridge = new ElFinderBridge($this->config);
         if ($this->session) {
             $this->bridge->setSession($this->session);
