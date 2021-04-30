@@ -23,7 +23,7 @@
         "php":                                 "^7.2 || ^8.0",
         "ext-json":                            "*",
         "symfony/framework-bundle":            "^4.4 || ^5.0 || ^5.2",
-        "symfony/twig-bundle":                 "^4.4 || ^5.0 || ^5.2",
+        "symfony/twig-bundle":                 "^4.4.x-dev",
         "symfony/form":                        "^4.4 || ^5.0 || ^5.2",
         "symfony/asset":                       "^4.4 || ^5.0 || ^5.2",
         "symfony/flex":                        "1.*",
