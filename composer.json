@@ -33,7 +33,7 @@
         "symfony/phpunit-bridge": "^4.1 || ^5.0 || ^5.2",
         "matthiasnoback/symfony-config-test":  "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "symfony/finder": "^4.4 || ^5.0 || ^5.2",
+        "symfony/finder": "^4.4.x-dev",
         "php-coveralls/php-coveralls": "^2.0",
         "phpunit/phpunit": "^8.5"
     },
