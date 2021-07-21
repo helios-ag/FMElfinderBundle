@@ -174,6 +174,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     private function configureFlysystem($opt, $adapter, $serviceName)
     {
+        $filesystem = null;
         switch ($adapter) {
             case 'local':
                 $filesystem = new Filesystem(new Local($opt['local']['path']));
@@ -280,9 +281,9 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'custom':
                 $adapter = $this->container->get($serviceName);
-                if (is_object($adapter) && $adapter instanceof AdapterInterface) {
+                try {
                     $filesystem = new Filesystem($adapter);
-                } else {
+                } catch (\TypeError $error) {
                     throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, AdapterInterface::class));
                 }
 
