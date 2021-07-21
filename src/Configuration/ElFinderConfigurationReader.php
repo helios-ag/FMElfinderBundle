@@ -282,6 +282,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $adapter = $this->container->get($serviceName);
                 if (is_object($adapter) && $adapter instanceof AdapterInterface) {
                     $filesystem = new Filesystem($adapter);
+                } else {
+                    throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, AdapterInterface::class));
                 }
 
                 break;
