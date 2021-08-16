@@ -17,10 +17,6 @@ jobs:
           - 8.0
         phpunit: [8.5]
         dependencies: [highest]
-        include:
-          - php-version: 7.1
-            phpunit: 7.5
-            dependencies: lowest
 
     steps:
       - name: Checkout
