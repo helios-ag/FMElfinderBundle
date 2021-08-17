@@ -1,40 +1,42 @@
-name: Test
+# OS: Linux; Symfony: latest stable; PHP: all the commonly used versions supported by this bundle
+name: "Tests - Linux"
 
-on: [push, pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - 'master'
+
+env:
+  fail-fast: true
 
 jobs:
-  test:
-    name: PHP ${{ matrix.php-version }}
-
-    runs-on: ubuntu-20.04
-
+  tests:
+    name: "PHP ${{ matrix.php-version }}"
+    runs-on: 'ubuntu-latest'
+    continue-on-error: false
     strategy:
       matrix:
-        php-version:
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
-        phpunit: [8.5]
-        dependencies: [highest]
-
+        php-version: ['7.2.5', '7.3', '7.4', '8.0']
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: 'Checkout code'
+        uses: actions/checkout@v2.3.3
 
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
+      - name: 'Install PHP with extensions'
+        uses: shivammathur/setup-php@2.7.0
         with:
+          coverage: none
           php-version: ${{ matrix.php-version }}
-          coverage: pcov
           tools: composer:v2
-          extensions: zip
+          extensions: mbstring, intl, pdo, pdo_sqlite, sqlite3
+          ini-values: date.timezone=UTC
 
-      - name: Install Composer dependencies
-        uses: ramsey/composer-install@v1
-        with:
-          dependency-versions: ${{ matrix.dependencies }}
-          composer-options: --prefer-dist
-
-      - name: Run Tests
-        run: SYMFONY_PHPUNIT_VERSION=${{ matrix.phpunit }} vendor/bin/simple-phpunit
+      - name: 'Install project dependencies'
+        run: |
+          composer global require --no-progress --no-scripts --no-plugins symfony/flex
+          composer update --no-interaction --prefer-dist --optimize-autoloader --prefer-stable
+          vendor/bin/simple-phpunit install
+      - name: 'Run tests'
+        env:
+          SYMFONY_DEPRECATIONS_HELPER: 'max[indirect]=10&max[total]=27'
+        run: vendor/bin/simple-phpunit -v
