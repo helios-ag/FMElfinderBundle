@@ -39,7 +39,7 @@ final class ElFinderInstallerCommand extends Command
     {
         $this
             ->setDescription('Copies elfinder assets to public directory')
-            ->addOption('docroot', NULL, InputOption::VALUE_OPTIONAL, 'Website document root.', 'public')
+            ->addOption('docroot', null, InputOption::VALUE_OPTIONAL, 'Website document root.', 'public')
             ->setHelp(<<<'EOF'
 Default docroot:
   <info>public</info>
@@ -60,16 +60,17 @@ EOF
 
         $rootDir = $this->parameterBag->get('kernel.project_dir');
 
-        $publicDir = sprintf("%s/%s/bundles/fmelfinder", $rootDir, $dr);
+        $publicDir = sprintf('%s/%s/bundles/fmelfinder', $rootDir, $dr);
 
         $io->note(sprintf('Starting to install elfinder to %s folder', $publicDir));
 
-        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_CSS_DIR, $publicDir.'/css');
-        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_IMG_DIR, $publicDir.'/img');
-        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_JS_DIR, $publicDir.'/js');
-        $this->fileSystem->mirror($rootDir . '/' . self::ELFINDER_SOUNDS_DIR, $publicDir.'/sounds');
+        $this->fileSystem->mirror($rootDir.'/'.self::ELFINDER_CSS_DIR, $publicDir.'/css');
+        $this->fileSystem->mirror($rootDir.'/'.self::ELFINDER_IMG_DIR, $publicDir.'/img');
+        $this->fileSystem->mirror($rootDir.'/'.self::ELFINDER_JS_DIR, $publicDir.'/js');
+        $this->fileSystem->mirror($rootDir.'/'.self::ELFINDER_SOUNDS_DIR, $publicDir.'/sounds');
 
         $io->success('elFinder assets successfully installed');
+
         return 0;
     }
 }

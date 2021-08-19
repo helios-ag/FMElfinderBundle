@@ -18,7 +18,7 @@
 
     <testsuites>
         <testsuite name="FMElfinderBundle test suite">
-            <directory suffix="Test.php">./tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 
