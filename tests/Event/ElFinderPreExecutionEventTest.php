@@ -2,11 +2,10 @@
 
 namespace FM\ElfinderBundle\Tests\Event;
 
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 
-class ElFinderPreExecutionEventTest extends TestCase
+class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetCommand()
     {

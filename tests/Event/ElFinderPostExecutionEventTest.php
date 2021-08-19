@@ -2,11 +2,10 @@
 
 namespace FM\ElfinderBundle\Tests\Event;
 
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 
-class ElFinderPostExecutionEventTest extends TestCase
+class ElFinderPostExecutionEventTest extends \PHPUnit\Framework\TestCase
 {
     public function testHasErrors()
     {
