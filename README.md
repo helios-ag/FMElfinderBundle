@@ -5,7 +5,7 @@ FMElfinderBundle
 
 ### Code Quality Assurance ###
 
-| TravisCI | Coverage| License | Version |
+| Tetss | Coverage| License | Version |
 |-------------|-----------------|-----------------|----------------|
 |[![Build Status](https://github.com/helios-ag/FMElfinderBundle/workflows/Tests%20-%20Linux/badge.svg?branch=master)](https://github.com/helios-ag/FMElfinderBundle/actions?query=workflow%3ATests%20- %20Linux+branch%3Amaster)|[![Coverage Status](https://coveralls.io/repos/helios-ag/FMElfinderBundle/badge.svg?branch=master&service=github)](https://coveralls.io/github/helios-ag/FMElfinderBundle?branch=master)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
 
