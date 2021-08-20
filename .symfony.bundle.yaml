@@ -1,6 +1,6 @@
-branches: [master"]
+branches: ["master"]
 maintained_branches: ["master"]
 current_branch: "master"
 dev_branch: "master"
 dev_branch_alias: "10.x"
-doc_dir: "doc/"
+doc_dir: "docs/"
