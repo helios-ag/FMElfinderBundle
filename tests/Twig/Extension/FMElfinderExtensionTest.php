@@ -154,21 +154,21 @@ EOF;
     {
         $this->expectException(\Twig\Error\RuntimeError::class);
         $this->expectExceptionMessage('The function can be applied to strings only.');
-        $this->extension->summernote([]);
+        $this->extension->summernote(1);
     }
 
     public function testTinyMCEInstanceNotString()
     {
         $this->expectException(\Twig\Error\RuntimeError::class);
         $this->expectExceptionMessage('The function can be applied to strings only.');
-        $this->extension->tinymce([]);
+        $this->extension->tinymce(1);
     }
 
     public function testTinyMCE4InstanceNotString()
     {
         $this->expectException(\Twig\Error\RuntimeError::class);
         $this->expectExceptionMessage('The function can be applied to strings only.');
-        $this->extension->tinymce4([]);
+        $this->extension->tinymce4(1);
     }
 
     public function testGetFunctions()
