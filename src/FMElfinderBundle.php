@@ -17,6 +17,6 @@ class FMElfinderBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new TwigFormPass());
-        $container->addCompilerPass(new RegisterListenersPass('event_dispatcher', 'fm_elfinder.event_listener', 'fm_elfinder.event_subscriber'));
+        $container->addCompilerPass(new RegisterListenersPass('event_dispatcher', 'kernel.event_listener', 'kernel.event_subscriber'));
     }
 }

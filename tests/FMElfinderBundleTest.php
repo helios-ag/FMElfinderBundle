@@ -14,21 +14,14 @@ class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 
     public function testCompilerPasses()
     {
-        $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->disableOriginalConstructor()
-            ->setMethods(['addCompilerPass'])
-            ->getMock();
-        $containerBuilder
-            ->expects($this->any())
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('FM\ElfinderBundle\DependencyInjection\Compiler\TwigFormPass'))
-            ->will($this->returnSelf());
-        $containerBuilder
-            ->expects($this->any())
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass'))
-            ->will($this->returnSelf());
+        $containerBuilder = new ContainerBuilder();
+
         $bundle = new FMElfinderBundle();
         $bundle->build($containerBuilder);
+
+        $passes = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
+        self::assertEquals(2, count($passes));
+        self::assertInstanceOf(TwigFormPass::class, $passes[2]);
+
     }
 }
