@@ -78,7 +78,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     $filesystem  = $this->configureFlysystem($opt, $adapter, $serviceName);
                 }
             }
-            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : null;
+            $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : false;
 
             $driverOptions = [
                 'driver'            => $parameter['driver'],
