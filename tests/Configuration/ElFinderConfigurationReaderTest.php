@@ -27,6 +27,11 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $containerMock
             ->expects($this->any())
             ->method('has')
+            ->willReturn(true);
+
+        $containerMock
+            ->expects($this->any())
+            ->method('get')
             ->will($this->returnValueMap([
                 [
                     'elfinder.driver.local',
