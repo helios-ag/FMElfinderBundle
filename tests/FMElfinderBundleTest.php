@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Tests;
 
 use FM\ElfinderBundle\FMElfinderBundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 {
