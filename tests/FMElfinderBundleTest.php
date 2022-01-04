@@ -20,7 +20,7 @@ class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
         $bundle = new FMElfinderBundle();
         $bundle->build($containerBuilder);
 
-        $passes = $container->getCompilerPassConfig()->getBeforeOptimizationPasses();
+        $passes = $containerBuilder->getCompilerPassConfig()->getBeforeOptimizationPasses();
         self::assertEquals(2, count($passes));
         self::assertInstanceOf(TwigFormPass::class, $passes[2]);
 
