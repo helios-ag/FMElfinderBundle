@@ -4,13 +4,14 @@ namespace FM\ElfinderBundle\Tests;
 
 use FM\ElfinderBundle\FMElfinderBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testBundle()
+    public function testBundle(): void
     {
         $bundle = new FMElfinderBundle();
-        $this->assertInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle', $bundle);
+        $this->assertInstanceOf(Bundle::class, $bundle);
     }
 
     public function testCompilerPasses()
@@ -21,8 +22,7 @@ class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
         $bundle->build($containerBuilder);
 
         $passes = $containerBuilder->getCompilerPassConfig()->getBeforeOptimizationPasses();
-        self::assertEquals(2, count($passes));
+        self::assertEquals(8, count($passes));
         self::assertInstanceOf(TwigFormPass::class, $passes[2]);
-
     }
 }
