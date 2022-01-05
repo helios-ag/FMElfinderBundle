@@ -4,7 +4,6 @@ namespace FM\ElfinderBundle\Tests\Form\Type;
 
 use FM\ElfinderBundle\Form\Type\ElFinderType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Form\FormView;
 
 class ElFinderTypeTest extends \PHPUnit\Framework\TestCase

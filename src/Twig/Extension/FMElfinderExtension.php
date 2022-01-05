@@ -11,7 +11,6 @@ use Twig\TwigFunction;
 
 class FMElfinderExtension extends AbstractExtension
 {
-
     protected Environment $twig;
 
     public function __construct(Environment $twig)
