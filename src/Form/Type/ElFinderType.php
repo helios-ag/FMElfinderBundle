@@ -55,7 +55,7 @@ class ElFinderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): ?string
     {
         if (method_exists('Symfony\Component\Form\AbstractType', 'getBlockPrefix')) {
             return 'Symfony\Component\Form\Extension\Core\Type\TextType';
@@ -75,7 +75,7 @@ class ElFinderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'elfinder';
     }
