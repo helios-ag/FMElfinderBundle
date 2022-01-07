@@ -3,32 +3,25 @@
 namespace FM\ElfinderBundle\Tests;
 
 use FM\ElfinderBundle\FMElfinderBundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testBundle()
+    public function testBundle(): void
     {
         $bundle = new FMElfinderBundle();
-        $this->assertInstanceOf('Symfony\Component\HttpKernel\Bundle\Bundle', $bundle);
+        $this->assertInstanceOf(Bundle::class, $bundle);
     }
 
     public function testCompilerPasses()
     {
-        $containerBuilder = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->disableOriginalConstructor()
-            ->setMethods(['addCompilerPass'])
-            ->getMock();
-        $containerBuilder
-            ->expects($this->at(0))
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('FM\ElfinderBundle\DependencyInjection\Compiler\TwigFormPass'))
-            ->will($this->returnSelf());
-        $containerBuilder
-            ->expects($this->at(1))
-            ->method('addCompilerPass')
-            ->with($this->isInstanceOf('Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass'))
-            ->will($this->returnSelf());
+        $containerBuilder = new ContainerBuilder();
+
         $bundle = new FMElfinderBundle();
         $bundle->build($containerBuilder);
+
+        $passes = $containerBuilder->getCompilerPassConfig()->getBeforeOptimizationPasses();
+        self::assertEquals(8, count($passes));
     }
 }

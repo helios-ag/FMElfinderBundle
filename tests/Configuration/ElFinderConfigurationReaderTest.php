@@ -27,6 +27,11 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $containerMock
             ->expects($this->any())
             ->method('has')
+            ->willReturn(true);
+
+        $containerMock
+            ->expects($this->any())
+            ->method('get')
             ->will($this->returnValueMap([
                 [
                     'elfinder.driver.local',
@@ -307,7 +312,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         return $attributesObject;
     }
 
-    public function testConfiguration()
+    public function testConfiguration(): void
     {
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $configuration = $reader->getConfiguration('default');
@@ -316,14 +321,14 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('LocalFileSystem', $configuration['roots'][0]['driver']);
     }
 
-    public function testSubClassOfHelper()
+    public function testSubClassOfHelper(): void
     {
         $rc = new \ReflectionClass('FM\ElfinderBundle\Configuration\ElFinderConfigurationReader');
 
         $this->assertTrue($rc->isSubclassOf('FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface'));
     }
 
-    public function testAccessHidden()
+    public function testAccessHidden(): void
     {
         $reader     = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $hiddenPath = '.hiddenPath';
@@ -339,7 +344,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertNull($reader->access('write', $visiblePath, 'dummy', 'dummy'));
     }
 
-    public function testPathAndUrlAndHomeFolder()
+    public function testPathAndUrlAndHomeFolder(): void
     {
         // with path and without homeFolder
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
@@ -372,7 +377,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('https://test.com/bob', $configuration['roots'][0]['URL']);
     }
 
-    public function testAccessTmbURLOption()
+    public function testAccessTmbURLOption(): void
     {
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
         $configuration = $reader->getConfiguration('default');
