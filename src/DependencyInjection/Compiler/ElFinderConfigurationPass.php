@@ -15,7 +15,7 @@ final class ElFinderConfigurationPass implements CompilerPassInterface
             return;
         }
 
-        $listeners = $container->findTaggedServiceIds('fm_elfinder.listener');
+        $listeners   = $container->findTaggedServiceIds('fm_elfinder.listener');
         $subscribers = $container->findTaggedServiceIds('fm_elfinder.subscriber');
 
         foreach ($listeners as $serviceId => $tags) {
