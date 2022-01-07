@@ -14,18 +14,18 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="service_container"/>
         </service>
-        <service id="fm_elfinder.loader.default" class="%fm_elfinder.loader%">
+        <service id="fm_elfinder.loader.default" class="%fm_elfinder.loader%" autowire="true">
             <argument type="service" id="fm_elfinder.configurator"/>
         </service>
+        <service id="FM\ElfinderBundle\Loader\ElFinderLoader" alias="fm_elfinder.loader.default"/>
         <service id="twig.extension.fm_elfinder_init" class="FM\ElfinderBundle\Twig\Extension\FMElfinderExtension">
             <argument type="service" id="twig"/>
             <tag name="twig.extension" alias="fm_elfinder_init" />
         </service>
         <service id="FM\ElfinderBundle\Controller\ElFinderController">
             <tag name="controller.service_arguments" />
-            <call method="setContainer">
-                <argument type="service" id="service_container"/>
-            </call>
+            <argument type="service" id="twig" />
+            <argument></argument>
         </service>
     </services>
 </container>

@@ -2,6 +2,7 @@
 
 namespace FM\ElfinderBundle\DependencyInjection;
 
+use FM\ElfinderBundle\Controller\ElFinderController;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -21,6 +22,9 @@ final class FMElfinderExtension extends Extension
         $loader->load('form.xml');
         $loader->load('command.xml');
         $container->setParameter('fm_elfinder', $config);
+
+        $repo = $container->getDefinition(ElFinderController::class);
+        $repo->replaceArgument(1, $config);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
         $container->setAlias('fm_elfinder.loader', $config['loader']);
         $container->getAlias('fm_elfinder.loader')->setPublic(true);
