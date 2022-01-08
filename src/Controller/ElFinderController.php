@@ -7,8 +7,6 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,7 +24,7 @@ class ElFinderController
 
     public function __construct(Environment $twig, array $params)
     {
-        $this->twig = $twig;
+        $this->twig   = $twig;
         $this->params = $params;
     }
 
