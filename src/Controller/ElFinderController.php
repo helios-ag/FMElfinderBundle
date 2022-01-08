@@ -7,7 +7,6 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,10 +15,19 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
-use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Twig\Environment;
 
-class ElFinderController extends AbstractController
+class ElFinderController
 {
+    private Environment $twig;
+
+    public function __construct(Environment $twig, array $params)
+    {
+        $this->twig   = $twig;
+        $this->params = $params;
+    }
+
     /**
      * Renders Elfinder.
      *
@@ -27,7 +35,7 @@ class ElFinderController extends AbstractController
      */
     public function show(Request $request, string $instance, string $homeFolder): Response
     {
-        $efParameters = $this->container->getParameter('fm_elfinder');
+        $efParameters = $this->params;
 
         if (empty($efParameters['instances'][$instance])) {
             throw new NotFoundHttpException('Instance not found');
@@ -41,7 +49,7 @@ class ElFinderController extends AbstractController
         $assetsPath      = $efParameters['assets_path'];
         $result          = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
 
-        return $this->render($result['template'], $result['params']);
+        return new Response($this->twig->render($result['template'], $result['params']));
     }
 
     /**
@@ -187,17 +195,15 @@ class ElFinderController extends AbstractController
         }
     }
 
-    public function load(SessionInterface $session, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
+    public function load(SessionInterface $session, ElFinderLoader $loader, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
-        $efParameters = $this->container->getParameter('fm_elfinder');
-        $loader       = $this->get('fm_elfinder.loader');
+        $efParameters = $this->params;
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
         if ($loader instanceof ElFinderLoader) {
             $loader->setSession(new ElFinderSession($session));
         }
-        /** @var HttpKernel $httpKernel */
-        $httpKernel        = $this->get('http_kernel');
+
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $eventDispatcher->dispatch($preExecutionEvent);
 
@@ -213,7 +219,7 @@ class ElFinderController extends AbstractController
     public function mainJS()
     {
         return new Response(
-            $this->renderView('@FMElfinder/Elfinder/helper/main.js.twig'),
+            $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig'),
             200,
             [
                 'Content-type' => 'text/javascript',
