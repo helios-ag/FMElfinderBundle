@@ -201,11 +201,12 @@ and of course be sure to set proper write/read permissions on home folders.
 
 Yes you can with this configuration in your fm_elfinder.yaml
 
-
+```yaml
 where_is_multi:
     {connector}: {index of the connector}
 multi_home_folder: true
 folder_separator: {one char other of /}
+```
 
 ### Example
 ```
