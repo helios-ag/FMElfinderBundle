@@ -61,3 +61,77 @@ design:
       - '@EasyAdmin/form/bootstrap_4.html.twig'
       - '@FMElfinder/Form/elfinder_widget.html.twig'
 ``` 
+
+## EasyAdmin 3.x/4.x integration
+
+Almost same as for 2.x, but you need to add
+
+```php
+
+// ProjectCrudController.php
+// ...
+public function configureFields(string $pageName): iterable
+{
+    // ...
+    yield Field::new('image', 'Image')
+        ->setFormType(ElFinderType::class)
+        ->setFormTypeOptions([
+            'instance' => 'default',
+            'enable' => true,
+        ])
+        ->onlyOnForms()
+    ;
+    // ...
+}
+
+public function configureCrud(Crud $crud): Crud
+{
+    return $crud
+        // ...
+        ->addFormTheme('@FMElfinder/Form/elfinder_widget.html.twig')
+    ;
+}
+```
+
+Collection field:
+```php
+    return [
+        Field::new('cover', 'Cover')->setFormType(ElFinderType::class)
+                        ->setFormTypeOptions(
+                            [
+                                'instance' => 'image_form',
+                                'attr' => ['class' => 'col-6'],
+                            ]
+                        )
+                        ->hideOnIndex(),
+                    CollectionField::new('photos', 'Photos')
+                    ->setEntryType(PhotoType::class)
+    ];
+```
+
+```php
+    public function buildForm(FormBuilderInterface $builder, array $options)
+        {
+            $builder
+                ->add('path', ElFinderType::class, [
+                    'instance' => 'image_form',
+                    'enable' => true
+                ])
+                ->add('translations', TranslationsType::class, [
+                    'fields' => [
+                        'description' => [
+                            'field_type' => CKEditorType::class,
+                            'label' => 'Description',
+                        ],
+                    ],
+                ]);
+        }
+```
+
+And override elfidner_widget.html.twig
+```js
+    live('click', '[data-type="elfinder-input-field"]', function (event) {
+                var id = $(this).attr('id');
+                var childWin = window.open("{{path('elfinder', {'instance': instance, 'homeFolder': homeFolder })}}?id="+id, "popupWindow", "height=450, width=900");
+        });
+```

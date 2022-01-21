@@ -43,6 +43,7 @@ Recommended bundles to use with:
 - [Elfinder Form Type](/docs/elfinder-form-type.md)
     - [Configuration](/docs/elfinder-form-type.md#configuration)
     - [EasyAdmin 2.x](/docs/elfinder-form-type.md#easyadmin-2x-integration)
+    - [EasyAdmin 3.x/4.x](/docs/elfinder-form-type.md#easyadmin-3x/4x-integration)
 - [CKEditor integration](/docs/ckeditor-integration.md)
     - [Installation](/docs/ckeditor-integration.md#step-1-installation)
     - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
