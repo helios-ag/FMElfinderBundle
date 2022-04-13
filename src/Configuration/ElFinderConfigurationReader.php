@@ -85,7 +85,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'service'           => $driver,
                 'glideURL'          => $parameter['glide_url'],
                 'glideKey'          => $parameter['glide_key'],
-                'plugin'            => $parameter['plugins'],
+                'plugin'            => $options['plugins'],
                 'path'              => $pathAndHomeFolder,
                 'startPath'         => $parameter['start_path'],
                 'encoding'          => $parameter['encoding'],
