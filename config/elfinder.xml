@@ -26,7 +26,7 @@
             <tag name="controller.service_arguments" />
             <argument type="service" id="twig" />
             <argument></argument>
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="fm_elfinder.loader"/>
         </service>
     </services>
 </container>
