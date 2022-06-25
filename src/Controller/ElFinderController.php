@@ -7,6 +7,7 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,10 +23,11 @@ class ElFinderController
 {
     private Environment $twig;
 
-    public function __construct(Environment $twig, array $params)
+    public function __construct(Environment $twig, array $params, ContainerInterface $container)
     {
         $this->twig   = $twig;
         $this->params = $params;
+        $this->container = $container;
     }
 
     /**
@@ -195,8 +197,9 @@ class ElFinderController
         }
     }
 
-    public function load(SessionInterface $session, ElFinderLoader $loader, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
+    public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
+        $loader = $this->container->get('fm_elfinder.loader');
         $efParameters = $this->params;
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
