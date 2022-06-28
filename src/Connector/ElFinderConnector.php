@@ -11,7 +11,7 @@ class ElFinderConnector extends \elFinderConnector
         if (null === $queryParameters) {
             $queryParameters = $_GET;
         }
-        return json_encode($this->execute($queryParameters)));
+        return json_encode($this->execute($queryParameters));
     }
 
     public function execute($queryParameters)
