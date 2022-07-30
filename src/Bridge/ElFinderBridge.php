@@ -34,7 +34,7 @@ class ElFinderBridge extends ElFinder
             $volume = null;
             if (isset($o['service'])) {
                 $driver = $o['service'];
-                if (is_object($driver) && $driver instanceof elFinderVolumeDriver) {
+                if ($driver instanceof elFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
                 }
@@ -53,10 +53,7 @@ class ElFinderBridge extends ElFinder
         parent::mountVolumes($opts);
     }
 
-    /**
-     * @return array
-     */
-    public function getVolumes()
+    public function getVolumes(): array
     {
         return $this->volumes;
     }

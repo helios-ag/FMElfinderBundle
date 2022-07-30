@@ -11,7 +11,7 @@ class ElFinderConnector extends \elFinderConnector
         if (null === $queryParameters) {
             $queryParameters = $_GET;
         }
-        exit(json_encode($this->execute($queryParameters)));
+        return json_encode($this->execute($queryParameters));
     }
 
     public function execute($queryParameters)
@@ -28,7 +28,7 @@ class ElFinderConnector extends \elFinderConnector
             $_POST    = $src;
             $_REQUEST = array_merge_recursive($src, $_REQUEST);
         }
-        $cmd    = isset($src['cmd']) ? $src['cmd'] : '';
+        $cmd    = $src['cmd'] ?? '';
         $args   = [];
 
         if (!function_exists('json_encode')) {
@@ -55,7 +55,7 @@ class ElFinderConnector extends \elFinderConnector
         foreach ($this->elFinder->commandArgsList($cmd) as $name => $req) {
             $arg = 'FILES' == $name
                 ? $_FILES
-                : (isset($src[$name]) ? $src[$name] : '');
+                : ($src[$name] ?? '');
 
             if (!is_array($arg)) {
                 $arg = trim($arg);
@@ -66,7 +66,7 @@ class ElFinderConnector extends \elFinderConnector
             $args[$name] = $arg;
         }
 
-        $args['debug'] = isset($src['debug']) ? (bool) $src['debug'] : false;
+        $args['debug'] = isset($src['debug']) && $src['debug'];
 
         return $this->output($this->elFinder->exec($cmd, $this->input_filter($args)));
     }
@@ -75,8 +75,7 @@ class ElFinderConnector extends \elFinderConnector
     {
         if (isset($data['pointer'])) {
             parent::output($data);
-        } else {
-            return $data;
         }
+        return $data;
     }
 }

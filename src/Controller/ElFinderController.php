@@ -21,6 +21,7 @@ use Twig\Environment;
 class ElFinderController
 {
     private Environment $twig;
+    protected array $params;
 
     public function __construct(Environment $twig, array $params)
     {

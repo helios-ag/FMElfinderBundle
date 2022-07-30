@@ -8,25 +8,17 @@ use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * Class ElFinderLoader.
- */
-class ElFinderLoader
+class ElFinderLoader implements ElFinderLoaderInterface
 {
-    /** @var string */
-    protected $instance;
+    protected string $instance;
 
-    /** @var ElFinderConfigurationProviderInterface */
-    protected $configurator;
+    protected ElFinderConfigurationProviderInterface $configurator;
 
-    /** @var array */
-    protected $config;
+    protected array $config;
 
-    /** @var ElFinderBridge */
-    protected $bridge;
+    protected ElFinderBridge $bridge;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected ?SessionInterface $session;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
@@ -38,7 +30,7 @@ class ElFinderLoader
      *
      * @return array
      */
-    public function configure()
+    public function configure(): array
     {
         $configurator = $this->configurator;
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
@@ -55,7 +47,7 @@ class ElFinderLoader
      *
      * @throws \Exception
      */
-    public function initBridge($instance, array $efParameters)
+    public function initBridge(string $instance, array $efParameters)
     {
         $this->setInstance($instance);
 
@@ -99,10 +91,7 @@ class ElFinderLoader
         }
     }
 
-    /**
-     * @param string $instance
-     */
-    public function setInstance($instance)
+    public function setInstance(string $instance): void
     {
         $this->instance = $instance;
     }
@@ -119,7 +108,7 @@ class ElFinderLoader
      *
      * @return mixed
      **/
-    public function encode($path)
+    public function encode(string $path)
     {
         $aPathEncoded = [];
 
@@ -145,7 +134,7 @@ class ElFinderLoader
      *
      * @return string
      **/
-    public function decode($hash)
+    public function decode(string $hash)
     {
         $volume = $this->bridge->getVolume($hash);
 
@@ -153,7 +142,7 @@ class ElFinderLoader
         return (!empty($volume)) ? $volume->getPath($hash) : false;
     }
 
-    public function setSession($session)
+    public function setSession(SessionInterface $session): void
     {
         $this->session = $session;
     }

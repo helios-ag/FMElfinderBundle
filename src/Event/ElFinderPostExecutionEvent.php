@@ -9,18 +9,13 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 {
     /**
      * Command execution result.
-     *
-     * @var array
      */
-    protected $result;
+    protected array $result;
 
     /**
      * Constructor.
-     *
-     * @param string $instance
-     * @param string $homeFolder
      */
-    public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder, array $result)
+    public function __construct(Request $request, HttpKernelInterface $httpKernel, string $instance, string $homeFolder, array $result)
     {
         parent::__construct($request, $httpKernel, $instance, $homeFolder);
 
@@ -29,23 +24,18 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 
     /**
      * Tells if execution has encountered errors.
-     *
-     * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return isset($this->result['error']);
     }
 
-    /**
-     * @return array
-     */
-    public function getResult()
+    public function getResult(): array
     {
         return $this->result;
     }
 
-    public function setResult(array $result)
+    public function setResult(array $result): void
     {
         $this->result = $result;
     }

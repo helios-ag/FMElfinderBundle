@@ -67,7 +67,7 @@ class ElFinderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->getBlockPrefix();
     }

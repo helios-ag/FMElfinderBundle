@@ -24,14 +24,11 @@ final class ElFinderInstallerCommand extends Command
 
     protected static $defaultName = 'elfinder:install';
 
-    protected $fileSystem;
 
-    protected $parameterBag;
-
-    public function __construct(Filesystem $filesystem, ParameterBagInterface $parameterBag)
-    {
-        $this->fileSystem   = $filesystem;
-        $this->parameterBag = $parameterBag;
+    public function __construct(
+        protected Filesystem $filesystem,
+        protected ParameterBagInterface $parameterBag
+    ) {
         parent::__construct();
     }
 
