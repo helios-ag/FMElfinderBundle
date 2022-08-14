@@ -13,7 +13,7 @@ use League\Flysystem\Adapter\Ftp;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use League\Flysystem\Sftp\SftpAdapter;
 use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
-use League\Flysystem\AwsS3v3\AwsS3Adapter as AwsS3v3;
+use League\Flysystem\AwsS3v3\AwsS3v3Adapter as AwsS3v3;
 use League\Flysystem\GridFS\GridFSAdapter;
 use OpenCloud\Rackspace;
 use League\Flysystem\Rackspace\RackspaceAdapter;
@@ -242,7 +242,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'endpoint'                => $opt['aws_s3_v3']['endpoint'],
                     'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
                 ]);
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], $opt['aws_s3_v3']['options']));
+                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options']));
 
                 break;
             case 'copy_com':
