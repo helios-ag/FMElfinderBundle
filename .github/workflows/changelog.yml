@@ -1,0 +1,30 @@
+name: Changelog
+
+on: push
+
+jobs:
+  generate_changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate change log
+        uses: heinrichreimer/github-changelog-generator-action@v2.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} 
+          headerLabel: "# Changelog"
+          breakingLabel: '### Breaking'
+          enhancementLabel: '### Enhancements'
+          stripGeneratorNotice: true
+          bugsLabel: '### Fixes'
+          issues: true
+          issuesWoLabels: true
+          pullRequests: true
+          prWoLabels: true
+          author: false
+          verbose: true
+      - name: "🖨️ Print changelog to console"
+        run: cat CHANGELOG.md
+      - name: "📤 Upload changelog"
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          name: "Changelog"
+          path: CHANGELOG.md                  

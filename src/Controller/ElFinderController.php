@@ -21,12 +21,14 @@ use Twig\Environment;
 class ElFinderController
 {
     private Environment $twig;
+    private $loader;
     protected array $params;
 
-    public function __construct(Environment $twig, array $params)
+    public function __construct(Environment $twig, array $params, $loader)
     {
         $this->twig   = $twig;
         $this->params = $params;
+        $this->loader = $loader;
     }
 
     /**
@@ -196,8 +198,9 @@ class ElFinderController
         }
     }
 
-    public function load(SessionInterface $session, ElFinderLoader $loader, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
+    public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
+        $loader = $this->loader;
         $efParameters = $this->params;
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
