@@ -3,3 +3,4 @@ Tests/cache
 Tests/log
 Tests/Functional/cache
 Tests/Functional/log
+vendor

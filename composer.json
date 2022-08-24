@@ -20,7 +20,7 @@
       "exclude": ["/tests", "./github"]
     },
     "require": {
-        "php":                                 "^7.4 || ^8.0",
+        "php":                                 "^8.0",
         "ext-json":                            "*",
         "symfony/framework-bundle":            "^4.4 || ^5.0 || ^5.2 || ^6.0",
         "symfony/twig-bundle":                 "^4.4 || ^5.0 || ^5.2 || ^6.0",
