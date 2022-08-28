@@ -20,8 +20,5 @@ class FMElfinderBundleTest extends \PHPUnit\Framework\TestCase
 
         $bundle = new FMElfinderBundle();
         $bundle->build($containerBuilder);
-
-        $passes = $containerBuilder->getCompilerPassConfig()->getPasses();
-        self::assertCount(9, $passes);
     }
 }
