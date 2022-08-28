@@ -6,6 +6,7 @@ namespace FM\ElfinderBundle\Controller;
 
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
+use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
 use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +22,10 @@ use Twig\Environment;
 class ElFinderController
 {
     private Environment $twig;
-    private $loader;
+    private ElFinderLoaderInterface $loader;
     protected array $params;
 
-    public function __construct(Environment $twig, array $params, $loader)
+    public function __construct(Environment $twig, array $params, ElFinderLoaderInterface $loader)
     {
         $this->twig   = $twig;
         $this->params = $params;
@@ -220,7 +221,7 @@ class ElFinderController
         return new JsonResponse($postExecutionEvent->getResult());
     }
 
-    public function mainJS()
+    public function mainJS(): Response
     {
         return new Response(
             $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig'),

@@ -11,13 +11,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class ElFinderLoader implements ElFinderLoaderInterface
 {
     protected string $instance;
-
     protected ElFinderConfigurationProviderInterface $configurator;
-
     protected array $config;
-
     protected ElFinderBridge $bridge;
-
     protected ?SessionInterface $session;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
@@ -33,9 +29,6 @@ class ElFinderLoader implements ElFinderLoaderInterface
     public function configure(): array
     {
         $configurator = $this->configurator;
-        if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
-            throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
-        }
 
         return $configurator->getConfiguration($this->instance);
     }
@@ -75,20 +68,15 @@ class ElFinderLoader implements ElFinderLoaderInterface
 
     /**
      * Starts ElFinder.
-     *
-     * @var Request
-     *
-     * @return void|array
      */
-    public function load(Request $request)
+    public function load(Request $request): array|string
     {
         $connector = new ElFinderConnector($this->bridge);
 
         if ($this->config['corsSupport']) {
             return $connector->execute($request->query->all());
-        } else {
-            $connector->run($request->query->all());
         }
+        return $connector->run($request->query->all());
     }
 
     public function setInstance(string $instance): void
@@ -103,12 +91,8 @@ class ElFinderLoader implements ElFinderLoaderInterface
 
     /**
      * Encode path into hash.
-     *
-     * @param string $path
-     *
-     * @return mixed
-     **/
-    public function encode(string $path)
+     */
+    public function encode(string $path): mixed
     {
         $aPathEncoded = [];
 
@@ -129,12 +113,8 @@ class ElFinderLoader implements ElFinderLoaderInterface
 
     /**
      * Decode path from hash.
-     *
-     * @param string $hash
-     *
-     * @return string
-     **/
-    public function decode(string $hash)
+     */
+    public function decode(string $hash): string
     {
         $volume = $this->bridge->getVolume($hash);
 
@@ -142,7 +122,7 @@ class ElFinderLoader implements ElFinderLoaderInterface
         return (!empty($volume)) ? $volume->getPath($hash) : false;
     }
 
-    public function setSession(SessionInterface $session): void
+    public function setSession(?SessionInterface $session): void
     {
         $this->session = $session;
     }

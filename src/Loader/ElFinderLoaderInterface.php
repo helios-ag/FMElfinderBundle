@@ -21,7 +21,7 @@ interface ElFinderLoaderInterface
      */
     public function initBridge(string $instance, array $efParameters);
 
-    public function load(Request $request): array;
+    public function load(Request $request): array|string;
 
     public function setInstance(string $instance): void;
 
