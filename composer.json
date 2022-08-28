@@ -43,10 +43,17 @@
         "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
     },
     "config": {
+        "sort-packages": true,
+        "preferred-install": {
+            "symfony/doctrine-bridge": "source",
+            "*": "dist"
+        },
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
+            "composer/installers": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "composer/package-versions-deprecated": true,
+            "oomphinc/composer-installers-extender": true
         }
     },
     "autoload": {
