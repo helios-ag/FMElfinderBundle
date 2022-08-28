@@ -1,41 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        bootstrap="tests/autoload.php"
-        colors="true"                                
-        xsi:noNamespaceSchemaLocation="../vendor/phpunit/phpunit/phpunit.xsd"
->
-
-    <php>
-        <server name="KERNEL_DIR" value="./tests/Functional" />
-        <ini name="error_reporting" value="-1" />
-    </php>
-
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-    </listeners>
-
-    <testsuites>
-        <testsuite name="FMElfinderBundle test suite">
-            <directory>./tests</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory>./</directory>
-            <exclude>
-                <directory>./src/Controller</directory>
-                <directory>./src/Resources</directory>
-                <directory>./tests</directory>
-                <directory>./vendor</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
-    <logging>
-        <!-- and this is where your report will be written -->
-        <log type="coverage-clover" target="./clover.xml"/>
-    </logging>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/autoload.php" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage includeUncoveredFiles="true">
+    <include>
+      <directory>./</directory>
+    </include>
+    <exclude>
+      <directory>./src/Controller</directory>
+      <directory>./src/Resources</directory>
+      <directory>./tests</directory>
+      <directory>./vendor</directory>
+    </exclude>
+    <report>
+      <clover outputFile="./clover.xml"/>
+    </report>
+  </coverage>
+  <php>
+    <server name="KERNEL_DIR" value="./tests/Functional"/>
+    <ini name="error_reporting" value="-1"/>
+  </php>
+  <listeners>
+    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+  </listeners>
+  <testsuites>
+    <testsuite name="FMElfinderBundle test suite">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <logging>
+    <!-- and this is where your report will be written -->
+  </logging>
 </phpunit>
