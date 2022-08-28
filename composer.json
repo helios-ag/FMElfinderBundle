@@ -42,8 +42,12 @@
         "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
         "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
     },
-    "allow-plugins": {
-        "symfony/thanks": true
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "symfony/flex": true,
+            "symfony/runtime": true
+        }
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "src/" }
