@@ -232,16 +232,19 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'aws_s3_v3':
-                $client = new S3Client([
-                    'credentials' => [
-                        'key'     => $opt['aws_s3_v3']['key'],
-                        'secret'  => $opt['aws_s3_v3']['secret'],
-                    ],
+                $s3Options = [
                     'region'                  => $opt['aws_s3_v3']['region'],
                     'version'                 => $opt['aws_s3_v3']['version'],
                     'endpoint'                => $opt['aws_s3_v3']['endpoint'],
                     'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
-                ]);
+                ];
+                if (!empty($opt['aws_s3_v3']['key']) && !empty($opt['aws_s3_v3']['secret'])) {
+                    $s3Options['credentials'] = [
+                        'key'    => $opt['aws_s3_v3']['key'],
+                        'secret' => $opt['aws_s3_v3']['secret'],
+                    ];
+                }
+                $client = new S3Client($s3Options);
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options']));
 
                 break;
