@@ -244,7 +244,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                         'secret' => $opt['aws_s3_v3']['secret'],
                     ];
                 }
-                $client = new S3Client($s3Options);
+                $client     = new S3Client($s3Options);
                 $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options']));
 
                 break;
