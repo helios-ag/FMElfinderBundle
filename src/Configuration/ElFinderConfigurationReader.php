@@ -13,7 +13,7 @@ use League\Flysystem\Adapter\Ftp;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use League\Flysystem\Sftp\SftpAdapter;
 use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
-use League\Flysystem\AwsS3v3\AwsS3v3Adapter as AwsS3v3;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as AwsS3v3;
 use League\Flysystem\GridFS\GridFSAdapter;
 use OpenCloud\Rackspace;
 use League\Flysystem\Rackspace\RackspaceAdapter;
