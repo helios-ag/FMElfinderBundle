@@ -226,7 +226,7 @@ class ElFinderController
     {
         $version = new EmptyVersionStrategy();
         $package = new Package($version);
-        $mainUrl = $package->getUrl('bundles/fmelfinder/js');
+        $mainUrl = $package->getUrl('/bundles/fmelfinder/js');
         return new Response(
             $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig',['mainUrl' => $mainUrl]),
             200,
