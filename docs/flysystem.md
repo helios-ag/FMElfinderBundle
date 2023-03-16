@@ -6,13 +6,13 @@ You will need library files to work with Flysystem:
 First add flysystem elfinder driver:
 
 ```sh
-  composer require barryvdh/elfinder-flysystem-driver
+composer require barryvdh/elfinder-flysystem-driver
 ```
 
 Depending which driver you want to use, you need require appropriate driver, for example:
 
 ```sh
-  composer require league/flysystem-aws-s3-v3
+composer require league/flysystem-aws-s3-v3
 ```
 
 Below example of configuring flysystem:
