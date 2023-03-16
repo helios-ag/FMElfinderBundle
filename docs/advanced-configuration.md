@@ -162,4 +162,4 @@ This means that if you add the service definition:
 
 Since 4.0 bundle supports [flysystem](https://github.com/thephpleague/flysystem) filesystem abstraction library
 
-Example configuration can be found here [Flysystem](/Resources/doc/flysystem.md)
+Example configuration can be found here [Flysystem](/docs/flysystem.md)
