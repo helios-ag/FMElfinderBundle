@@ -6,13 +6,13 @@ You will need library files to work with Flysystem:
 First add flysystem elfinder driver:
 
 ```sh
-  composer require barryvdh/elfinder-flysystem-driver
+composer require barryvdh/elfinder-flysystem-driver
 ```
 
 Depending which driver you want to use, you need require appropriate driver, for example:
 
 ```sh
-  composer require league/flysystem-aws-s3-v3
+composer require league/flysystem-aws-s3-v3
 ```
 
 Below example of configuring flysystem:
@@ -58,7 +58,7 @@ fm_elfinder:
                               type: aws_s3_v3
                               options:
                                 aws_s3_v3:
-                                    verion: 'latest'
+                                    version: 'latest'
                                     key: 'MY_AWS_KEY'
                                     secret: 'MY_AWS_SECRET'
                                     region: 'MY_AWS_REGION'
@@ -92,7 +92,7 @@ fm_elfinder:
                           type: aws_s3_v3
                           options:
                             aws_s3_v3:
-                                verion: 'latest'
+                                version: 'latest'
                                 key: 'MY_AWS_KEY'
                                 secret: 'MY_AWS_SECRET'
                                 region: 'MY_AWS_REGION'
