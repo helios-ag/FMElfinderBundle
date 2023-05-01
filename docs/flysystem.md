@@ -100,7 +100,7 @@ fm_elfinder:
                       upload_allow: ['all']
 ```
 
-In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path.
+In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem work with the relative path.
 
 If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example.
 Define the variables in your config.yml or set it directly.
