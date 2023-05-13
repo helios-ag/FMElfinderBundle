@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace FM\ElfinderBundle\Command;
 
 use Symfony\Component\Console\Command\Command;

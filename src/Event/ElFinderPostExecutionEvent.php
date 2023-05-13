@@ -20,7 +20,7 @@ class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
      * @param string $instance
      * @param string $homeFolder
      */
-    public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder, array $result)
+    public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder, array $result = null)
     {
         parent::__construct($request, $httpKernel, $instance, $homeFolder);
 
