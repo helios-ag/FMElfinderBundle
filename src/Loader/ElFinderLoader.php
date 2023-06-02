@@ -95,7 +95,7 @@ class ElFinderLoader
         if ($this->config['corsSupport']) {
             return $connector->execute($request->query->all());
         } else {
-            $connector->run($request->query->all());
+            return $connector->run($request->query->all());
         }
     }
 
