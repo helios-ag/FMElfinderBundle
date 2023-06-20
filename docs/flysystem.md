@@ -105,6 +105,7 @@ In that case you use an S3 domain so the **relative_path** have to be false and 
 If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example.
 Define the variables in your config.yml or set it directly.
 
+If you don't use subdomain that contains your `bucket_name` and want to use your own **endpoint** make sure to set **use_path_style_endpoint** to `true` so that it will format the url correctly.
 
 Also possible to define Flysystem adapters as services, it can be useful for self written adapters.
 To use adapter as service, define it under 'services' node in your services.yml (or use DI)
