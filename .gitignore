@@ -3,3 +3,6 @@ Tests/cache
 Tests/log
 Tests/Functional/cache
 Tests/Functional/log
+vendor
+.phpunit.result.cache
+.php-cs-fixer.cache
