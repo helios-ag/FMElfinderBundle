@@ -3,8 +3,8 @@
 namespace FM\ElfinderBundle\DependencyInjection;
 
 use FM\ElfinderBundle\Controller\ElFinderController;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
@@ -17,7 +17,7 @@ final class FMElfinderExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
         $loader->load('elfinder.xml');
         $loader->load('form.xml');
         $loader->load('command.xml');

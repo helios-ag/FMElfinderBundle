@@ -16,13 +16,6 @@ class ElFinderPreExecutionEvent extends Event
     protected $request;
 
     /**
-     * Used to make sub requests.
-     *
-     * @var HttpKernelInterface
-     */
-    private $httpKernel;
-
-    /**
      * ElFinder instance.
      *
      * @var string
@@ -35,6 +28,13 @@ class ElFinderPreExecutionEvent extends Event
      * @var string
      */
     protected $homeFolder;
+
+    /**
+     * Used to make sub requests.
+     *
+     * @var HttpKernelInterface
+     */
+    private $httpKernel;
 
     /**
      * Constructor.

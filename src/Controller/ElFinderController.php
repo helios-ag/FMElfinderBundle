@@ -3,18 +3,18 @@
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
+use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
+use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
-use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Twig\Environment;
 
@@ -43,16 +43,53 @@ class ElFinderController
         if (empty($efParameters['instances'][$instance])) {
             throw new NotFoundHttpException('Instance not found');
         }
-        $parameters   = $efParameters['instances'][$instance];
+        $parameters = $efParameters['instances'][$instance];
 
         if (empty($parameters['locale'])) {
             $parameters['locale'] = $request->getLocale();
         }
 
-        $assetsPath      = $efParameters['assets_path'];
-        $result          = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
+        $assetsPath = $efParameters['assets_path'];
+        $result     = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
 
         return new Response($this->twig->render($result['template'], $result['params']));
+    }
+
+    public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
+    {
+        $loader       = $this->loader;
+        $efParameters = $this->params;
+        $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
+
+        if ($loader instanceof ElFinderLoader) {
+            $loader->setSession(new ElFinderSession($session));
+        }
+
+        $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
+        $eventDispatcher->dispatch($preExecutionEvent);
+
+        $result = $loader->load($request); // the instance is already set
+
+        $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
+        $eventDispatcher->dispatch($postExecutionEvent);
+
+        // returning result (who may have been modified by a post execution event listener)
+        return new JsonResponse($postExecutionEvent->getResult());
+    }
+
+    public function mainJS()
+    {
+        $version = new EmptyVersionStrategy();
+        $package = new Package($version);
+        $mainUrl = $package->getUrl('/bundles/fmelfinder/js');
+
+        return new Response(
+            $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig',['mainUrl' => $mainUrl]),
+            200,
+            [
+                'Content-type' => 'text/javascript',
+            ]
+        );
     }
 
     /**
@@ -60,17 +97,17 @@ class ElFinderController
      */
     private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
     {
-        $editor         = $parameters['editor'];
-        $locale         = $parameters['locale'] ?: $this->container->getParameter('locale');
-        $fullScreen     = $parameters['fullscreen'];
-        $relativePath   = $parameters['relative_path'];
-        $pathPrefix     = $parameters['path_prefix'];
-        $theme          = $parameters['theme'];
+        $editor       = $parameters['editor'];
+        $locale       = $parameters['locale'] ?: $this->container->getParameter('locale');
+        $fullScreen   = $parameters['fullscreen'];
+        $relativePath = $parameters['relative_path'];
+        $pathPrefix   = $parameters['path_prefix'];
+        $theme        = $parameters['theme'];
         // convert to javascript array
-        $onlyMimes      = count($parameters['visible_mime_types'])
-                              ? "['".implode("','", $parameters['visible_mime_types'])."']"
+        $onlyMimes = count($parameters['visible_mime_types'])
+                              ? "['" . implode("','", $parameters['visible_mime_types']) . "']"
                               : '[]';
-        $result         = [];
+        $result = [];
 
         switch ($editor) {
             case 'custom':
@@ -184,53 +221,17 @@ class ElFinderController
             default:
                 $result['template'] = '@FMElfinder/Elfinder/simple.html.twig';
                 $result['params']   = [
-                    'locale'        => $locale,
-                    'fullscreen'    => $fullScreen,
-                    'instance'      => $instance,
-                    'homeFolder'    => $homeFolder,
-                    'prefix'        => $assetsPath,
-                    'onlyMimes'     => $onlyMimes,
-                    'theme'         => $theme,
-                    'pathPrefix'    => $pathPrefix,
+                    'locale'     => $locale,
+                    'fullscreen' => $fullScreen,
+                    'instance'   => $instance,
+                    'homeFolder' => $homeFolder,
+                    'prefix'     => $assetsPath,
+                    'onlyMimes'  => $onlyMimes,
+                    'theme'      => $theme,
+                    'pathPrefix' => $pathPrefix,
                 ];
 
                 return $result;
         }
-    }
-
-    public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
-    {
-        $loader = $this->loader;
-        $efParameters = $this->params;
-        $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
-
-        if ($loader instanceof ElFinderLoader) {
-            $loader->setSession(new ElFinderSession($session));
-        }
-
-        $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
-        $eventDispatcher->dispatch($preExecutionEvent);
-
-        $result = $loader->load($request); // the instance is already set
-
-        $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
-        $eventDispatcher->dispatch($postExecutionEvent);
-
-        // returning result (who may have been modified by a post execution event listener)
-        return new JsonResponse($postExecutionEvent->getResult());
-    }
-
-    public function mainJS()
-    {
-        $version = new EmptyVersionStrategy();
-        $package = new Package($version);
-        $mainUrl = $package->getUrl('/bundles/fmelfinder/js');
-        return new Response(
-            $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig',['mainUrl' => $mainUrl]),
-            200,
-            [
-                'Content-type' => 'text/javascript',
-            ]
-        );
     }
 }

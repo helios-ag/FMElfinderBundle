@@ -2,29 +2,31 @@
 
 namespace FM\ElfinderBundle\Configuration;
 
+use Aws\S3\S3Client;
+use Barracuda\Copy\API;
+use Exception;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
+use League\Flysystem\Adapter\Ftp;
+use League\Flysystem\Adapter\Local;
 use League\Flysystem\AdapterInterface;
+use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter as AwsS3v3;
+use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
+use League\Flysystem\Copy\CopyAdapter;
+use League\Flysystem\Filesystem;
+use League\Flysystem\GridFS\GridFSAdapter;
+use League\Flysystem\Rackspace\RackspaceAdapter;
+use League\Flysystem\Sftp\SftpAdapter;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
+use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use MongoClient;
+use OpenCloud\Rackspace;
+use Spatie\Dropbox\Client;
+use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Adapter\Ftp;
-use Spatie\FlysystemDropbox\DropboxAdapter;
-use League\Flysystem\Sftp\SftpAdapter;
-use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
-use League\Flysystem\AwsS3V3\AwsS3V3Adapter as AwsS3v3;
-use League\Flysystem\GridFS\GridFSAdapter;
-use OpenCloud\Rackspace;
-use League\Flysystem\Rackspace\RackspaceAdapter;
-use MongoClient;
-use League\Flysystem\Copy\CopyAdapter;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-use Aws\S3\S3Client;
-use Spatie\Dropbox\Client;
-use Barracuda\Copy\API;
-use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
+use TypeError;
 
 /**
  * Class ElFinderConfigurationReader.
@@ -81,45 +83,45 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $driver = $this->container->has($parameter['driver']) ? $this->container->get($parameter['driver']) : false;
 
             $driverOptions = [
-                'driver'            => $parameter['driver'],
-                'service'           => $driver,
-                'glideURL'          => $parameter['glide_url'],
-                'glideKey'          => $parameter['glide_key'],
-                'plugin'            => $options['plugin'],
-                'path'              => $pathAndHomeFolder,
-                'startPath'         => $parameter['start_path'],
-                'encoding'          => $parameter['encoding'],
-                'URL'               => $this->getURL($parameter, $request, $homeFolder, $path),
-                'alias'             => $parameter['alias'],
-                'mimeDetect'        => $parameter['mime_detect'],
-                'mimefile'          => $parameter['mimefile'],
-                'imgLib'            => $parameter['img_lib'],
-                'tmbPath'           => $parameter['tmb_path'],
-                'tmbPathMode'       => $parameter['tmb_path_mode'],
-                'tmbURL'            => $parameter['tmb_url'],
-                'tmbSize'           => $parameter['tmb_size'],
-                'tmbCrop'           => $parameter['tmb_crop'],
-                'tmbBgColor'        => $parameter['tmb_bg_color'],
-                'copyOverwrite'     => $parameter['copy_overwrite'],
-                'copyJoin'          => $parameter['copy_join'],
-                'copyFrom'          => $parameter['copy_from'],
-                'copyTo'            => $parameter['copy_to'],
-                'uploadOverwrite'   => $parameter['upload_overwrite'],
-                'uploadAllow'       => $parameter['upload_allow'],
-                'uploadDeny'        => $parameter['upload_deny'],
-                'uploadMaxSize'     => $parameter['upload_max_size'],
-                'uploadMaxConn'     => $parameter['upload_max_conn'],
-                'defaults'          => $parameter['defaults'],
-                'attributes'        => $parameter['attributes'],
-                'acceptedName'      => $parameter['accepted_name'],
-                'disabled'          => $parameter['disabled_commands'],
-                'treeDeep'          => $parameter['tree_deep'],
-                'checkSubfolders'   => $parameter['check_subfolders'],
-                'separator'         => $parameter['separator'],
-                'timeFormat'        => $parameter['time_format'],
-                'archiveMimes'      => $parameter['archive_mimes'],
-                'archivers'         => $parameter['archivers'],
-                'fileMode'          => $parameter['fileMode'],
+                'driver'          => $parameter['driver'],
+                'service'         => $driver,
+                'glideURL'        => $parameter['glide_url'],
+                'glideKey'        => $parameter['glide_key'],
+                'plugin'          => $options['plugin'],
+                'path'            => $pathAndHomeFolder,
+                'startPath'       => $parameter['start_path'],
+                'encoding'        => $parameter['encoding'],
+                'URL'             => $this->getURL($parameter, $request, $homeFolder, $path),
+                'alias'           => $parameter['alias'],
+                'mimeDetect'      => $parameter['mime_detect'],
+                'mimefile'        => $parameter['mimefile'],
+                'imgLib'          => $parameter['img_lib'],
+                'tmbPath'         => $parameter['tmb_path'],
+                'tmbPathMode'     => $parameter['tmb_path_mode'],
+                'tmbURL'          => $parameter['tmb_url'],
+                'tmbSize'         => $parameter['tmb_size'],
+                'tmbCrop'         => $parameter['tmb_crop'],
+                'tmbBgColor'      => $parameter['tmb_bg_color'],
+                'copyOverwrite'   => $parameter['copy_overwrite'],
+                'copyJoin'        => $parameter['copy_join'],
+                'copyFrom'        => $parameter['copy_from'],
+                'copyTo'          => $parameter['copy_to'],
+                'uploadOverwrite' => $parameter['upload_overwrite'],
+                'uploadAllow'     => $parameter['upload_allow'],
+                'uploadDeny'      => $parameter['upload_deny'],
+                'uploadMaxSize'   => $parameter['upload_max_size'],
+                'uploadMaxConn'   => $parameter['upload_max_conn'],
+                'defaults'        => $parameter['defaults'],
+                'attributes'      => $parameter['attributes'],
+                'acceptedName'    => $parameter['accepted_name'],
+                'disabled'        => $parameter['disabled_commands'],
+                'treeDeep'        => $parameter['tree_deep'],
+                'checkSubfolders' => $parameter['check_subfolders'],
+                'separator'       => $parameter['separator'],
+                'timeFormat'      => $parameter['time_format'],
+                'archiveMimes'    => $parameter['archive_mimes'],
+                'archivers'       => $parameter['archivers'],
+                'fileMode'        => $parameter['fileMode'],
             ];
 
             if (null !== $parameter['quarantine']) {
@@ -150,6 +152,42 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $options;
     }
 
+    /**
+     * Simple function to demonstrate how to control file access using "accessControl" callback.
+     * This method will disable accessing files/folders starting from '.' (dot).
+     *
+     * @param string $attr attribute name (read|write|locked|hidden)
+     * @param string $path file path relative to volume root directory started with directory separator
+     *
+     * @return bool|null
+     */
+    public function access($attr, $path, $data, $volume)
+    {
+        return 0 === strpos(basename($path), '.')       // if file/folder begins with '.' (dot)
+            ? !('read' == $attr || 'write' == $attr)    // set read+write to false, other (locked+hidden) set to true
+            : null;                                    // else elFinder decide it itself
+    }
+
+    /**
+     * @return array
+     */
+    protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)
+    {
+        $configuration = $voter->getConfiguration();
+
+        if (!is_array($configuration)) {
+            throw new Exception('ElfinderSecurityVoter should return array');
+        }
+
+        foreach ($configuration as $role => $commands) {
+            if ($this->container->get('security.authorization_checker')->isGranted($role)) {
+                return $commands;
+            }
+        }
+
+        return [];
+    }
+
     private function getURL(array $parameter, Request $request, string $homeFolder, string $path): string
     {
         if (isset($parameter['url']) && $parameter['url']) {
@@ -157,19 +195,15 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 return str_replace('{homeFolder}', $homeFolder, $parameter['url']);
             }
 
-            $path = $parameter['url'].'/'.$homeFolder;
+            $path = $parameter['url'] . '/' . $homeFolder;
         } else {
-            $path = $path.'/'.$homeFolder;
+            $path = $path . '/' . $homeFolder;
         }
 
-        return $request->getUriForPath('/'.trim($path, '/'));
+        return $request->getUriForPath('/' . trim($path, '/'));
     }
 
     /**
-     * @param $opt
-     * @param $adapter
-     * @param $serviceName
-     *
      * @return Filesystem
      */
     private function configureFlysystem($opt, $adapter, $serviceName)
@@ -220,10 +254,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'aws_s3_v2':
                 $options = [
-                    'key'     => $opt['aws_s3_v2']['key'],
-                    'secret'  => $opt['aws_s3_v2']['secret'],
-                    'region'  => $opt['aws_s3_v2']['region'],
+                    'key'    => $opt['aws_s3_v2']['key'],
+                    'secret' => $opt['aws_s3_v2']['secret'],
+                    'region' => $opt['aws_s3_v2']['region'],
                 ];
+
                 if (isset($opt['aws_s3_v2']['base_url']) && $opt['aws_s3_v2']['base_url']) {
                     $options['base_url'] = $opt['aws_s3_v2']['base_url'];
                 }
@@ -238,6 +273,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     'endpoint'                => $opt['aws_s3_v3']['endpoint'],
                     'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
                 ];
+
                 if (!empty($opt['aws_s3_v3']['key']) && !empty($opt['aws_s3_v3']['secret'])) {
                     $s3Options['credentials'] = [
                         'key'    => $opt['aws_s3_v3']['key'],
@@ -284,10 +320,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'custom':
                 $adapter = $this->container->get($serviceName);
+
                 try {
                     $filesystem = new Filesystem($adapter);
-                } catch (\TypeError $error) {
-                    throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, AdapterInterface::class));
+                } catch (TypeError $error) {
+                    throw new Exception(sprintf('Service %s is not an instance of %s.', $serviceName, AdapterInterface::class));
                 }
 
                 break;
@@ -299,8 +336,9 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
     private function getFlysystemFilesystem(string $serviceName)
     {
         $filesystem = $this->container->get($serviceName);
+
         if (!is_object($filesystem) || (!$filesystem instanceof Filesystem)) {
-            throw new \Exception(sprintf('Service %s is not an instance of %s.', $serviceName, Filesystem::class));
+            throw new Exception(sprintf('Service %s is not an instance of %s.', $serviceName, Filesystem::class));
         }
 
         return $filesystem;
@@ -362,16 +400,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
                 break;
             case 'box':
-                $settings['client_id']         = $parameter['box_settings']['client_id'];
-                $settings['client_secret']     = $parameter['box_settings']['client_secret'];
-                $settings['accessToken']       = $parameter['box_settings']['accessToken'];
-                $settings['root']              = $parameter['box_settings']['root'];
-                $settings['path']              = $parameter['box_settings']['path'];
-                $settings['separator']         = $parameter['box_settings']['separator'];
-                $settings['tmbPath']           = $parameter['box_settings']['tmbPath'];
-                $settings['tmbURL']            = $parameter['box_settings']['tmbURL'];
-                $settings['acceptedName']      = $parameter['box_settings']['acceptedName'];
-                $settings['rootCssClass']      = $parameter['box_settings']['rootCssClass'];
+                $settings['client_id']     = $parameter['box_settings']['client_id'];
+                $settings['client_secret'] = $parameter['box_settings']['client_secret'];
+                $settings['accessToken']   = $parameter['box_settings']['accessToken'];
+                $settings['root']          = $parameter['box_settings']['root'];
+                $settings['path']          = $parameter['box_settings']['path'];
+                $settings['separator']     = $parameter['box_settings']['separator'];
+                $settings['tmbPath']       = $parameter['box_settings']['tmbPath'];
+                $settings['tmbURL']        = $parameter['box_settings']['tmbURL'];
+                $settings['acceptedName']  = $parameter['box_settings']['acceptedName'];
+                $settings['rootCssClass']  = $parameter['box_settings']['rootCssClass'];
 
                 break;
             default:
@@ -379,43 +417,5 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         }
 
         return $settings;
-    }
-
-    /**
-     * Simple function to demonstrate how to control file access using "accessControl" callback.
-     * This method will disable accessing files/folders starting from '.' (dot).
-     *
-     * @param string $attr attribute name (read|write|locked|hidden)
-     * @param string $path file path relative to volume root directory started with directory separator
-     * @param $data
-     * @param $volume
-     *
-     * @return bool|null
-     */
-    public function access($attr, $path, $data, $volume)
-    {
-        return 0 === strpos(basename($path), '.')       // if file/folder begins with '.' (dot)
-            ? !('read' == $attr || 'write' == $attr)    // set read+write to false, other (locked+hidden) set to true
-            : null;                                    // else elFinder decide it itself
-    }
-
-    /**
-     * @return array
-     */
-    protected function parseSecurityConfiguration(ElfinderSecurityInterface $voter)
-    {
-        $configuration = $voter->getConfiguration();
-
-        if (!is_array($configuration)) {
-            throw new \Exception('ElfinderSecurityVoter should return array');
-        }
-
-        foreach ($configuration as $role => $commands) {
-            if ($this->container->get('security.authorization_checker')->isGranted($role)) {
-                return $commands;
-            }
-        }
-
-        return [];
     }
 }

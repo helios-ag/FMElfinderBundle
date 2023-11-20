@@ -2,9 +2,10 @@
 
 namespace FM\ElfinderBundle\Loader;
 
-use FM\ElfinderBundle\Connector\ElFinderConnector;
+use Exception;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
+use FM\ElfinderBundle\Connector\ElFinderConnector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -34,15 +35,16 @@ class ElFinderLoader
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
     public function configure()
     {
         $configurator = $this->configurator;
+
         if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
-            throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
+            throw new Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
         }
 
         return $configurator->getConfiguration($this->instance);
@@ -53,7 +55,7 @@ class ElFinderLoader
      *
      * @var string
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function initBridge($instance, array $efParameters)
     {
@@ -76,6 +78,7 @@ class ElFinderLoader
         }
 
         $this->bridge = new ElFinderBridge($this->config);
+
         if ($this->session) {
             $this->bridge->setSession($this->session);
         }
@@ -94,9 +97,9 @@ class ElFinderLoader
 
         if ($this->config['corsSupport']) {
             return $connector->execute($request->query->all());
-        } else {
-            return $connector->run($request->query->all());
         }
+
+        return $connector->run($request->query->all());
     }
 
     /**
@@ -117,7 +120,6 @@ class ElFinderLoader
      *
      * @param string $path
      *
-     * @return mixed
      **/
     public function encode($path)
     {
@@ -133,9 +135,9 @@ class ElFinderLoader
             return array_values($aPathEncoded)[0];
         } elseif (count($aPathEncoded) > 1) {
             return $aPathEncoded;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

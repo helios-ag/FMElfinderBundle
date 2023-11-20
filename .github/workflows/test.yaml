@@ -1,11 +1,11 @@
 # OS: Linux; Symfony: latest stable; PHP: all the commonly used versions supported by this bundle
-name: "Tests - Linux"
+name: "Tests"
 
 on:
   pull_request:
   push:
     branches:
-      - 'master'
+      - 'main'
 
 env:
   fail-fast: true
@@ -17,18 +17,18 @@ jobs:
     continue-on-error: false
     strategy:
       matrix:
-        php-version: ['7.4', '8.0']
+        php-version: ['7.4', '8.0', '8.1', '8.2']
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v3
 
       - name: 'Install PHP with extensions'
-        uses: shivammathur/setup-php@2.7.0
+        uses: shivammathur/setup-php@2.27.1
         with:
           coverage: none
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
-          extensions: mbstring, intl, pdo, pdo_sqlite, sqlite3
+          extensions: mbstring, intl
           ini-values: date.timezone=UTC
 
       - name: 'Install project dependencies'
