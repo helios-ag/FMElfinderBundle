@@ -34,7 +34,7 @@
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "symfony/finder":                                   "^4.4 || ^5.0 || ^5.2 || ^6.0",
         "php-coveralls/php-coveralls":                      "^2.0",
-        "friendsofphp/php-cs-fixer": "dev-master"
+        "friendsofphp/php-cs-fixer":                        "dev-master"
     },
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",

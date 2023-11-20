@@ -6,6 +6,8 @@ use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+use function method_exists;
+
 final class Configuration implements ConfigurationInterface
 {
     /**
@@ -486,7 +488,8 @@ final class Configuration implements ConfigurationInterface
     private function createNode($name)
     {
         $treeBuilder = new TreeBuilder($name);
-        if (\method_exists($treeBuilder, 'getRootNode')) {
+
+        if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else {
             $rootNode = $treeBuilder->root($name);

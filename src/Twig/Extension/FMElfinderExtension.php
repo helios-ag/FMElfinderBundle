@@ -36,8 +36,6 @@ class FMElfinderExtension extends AbstractExtension
     }
 
     /**
-     * @return mixed
-     *
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError

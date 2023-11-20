@@ -2,9 +2,9 @@
 
 namespace FM\ElfinderBundle\Bridge;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use FM\ElfinderBundle\ElFinder\ElFinder;
 use elFinderVolumeDriver;
+use FM\ElfinderBundle\ElFinder\ElFinder;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ElFinderBridge extends ElFinder
 {
@@ -19,10 +19,17 @@ class ElFinderBridge extends ElFinder
         parent::__construct($opts);
     }
 
-    /** @param $session */
     public function setSession($session)
     {
         $this->session = $session;
+    }
+
+    /**
+     * @return array
+     */
+    public function getVolumes()
+    {
+        return $this->volumes;
     }
 
     /**
@@ -32,8 +39,10 @@ class ElFinderBridge extends ElFinder
     {
         foreach ($opts['roots'] as $i => $o) {
             $volume = null;
+
             if (isset($o['service'])) {
                 $driver = $o['service'];
+
                 if (is_object($driver) && $driver instanceof elFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
@@ -45,19 +54,12 @@ class ElFinderBridge extends ElFinder
                 $id = $volume->id();
 
                 $this->volumes[$id] = $volume;
+
                 if (!$this->default && $volume->isReadable()) {
                     $this->default = $this->volumes[$id];
                 }
             }
         }
         parent::mountVolumes($opts);
-    }
-
-    /**
-     * @return array
-     */
-    public function getVolumes()
-    {
-        return $this->volumes;
     }
 }
