@@ -6,13 +6,13 @@ You will need library files to work with Flysystem:
 First add flysystem elfinder driver:
 
 ```sh
-  composer require barryvdh/elfinder-flysystem-driver
+composer require barryvdh/elfinder-flysystem-driver
 ```
 
 Depending which driver you want to use, you need require appropriate driver, for example:
 
 ```sh
-  composer require league/flysystem-aws-s3-v3
+composer require league/flysystem-aws-s3-v3
 ```
 
 Below example of configuring flysystem:
@@ -58,7 +58,7 @@ fm_elfinder:
                               type: aws_s3_v3
                               options:
                                 aws_s3_v3:
-                                    verion: 'latest'
+                                    version: 'latest'
                                     key: 'MY_AWS_KEY'
                                     secret: 'MY_AWS_SECRET'
                                     region: 'MY_AWS_REGION'
@@ -92,7 +92,7 @@ fm_elfinder:
                           type: aws_s3_v3
                           options:
                             aws_s3_v3:
-                                verion: 'latest'
+                                version: 'latest'
                                 key: 'MY_AWS_KEY'
                                 secret: 'MY_AWS_SECRET'
                                 region: 'MY_AWS_REGION'
@@ -100,11 +100,12 @@ fm_elfinder:
                       upload_allow: ['all']
 ```
 
-In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem wirk with the relative path.
+In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem work with the relative path.
 
 If you don't set the **relative_path** to false you get a wrong URL after inserting that image to CKEditor for example.
 Define the variables in your config.yml or set it directly.
 
+If you don't use subdomain that contains your `bucket_name` and want to use your own **endpoint** make sure to set **use_path_style_endpoint** to `true` so that it will format the url correctly.
 
 Also possible to define Flysystem adapters as services, it can be useful for self written adapters.
 To use adapter as service, define it under 'services' node in your services.yml (or use DI)

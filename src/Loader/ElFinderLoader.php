@@ -8,13 +8,25 @@ use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ElFinderLoader implements ElFinderLoaderInterface
+/**
+ * Class ElFinderLoader.
+ */
+class ElFinderLoader
 {
-    protected string $instance;
-    protected ElFinderConfigurationProviderInterface $configurator;
-    protected array $config;
-    protected ElFinderBridge $bridge;
-    protected ?SessionInterface $session;
+    /** @var string */
+    protected $instance;
+
+    /** @var ElFinderConfigurationProviderInterface */
+    protected $configurator;
+
+    /** @var array */
+    protected $config;
+
+    /** @var ElFinderBridge */
+    protected $bridge;
+
+    /** @var SessionInterface */
+    protected $session;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
@@ -29,6 +41,9 @@ class ElFinderLoader implements ElFinderLoaderInterface
     public function configure(): array
     {
         $configurator = $this->configurator;
+        if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
+            throw new \Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
+        }
 
         return $configurator->getConfiguration($this->instance);
     }

@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types=1);
-
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
 use FM\ElfinderBundle\Session\ElFinderSession;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -223,8 +223,11 @@ class ElFinderController
 
     public function mainJS(): Response
     {
+        $version = new EmptyVersionStrategy();
+        $package = new Package($version);
+        $mainUrl = $package->getUrl('/bundles/fmelfinder/js');
         return new Response(
-            $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig'),
+            $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig',['mainUrl' => $mainUrl]),
             200,
             [
                 'Content-type' => 'text/javascript',
