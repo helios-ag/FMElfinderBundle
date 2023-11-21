@@ -7,9 +7,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ElFinderPostExecutionEvent extends ElFinderPreExecutionEvent
 {
-    /**
-     * Command execution result.
-     */
+    /** Command execution result. */
     protected array $result;
 
     /**

@@ -2,6 +2,7 @@
 
 namespace FM\ElfinderBundle\Command;
 
+use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -12,16 +13,15 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class ElFinderInstallerCommand extends Command
 {
-    private const ELFINDER_CSS_DIR    = 'vendor/studio-42/elfinder/css';
+    private const ELFINDER_CSS_DIR = 'vendor/studio-42/elfinder/css';
 
-    private const ELFINDER_JS_DIR     = 'vendor/studio-42/elfinder/js';
+    private const ELFINDER_JS_DIR = 'vendor/studio-42/elfinder/js';
 
     private const ELFINDER_SOUNDS_DIR = 'vendor/studio-42/elfinder/sounds';
 
-    private const ELFINDER_IMG_DIR    = 'vendor/studio-42/elfinder/img';
+    private const ELFINDER_IMG_DIR = 'vendor/studio-42/elfinder/img';
 
     protected static $defaultName = 'elfinder:install';
-
 
     public function __construct(
         protected Filesystem $filesystem,
@@ -36,13 +36,13 @@ final class ElFinderInstallerCommand extends Command
             ->setDescription('Copies elfinder assets to public directory')
             ->addOption('docroot', null, InputOption::VALUE_OPTIONAL, 'Website document root.', 'public')
             ->setHelp(<<<'EOF'
-Default docroot:
-  <info>public</info>
+                Default docroot:
+                  <info>public</info>
 
-You can pass docroot:
-  <info>Where to install elfinder</info>
-  <info>php %command.full_name% --docroot=public_html</info>
-EOF
+                You can pass docroot:
+                  <info>Where to install elfinder</info>
+                  <info>php %command.full_name% --docroot=public_html</info>
+                EOF
             );
     }
 
@@ -57,15 +57,15 @@ EOF
 
         $publicDir = sprintf('%s/%s/bundles/fmelfinder', $rootDir, $dr);
 
-        $reflection    = new \ReflectionClass(\Composer\Autoload\ClassLoader::class);
+        $reflection    = new ReflectionClass(\Composer\Autoload\ClassLoader::class);
         $vendorRootDir = dirname($reflection->getFileName(), 3);
 
         $io->note(sprintf('Starting to install elfinder to %s folder', $publicDir));
 
-        $this->fileSystem->mirror($vendorRootDir.'/'.self::ELFINDER_CSS_DIR, $publicDir.'/css');
-        $this->fileSystem->mirror($vendorRootDir.'/'.self::ELFINDER_IMG_DIR, $publicDir.'/img');
-        $this->fileSystem->mirror($vendorRootDir.'/'.self::ELFINDER_JS_DIR, $publicDir.'/js');
-        $this->fileSystem->mirror($vendorRootDir.'/'.self::ELFINDER_SOUNDS_DIR, $publicDir.'/sounds');
+        $this->fileSystem->mirror($vendorRootDir . '/' . self::ELFINDER_CSS_DIR, $publicDir . '/css');
+        $this->fileSystem->mirror($vendorRootDir . '/' . self::ELFINDER_IMG_DIR, $publicDir . '/img');
+        $this->fileSystem->mirror($vendorRootDir . '/' . self::ELFINDER_JS_DIR, $publicDir . '/js');
+        $this->fileSystem->mirror($vendorRootDir . '/' . self::ELFINDER_SOUNDS_DIR, $publicDir . '/sounds');
 
         $io->success('elFinder assets successfully installed');
 

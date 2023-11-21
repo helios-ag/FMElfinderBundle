@@ -3,9 +3,9 @@
 namespace FM\ElfinderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElFinderType extends AbstractType
@@ -43,9 +43,9 @@ class ElFinderType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'enable'        => true,
-                'instance'      => 'default',
-                'homeFolder'    => '',
+                'enable'     => true,
+                'instance'   => 'default',
+                'homeFolder' => '',
             ])
             ->setAllowedTypes('enable', 'bool')
             ->setAllowedTypes('instance', ['string', 'null'])

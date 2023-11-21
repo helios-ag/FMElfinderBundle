@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FM\ElfinderBundle\Loader;
 
+use Exception;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -11,13 +12,14 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 interface ElFinderLoaderInterface
 {
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function configure(): array;
 
     /**
      * Configure the Bridge to ElFinder.
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function initBridge(string $instance, array $efParameters);
 

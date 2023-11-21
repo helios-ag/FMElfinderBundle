@@ -8,25 +8,17 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ElFinderPreExecutionEvent extends Event
 {
-    /**
-     * Request object containing ElFinder command and parameters.
-     */
+    /** Request object containing ElFinder command and parameters. */
     protected Request $request;
 
-    /**
-     * Used to make sub requests.
-     */
-    private HttpKernelInterface $httpKernel;
-
-    /**
-     * ElFinder instance.
-     */
+    /** ElFinder instance. */
     protected string $instance;
 
-    /**
-     * Home folder.
-     */
+    /** Home folder. */
     protected string $homeFolder;
+
+    /** Used to make sub requests. */
+    private HttpKernelInterface $httpKernel;
 
     public function __construct(Request $request, HttpKernelInterface $httpKernel, string $instance, string $homeFolder)
     {

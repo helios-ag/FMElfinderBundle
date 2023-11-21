@@ -2,9 +2,14 @@
 
 namespace FM\ElfinderBundle\DependencyInjection\Compiler;
 
+use const E_USER_DEPRECATED;
+
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+
+use function count;
+use function trigger_error;
 
 final class ElFinderConfigurationPass implements CompilerPassInterface
 {
@@ -19,14 +24,14 @@ final class ElFinderConfigurationPass implements CompilerPassInterface
         $subscribers = $container->findTaggedServiceIds('fm_elfinder.subscriber');
 
         foreach ($listeners as $serviceId => $tags) {
-            @\trigger_error('Using "fm_elfinder.listener" tag is deprecated, use "kernel.event_listener" instead.', \E_USER_DEPRECATED);
+            @trigger_error('Using "fm_elfinder.listener" tag is deprecated, use "kernel.event_listener" instead.', E_USER_DEPRECATED);
         }
 
         foreach ($subscribers as $serviceId => $tags) {
-            @\trigger_error('Using "fm_elfinder.subscriber" tag is deprecated, use "kernel.event_subscriber" instead.', \E_USER_DEPRECATED);
+            @trigger_error('Using "fm_elfinder.subscriber" tag is deprecated, use "kernel.event_subscriber" instead.', E_USER_DEPRECATED);
         }
 
-        if (\count($listeners) > 0 || \count($subscribers) > 0) {
+        if (count($listeners) > 0 || count($subscribers) > 0) {
             $pass = new RegisterListenersPass('event_dispatcher', 'fm_elfinder.listener', 'fm_elfinder.subscriber');
             $pass->process($container);
         }
