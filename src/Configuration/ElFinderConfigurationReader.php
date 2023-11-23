@@ -159,7 +159,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
      */
     public function access($attr, $path, $data, $volume)
     {
-        return str_starts_with(basename($path), '.')       // if file/folder begins with '.' (dot)
+        return 0 === strpos(basename($path), '.')       // if file/folder begins with '.' (dot)
             ? !('read' == $attr || 'write' == $attr)    // set read+write to false, other (locked+hidden) set to true
             : null;                                    // else elFinder decide it itself
     }

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/autoload.php" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <phpunit 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    bootstrap="tests/autoload.php" 
+    colors="true" 
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+  >
   <coverage includeUncoveredFiles="true">
     <include>
       <directory>./</directory>
