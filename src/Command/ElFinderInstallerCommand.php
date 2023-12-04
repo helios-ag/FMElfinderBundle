@@ -21,21 +21,18 @@ final class ElFinderInstallerCommand extends Command
 
     private const ELFINDER_IMG_DIR = 'vendor/studio-42/elfinder/img';
 
-    protected $fileSystem;
+    protected static $defaultName = 'elfinder:install';
 
-    protected $parameterBag;
-
-    public function __construct(Filesystem $filesystem, ParameterBagInterface $parameterBag)
-    {
-        $this->fileSystem   = $filesystem;
-        $this->parameterBag = $parameterBag;
+    public function __construct(
+        protected Filesystem $filesystem,
+        protected ParameterBagInterface $parameterBag
+    ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('elfinder:install')
             ->setDescription('Copies elfinder assets to public directory')
             ->addOption('docroot', null, InputOption::VALUE_OPTIONAL, 'Website document root.', 'public')
             ->setHelp(<<<'EOF'

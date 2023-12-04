@@ -23,42 +23,42 @@ Creation is inspired by simplicity and convenience of Finder program used in Mac
 Recommended bundles to use with:
 
 
-| FMTinyMCEBundle | FOSCKEditorBundle | TrsteelCkeditorBundle| FMSummernoteBundle |
-| ------------------------|-------------|-----------------|-----------------|
-|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![FOSCKEditorBundle](https://img.shields.io/badge/FOSCKEditorBundle-download-orange.svg)](https://github.com/FriendsOfSymfony/FOSCKEditorBundle)|[![TrsteelCkeditorBundle](https://img.shields.io/badge/TrsteelCkeditorBundle-download-blue.svg)](https://github.com/trsteel88/TrsteelCkeditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
+| FMTinyMCEBundle | FOSCKEditorBundle | FMSummernoteBundle |
+| ------------------------|-------------|-----------------|
+|[![FMTinyMCEBundle](https://img.shields.io/badge/FMTinyMCEBundle-download-brightgreen.svg)](https://github.com/helios-ag/FMTinyMCEBundle)|[![FOSCKEditorBundle](https://img.shields.io/badge/FOSCKEditorBundle-download-orange.svg)](https://github.com/FriendsOfSymfony/FOSCKEditorBundle)|[![FMSummernoteBundle](https://img.shields.io/badge/FMSummernoteBundle-download-brightgreen.svg)](https://github.com/helios-ag/summernote-bundle)|
 
 
 **Table of contents**
 
 - [Installation](#installation)
-    - [Step 1: Installation](#step-1-installation)
-    - [Step 2: Enable the bundle](#step-2-enable-the-bundle-optional)
-    - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
-    - [Step 4: Securing paths](#step-4-configure-your-applications-securityyaml)
+  - [Step 1: Installation](#step-1-installation)
+  - [Step 2: Enable the bundle](#step-2-enable-the-bundle-optional)
+  - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
+  - [Step 4: Securing paths](#step-4-configure-your-applications-securityyaml)
 - [Basic configuration](#basic-configuration)
-    - [Add configuration options to your config.yaml](#add-configuration-options-to-your-configyaml)
-    - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
+  - [Add configuration options to your config.yaml](#add-configuration-options-to-your-configyaml)
+  - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
 - [CORS support](/docs/cors-support.md)
 - [Events listeners / subscribers](/docs/events-listeners-subscribers.md)
-    - [Events](/docs/events-listeners-subscribers.md#events)
-    - [Sub requests](/docs/events-listeners-subscribers.md#sub-requests)
+  - [Events](/docs/events-listeners-subscribers.md#events)
+  - [Sub requests](/docs/events-listeners-subscribers.md#sub-requests)
 - [Elfinder Form Type](/docs/elfinder-form-type.md)
-    - [Configuration](/docs/elfinder-form-type.md#configuration)
-    - [EasyAdmin 2.x](/docs/elfinder-form-type.md#easyadmin-2x-integration)
-    - [EasyAdmin 3.x/4.x](/docs/elfinder-form-type.md#easyadmin-3x/4x-integration)
+  - [Configuration](/docs/elfinder-form-type.md#configuration)
+  - [EasyAdmin 2.x](/docs/elfinder-form-type.md#easyadmin-2x-integration)
+  - [EasyAdmin 3.x/4.x](/docs/elfinder-form-type.md#easyadmin-3x/4x-integration)
 - [CKEditor integration](/docs/ckeditor-integration.md)
-    - [Installation](/docs/ckeditor-integration.md#step-1-installation)
-    - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
+  - [Installation](/docs/ckeditor-integration.md#step-1-installation)
+  - [Configuration](/docs/ckeditor-integration.md#step-2-configure-ckeditor-setting-via-settingsyml-or-through-form-builder)
 - [TinyMCE integration](/docs/tinymce-integration.md)
-    - [Integration with TinyMCE 3](/docs/tinymce-integration.md#tinymce-3x)
-    - [Integration with TinyMCE 4](/docs/tinymce-integration.md#tinymce-4x)
+  - [Integration with TinyMCE 3](/docs/tinymce-integration.md#tinymce-3x)
+  - [Integration with TinyMCE 4](/docs/tinymce-integration.md#tinymce-4x)
 - [Summernote integration](/docs/summernote-integration.md)
 - [Advanced configuration](/docs/advanced-configuration.md)
-    - [Custom configuration provider](/docs/advanced-configuration.md#custom-configuration-provider)
-    - [Custom loader](/docs/advanced-configuration.md#custom-loader)
-    - [Plugins](/docs/advanced-configuration.md#plugins)
-    - [Service as volume driver](/docs/advanced-configuration.md#symfony-service-as-a-volume-driver)
-    - [Flysystem configuration](/docs/advanced-configuration.md#flysystem-configuration)
+  - [Custom configuration provider](/docs/advanced-configuration.md#custom-configuration-provider)
+  - [Custom loader](/docs/advanced-configuration.md#custom-loader)
+  - [Plugins](/docs/advanced-configuration.md#plugins)
+  - [Service as volume driver](/docs/advanced-configuration.md#symfony-service-as-a-volume-driver)
+  - [Flysystem configuration](/docs/advanced-configuration.md#flysystem-configuration)
 - [Configuration dump](/docs/configuration-dump.md)
 
 ## Installation
@@ -156,12 +156,12 @@ fm_elfinder:
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * **path** - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read and owner permissions to this directory.
 * **url** - url to be prefixed to image path, for displaying. Can be either `absolute` or `relative`. If absolute, you can use `{homeFolder}` string as placeholder which will be replaced automatically. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
-* **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration   
+* **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
 * **editor** - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
- "ckeditor" (to use with FOSCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
- How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
+  "ckeditor" (to use with FOSCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
+  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
 * **editor_template** - define template to render when editor is set to "custom".
 * **connector** - root node for defining options for elfinder root directories.
 * **roots** - define "virtual directories" that reflect directories in your project.

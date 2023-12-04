@@ -26,6 +26,7 @@
         "symfony/twig-bundle":                 "^4.4 || ^5.0 || ^5.2 || ^6.0",
         "symfony/form":                        "^4.4 || ^5.0 || ^5.2 || ^6.0",
         "symfony/asset":                       "^4.4 || ^5.0 || ^5.2 || ^6.0",
+        "symfony/flex":                        "^2",
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
@@ -42,6 +43,20 @@
         "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle",
         "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
         "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": {
+            "symfony/doctrine-bridge": "source",
+            "*": "dist"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "composer/package-versions-deprecated": true,
+            "oomphinc/composer-installers-extender": true
+        }
     },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "src/" }

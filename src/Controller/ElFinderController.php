@@ -6,6 +6,7 @@ use Exception;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
+use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
 use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
@@ -20,11 +21,11 @@ use Twig\Environment;
 
 class ElFinderController
 {
+    protected array $params;
     private Environment $twig;
-    private array $params;
-    private $loader;
+    private ElFinderLoaderInterface $loader;
 
-    public function __construct(Environment $twig, array $params, $loader)
+    public function __construct(Environment $twig, array $params, ElFinderLoaderInterface $loader)
     {
         $this->twig   = $twig;
         $this->params = $params;
@@ -77,7 +78,7 @@ class ElFinderController
         return new JsonResponse($postExecutionEvent->getResult());
     }
 
-    public function mainJS()
+    public function mainJS(): Response
     {
         $version = new EmptyVersionStrategy();
         $package = new Package($version);

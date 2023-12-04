@@ -36,10 +36,8 @@ class ElFinderLoader
 
     /**
      * @throws Exception
-     *
-     * @return array
      */
-    public function configure()
+    public function configure(): array
     {
         $configurator = $this->configurator;
 
@@ -57,7 +55,7 @@ class ElFinderLoader
      *
      * @throws Exception
      */
-    public function initBridge($instance, array $efParameters)
+    public function initBridge(string $instance, array $efParameters)
     {
         $this->setInstance($instance);
 
@@ -86,12 +84,8 @@ class ElFinderLoader
 
     /**
      * Starts ElFinder.
-     *
-     * @var Request
-     *
-     * @return void|array
      */
-    public function load(Request $request)
+    public function load(Request $request): array|string
     {
         $connector = new ElFinderConnector($this->bridge);
 
@@ -102,10 +96,7 @@ class ElFinderLoader
         return $connector->run($request->query->all());
     }
 
-    /**
-     * @param string $instance
-     */
-    public function setInstance($instance)
+    public function setInstance(string $instance): void
     {
         $this->instance = $instance;
     }
@@ -117,11 +108,8 @@ class ElFinderLoader
 
     /**
      * Encode path into hash.
-     *
-     * @param string $path
-     *
-     **/
-    public function encode($path)
+     */
+    public function encode(string $path): mixed
     {
         $aPathEncoded = [];
 
@@ -142,12 +130,8 @@ class ElFinderLoader
 
     /**
      * Decode path from hash.
-     *
-     * @param string $hash
-     *
-     * @return string
-     **/
-    public function decode($hash)
+     */
+    public function decode(string $hash): string
     {
         $volume = $this->bridge->getVolume($hash);
 
@@ -155,7 +139,7 @@ class ElFinderLoader
         return (!empty($volume)) ? $volume->getPath($hash) : false;
     }
 
-    public function setSession($session)
+    public function setSession(?SessionInterface $session): void
     {
         $this->session = $session;
     }
