@@ -107,6 +107,8 @@ Define the variables in your config.yml or set it directly.
 
 If you don't use subdomain that contains your `bucket_name` and want to use your own **endpoint** make sure to set **use_path_style_endpoint** to `true` so that it will format the url correctly.
 
+To prevent AWS PHP SDK from verifying the presence of a shared configuration in .aws/configuration make sure to set **use_aws_shared_config_files**  to `false`.
+
 Also possible to define Flysystem adapters as services, it can be useful for self written adapters.
 To use adapter as service, define it under 'services' node in your services.yml (or use DI)
 

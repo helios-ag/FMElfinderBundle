@@ -173,6 +173,7 @@ fm_elfinder:
                                     optional_prefix:      ''
                                     endpoint:             ''
                                     use_path_style_endpoint: false
+                                    use_aws_shared_config_files: true
                                     options:
                                         enabled:              false
                                         ACL:                  ''
