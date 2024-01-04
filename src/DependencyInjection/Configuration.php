@@ -391,6 +391,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('optional_prefix')->defaultvalue('')->end()
                             ->scalarNode('endpoint')->defaultNull()->end()
                             ->booleanNode('use_path_style_endpoint')->defaultFalse()->end()
+                            ->booleanNode('use_aws_shared_config_files')->defaultTrue()->end()
                             ->arrayNode('options')
                                 ->canBeEnabled()
                                     ->children()

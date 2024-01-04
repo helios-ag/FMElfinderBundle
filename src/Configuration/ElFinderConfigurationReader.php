@@ -268,10 +268,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'aws_s3_v3':
                 $s3Options = [
-                    'region'                  => $opt['aws_s3_v3']['region'],
-                    'version'                 => $opt['aws_s3_v3']['version'],
-                    'endpoint'                => $opt['aws_s3_v3']['endpoint'],
-                    'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
+                    'region'                      => $opt['aws_s3_v3']['region'],
+                    'version'                     => $opt['aws_s3_v3']['version'],
+                    'endpoint'                    => $opt['aws_s3_v3']['endpoint'],
+                    'use_path_style_endpoint'     => $opt['aws_s3_v3']['use_path_style_endpoint'],
+                    'use_aws_shared_config_files' => $opt['aws_s3_v3']['use_aws_shared_config_files'],
                 ];
 
                 if (!empty($opt['aws_s3_v3']['key']) && !empty($opt['aws_s3_v3']['secret'])) {
