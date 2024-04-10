@@ -81,7 +81,7 @@ class ElFinderController
     {
         $version = new EmptyVersionStrategy();
         $package = new Package($version);
-        $mainUrl = $package->getUrl('/bundles/fmelfinder/js');
+        $mainUrl = $package->getUrl(sprintf('%s/bundles/fmelfinder/js', $this->params['assets_path']));
 
         return new Response(
             $this->twig->render('@FMElfinder/Elfinder/helper/main.js.twig',['mainUrl' => $mainUrl]),
