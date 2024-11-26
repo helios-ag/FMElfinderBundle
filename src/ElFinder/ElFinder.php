@@ -198,7 +198,7 @@ class ElFinder extends BaseElFinder
                 $doRegist = (false !== strpos($cmd, '*'));
 
                 if (!$doRegist) {
-                    $doRegist = ($_reqCmd && in_array($_reqCmd, array_map('self::getCmdOfBind', explode(' ', $cmd))));
+                    $doRegist = ($_reqCmd && in_array($_reqCmd, array_map('elFinder::getCmdOfBind', explode(' ', $cmd))));
                 }
 
                 if ($doRegist) {
