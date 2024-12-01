@@ -264,10 +264,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 break;
             case 'aws_s3_v3':
                 $s3Options = [
-                    'region'                  => $opt['aws_s3_v3']['region'],
-                    'version'                 => $opt['aws_s3_v3']['version'],
-                    'endpoint'                => $opt['aws_s3_v3']['endpoint'],
-                    'use_path_style_endpoint' => $opt['aws_s3_v3']['use_path_style_endpoint'],
+                    'region'                      => $opt['aws_s3_v3']['region'],
+                    'version'                     => $opt['aws_s3_v3']['version'],
+                    'endpoint'                    => $opt['aws_s3_v3']['endpoint'],
+                    'use_path_style_endpoint'     => $opt['aws_s3_v3']['use_path_style_endpoint'],
+                    'use_aws_shared_config_files' => $opt['aws_s3_v3']['use_aws_shared_config_files'],
                 ];
 
                 if (!empty($opt['aws_s3_v3']['key']) && !empty($opt['aws_s3_v3']['secret'])) {
@@ -277,7 +278,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     ];
                 }
                 $client     = new S3Client($s3Options);
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options']));
+                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options'] ?? []));
 
                 break;
             case 'copy_com':
