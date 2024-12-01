@@ -17,10 +17,10 @@ jobs:
     continue-on-error: false
     strategy:
       matrix:
-        php-version: ['7.4', '8.0', '8.1', '8.2']
+        php-version: ['8.1', '8.2', '8.3']
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 'Install PHP with extensions'
         uses: shivammathur/setup-php@2.27.1
@@ -38,6 +38,4 @@ jobs:
           composer update --no-interaction --prefer-dist --optimize-autoloader --prefer-stable
           vendor/bin/simple-phpunit install
       - name: 'Run tests'
-        env:
-          SYMFONY_DEPRECATIONS_HELPER: 'max[indirect]=10&max[total]=27'
-        run: vendor/bin/simple-phpunit -v
+        run: vendor/bin/phpunit

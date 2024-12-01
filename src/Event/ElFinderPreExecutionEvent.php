@@ -8,41 +8,19 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ElFinderPreExecutionEvent extends Event
 {
-    /**
-     * Request object containing ElFinder command and parameters.
-     *
-     * @var Request
-     */
-    protected $request;
+    /** Request object containing ElFinder command and parameters. */
+    protected Request $request;
 
-    /**
-     * ElFinder instance.
-     *
-     * @var string
-     */
-    protected $instance;
+    /** ElFinder instance. */
+    protected string $instance;
 
-    /**
-     * Home folder.
-     *
-     * @var string
-     */
-    protected $homeFolder;
+    /** Home folder. */
+    protected string $homeFolder;
 
-    /**
-     * Used to make sub requests.
-     *
-     * @var HttpKernelInterface
-     */
-    private $httpKernel;
+    /** Used to make sub requests. */
+    private HttpKernelInterface $httpKernel;
 
-    /**
-     * Constructor.
-     *
-     * @param string $instance
-     * @param string $homeFolder
-     */
-    public function __construct(Request $request, HttpKernelInterface $httpKernel, $instance, $homeFolder)
+    public function __construct(Request $request, HttpKernelInterface $httpKernel, string $instance, string $homeFolder)
     {
         $this->request    = $request;
         $this->httpKernel = $httpKernel;
@@ -59,7 +37,7 @@ class ElFinderPreExecutionEvent extends Event
      * @param array $path  An array of path parameters
      * @param array $query An array of query parameters
      *
-     * @return Symfony\Component\HttpFoundation\Response A Response instance
+     * @return \Symfony\Component\HttpFoundation\Response A Response instance
      */
     public function subRequest(array $path, array $query)
     {
@@ -71,34 +49,23 @@ class ElFinderPreExecutionEvent extends Event
 
     /**
      * Returns executed command.
-     *
-     * @return string
      */
-    public function getCommand()
+    public function getCommand(): string
     {
         return $this->request->get('cmd');
     }
 
-    /**
-     * @return Request
-     */
-    public function getRequest()
+    public function getRequest(): Request
     {
         return $this->request;
     }
 
-    /**
-     * @return string
-     */
-    public function getInstance()
+    public function getInstance(): string
     {
         return $this->instance;
     }
 
-    /**
-     * @return string
-     */
-    public function getHomeFolder()
+    public function getHomeFolder(): string
     {
         return $this->homeFolder;
     }

@@ -9,25 +9,17 @@ use FM\ElfinderBundle\Connector\ElFinderConnector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * Class ElFinderLoader.
- */
-class ElFinderLoader
+class ElFinderLoader implements ElFinderLoaderInterface
 {
-    /** @var string */
-    protected $instance;
+    protected string $instance;
 
-    /** @var ElFinderConfigurationProviderInterface */
-    protected $configurator;
+    protected ElFinderConfigurationProviderInterface $configurator;
 
-    /** @var array */
-    protected $config;
+    protected array $config;
 
-    /** @var ElFinderBridge */
-    protected $bridge;
+    protected ElFinderBridge $bridge;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected ?SessionInterface $session;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
@@ -36,28 +28,19 @@ class ElFinderLoader
 
     /**
      * @throws Exception
-     *
-     * @return array
      */
-    public function configure()
+    public function configure(): array
     {
         $configurator = $this->configurator;
-
-        if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
-            throw new Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
-        }
 
         return $configurator->getConfiguration($this->instance);
     }
 
     /**
      * Configure the Bridge to ElFinder.
-     *
-     * @var string
-     *
      * @throws Exception
      */
-    public function initBridge($instance, array $efParameters)
+    public function initBridge(string $instance, array $efParameters): void
     {
         $this->setInstance($instance);
 
@@ -86,12 +69,8 @@ class ElFinderLoader
 
     /**
      * Starts ElFinder.
-     *
-     * @var Request
-     *
-     * @return void|array
      */
-    public function load(Request $request)
+    public function load(Request $request): array|string
     {
         $connector = new ElFinderConnector($this->bridge);
 
@@ -102,26 +81,20 @@ class ElFinderLoader
         return $connector->run($request->query->all());
     }
 
-    /**
-     * @param string $instance
-     */
-    public function setInstance($instance)
+    public function setInstance(string $instance): void
     {
         $this->instance = $instance;
     }
 
-    public function setConfigurator(ElFinderConfigurationProviderInterface $configurator)
+    public function setConfigurator(ElFinderConfigurationProviderInterface $configurator): void
     {
         $this->configurator = $configurator;
     }
 
     /**
      * Encode path into hash.
-     *
-     * @param string $path
-     *
-     **/
-    public function encode($path)
+     */
+    public function encode(string $path): mixed
     {
         $aPathEncoded = [];
 
@@ -142,12 +115,8 @@ class ElFinderLoader
 
     /**
      * Decode path from hash.
-     *
-     * @param string $hash
-     *
-     * @return string
-     **/
-    public function decode($hash)
+     */
+    public function decode(string $hash): string
     {
         $volume = $this->bridge->getVolume($hash);
 
@@ -155,7 +124,7 @@ class ElFinderLoader
         return (!empty($volume)) ? $volume->getPath($hash) : false;
     }
 
-    public function setSession($session)
+    public function setSession(?SessionInterface $session): void
     {
         $this->session = $session;
     }

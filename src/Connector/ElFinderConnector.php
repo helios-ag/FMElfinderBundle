@@ -69,7 +69,7 @@ class ElFinderConnector extends \elFinderConnector
             $args[$name] = $arg;
         }
 
-        $args['debug'] = isset($src['debug']) ? (bool) $src['debug'] : false;
+        $args['debug'] = isset($src['debug']) && $src['debug'];
 
         return $this->output($this->elFinder->exec($cmd, $this->input_filter($args)));
     }
@@ -78,8 +78,8 @@ class ElFinderConnector extends \elFinderConnector
     {
         if (isset($data['pointer'])) {
             parent::output($data);
-        } else {
-            return $data;
         }
+
+        return $data;
     }
 }

@@ -28,22 +28,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use TypeError;
 
-/**
- * Class ElFinderConfigurationReader.
- */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
-    /** @var array */
-    protected $options = [];
+    protected array $options = [];
 
-    /** @var array */
-    protected $parameters;
+    protected array $parameters;
 
-    /** @var RequestStack */
-    protected $requestStack;
+    protected RequestStack $requestStack;
 
-    /** @var ContainerInterface */
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(array $parameters, RequestStack $requestStack, ContainerInterface $container)
     {
@@ -335,7 +328,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return $filesystem;
     }
 
-    private function getFlysystemFilesystem(string $serviceName)
+    private function getFlysystemFilesystem(string $serviceName): Filesystem
     {
         $filesystem = $this->container->get($serviceName);
 

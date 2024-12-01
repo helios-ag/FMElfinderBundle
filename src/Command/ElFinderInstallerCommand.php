@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Command;
 
 use ReflectionClass;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,6 +12,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(
+    name: 'elfinder:install',
+    description: 'Copies elfinder assets to public directory',
+)]
 final class ElFinderInstallerCommand extends Command
 {
     private const ELFINDER_CSS_DIR = 'vendor/studio-42/elfinder/css';
@@ -21,22 +26,16 @@ final class ElFinderInstallerCommand extends Command
 
     private const ELFINDER_IMG_DIR = 'vendor/studio-42/elfinder/img';
 
-    protected $fileSystem;
-
-    protected $parameterBag;
-
-    public function __construct(Filesystem $filesystem, ParameterBagInterface $parameterBag)
-    {
-        $this->fileSystem   = $filesystem;
-        $this->parameterBag = $parameterBag;
+    public function __construct(
+        protected Filesystem $fileSystem,
+        protected ParameterBagInterface $parameterBag
+    ) {
         parent::__construct();
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('elfinder:install')
-            ->setDescription('Copies elfinder assets to public directory')
             ->addOption('docroot', null, InputOption::VALUE_OPTIONAL, 'Website document root.', 'public')
             ->setHelp(<<<'EOF'
                 Default docroot:

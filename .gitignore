@@ -4,7 +4,18 @@ Tests/log
 Tests/Functional/cache
 Tests/Functional/log
 vendor
-.phpunit.result.cache
 .php-cs-fixer.cache
 clover.xml
 .vscode
+.phpunit.result.cache
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+/phpunit.xml
+/bin

@@ -7,8 +7,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ElFinderSession implements elFinderSessionInterface
 {
-    /** @var SessionInterface */
-    protected $session;
+    protected SessionInterface $session;
 
     public function __construct(SessionInterface $session)
     {

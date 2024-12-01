@@ -24,10 +24,7 @@ class ElFinderBridge extends ElFinder
         $this->session = $session;
     }
 
-    /**
-     * @return array
-     */
-    public function getVolumes()
+    public function getVolumes(): array
     {
         return $this->volumes;
     }
@@ -43,7 +40,7 @@ class ElFinderBridge extends ElFinder
             if (isset($o['service'])) {
                 $driver = $o['service'];
 
-                if (is_object($driver) && $driver instanceof elFinderVolumeDriver) {
+                if ($driver instanceof elFinderVolumeDriver) {
                     $volume = $driver;
                     unset($opts['roots'][$i]);
                 }

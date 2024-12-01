@@ -20,19 +20,20 @@
       "exclude": ["/tests", "./github"]
     },
     "require": {
-        "php":                                 "^7.4 || ^8.0",
+        "php":                                 "^8.1",
         "ext-json":                            "*",
-        "symfony/framework-bundle":            "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
-        "symfony/twig-bundle":                 "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
-        "symfony/form":                        "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
-        "symfony/asset":                       "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+        "symfony/framework-bundle":            "^6.4 || ^7.0",
+        "symfony/twig-bundle":                 "^6.4 || ^7.0",
+        "symfony/form":                        "^6.4 || ^7.0",
+        "symfony/asset":                       "^6.4 || ^7.0",
+        "symfony/flex":                        "^2",
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
-        "symfony/phpunit-bridge":                           "^7.0.1",
-        "matthiasnoback/symfony-config-test":               "^4.0",
-        "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "symfony/finder":                                   "^4.4 || ^5.0 || ^5.2 || ^6.0 || ^7.0",
+        "symfony/phpunit-bridge":                           "^6.4 || ^7.0.1",
+        "matthiasnoback/symfony-config-test":               "^5.2",
+        "matthiasnoback/symfony-dependency-injection-test": "^6.0",
+        "symfony/finder":                                   "^6.4 || ^7.0",
         "php-coveralls/php-coveralls":                      "^2.0",
         "friendsofphp/php-cs-fixer":                        "dev-master"
     },
@@ -43,6 +44,20 @@
         "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
         "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
     },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": {
+            "symfony/doctrine-bridge": "source",
+            "*": "dist"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "composer/package-versions-deprecated": true,
+            "oomphinc/composer-installers-extender": true
+        }
+    },
     "autoload": {
         "psr-4": { "FM\\ElfinderBundle\\": "src/" }
     },
@@ -51,7 +66,13 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "12.0-dev"
+            "dev-master": "13.0-dev"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }

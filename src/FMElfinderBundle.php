@@ -7,9 +7,6 @@ use FM\ElfinderBundle\DependencyInjection\Compiler\TwigFormPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-/**
- * Class FMElfinderBundle.
- */
 class FMElfinderBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void

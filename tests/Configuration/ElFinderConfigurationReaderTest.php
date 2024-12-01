@@ -32,13 +32,13 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $containerMock
             ->expects($this->any())
             ->method('get')
-            ->will($this->returnValueMap([
+            ->willReturnMap([
                 [
                     'elfinder.driver.local',
                     ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE,
                     $this->elFinderVolumeMock,
                 ],
-            ]));
+            ]);
 
         /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack|\PHPUnit_Framework_MockObject_MockObject */
         $requestStack = $this->createMock('Symfony\Component\HttpFoundation\RequestStack');
@@ -48,22 +48,22 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $requestObject
             ->expects($this->any())
             ->method('getScheme')
-            ->will($this->returnValue('http'));
+            ->willReturn('http');
         $requestObject
             ->expects($this->any())
             ->method('getHttpHost')
-            ->will($this->returnValue('test.com'));
+            ->willReturn('test.com');
         $requestObject
             ->expects($this->any())
             ->method('getBaseUrl')
-            ->will($this->returnValue('/unit-test'));
+            ->willReturn('/unit-test');
 
         $requestObject->attributes = $attributesObject;
 
         $requestStack
             ->expects($this->any())
             ->method('getCurrentRequest')
-            ->will($this->returnValue($requestObject));
+            ->willReturn($requestObject);
 
         $params = [
             'instances' => [
@@ -298,7 +298,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $attributesObject
             ->expects($this->any())
             ->method('get')
-            ->will($this->returnValue(''));
+            ->willReturn('');
 
         return $attributesObject;
     }
@@ -311,7 +311,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             ->expects($this->any())
             ->method('get')
             ->with($this->equalTo('homeFolder'))
-            ->will($this->returnValue('bob'));
+            ->willReturn('bob');
 
         return $attributesObject;
     }
