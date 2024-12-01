@@ -6,9 +6,6 @@ use elFinder as BaseElFinder;
 use elFinderSession;
 use elFinderSessionInterface;
 
-/**
- * Class ElFinder.
- */
 class ElFinder extends BaseElFinder
 {
     /**

@@ -28,9 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use TypeError;
 
-/**
- * Class ElFinderConfigurationReader.
- */
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
 {
     protected array $options = [];

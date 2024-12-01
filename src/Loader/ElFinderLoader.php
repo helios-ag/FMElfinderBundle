@@ -9,25 +9,17 @@ use FM\ElfinderBundle\Connector\ElFinderConnector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-/**
- * Class ElFinderLoader.
- */
-class ElFinderLoader
+class ElFinderLoader implements ElFinderLoaderInterface
 {
-    /** @var string */
-    protected $instance;
+    protected string $instance;
 
-    /** @var ElFinderConfigurationProviderInterface */
-    protected $configurator;
+    protected ElFinderConfigurationProviderInterface $configurator;
 
-    /** @var array */
-    protected $config;
+    protected array $config;
 
-    /** @var ElFinderBridge */
-    protected $bridge;
+    protected ElFinderBridge $bridge;
 
-    /** @var SessionInterface */
-    protected $session;
+    protected ?SessionInterface $session;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
@@ -41,21 +33,14 @@ class ElFinderLoader
     {
         $configurator = $this->configurator;
 
-        if (!($configurator instanceof ElFinderConfigurationProviderInterface)) {
-            throw new Exception('Configurator class must implement ElFinderConfigurationProviderInterface');
-        }
-
         return $configurator->getConfiguration($this->instance);
     }
 
     /**
      * Configure the Bridge to ElFinder.
-     *
-     * @var string
-     *
      * @throws Exception
      */
-    public function initBridge(string $instance, array $efParameters)
+    public function initBridge(string $instance, array $efParameters): void
     {
         $this->setInstance($instance);
 
@@ -101,7 +86,7 @@ class ElFinderLoader
         $this->instance = $instance;
     }
 
-    public function setConfigurator(ElFinderConfigurationProviderInterface $configurator)
+    public function setConfigurator(ElFinderConfigurationProviderInterface $configurator): void
     {
         $this->configurator = $configurator;
     }
