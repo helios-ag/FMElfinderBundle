@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Command;
 
 use ReflectionClass;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,6 +12,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+#[AsCommand(
+    name: 'elfinder:install',
+    description: 'Copies elfinder assets to public directory',
+)]
 final class ElFinderInstallerCommand extends Command
 {
     private const ELFINDER_CSS_DIR = 'vendor/studio-42/elfinder/css';
@@ -20,9 +25,6 @@ final class ElFinderInstallerCommand extends Command
     private const ELFINDER_SOUNDS_DIR = 'vendor/studio-42/elfinder/sounds';
 
     private const ELFINDER_IMG_DIR = 'vendor/studio-42/elfinder/img';
-
-    protected static $defaultName = 'elfinder:install';
-    protected static $defaultDescription = 'Copies elfinder assets to public directory';
 
     public function __construct(
         protected Filesystem $fileSystem,
