@@ -5,4 +5,6 @@ Tests/Functional/cache
 Tests/Functional/log
 vendor
 .php-cs-fixer.cache
+clover.xml
+.vscode
 .phpunit.result.cache

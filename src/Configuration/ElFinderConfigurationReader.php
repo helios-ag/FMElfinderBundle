@@ -115,6 +115,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'archiveMimes'    => $parameter['archive_mimes'],
                 'archivers'       => $parameter['archivers'],
                 'fileMode'        => $parameter['fileMode'],
+                'trashHash'       => $parameter['trash_hash'],
             ];
 
             if (null !== $parameter['quarantine']) {

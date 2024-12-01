@@ -8,9 +8,6 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurati
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
-/**
- * Class ConfigurationLoadTest.
- */
 class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 {
     protected function getContainerExtension(): ExtensionInterface
