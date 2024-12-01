@@ -5,6 +5,7 @@ namespace FM\ElfinderBundle\Tests\DependencyInjection;
 use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use FM\ElfinderBundle\DependencyInjection\Configuration;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
@@ -20,11 +21,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
         return new Configuration();
     }
 
-    /**
-     * @dataProvider getSupportsAllConfigFormatsData
-     * @requires PHP 7
-     */
-    public function testSupportsAllConfigFormats($path)
+    #[DataProvider('getSupportsAllConfigFormatsData')]
+    public function testSupportsAllConfigFormats($path): void
     {
         $expectedConfiguration = [
             'configuration_provider' => 'app.configurator.custom',

@@ -68,5 +68,11 @@
         "branch-alias": {
             "dev-master": "13.0-dev"
         }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
     }
 }
