@@ -5,11 +5,11 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.5/phpunit.xsd"
          cacheDirectory=".phpunit.cache"
 >
-  <coverage>
-    <report>
-      <clover outputFile="./clover.xml"/>
-    </report>
-  </coverage>
+<!--  <coverage>-->
+<!--    <report>-->
+<!--      <clover outputFile="./clover.xml"/>-->
+<!--    </report>-->
+<!--  </coverage>-->
   <php>
     <server name="KERNEL_DIR" value="./tests/Functional"/>
     <ini name="error_reporting" value="-1"/>
