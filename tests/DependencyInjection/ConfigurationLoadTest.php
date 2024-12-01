@@ -186,7 +186,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
         $this->assertProcessedConfigurationEquals($expectedConfiguration, [__DIR__.'/../Fixtures/'.$path]);
     }
 
-    public function getSupportsAllConfigFormatsData()
+    public static function getSupportsAllConfigFormatsData(): array
     {
         return [
             'yml' => ['config/config.yml'],
