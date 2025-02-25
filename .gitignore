@@ -17,5 +17,6 @@ clover.xml
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+/.phpunit.cache
 /phpunit.xml
 /bin
