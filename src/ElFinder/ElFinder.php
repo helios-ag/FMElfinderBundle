@@ -46,7 +46,7 @@ class ElFinder extends BaseElFinder
         if (defined('E_DEPRECATED')) {
             $errLevel |= E_DEPRECATED | E_USER_DEPRECATED;
         }
-        set_error_handler('elFinder::phpErrorHandler', $errLevel);
+        set_error_handler(elFinder::phpErrorHandler(...), $errLevel);
 
         // Associative array of files to delete at the end of script: ['temp file path' => true]
         $GLOBALS['elFinderTempFiles'] = [];
@@ -195,7 +195,7 @@ class ElFinder extends BaseElFinder
                 $doRegist = (false !== strpos($cmd, '*'));
 
                 if (!$doRegist) {
-                    $doRegist = ($_reqCmd && in_array($_reqCmd, array_map('elFinder::getCmdOfBind', explode(' ', $cmd))));
+                    $doRegist = ($_reqCmd && in_array($_reqCmd, array_map(elFinder::getCmdOfBind(...), explode(' ', $cmd))));
                 }
 
                 if ($doRegist) {
@@ -215,7 +215,7 @@ class ElFinder extends BaseElFinder
                                 if (0 === strcasecmp($_domain, 'plugin')) {
                                     if ($plugin = $this->getPluginInstance($_name, $opts['plugin'][$_name] ?? []) and
                                         method_exists($plugin, $_method)) {
-                                        $this->bind($cmd, [$plugin, $_method]);
+                                        $this->bind($cmd, $plugin->$_method(...));
                                     }
                                 }
                             } else {

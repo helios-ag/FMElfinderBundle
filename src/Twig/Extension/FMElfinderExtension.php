@@ -28,10 +28,10 @@ class FMElfinderExtension extends AbstractExtension
         $options = ['is_safe' => ['html']];
 
         return [
-            new TwigFunction('elfinder_tinymce_init', [$this, 'tinymce'], $options),
-            new TwigFunction('elfinder_tinymce_init4', [$this, 'tinymce4'], $options),
-            new TwigFunction('elfinder_tinymce_init5', [$this, 'tinymce5'], $options),
-            new TwigFunction('elfinder_summernote_init', [$this, 'summernote'], $options),
+            new TwigFunction('elfinder_tinymce_init', $this->tinymce(...), $options),
+            new TwigFunction('elfinder_tinymce_init4', $this->tinymce4(...), $options),
+            new TwigFunction('elfinder_tinymce_init5', $this->tinymce5(...), $options),
+            new TwigFunction('elfinder_summernote_init', $this->summernote(...), $options),
         ];
     }
 
