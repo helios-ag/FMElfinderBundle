@@ -26,7 +26,6 @@
         "symfony/twig-bundle":                 "^6.4 || ^7.0",
         "symfony/form":                        "^6.4 || ^7.0",
         "symfony/asset":                       "^6.4 || ^7.0",
-        "symfony/flex":                        "^2",
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
@@ -52,8 +51,6 @@
         },
         "allow-plugins": {
             "composer/installers": true,
-            "symfony/flex": true,
-            "symfony/runtime": true,
             "composer/package-versions-deprecated": true,
             "oomphinc/composer-installers-extender": true
         }
