@@ -19,7 +19,7 @@ class ElFinderLoader implements ElFinderLoaderInterface
 
     protected ElFinderBridge $bridge;
 
-    protected ?SessionInterface $session;
+    protected ?SessionInterface $session = null;
 
     public function __construct(ElFinderConfigurationProviderInterface $configurator)
     {
