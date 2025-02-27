@@ -63,7 +63,7 @@ class ElFinderController
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
 
         if ($loader instanceof ElFinderLoader) {
-            $loader->setSession(new ElFinderSession($session));
+            $loader->setSession($session);
         }
 
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
