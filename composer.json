@@ -30,7 +30,7 @@
     },
     "require-dev" : {
         "symfony/phpunit-bridge":                           "^6.4 || ^7.0.1",
-        "matthiasnoback/symfony-config-test":               "^5.2",
+        "matthiasnoback/symfony-config-test":               "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^6.0",
         "symfony/finder":                                   "^6.4 || ^7.0",
         "php-coveralls/php-coveralls":                      "^2.0",
