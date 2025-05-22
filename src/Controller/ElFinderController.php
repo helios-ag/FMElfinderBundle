@@ -96,7 +96,7 @@ class ElFinderController
     /**
      * @throws Exception
      */
-    private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, string $formTypeId = null): array
+    private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, ?string $formTypeId = null): array
     {
         $editor       = $parameters['editor'];
         $locale       = $parameters['locale'] ?: $this->container->getParameter('locale');
