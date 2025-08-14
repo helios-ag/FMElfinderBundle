@@ -38,4 +38,10 @@ jobs:
           composer update --no-interaction --prefer-dist --optimize-autoloader --prefer-stable
           vendor/bin/simple-phpunit install
       - name: 'Run tests'
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --coverage-clover ./coverage.xml
+      - name: codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true # optional (default = false)
