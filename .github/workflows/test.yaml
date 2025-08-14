@@ -25,7 +25,7 @@ jobs:
       - name: 'Install PHP with extensions'
         uses: shivammathur/setup-php@2.27.1
         with:
-          coverage: none
+          coverage: xdebug
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           extensions: mbstring, intl
@@ -38,4 +38,10 @@ jobs:
           composer update --no-interaction --prefer-dist --optimize-autoloader --prefer-stable
           vendor/bin/simple-phpunit install
       - name: 'Run tests'
-        run: vendor/bin/phpunit
+        run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover ./coverage.xml
+      - name: codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true # optional (default = false)
