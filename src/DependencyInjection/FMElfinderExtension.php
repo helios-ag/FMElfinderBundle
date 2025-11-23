@@ -6,7 +6,7 @@ use FM\ElfinderBundle\Controller\ElFinderController;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class FMElfinderExtension extends Extension
 {
@@ -17,10 +17,10 @@ final class FMElfinderExtension extends Extension
     {
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-        $loader->load('elfinder.xml');
-        $loader->load('form.xml');
-        $loader->load('command.xml');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader->load('elfinder.yaml');
+        $loader->load('form.yaml');
+        $loader->load('command.yaml');
         $container->setParameter('fm_elfinder', $config);
 
         $repo = $container->getDefinition(ElFinderController::class);

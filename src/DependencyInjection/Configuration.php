@@ -80,7 +80,6 @@ final class Configuration implements ConfigurationInterface
                                             ->children()
                                                 ->scalarNode('driver')
                                                     ->isRequired()
-                                                    ->defaultValue('LocalFileSystem')
                                                 ->end() // driver
                                                 ->integerNode('volume_id')->defaultValue(0)->min(0)->end()
                                                 ->scalarNode('path')->defaultValue('')->end()
