@@ -1,0 +1,8 @@
+parameters:
+    elfinder.form.type.class: FM\ElfinderBundle\Form\Type\ElFinderType
+
+services:
+    fm_elfinder.form.type:
+        class: '%elfinder.form.type.class%'
+        tags:
+            - { name: 'form.type' }

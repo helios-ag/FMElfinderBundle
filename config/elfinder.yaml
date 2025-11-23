@@ -1,0 +1,35 @@
+parameters:
+    fm_elfinder.loader: FM\ElfinderBundle\Loader\ElFinderLoader
+    fm_elfinder.configurator: FM\ElfinderBundle\Configuration\ElFinderConfigurationReader
+
+services:
+    fm_elfinder.configurator.default:
+        class: '%fm_elfinder.configurator%'
+        arguments:
+            - '%fm_elfinder%'
+            - '@request_stack'
+            - '@service_container'
+
+    fm_elfinder.loader.default:
+        class: '%fm_elfinder.loader%'
+        autowire: true
+        arguments:
+            - '@fm_elfinder.configurator'
+
+    FM\ElfinderBundle\Loader\ElFinderLoader:
+        alias: fm_elfinder.loader.default
+
+    twig.extension.fm_elfinder_init:
+        class: FM\ElfinderBundle\Twig\Extension\FMElfinderExtension
+        arguments:
+            - '@twig'
+        tags:
+            - { name: 'twig.extension', alias: 'fm_elfinder_init' }
+
+    FM\ElfinderBundle\Controller\ElFinderController:
+        tags:
+            - { name: 'controller.service_arguments' }
+        arguments:
+            - '@twig'
+            - ~
+            - '@fm_elfinder.loader'
