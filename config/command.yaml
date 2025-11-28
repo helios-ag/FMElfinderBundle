@@ -1,0 +1,8 @@
+services:
+    fm_elfinder.command.installer:
+        class: FM\ElfinderBundle\Command\ElFinderInstallerCommand
+        arguments:
+            - '@Symfony\Component\Filesystem\Filesystem'
+            - '@Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface'
+        tags:
+            - { name: 'console.command', command: 'elfinder:install' }
