@@ -29,7 +29,7 @@
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
-        "symfony/phpunit-bridge":                           "^6.4 || ^7.0.1",
+        "symfony/phpunit-bridge":                           "^8.0.0",
         "matthiasnoback/symfony-config-test":               "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^6.0",
         "symfony/finder":                                   "^6.4 || ^7.0",
