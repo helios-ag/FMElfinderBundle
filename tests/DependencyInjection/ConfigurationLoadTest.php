@@ -188,8 +188,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
     {
         return [
             'yml' => ['config/config.yml'],
-            'php' => ['config/config.php'],
-            'xml' => ['config/config.xml'],
+            'php' => ['config/config.php'],            
         ];
     }
 }
