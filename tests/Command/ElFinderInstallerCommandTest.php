@@ -36,7 +36,10 @@ class ElFinderInstallerCommandTest extends TestCase
 
         $application = new Application();
         $command = new ElFinderInstallerCommand($this->fileSystem, $this->parameterBag);
-        $application->add($command);
+        $application->addCommands([$command]);
+
+
+
 
         $this->commandTester = new CommandTester($application->find('elfinder:install'));
     }
