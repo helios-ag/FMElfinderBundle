@@ -7,7 +7,6 @@ use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
-use FM\ElfinderBundle\Session\ElFinderSession;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,7 +50,7 @@ class ElFinderController
         }
 
         $assetsPath = $efParameters['assets_path'];
-        $result     = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->get('id'));
+        $result     = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->query->get('id'));
 
         return new Response($this->twig->render($result['template'], $result['params']));
     }
