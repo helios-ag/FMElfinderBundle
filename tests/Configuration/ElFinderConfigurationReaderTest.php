@@ -4,6 +4,7 @@ namespace FM\ElfinderBundle\Tests\Configuration;
 
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationReader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 {
@@ -291,22 +292,14 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         return new ElFinderConfigurationReader($params, $requestStack, $containerMock);
     }
 
-    private function getDefaultAttributesObject()
+    private function getDefaultAttributesObject(): ParameterBag
     {
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
-        $attributesObject
-            ->expects($this->any())
-            ->method('get')
-            ->willReturn('');
-
-        return $attributesObject;
+        return new ParameterBag();
     }
 
-    private function getHomeFolderAwareAttributesObject()
+    private function getHomeFolderAwareAttributesObject(): ParameterBag
     {
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
+        $attributesObject = $this->createMock(ParameterBag::class);
         $attributesObject
             ->expects($this->any())
             ->method('get')
