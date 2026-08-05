@@ -59,7 +59,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path              = $parameter['path'];
-            $homeFolder        = $request->attributes->get('homeFolder');
+            $homeFolder        = $request->attributes->getString('homeFolder');
             $pathAndHomeFolder = $homeFolder ? sprintf('%s/%s', $path, $homeFolder) : $path;
 
             if ($parameter['flysystem']['enabled']) {
