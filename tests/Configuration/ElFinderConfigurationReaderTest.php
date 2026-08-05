@@ -299,7 +299,14 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     private function getHomeFolderAwareAttributesObject(): ParameterBag
     {
-        return new ParameterBag(['homeFolder' => 'bob']);
+        $attributesObject = $this->createMock(ParameterBag::class);
+        $attributesObject
+            ->expects($this->any())
+            ->method('get')
+            ->with($this->equalTo('homeFolder'))
+            ->willReturn('bob');
+
+        return $attributesObject;
     }
 
     public function testConfiguration(): void
