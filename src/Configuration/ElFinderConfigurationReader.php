@@ -3,24 +3,16 @@
 namespace FM\ElfinderBundle\Configuration;
 
 use Aws\S3\S3Client;
-use Barracuda\Copy\API;
 use Exception;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
-use League\Flysystem\Adapter\Ftp;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
-use League\Flysystem\AwsS3v2\AwsS3Adapter as AwsS3v2;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as AwsS3v3;
-use League\Flysystem\AzureBlobStorage\AzureBlobStorageAdapter;
-use League\Flysystem\Copy\CopyAdapter;
 use League\Flysystem\Filesystem;
-use League\Flysystem\GridFS\GridFSAdapter;
-use League\Flysystem\Rackspace\RackspaceAdapter;
-use League\Flysystem\Sftp\SftpAdapter;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-use MicrosoftAzure\Storage\Blob\BlobRestProxy;
-use MongoClient;
-use OpenCloud\Rackspace;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Ftp\FtpAdapter;
+use League\Flysystem\Ftp\FtpConnectionOptions;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
 use Spatie\Dropbox\Client;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -205,59 +197,36 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $filesystem = null;
         switch ($adapter) {
             case 'local':
-                $filesystem = new Filesystem(new Local($opt['local']['path']));
+                $filesystem = new Filesystem(new LocalFilesystemAdapter($opt['local']['path']));
 
                 break;
             case 'ftp':
-                $settings = [
+                $filesystem = new Filesystem(new FtpAdapter(FtpConnectionOptions::fromArray([
                     'host'     => $opt['ftp']['host'],
                     'username' => $opt['ftp']['username'],
                     'password' => $opt['ftp']['password'],
 
                     /* optional config settings */
-                    'port'          => $opt['ftp']['port'],
-                    'root'          => $opt['ftp']['root'],
-                    'passive'       => $opt['ftp']['passive'],
-                    'ssl'           => $opt['ftp']['ssl'],
-                    'timeout'       => $opt['ftp']['timeout'],
-                    'directoryPerm' => $opt['ftp']['directoryPerm'],
-                ];
-                $filesystem = new Filesystem(new Ftp($settings));
+                    'port'    => $opt['ftp']['port'],
+                    'root'    => $opt['ftp']['root'],
+                    'passive' => $opt['ftp']['passive'],
+                    'ssl'     => $opt['ftp']['ssl'],
+                    'timeout' => $opt['ftp']['timeout'],
+                ])));
 
                 break;
             case 'sftp':
-                $settings = [
-                  'host'       => $opt['sftp']['host'],
-                  'port'       => $opt['sftp']['port'],
-                  'username'   => $opt['sftp']['username'],
-                  'password'   => $opt['sftp']['password'],
-                  'privateKey' => $opt['sftp']['privateKey'],
-                  'root'       => $opt['sftp']['root'],
-                  'timeout'    => $opt['sftp']['timeout'],
-                ];
-                $filesystem = new Filesystem(new SftpAdapter($settings));
-
-                break;
-            case 'azure':
-                $client = BlobRestProxy::createBlobService(
-                    sprintf('DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;', $opt['azure']['account_name'], $opt['azure']['account_key'])
+                $connectionProvider = new SftpConnectionProvider(
+                    $opt['sftp']['host'],
+                    $opt['sftp']['username'],
+                    $opt['sftp']['password'],
+                    $opt['sftp']['privateKey'] ?: null,
+                    null,
+                    $opt['sftp']['port'],
+                    false,
+                    $opt['sftp']['timeout']
                 );
-                $adapter    = new AzureBlobStorageAdapter($client, $opt['azure']['container_name']);
-                $filesystem = new Filesystem($adapter);
-
-                break;
-            case 'aws_s3_v2':
-                $options = [
-                    'key'    => $opt['aws_s3_v2']['key'],
-                    'secret' => $opt['aws_s3_v2']['secret'],
-                    'region' => $opt['aws_s3_v2']['region'],
-                ];
-
-                if (isset($opt['aws_s3_v2']['base_url']) && $opt['aws_s3_v2']['base_url']) {
-                    $options['base_url'] = $opt['aws_s3_v2']['base_url'];
-                }
-                $client     = S3Client::factory($options);
-                $filesystem = new Filesystem(new AwsS3v2($client, $opt['aws_s3_v2']['bucket_name'], $opt['aws_s3_v2']['optional_prefix']));
+                $filesystem = new Filesystem(new SftpAdapter($connectionProvider, $opt['sftp']['root']));
 
                 break;
             case 'aws_s3_v3':
@@ -276,41 +245,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     ];
                 }
                 $client     = new S3Client($s3Options);
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix'], null, null, $opt['aws_s3_v3']['options'] ?? []));
-
-                break;
-            case 'copy_com':
-                $client = new API(
-                    $opt['copy_com']['consumer_key'],
-                    $opt['copy_com']['consumer_secret'],
-                    $opt['copy_com']['access_token'],
-                    $opt['copy_com']['token_secret']
-                );
-                $filesystem = new Filesystem(new CopyAdapter($client, $opt['copy_com']['optional_prefix']));
-
-                break;
-            case 'gridfs':
-                $mongoClient = new MongoClient();
-                $gridFs      = $mongoClient->selectDB($opt['gridfs']['db_name'])->getGridFS();
-                $filesystem  = new Filesystem(new GridFSAdapter($gridFs));
-
-                break;
-            case 'zip':
-                $filesystem = new Filesystem(new ZipArchiveAdapter($opt['zip']['path']));
+                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
 
                 break;
             case 'dropbox':
                 $filesystem = new Filesystem(new DropboxAdapter(new Client($opt['dropbox']['token'])));
-
-                break;
-            case 'rackspace':
-                $client = new Rackspace(Rackspace::$opt['rackspace']['endpoint'], [
-                    'username' => $opt['rackspace']['username'],
-                    'apiKey'   => $opt['rackspace']['apikey'],
-                ]);
-                $store      = $client->objectStoreService('cloudFiles', $opt['rackspace']['region']);
-                $container  = $store->getContainer($opt['rackspace']['container']);
-                $filesystem = new Filesystem(new RackspaceAdapter($container));
 
                 break;
             case 'custom':
@@ -319,7 +258,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 try {
                     $filesystem = new Filesystem($adapter);
                 } catch (TypeError $error) {
-                    throw new Exception(sprintf('Service %s is not an instance of %s.', $serviceName, AdapterInterface::class));
+                    throw new Exception(sprintf('Service %s is not an instance of %s.', $serviceName, FilesystemAdapter::class));
                 }
 
                 break;

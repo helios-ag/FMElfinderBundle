@@ -6,9 +6,9 @@ use elFinderVolumeLocalFileSystem;
 use Exception;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationReader;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AdapterInterface;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemAdapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -259,15 +259,39 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             'type'            => 'ftp',
             'adapter_service' => '',
             'options'         => ['ftp' => [
-                'host'          => '127.0.0.1',
-                'username'      => 'user',
-                'password'      => 'pass',
-                'port'          => 21,
-                'root'          => '/',
-                'passive'       => true,
-                'ssl'           => false,
-                'timeout'       => 30,
-                'directoryPerm' => 0755,
+                'host'     => '127.0.0.1',
+                'username' => 'user',
+                'password' => 'pass',
+                'port'     => 21,
+                'root'     => '/',
+                'passive'  => true,
+                'ssl'      => false,
+                'timeout'  => 30,
+            ]],
+        ];
+
+        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
+
+        $this->assertInstanceOf(Filesystem::class, $filesystem);
+    }
+
+    public function testConfigureFlysystemSftpAdapter(): void
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'sftp',
+            'adapter_service' => '',
+            'options'         => ['sftp' => [
+                'host'       => '127.0.0.1',
+                'port'       => 22,
+                'username'   => 'user',
+                'password'   => 'pass',
+                'privateKey' => '',
+                'root'       => '/',
+                'timeout'    => 10,
             ]],
         ];
 
@@ -278,7 +302,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureFlysystemCustomAdapter(): void
     {
-        $adapter   = $this->createMock(AdapterInterface::class);
+        $adapter   = $this->createMock(FilesystemAdapter::class);
         $container = $this->createMock(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($adapter);
@@ -339,7 +363,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureFlysystemUsesConfiguredFilesystemService(): void
     {
-        $filesystem = new Filesystem(new Local(sys_get_temp_dir()));
+        $filesystem = new Filesystem(new LocalFilesystemAdapter(sys_get_temp_dir()));
         $container  = $this->createMock(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($filesystem);
