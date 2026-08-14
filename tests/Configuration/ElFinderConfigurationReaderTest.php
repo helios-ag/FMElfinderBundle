@@ -4,6 +4,8 @@ namespace FM\ElfinderBundle\Tests\Configuration;
 
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationReader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,7 +19,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
      */
     protected $elFinderVolumeMock;
 
-    private function getConfigurationReader($attributesObject)
+    private function getConfigurationReader(array $attributes = [])
     {
         /* @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
         $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
@@ -40,25 +42,28 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                 ],
             ]);
 
-        /** @var \Symfony\Component\HttpFoundation\RequestStack $requestStack|\PHPUnit_Framework_MockObject_MockObject */
-        $requestStack = $this->createMock('Symfony\Component\HttpFoundation\RequestStack');
-        /** @var \Symfony\Component\HttpFoundation\Request $requestObject */
-        $requestObject = $this->createPartialMock('Symfony\Component\HttpFoundation\Request', ['getScheme', 'getHttpHost', 'getBaseUrl']);
+        $requestStack = $this->createMock(RequestStack::class);
+        // A real Request is used instead of a mock: in Symfony >= 8.1 the
+        // ``$attributes`` property is a hooked property, and PHPUnit replaces
+        // hooked properties of mock objects with test stubs, which would break
+        // the ``homeFolder`` lookup. Overriding the few methods that getURL()
+        // relies on yields the same deterministic behaviour as a partial mock.
+        $requestObject = new class([], [], $attributes) extends Request {
+            public function getScheme(): string
+            {
+                return 'http';
+            }
 
-        $requestObject
-            ->expects($this->any())
-            ->method('getScheme')
-            ->willReturn('http');
-        $requestObject
-            ->expects($this->any())
-            ->method('getHttpHost')
-            ->willReturn('test.com');
-        $requestObject
-            ->expects($this->any())
-            ->method('getBaseUrl')
-            ->willReturn('/unit-test');
+            public function getHttpHost(): string
+            {
+                return 'test.com';
+            }
 
-        $requestObject->attributes = $attributesObject;
+            public function getBaseUrl(): string
+            {
+                return '/unit-test';
+            }
+        };
 
         $requestStack
             ->expects($this->any())
@@ -291,34 +296,9 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         return new ElFinderConfigurationReader($params, $requestStack, $containerMock);
     }
 
-    private function getDefaultAttributesObject()
-    {
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
-        $attributesObject
-            ->expects($this->any())
-            ->method('get')
-            ->willReturn('');
-
-        return $attributesObject;
-    }
-
-    private function getHomeFolderAwareAttributesObject()
-    {
-        /** @var \Symfony\Component\HttpFoundation\ParameterBag $attributesObject */
-        $attributesObject = $this->createMock('\Symfony\Component\HttpFoundation\ParameterBag');
-        $attributesObject
-            ->expects($this->any())
-            ->method('get')
-            ->with($this->equalTo('homeFolder'))
-            ->willReturn('bob');
-
-        return $attributesObject;
-    }
-
     public function testConfiguration(): void
     {
-        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('default');
         $this->assertArrayHasKey('roots', $configuration);
         $this->assertArrayHasKey('corsSupport', $configuration);
@@ -334,7 +314,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testAccessHidden(): void
     {
-        $reader     = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader     = $this->getConfigurationReader();
         $hiddenPath = '.hiddenPath';
         $this->assertFalse($reader->access('read', $hiddenPath, 'dummy', 'dummy'));
         $this->assertFalse($reader->access('write', $hiddenPath, 'dummy', 'dummy'));
@@ -342,7 +322,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testAccessVisible()
     {
-        $reader      = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader      = $this->getConfigurationReader();
         $visiblePath = 'hiddenPath';
         $this->assertNull($reader->access('read', $visiblePath, 'dummy', 'dummy'));
         $this->assertNull($reader->access('write', $visiblePath, 'dummy', 'dummy'));
@@ -351,31 +331,31 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     public function testPathAndUrlAndHomeFolder(): void
     {
         // with path and without homeFolder
-        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('with_path_with_url');
         $this->assertEquals('/home', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url', $configuration['roots'][0]['URL']);
 
         // with path and with homeFolder
-        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('with_path_with_url');
         $this->assertEquals('/home/bob', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url/bob', $configuration['roots'][0]['URL']);
 
         // without path and without homeFolder
-        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url-without-path', $configuration['roots'][0]['URL']);
 
         // without path and with homeFolder
-        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
         $this->assertEquals('http://test.com/unit-test/home-url-without-path/bob', $configuration['roots'][0]['URL']);
 
         // without path and with url absolute and homeFolder
-        $reader        = $this->getConfigurationReader($this->getHomeFolderAwareAttributesObject());
+        $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('without_path_with_url_absolute_homeFolder');
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
         $this->assertEquals('https://test.com/bob', $configuration['roots'][0]['URL']);
@@ -383,7 +363,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testAccessTmbURLOption(): void
     {
-        $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
+        $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('default');
         $this->assertArrayHasKey('tmbURL', $configuration['roots'][0]);
     }
