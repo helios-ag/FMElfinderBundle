@@ -30,12 +30,13 @@
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
-        "symfony/phpunit-bridge":                           "^6.4 || ^7.0.1 || ^8.0",
-        "matthiasnoback/symfony-config-test":               "^6.0",
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "league/flysystem": "^1.0",
+        "matthiasnoback/symfony-config-test": "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^6.0",
-        "symfony/finder":                                   "^6.4 || ^7.0 || ^8.0",
-        "php-coveralls/php-coveralls":                      "^2.0",
-        "friendsofphp/php-cs-fixer":                        "dev-master"
+        "php-coveralls/php-coveralls": "^2.0",
+        "symfony/finder": "^6.4 || ^7.0 || ^8.0",
+        "symfony/phpunit-bridge": "^6.4 || ^7.0.1 || ^8.0"
     },
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",

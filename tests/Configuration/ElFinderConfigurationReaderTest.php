@@ -6,6 +6,8 @@ use elFinderVolumeLocalFileSystem;
 use Exception;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationReader;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
+use League\Flysystem\AdapterInterface;
+use League\Flysystem\Filesystem;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -222,6 +224,94 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
         $root              = $this->baseRoot();
         $root['flysystem'] = ['enabled' => true, 'filesystem' => 'app.fs'];
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessageMatches('/is not an instance of/');
+
+        $this->buildReaderWithRoot($root, [], $container)->getConfiguration('default');
+    }
+
+    public function testConfigureFlysystemLocalAdapter(): void
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'local',
+            'adapter_service' => '',
+            'options'         => ['local' => ['path' => sys_get_temp_dir()]],
+        ];
+
+        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
+
+        $this->assertInstanceOf(Filesystem::class, $filesystem);
+    }
+
+    public function testConfigureFlysystemFtpAdapter(): void
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'ftp',
+            'adapter_service' => '',
+            'options'         => ['ftp' => [
+                'host'          => '127.0.0.1',
+                'username'      => 'user',
+                'password'      => 'pass',
+                'port'          => 21,
+                'root'          => '/',
+                'passive'       => true,
+                'ssl'           => false,
+                'timeout'       => 30,
+                'directoryPerm' => 0755,
+            ]],
+        ];
+
+        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
+
+        $this->assertInstanceOf(Filesystem::class, $filesystem);
+    }
+
+    public function testConfigureFlysystemCustomAdapter(): void
+    {
+        $adapter   = $this->createMock(AdapterInterface::class);
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('has')->willReturn(true);
+        $container->method('get')->willReturn($adapter);
+
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'custom',
+            'adapter_service' => 'app.flysystem_adapter',
+            'options'         => [],
+        ];
+
+        $filesystem = $this->buildReaderWithRoot($root, [], $container)->getConfiguration('default')['roots'][0]['filesystem'];
+
+        $this->assertInstanceOf(Filesystem::class, $filesystem);
+    }
+
+    public function testConfigureFlysystemRejectsNonAdapterCustomService(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('has')->willReturn(true);
+        $container->method('get')->willReturn(new stdClass());
+
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'custom',
+            'adapter_service' => 'app.bad_adapter',
+            'options'         => [],
+        ];
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('/is not an instance of/');
