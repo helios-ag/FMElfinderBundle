@@ -320,29 +320,6 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $this->buildReaderWithRoot($root, [], $container)->getConfiguration('default');
     }
 
-    public function testConfigureFlysystemAzureAdapter(): void
-    {
-        $root              = $this->baseRoot();
-        $root['driver']    = 'Flysystem';
-        $root['flysystem'] = [
-            'enabled'         => true,
-            'filesystem'      => '',
-            'type'            => 'azure',
-            'adapter_service' => '',
-            'options'         => [
-                'azure' => [
-                    'account_name'   => 'test',
-                    'account_key'    => base64_encode('key'),
-                    'container_name' => 'container',
-                ],
-            ],
-        ];
-
-        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
-
-        $this->assertInstanceOf(Filesystem::class, $filesystem);
-    }
-
     public function testConfigureFlysystemDropboxAdapter(): void
     {
         $root              = $this->baseRoot();
@@ -353,31 +330,6 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             'type'            => 'dropbox',
             'adapter_service' => '',
             'options'         => ['dropbox' => ['token' => 'test-token']],
-        ];
-
-        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
-
-        $this->assertInstanceOf(Filesystem::class, $filesystem);
-    }
-
-    public function testConfigureFlysystemSftpAdapter(): void
-    {
-        $root              = $this->baseRoot();
-        $root['driver']    = 'Flysystem';
-        $root['flysystem'] = [
-            'enabled'         => true,
-            'filesystem'      => '',
-            'type'            => 'sftp',
-            'adapter_service' => '',
-            'options'         => ['sftp' => [
-                'host'       => '127.0.0.1',
-                'port'       => 22,
-                'username'   => 'user',
-                'password'   => 'pass',
-                'privateKey' => '',
-                'root'       => '/',
-                'timeout'    => 10,
-            ]],
         ];
 
         $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];

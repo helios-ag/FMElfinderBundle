@@ -32,13 +32,9 @@
     "require-dev" : {
         "friendsofphp/php-cs-fixer": "dev-master",
         "league/flysystem": "~1.1.0",
-        "league/flysystem-azure-blob-storage": "^0.1.0|^1.0",
-        "league/flysystem-sftp": "^1.0",
         "matthiasnoback/symfony-config-test": "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^6.0",
-        "microsoft/azure-storage-blob": "^1.5",
         "php-coveralls/php-coveralls": "^2.0",
-        "phpseclib/phpseclib": "^2.0",
         "spatie/dropbox-api": "^1.0|^2.0",
         "spatie/flysystem-dropbox": "^1.0",
         "symfony/finder": "^6.4 || ^7.0 || ^8.0",
