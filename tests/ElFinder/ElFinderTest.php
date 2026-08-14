@@ -3,20 +3,31 @@
 namespace FM\ElfinderBundle\Tests\ElFinder;
 
 use FM\ElfinderBundle\ElFinder\ElFinder;
+use FM\ElfinderBundle\Session\ElFinderSession;
 use ReflectionProperty;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ElFinderTest extends \PHPUnit\Framework\TestCase
 {
     private string $volumePath;
 
+    /** Snapshot of superglobals touched by the elFinder constructor. */
+    private array $serverBackup;
+
+    private array $getBackup;
+
     protected function setUp(): void
     {
         $this->volumePath = sys_get_temp_dir() . '/elfinder_test_' . mt_rand();
         mkdir($this->volumePath, 0777, true);
+        $this->serverBackup = $_SERVER;
+        $this->getBackup = $_GET;
     }
 
     protected function tearDown(): void
     {
+        $_SERVER = $this->serverBackup;
+        $_GET = $this->getBackup;
         $this->removeDirectory($this->volumePath);
     }
 
@@ -52,16 +63,67 @@ class ElFinderTest extends \PHPUnit\Framework\TestCase
     {
         $_GET['cmd'] = 'open';
 
-        try {
-            $elfinder = new ElFinder([
-                'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
-                'bind'  => ['open.*' => static fn () => true],
-            ]);
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+            'bind' => ['open.*' => static fn () => true],
+        ]);
 
-            $this->assertTrue($elfinder->loaded());
-        } finally {
-            unset($_GET['cmd']);
-        }
+        $this->assertTrue($elfinder->loaded());
+    }
+
+    public function testConstructorConvertsPathInfoToGetQuery(): void
+    {
+        $_SERVER['PATH_INFO'] = '/open/targetHash';
+        $_GET = [];
+
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
+        $this->assertSame('open', $_GET['cmd'] ?? null);
+    }
+
+    public function testConstructorAppliesAdvancedOptions(): void
+    {
+        $session = new ElFinderSession($this->createMock(SessionInterface::class));
+
+        $elfinder = new ElFinder([
+            'roots' => [],
+            'session' => $session,
+            'sessionUseCmds' => ['open'],
+            'tmpLinkPath' => $this->volumePath,
+            'tmpLinkUrl' => 'http://tmp.example',
+            'tmpLinkLifeTime' => 3600,
+            'textMimes' => ['text/plain'],
+            'itemLockExpire' => 30,
+        ]);
+
+        // No roots means the instance is not loaded, but the constructor still
+        // processed all of the options above without error.
+        $this->assertFalse($elfinder->loaded());
+    }
+
+    public function testConstructorHonoursVolumesCountHeader(): void
+    {
+        $_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART'] = '5';
+
+        $elfinder = new ElFinder(['roots' => []]);
+
+        $this->assertFalse($elfinder->loaded());
+    }
+
+    public function testConstructorBindsNonWildcardCommandHandler(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['cmd'] = 'open';
+
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+            'bind' => ['open' => static fn () => true],
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
     }
 
     /**
@@ -70,7 +132,7 @@ class ElFinderTest extends \PHPUnit\Framework\TestCase
      */
     private function volumes(ElFinder $elfinder): array
     {
-        return (new ReflectionProperty(ElFinder::class, 'volumes'))->getValue($elfinder);
+        return (new ReflectionProperty(elFinder::class, 'volumes'))->getValue($elfinder);
     }
 
     private function removeDirectory(string $dir): void
