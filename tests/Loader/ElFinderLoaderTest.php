@@ -5,6 +5,7 @@ namespace FM\ElfinderBundle\Tests\Loader;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use FM\ElfinderBundle\Loader\ElFinderLoader;
 use ReflectionProperty;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
@@ -58,16 +59,16 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
             $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
             $configurator->method('getConfiguration')->willReturn([
                 'corsSupport' => false,
-                'roots'       => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
             ]);
             $loader = new ElFinderLoader($configurator);
 
             $efParameters = [
                 'instances' => [
                     'minimal' => [
-                        'where_is_multi'    => [],
+                        'where_is_multi' => [],
                         'multi_home_folder' => false,
-                        'folder_separator'  => '/',
+                        'folder_separator' => '/',
                     ],
                 ],
             ];
@@ -79,8 +80,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
             $this->assertIsString($hash);
             $this->assertSame($full, $loader->decode($hash));
         } finally {
-            array_map('unlink', glob($volumePath . '/*'));
-            @rmdir($volumePath);
+            $this->removeDirectory($volumePath);
         }
     }
 
@@ -89,11 +89,11 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
         $configurator->method('getConfiguration')->willReturn([
             'corsSupport' => false,
-            'roots'       => [
+            'roots' => [
                 0 => [
                     'driver' => 'LocalFileSystem',
-                    'path'   => 'folder||sub',
-                    'URL'    => 'http://example.com||path',
+                    'path' => 'folder||sub',
+                    'URL' => 'http://example.com||path',
                 ],
             ],
         ]);
@@ -102,9 +102,9 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $efParameters = [
             'instances' => [
                 'minimal' => [
-                    'where_is_multi'    => ['roots' => 0],
+                    'where_is_multi' => ['roots' => 0],
                     'multi_home_folder' => true,
-                    'folder_separator'  => '||',
+                    'folder_separator' => '||',
                 ],
             ],
         ];
@@ -112,9 +112,151 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $loader->initBridge('minimal', $efParameters);
 
         $reflection = new ReflectionProperty(ElFinderLoader::class, 'config');
-        $config     = $reflection->getValue($loader);
+        $config = $reflection->getValue($loader);
 
         $this->assertSame('folder/sub', $config['roots'][0]['path']);
         $this->assertSame('http://example.com/path', $config['roots'][0]['URL']);
+    }
+
+    public function testInitBridgeAttachesSessionToBridge(): void
+    {
+        $volumePath = sys_get_temp_dir() . '/elfloader_session_' . mt_rand();
+        mkdir($volumePath, 0777, true);
+
+        try {
+            $session = $this->createMock(SessionInterface::class);
+
+            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator->method('getConfiguration')->willReturn([
+                'corsSupport' => false,
+                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+            ]);
+            $loader = new ElFinderLoader($configurator);
+            $loader->setSession($session);
+
+            $loader->initBridge('minimal', [
+                'instances' => ['minimal' => [
+                    'where_is_multi' => [], 'multi_home_folder' => false, 'folder_separator' => '/',
+                ]],
+            ]);
+
+            $bridge = (new ReflectionProperty(ElFinderLoader::class, 'bridge'))->getValue($loader);
+            $this->assertNotNull($bridge);
+        } finally {
+            $this->removeDirectory($volumePath);
+        }
+    }
+
+    public function testLoadRunsConnectorWhenCorsDisabled(): void
+    {
+        $result = $this->loadWithCors(false);
+
+        $this->assertIsArray($result);
+    }
+
+    public function testLoadExecutesConnectorWhenCorsEnabled(): void
+    {
+        $result = $this->loadWithCors(true);
+
+        $this->assertIsArray($result);
+    }
+
+    public function testEncodeReturnsFalseWithoutVolumes(): void
+    {
+        $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+        $configurator->method('getConfiguration')->willReturn([
+            'corsSupport' => false,
+            'roots' => [['driver' => 'NonexistentDriver']],
+        ]);
+        $loader = new ElFinderLoader($configurator);
+        $loader->initBridge('minimal', [
+            'instances' => ['minimal' => [
+                'where_is_multi' => [], 'multi_home_folder' => false, 'folder_separator' => '/',
+            ]],
+        ]);
+
+        $this->assertFalse($loader->encode('/nothing'));
+    }
+
+    public function testEncodeReturnsArrayOfHashesForMultipleVolumes(): void
+    {
+        $volumeA = sys_get_temp_dir() . '/elfloader_multi_a_' . mt_rand();
+        $volumeB = sys_get_temp_dir() . '/elfloader_multi_b_' . mt_rand();
+        mkdir($volumeA, 0777, true);
+        mkdir($volumeB, 0777, true);
+        file_put_contents($volumeA . '/shared.txt', 'a');
+        file_put_contents($volumeB . '/shared.txt', 'b');
+
+        try {
+            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator->method('getConfiguration')->willReturn([
+                'corsSupport' => false,
+                'roots' => [
+                    ['driver' => 'LocalFileSystem', 'path' => $volumeA],
+                    ['driver' => 'LocalFileSystem', 'path' => $volumeB],
+                ],
+            ]);
+            $loader = new ElFinderLoader($configurator);
+            $loader->initBridge('minimal', [
+                'instances' => ['minimal' => [
+                    'where_is_multi' => [], 'multi_home_folder' => false, 'folder_separator' => '/',
+                ]],
+            ]);
+
+            $encoded = $loader->encode($volumeA . '/shared.txt');
+
+            $this->assertIsArray($encoded);
+            $this->assertGreaterThanOrEqual(2, count($encoded));
+        } finally {
+            $this->removeDirectory($volumeA);
+            $this->removeDirectory($volumeB);
+        }
+    }
+
+    private function loadWithCors(bool $cors): array
+    {
+        $volumePath = sys_get_temp_dir() . '/elfloader_load_' . mt_rand();
+        mkdir($volumePath, 0777, true);
+        // The connector reads the request method from the global $_SERVER, and
+        // Request::create() does not populate it, so set it for the call.
+        $previousMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        try {
+            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator->method('getConfiguration')->willReturn([
+                'corsSupport' => $cors,
+                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+            ]);
+            $loader = new ElFinderLoader($configurator);
+            $loader->initBridge('minimal', [
+                'instances' => ['minimal' => [
+                    'where_is_multi' => [], 'multi_home_folder' => false, 'folder_separator' => '/',
+                ]],
+            ]);
+
+            return $loader->load(Request::create('/elfinder', 'GET', ['cmd' => 'open', 'target' => '']));
+        } finally {
+            if ($previousMethod === null) {
+                unset($_SERVER['REQUEST_METHOD']);
+            } else {
+                $_SERVER['REQUEST_METHOD'] = $previousMethod;
+            }
+            $this->removeDirectory($volumePath);
+        }
+    }
+
+    private function removeDirectory(string $dir): void
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+
+        foreach (array_diff(scandir($dir), ['.', '..']) as $item) {
+            $path = $dir . '/' . $item;
+            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+        }
+
+        rmdir($dir);
     }
 }

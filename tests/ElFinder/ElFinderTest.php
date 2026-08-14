@@ -126,6 +126,60 @@ class ElFinderTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($elfinder->loaded());
     }
 
+    public function testConstructorBindsObjectCallableHandler(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['cmd'] = 'open';
+
+        $listener = new class {
+            public function onOpen(): void
+            {
+            }
+        };
+
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+            'bind' => ['open' => [$listener, 'onOpen']],
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
+    }
+
+    public function testConstructorBindsPluginHandlerString(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['cmd'] = 'open';
+
+        // A "plugin.*" handler whose plugin is unknown resolves to no binding,
+        // but the lookup branch is still exercised.
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+            'bind' => ['open.pre' => 'plugin.unknown_plugin.run'],
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
+    }
+
+    public function testConstructorCapsRootMaxArchiveFilesSize(): void
+    {
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath, 'maxArcFilesSize' => 200]],
+            'maxArcFilesSize' => 100,
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
+    }
+
+    public function testConstructorUsesConfiguredConnectionFlagsPath(): void
+    {
+        $elfinder = new ElFinder([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+            'connectionFlagsPath' => $this->volumePath,
+        ]);
+
+        $this->assertTrue($elfinder->loaded());
+    }
+
     /**
      * elFinder stores its mounted volumes on a protected property, so read it
      * through reflection rather than relying on a public accessor.

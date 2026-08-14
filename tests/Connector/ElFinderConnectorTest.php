@@ -18,7 +18,7 @@ class ElFinderConnectorTest extends \PHPUnit\Framework\TestCase
         // The vendor elFinderConnector constructor reads the request method, so
         // make sure it exists before any connector is instantiated.
         $this->originalRequestMethod = $_SERVER['REQUEST_METHOD'] ?? '';
-        $_SERVER['REQUEST_METHOD']   = 'GET';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
     }
 
     protected function tearDown(): void
@@ -31,7 +31,7 @@ class ElFinderConnectorTest extends \PHPUnit\Framework\TestCase
     {
         // No roots => the bridge reports itself as not loaded, so the connector
         // short-circuits with an error payload instead of executing a command.
-        $connector                 = new ElFinderConnector(new ElFinderBridge(['roots' => []]));
+        $connector = new ElFinderConnector(new ElFinderBridge(['roots' => []]));
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         $result = $connector->run(['cmd' => 'open']);
@@ -50,6 +50,68 @@ class ElFinderConnectorTest extends \PHPUnit\Framework\TestCase
         $result = $connector->run(['cmd' => 'open', 'target' => '']);
 
         $this->assertIsArray($result);
+    }
+
+    public function testRunWithNullQueryFallsBackToGlobalGet(): void
+    {
+        $connector = new ElFinderConnector(new ElFinderBridge([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+        ]));
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET = ['cmd' => 'open', 'target' => ''];
+
+        try {
+            $result = $connector->run(null);
+        } finally {
+            $_GET = [];
+        }
+
+        $this->assertIsArray($result);
+    }
+
+    public function testRunRejectsUnknownCommand(): void
+    {
+        $connector = new ElFinderConnector(new ElFinderBridge([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+        ]));
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $result = $connector->run(['cmd' => 'this_command_does_not_exist']);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('error', $result);
+    }
+
+    public function testRunRejectsMissingRequiredArgument(): void
+    {
+        $connector = new ElFinderConnector(new ElFinderBridge([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+        ]));
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        // "rm" requires a target; omitting it must yield an invalid-params error.
+        $result = $connector->run(['cmd' => 'rm']);
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('error', $result);
+    }
+
+    public function testRunRejectsPostRequestWithoutCommand(): void
+    {
+        $connector = new ElFinderConnector(new ElFinderBridge([
+            'roots' => [['driver' => 'LocalFileSystem', 'path' => $this->volumePath]],
+        ]));
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = [];
+
+        try {
+            $result = $connector->run([]);
+        } finally {
+            $_POST = [];
+        }
+
+        $this->assertIsArray($result);
+        $this->assertArrayHasKey('error', $result);
     }
 
     private function removeDirectory(string $dir): void
