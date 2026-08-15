@@ -1,15 +1,19 @@
 Flysystem example configuration
 ===============================
 
-You will need library files to work with Flysystem:
-
-First add flysystem elfinder driver:
+This bundle builds [Flysystem](https://flysystem.thephpleague.com/) **v3** filesystems, so the
+elFinder volume driver must be Flysystem v3 compatible as well:
 
 ```sh
-composer require barryvdh/elfinder-flysystem-driver
+composer require "barryvdh/elfinder-flysystem-driver:^0.5"
 ```
 
-Depending which driver you want to use, you need require appropriate driver, for example:
+Versions `0.5.0` and newer of that driver target Flysystem `^3` (older `0.1`–`0.3` releases
+target Flysystem 1.x and will not work with this bundle). The driver also requires
+`intervention/image`, which is used for image manipulation.
+
+Depending which adapter you want to use, you also need to require the appropriate Flysystem v3
+adapter package, for example:
 
 ```sh
 composer require league/flysystem-aws-s3-v3
@@ -46,7 +50,6 @@ fm_elfinder:
                               type: dropbox
                               options:
                                 dropbox:
-                                    app: YourAppname // see dropbox developer site
                                     token: ToKeN // can be aquired via developer console
                           upload_allow: ['all']
                       aws_s3:
@@ -63,6 +66,10 @@ fm_elfinder:
                                     secret: 'MY_AWS_SECRET'
                                     region: 'MY_AWS_REGION'
                                     bucket_name: 'MY_BUCKET_NAME'
+                                    # Optional default options forwarded to every S3 request
+                                    # performed by the adapter (e.g. ACL, StorageClass)
+                                    options:
+                                        ACL: 'public-read'
                           upload_allow: ['all']
 ```                          
 
@@ -97,8 +104,15 @@ fm_elfinder:
                                 secret: 'MY_AWS_SECRET'
                                 region: 'MY_AWS_REGION'
                                 bucket_name: 'MY_BUCKET_NAME'
+                                options:
+                                    ACL: 'public-read'
                       upload_allow: ['all']
 ```
+
+Any option set under `flysystem.options.aws_s3_v3.options` is forwarded as a default option to the
+Flysystem v3 `AwsS3V3Adapter`, so it is applied to every request the adapter performs (uploads,
+copies, etc.). This is typically used to set `ACL: 'public-read'` — without it, uploads fall back
+to the AWS SDK defaults, which usually makes objects private.
 
 In that case you use an S3 domain so the **relative_path** have to be false and the url have to be set to your S3 or Cloudfront Domain if you have mapped S3 directly to your filesystem work with the relative path.
 
@@ -109,17 +123,22 @@ If you don't use subdomain that contains your `bucket_name` and want to use your
 
 To prevent AWS PHP SDK from verifying the presence of a shared configuration in .aws/configuration make sure to set **use_aws_shared_config_files**  to `false`.
 
-Also possible to define Flysystem adapters as services, it can be useful for self written adapters.
-To use adapter as service, define it under 'services' node in your services.yml (or use DI)
+# Migrating from removed adapter types
+
+The adapter types `azure`, `aws_s3_v2`, `copy_com`, `gridfs`, `zip` and `rackspace` are no longer
+supported, because no Flysystem v3 implementation exists for them. Configuring one of these types
+now fails with a clear error instead of silently mounting a broken volume.
+
+If you used one of the removed types, migrate to either:
+
+1. A Flysystem v3 adapter defined as a service, referenced through the `custom` type:
 
 ```services.yml
 services:
     local_adapter:
-        class: League\Flysystem\Adapter\Local
-        arguments: ["%kernel.root_dir%/../web/uploads/"]
+        class: League\Flysystem\Local\LocalFilesystemAdapter
+        arguments: ["%kernel.project_dir%/public/uploads/"]
 ```
-
-and configure flysystem node accordingly to use it
 
 ```config.yml
 fm_elfinder:
@@ -129,7 +148,7 @@ fm_elfinder:
             editor: simple
             relative_path: true
             connector:
-                roots:      
+                roots:
                     uploads:
                         show_hidden: false
                         driver: Flysystem # !set driver to Flysystem
@@ -139,4 +158,26 @@ fm_elfinder:
                             options:
                         path: ''
                         upload_allow: ['all']
-```                        
+```
+
+2. A ready-made Flysystem v3 `Filesystem` service, referenced through the `filesystem` option.
+   This is the recommended approach for any adapter (self-written or from another package),
+   because it lets you configure the whole filesystem (visibility, caching, etc.) yourself:
+
+```config.yml
+fm_elfinder:
+    instances:
+        adapter:
+            locale: %locale%
+            editor: simple
+            connector:
+                roots:
+                    uploads:
+                        driver: Flysystem
+                        flysystem:
+                            filesystem: 'oneup_flysystem.my_filesystem'
+                        path: ''
+                        upload_allow: ['all']
+```
+
+The supported built-in types are `local`, `ftp`, `sftp`, `aws_s3_v3`, `dropbox` and `custom`.

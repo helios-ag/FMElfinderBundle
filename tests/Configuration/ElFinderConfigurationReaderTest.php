@@ -6,6 +6,7 @@ use elFinderVolumeLocalFileSystem;
 use Exception;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationReader;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
+use InvalidArgumentException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
@@ -359,6 +360,42 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
 
         $this->assertInstanceOf(Filesystem::class, $filesystem);
+    }
+
+    public function testConfigureFlysystemRejectsRemovedAdapterType(): void
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'azure',
+            'adapter_service' => '',
+            'options'         => [],
+        ];
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/is not supported by Flysystem v3/');
+
+        $this->buildReaderWithRoot($root)->getConfiguration('default');
+    }
+
+    public function testConfigureFlysystemRejectsUnknownAdapterType(): void
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'some_unknown_type',
+            'adapter_service' => '',
+            'options'         => [],
+        ];
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/is not supported by Flysystem v3/');
+
+        $this->buildReaderWithRoot($root)->getConfiguration('default');
     }
 
     public function testConfigureFlysystemUsesConfiguredFilesystemService(): void

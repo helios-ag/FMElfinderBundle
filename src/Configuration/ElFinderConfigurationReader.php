@@ -5,6 +5,7 @@ namespace FM\ElfinderBundle\Configuration;
 use Aws\S3\S3Client;
 use Exception;
 use FM\ElfinderBundle\Security\ElfinderSecurityInterface;
+use InvalidArgumentException;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter as AwsS3v3;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
@@ -245,7 +246,14 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     ];
                 }
                 $client     = new S3Client($s3Options);
-                $filesystem = new Filesystem(new AwsS3v3($client, $opt['aws_s3_v3']['bucket_name'], $opt['aws_s3_v3']['optional_prefix']));
+                $filesystem = new Filesystem(new AwsS3v3(
+                    $client,
+                    $opt['aws_s3_v3']['bucket_name'],
+                    $opt['aws_s3_v3']['optional_prefix'],
+                    null,
+                    null,
+                    $opt['aws_s3_v3']['options'] ?? []
+                ));
 
                 break;
             case 'dropbox':
@@ -262,6 +270,14 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 }
 
                 break;
+            default:
+                throw new InvalidArgumentException(sprintf(
+                    'Flysystem adapter type "%s" is not supported by Flysystem v3. Supported types are "local", "ftp", '
+                    . '"sftp", "aws_s3_v3", "dropbox" and "custom". Migrate removed adapter types (e.g. "azure", '
+                    . '"aws_s3_v2", "copy_com", "gridfs", "zip" or "rackspace") to a Flysystem v3 adapter service '
+                    . 'referenced via "adapter_service", or to a configured Flysystem "filesystem" service.',
+                    $adapter
+                ));
         }
 
         return $filesystem;
