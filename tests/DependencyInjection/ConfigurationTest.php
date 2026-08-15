@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Tests\DependencyInjection;
 
 use FM\ElfinderBundle\DependencyInjection\Configuration;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
@@ -84,9 +85,7 @@ class ConfigurationTest extends TestCase
         $this->assertSame([], $flysystem['options']['aws_s3_v3']['options']);
     }
 
-    /**
-     * @dataProvider provideRemovedAdapterType
-     */
+    #[DataProvider('provideRemovedAdapterType')]
     public function testRemovedFlysystemAdapterTypesAreRejected(string $type): void
     {
         $this->expectException(InvalidConfigurationException::class);
