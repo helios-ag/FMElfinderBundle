@@ -176,4 +176,16 @@ EOF;
             $this->assertInstanceOf('Twig\TwigFunction', $twigFunction);
         }
     }
+
+    public function testRenderTinyMCE5()
+    {
+        // The extension methods render from the @FMElfinder namespace, which the
+        // shared loader does not register by default (the direct-render tests use
+        // the default namespace instead). Register it for this assertion only.
+        $this->twig->getLoader()->addPath(__DIR__ . '/../../../src/Resources/views', 'FMElfinder');
+
+        $testData = $this->extension->tinymce5('minimal');
+
+        $this->assertNotEmpty($testData);
+    }
 }

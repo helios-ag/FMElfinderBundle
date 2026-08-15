@@ -1,0 +1,20 @@
+codecov:
+  require_ci_to_pass: false
+
+coverage:
+  status:
+    project:
+      default:
+        # Carry the current coverage forward; only flag real regressions.
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        # New/changed code should be reasonably covered.
+        target: 60%
+        threshold: 5%
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false

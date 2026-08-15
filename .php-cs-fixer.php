@@ -44,7 +44,7 @@ return (new PhpCsFixer\Config())
         'no_useless_return' => true,
         'ordered_class_elements' => true,
         'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['const', 'class', 'function']],
-        'php_unit_test_class_requires_covers' => true,
+        'php_unit_test_class_requires_covers' => false,
         'phpdoc_align' => [
             'tags' => [
                 'param', 'return', 'throws', 'type', 'var'

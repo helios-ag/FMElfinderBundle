@@ -60,6 +60,14 @@ class ElFinderInstallerCommandTest extends TestCase
         $this->assertEquals(0, $this->commandTester->getStatusCode());
     }
 
+    public function testExecuteFailsWithInvalidVendorDir(): void
+    {
+        $this->commandTester->execute(['--elfinder-vendor-dir' => 'invalid!name']);
+
+        $this->assertSame(1, $this->commandTester->getStatusCode());
+        $this->assertStringContainsString('Invalid vendor directory name', $this->commandTester->getDisplay());
+    }
+
     private function assertFileSystemOperations(string $docroot): void
     {
         $expectedCalls = [

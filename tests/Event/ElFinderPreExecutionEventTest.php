@@ -30,4 +30,15 @@ class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
             'homeFolder' => $event->getHomeFolder(),
         ], $request->query->all());
     }
+
+    public function testGetRequestAndAccessors()
+    {
+        $request    = new Request(['cmd' => 'rm']);
+        $httpKernel = $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $event      = new ElFinderPreExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder');
+
+        $this->assertSame($request, $event->getRequest());
+        $this->assertSame('testInstance', $event->getInstance());
+        $this->assertSame('testHomeFolder', $event->getHomeFolder());
+    }
 }
