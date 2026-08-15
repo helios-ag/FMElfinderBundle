@@ -190,7 +190,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testSecurityVoterAppliesDisabledCommandsWhenRoleGranted(): void
     {
-        $voter = $this->createMock(ElfinderSecurityInterface::class);
+        $voter = $this->createStub(ElfinderSecurityInterface::class);
         $voter->method('getConfiguration')->willReturn(['ROLE_ADMIN' => ['rm', 'rename']]);
 
         $container = $this->securityContainer($voter, new AuthCheckerStub(true));
@@ -205,7 +205,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testSecurityVoterReturnsEmptyWhenNoRoleGranted(): void
     {
-        $voter = $this->createMock(ElfinderSecurityInterface::class);
+        $voter = $this->createStub(ElfinderSecurityInterface::class);
         $voter->method('getConfiguration')->willReturn(['ROLE_ADMIN' => ['rm']]);
 
         $container = $this->securityContainer($voter, new AuthCheckerStub(false));
@@ -220,7 +220,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testFlysystemRejectsNonFilesystemService(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn(new stdClass());
 
@@ -303,8 +303,8 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureFlysystemCustomAdapter(): void
     {
-        $adapter   = $this->createMock(FilesystemAdapter::class);
-        $container = $this->createMock(ContainerInterface::class);
+        $adapter   = $this->createStub(FilesystemAdapter::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($adapter);
 
@@ -325,7 +325,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureFlysystemRejectsNonAdapterCustomService(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn(new stdClass());
 
@@ -401,7 +401,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     public function testConfigureFlysystemUsesConfiguredFilesystemService(): void
     {
         $filesystem = new Filesystem(new LocalFilesystemAdapter(sys_get_temp_dir()));
-        $container  = $this->createMock(ContainerInterface::class);
+        $container  = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn($filesystem);
 
@@ -417,17 +417,15 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
     private function getConfigurationReader(array $attributes = [])
     {
         /* @var \Symfony\Component\DependencyInjection\ContainerInterface|\PHPUnit_Framework_MockObject_MockObject */
-        $containerMock = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $containerMock = $this->createStub('Symfony\Component\DependencyInjection\ContainerInterface');
 
-        $this->elFinderVolumeMock = $this->createMock('\elFinderVolumeLocalFileSystem');
+        $this->elFinderVolumeMock = $this->createStub('\elFinderVolumeLocalFileSystem');
 
         $containerMock
-            ->expects($this->any())
             ->method('has')
             ->willReturn(true);
 
         $containerMock
-            ->expects($this->any())
             ->method('get')
             ->willReturnMap([
                 [
@@ -437,7 +435,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
                 ],
             ]);
 
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         // A real Request is used instead of a mock: in Symfony >= 8.1 the
         // ``$attributes`` property is a hooked property, and PHPUnit replaces
         // hooked properties of mock objects with test stubs, which would break
@@ -461,7 +459,6 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         };
 
         $requestStack
-            ->expects($this->any())
             ->method('getCurrentRequest')
             ->willReturn($requestObject);
 
@@ -693,7 +690,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     private function securityContainer(ElfinderSecurityInterface $voter, AuthCheckerStub $checker): ContainerInterface
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturnCallback(function (string $id) use ($voter, $checker) {
             return match ($id) {
@@ -747,7 +744,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
             }
         };
 
-        $requestStack = $this->createMock(RequestStack::class);
+        $requestStack = $this->createStub(RequestStack::class);
         $requestStack->method('getCurrentRequest')->willReturn($request);
 
         return $requestStack;
@@ -755,7 +752,7 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     private function buildContainer(): ContainerInterface
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $container->method('has')->willReturn(true);
         $container->method('get')->willReturn(null);
 

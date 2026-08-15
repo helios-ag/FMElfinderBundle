@@ -4,8 +4,8 @@ namespace FM\ElfinderBundle\Tests\Form\Type;
 
 use FM\ElfinderBundle\Form\Type\ElFinderType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
 {
@@ -34,7 +34,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
         ];
         $view = new FormView();
         $type = new ElFinderType();
-        $form = $this->createMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->createStub('Symfony\Component\Form\Test\FormInterface');
         $type->buildView($view, $form, $options);
         foreach ($options as $name => $value) {
             $this->assertArrayHasKey($name, $view->vars);
@@ -44,7 +44,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildFormSetsAttributesWhenEnabled()
     {
-        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder = $this->createStub(FormBuilderInterface::class);
         $builder->method('getAttribute')->willReturn(true);
         $set = [];
         $builder->method('setAttribute')->willReturnCallback(function (string $name, $value) use (&$set, $builder) {
@@ -62,7 +62,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildFormOmitsInstanceWhenDisabled()
     {
-        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder = $this->createStub(FormBuilderInterface::class);
         $builder->method('getAttribute')->willReturn(false);
         $set = [];
         $builder->method('setAttribute')->willReturnCallback(function (string $name, $value) use (&$set, $builder) {
@@ -80,7 +80,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
     public function testBuildViewHidesInstanceWhenDisabled()
     {
         $view = new FormView();
-        $form = $this->createMock('Symfony\Component\Form\Test\FormInterface');
+        $form = $this->createStub('Symfony\Component\Form\Test\FormInterface');
 
         (new ElFinderType())->buildView($view, $form, ['enable' => false, 'instance' => 'default', 'homeFolder' => '']);
 

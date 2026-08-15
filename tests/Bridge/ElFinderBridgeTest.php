@@ -34,7 +34,7 @@ class ElFinderBridgeTest extends \PHPUnit\Framework\TestCase
 
     public function testMountsPreInstantiatedServiceVolume(): void
     {
-        $volume = $this->createMock(elFinderVolumeDriver::class);
+        $volume = $this->createStub(elFinderVolumeDriver::class);
         $volume->method('mount')->willReturn(true);
         $volume->method('id')->willReturn('l1_');
         $volume->method('isReadable')->willReturn(true);
@@ -48,7 +48,7 @@ class ElFinderBridgeTest extends \PHPUnit\Framework\TestCase
     public function testSetSessionStoresSession(): void
     {
         $bridge  = new ElFinderBridge(['roots' => []]);
-        $session = $this->createMock(SessionInterface::class);
+        $session = $this->createStub(SessionInterface::class);
 
         $bridge->setSession($session);
 
