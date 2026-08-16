@@ -2,8 +2,8 @@
 
 namespace FM\ElfinderBundle\Tests\Event;
 
-use Symfony\Component\HttpFoundation\Request;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
+use Symfony\Component\HttpFoundation\Request;
 
 class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
 {
@@ -11,7 +11,7 @@ class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
     {
         $command    = 'rm';
         $request    = new Request(['cmd' => $command]);
-        $httpKernel = $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $httpKernel = $this->createStub('Symfony\Component\HttpKernel\HttpKernelInterface');
         $event      = new ElFinderPreExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder');
         $this->assertEquals($command, $event->getCommand());
     }
@@ -34,7 +34,7 @@ class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
     public function testGetRequestAndAccessors()
     {
         $request    = new Request(['cmd' => 'rm']);
-        $httpKernel = $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface');
+        $httpKernel = $this->createStub('Symfony\Component\HttpKernel\HttpKernelInterface');
         $event      = new ElFinderPreExecutionEvent($request, $httpKernel, 'testInstance', 'testHomeFolder');
 
         $this->assertSame($request, $event->getRequest());

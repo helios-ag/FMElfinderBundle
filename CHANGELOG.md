@@ -1,4 +1,17 @@
-#
+# Changelog
+
+## Unreleased
+
+- The Flysystem integration now targets Flysystem v3. The elFinder volume driver must be Flysystem
+  v3 compatible: use `barryvdh/elfinder-flysystem-driver` in version `^0.5` or newer (versions
+  `0.1`–`0.3` target Flysystem 1.x).
+- Options configured under `flysystem.options.aws_s3_v3.options` (e.g. `ACL: 'public-read'`) are
+  forwarded to the `AwsS3V3Adapter` as default request options.
+- The Flysystem adapter types `azure`, `aws_s3_v2`, `copy_com`, `gridfs`, `zip` and `rackspace`
+  were removed, because no Flysystem v3 implementation exists for them. Configuring one of these
+  types (or any other unsupported type) now fails immediately with a migration hint instead of
+  silently mounting a broken volume. Migrate to an `adapter_service` of type `custom`, or to a
+  configured Flysystem `filesystem` service.
 
 ## [12.1.2](https://github.com/helios-ag/FMElfinderBundle/tree/12.1.2) (2022-01-21)
 

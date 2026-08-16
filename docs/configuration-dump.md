@@ -15,11 +15,13 @@ fm_elfinder:
             editor:               simple
             editor_template:      null
             fullscreen:           true
+            multi_home_folder:    false
+            folder_separator:     ''
             theme:                smoothness
-            include_assets:       true
             tinymce_popup_path:   ''
             relative_path:        true
             path_prefix:          /
+            where_is_multi:       []
             visible_mime_types:   []
             connector:
                 debug:                false
@@ -41,7 +43,7 @@ fm_elfinder:
 
                     # Prototype
                     name:
-                        driver:               LocalFileSystem # Required
+                        driver:               ~ # Required
                         volume_id:            0
                         path:                 ''
                         autoload:             false
@@ -63,6 +65,7 @@ fm_elfinder:
                         tmb_size:             48
                         tmb_crop:             true
                         tmb_bg_color:         '#ffffff'
+                        quarantine:           null
                         copy_overwrite:       true
                         copy_join:            true
                         copy_from:            true
@@ -83,6 +86,7 @@ fm_elfinder:
                             - deny
                             - allow
                         upload_max_size:      0
+                        upload_max_conn:      3
                         defaults:
 
                             # Prototype
@@ -150,19 +154,6 @@ fm_elfinder:
                                     privateKey:           ''
                                     timeout:              10
                                     root:                 /
-                                azure:
-                                    enabled:              false
-                                    account_name:         ''
-                                    account_key:          ''
-                                    container_name:       ''
-                                aws_s3_v2:
-                                    enabled:              false
-                                    key:                  ''
-                                    secret:               ''
-                                    region:               ''
-                                    bucket_name:          ''
-                                    optional_prefix:      ''
-                                    base_url:             ''
                                 aws_s3_v3:
                                     enabled:              false
                                     key:                  ''
@@ -171,36 +162,14 @@ fm_elfinder:
                                     version:              ''
                                     bucket_name:          ''
                                     optional_prefix:      ''
-                                    endpoint:             ''
+                                    endpoint:             null
                                     use_path_style_endpoint: false
                                     use_aws_shared_config_files: true
-                                    options:
-                                        enabled:              false
-                                        ACL:                  ''
-                                copy_com:
-                                    enabled:              false
-                                    consumer_key:         ''
-                                    consumer_secret:      ''
-                                    access_token:         ''
-                                    token_secret:         ''
-                                    optional_prefix:      ''
-                                gridfs:
-                                    enabled:              false
-                                    db_name:              ''
-                                zip:
-                                    enabled:              false
-                                    path:                 ''
+                                    options:              []
                                 dropbox:
                                     enabled:              false
                                     app:                  ''
                                     token:                ''
-                                rackspace:
-                                    enabled:              false
-                                    username:             ''
-                                    apikey:               ''
-                                    endpoint:             ''
-                                    container:            ''
-                                    region:               ''
                         glide_url:            ''
                         glide_key:            ''
                         plugins:
@@ -264,14 +233,6 @@ fm_elfinder:
                             user:                 ~
                             password:             ~
                             path:                 ~
-                        s3_settings:
-                            enabled:              false
-                            access_key:           ~
-                            secret_key:           ~
-                            bucket:               ~
-                            tmp_path:             ~
-                            signature:            ~
-                            region:               ~
                         mysql_settings:
                             enabled:              false
                             host:                 ~

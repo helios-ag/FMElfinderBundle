@@ -16,9 +16,8 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->configuratorMock = $this->createMock(ElFinderConfigurationProviderInterface::class);
-        $this->configuratorMock->expects($this->any())
-                               ->method('getConfiguration')
+        $this->configuratorMock = $this->createStub(ElFinderConfigurationProviderInterface::class);
+        $this->configuratorMock->method('getConfiguration')
                                ->willReturn(['parameters' => []]);
         $this->loader = new ElFinderLoader($this->configuratorMock);
         $this->loader->setInstance('minimal');
@@ -32,7 +31,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function testSetConfiguratorSwapsConfigurator(): void
     {
-        $replacement = $this->createMock(ElFinderConfigurationProviderInterface::class);
+        $replacement = $this->createStub(ElFinderConfigurationProviderInterface::class);
         $replacement->method('getConfiguration')->willReturn(['swapped' => true]);
 
         $this->loader->setConfigurator($replacement);
@@ -42,7 +41,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function testSetSessionStoresSession(): void
     {
-        $session = $this->createMock(SessionInterface::class);
+        $session = $this->createStub(SessionInterface::class);
         $this->loader->setSession($session);
 
         $reflection = new ReflectionProperty(ElFinderLoader::class, 'session');
@@ -56,19 +55,19 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         file_put_contents($volumePath . '/hello.txt', 'hi');
 
         try {
-            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
             $configurator->method('getConfiguration')->willReturn([
                 'corsSupport' => false,
-                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+                'roots'       => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
             ]);
             $loader = new ElFinderLoader($configurator);
 
             $efParameters = [
                 'instances' => [
                     'minimal' => [
-                        'where_is_multi' => [],
+                        'where_is_multi'    => [],
                         'multi_home_folder' => false,
-                        'folder_separator' => '/',
+                        'folder_separator'  => '/',
                     ],
                 ],
             ];
@@ -86,14 +85,14 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function testInitBridgeRewritesMultiHomeFolderPaths(): void
     {
-        $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+        $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
         $configurator->method('getConfiguration')->willReturn([
             'corsSupport' => false,
-            'roots' => [
+            'roots'       => [
                 0 => [
                     'driver' => 'LocalFileSystem',
-                    'path' => 'folder||sub',
-                    'URL' => 'http://example.com||path',
+                    'path'   => 'folder||sub',
+                    'URL'    => 'http://example.com||path',
                 ],
             ],
         ]);
@@ -102,9 +101,9 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $efParameters = [
             'instances' => [
                 'minimal' => [
-                    'where_is_multi' => ['roots' => 0],
+                    'where_is_multi'    => ['roots' => 0],
                     'multi_home_folder' => true,
-                    'folder_separator' => '||',
+                    'folder_separator'  => '||',
                 ],
             ],
         ];
@@ -112,7 +111,7 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         $loader->initBridge('minimal', $efParameters);
 
         $reflection = new ReflectionProperty(ElFinderLoader::class, 'config');
-        $config = $reflection->getValue($loader);
+        $config     = $reflection->getValue($loader);
 
         $this->assertSame('folder/sub', $config['roots'][0]['path']);
         $this->assertSame('http://example.com/path', $config['roots'][0]['URL']);
@@ -124,12 +123,12 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         mkdir($volumePath, 0777, true);
 
         try {
-            $session = $this->createMock(SessionInterface::class);
+            $session = $this->createStub(SessionInterface::class);
 
-            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
             $configurator->method('getConfiguration')->willReturn([
                 'corsSupport' => false,
-                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+                'roots'       => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
             ]);
             $loader = new ElFinderLoader($configurator);
             $loader->setSession($session);
@@ -163,10 +162,10 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
 
     public function testEncodeReturnsFalseWithoutVolumes(): void
     {
-        $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+        $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
         $configurator->method('getConfiguration')->willReturn([
             'corsSupport' => false,
-            'roots' => [['driver' => 'NonexistentDriver']],
+            'roots'       => [['driver' => 'NonexistentDriver']],
         ]);
         $loader = new ElFinderLoader($configurator);
         $loader->initBridge('minimal', [
@@ -188,10 +187,10 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         file_put_contents($volumeB . '/shared.txt', 'b');
 
         try {
-            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
             $configurator->method('getConfiguration')->willReturn([
                 'corsSupport' => false,
-                'roots' => [
+                'roots'       => [
                     ['driver' => 'LocalFileSystem', 'path' => $volumeA],
                     ['driver' => 'LocalFileSystem', 'path' => $volumeB],
                 ],
@@ -219,14 +218,14 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         mkdir($volumePath, 0777, true);
         // The connector reads the request method from the global $_SERVER, and
         // Request::create() does not populate it, so set it for the call.
-        $previousMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $previousMethod            = $_SERVER['REQUEST_METHOD'] ?? null;
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         try {
-            $configurator = $this->createMock(ElFinderConfigurationProviderInterface::class);
+            $configurator = $this->createStub(ElFinderConfigurationProviderInterface::class);
             $configurator->method('getConfiguration')->willReturn([
                 'corsSupport' => $cors,
-                'roots' => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
+                'roots'       => [['driver' => 'LocalFileSystem', 'path' => $volumePath]],
             ]);
             $loader = new ElFinderLoader($configurator);
             $loader->initBridge('minimal', [
