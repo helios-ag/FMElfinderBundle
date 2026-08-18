@@ -1,207 +1,239 @@
-window.tinymceElfinder = function(opts) {
-    // elFinder node
-    let elfNode = $('<div/>');
-    if (opts.nodeId) {
-        elfNode.attr('id', opts.nodeId);
-        delete opts.nodeId;
+(function (root, factory) {
+    'use strict';
+
+    const TinyMCEElfinder = factory(root);
+
+    root.tinymceElfinder = TinyMCEElfinder;
+
+    if (typeof module === 'object' && module.exports) {
+        module.exports = TinyMCEElfinder;
     }
+})(typeof window === 'undefined' ? globalThis : window, function (root) {
+    'use strict';
 
-    // upload target folder hash
-    const uploadTargetHash = opts.uploadTargetHash || 'L1_Lw';
-    delete opts.uploadTargetHash;
+    return function TinyMCEElfinder(configuration) {
+        const options = Object.assign({}, configuration || {});
+        const $ = root.jQuery || root.$;
+        const tinymce = root.tinymce;
 
-    // get elFinder insrance
-    const getfm = open => {
-        // CSS class name of TinyMCE conntainer
-        const cls = (tinymce.majorVersion < 5)? 'mce-container' : 'tox';
-        return new Promise((resolve, reject) => {
-            // elFinder instance
-            let elf;
+        assertDependencies($, tinymce);
 
-            // Execute when the elFinder instance is created
-            const done = () => {
-                if (open) {
-                    // request to open folder specify
-                    if (!Object.keys(elf.files()).length) {
-                        // when initial request
-                        elf.one('open', () => {
-                            elf.file(open)? resolve(elf) : reject(elf, 'errFolderNotFound');
-                        });
-                    } else {
-                        // elFinder has already been initialized
-                        new Promise((res, rej) => {
-                            if (elf.file(open)) {
-                                res();
-                            } else {
-                                // To acquire target folder information
-                                elf.request({cmd: 'parents', target: open}).done(e =>{
-                                    elf.file(open)? res() : rej();
-                                }).fail(() => {
-                                    rej();
-                                });
-                            }
-                        }).then(() => {
-                            if (elf.cwd().hash == open) {
-                                resolve(elf);
-                            } else {
-                                // Open folder after folder information is acquired
-                                elf.exec('open', open).done(() => {
-                                    resolve(elf);
-                                }).fail(err => {
-                                    reject(elf, err? err : 'errFolderNotFound');
-                                });
-                            }
-                        }).catch((err) => {
-                            reject(elf, err? err : 'errFolderNotFound');
-                        });
-                    }
-                } else {
-                    // show elFinder manager only
+        const uploadTargetHash = options.uploadTargetHash || null;
+        delete options.uploadTargetHash;
+
+        const elfNode = $('<div/>');
+        if (options.nodeId) {
+            elfNode.attr('id', options.nodeId);
+            delete options.nodeId;
+        }
+
+        const getfm = function () {
+            return new Promise(function (resolve, reject) {
+                let elf = elfNode.elfinder('instance');
+
+                if (elf) {
                     resolve(elf);
+                    return;
                 }
-            };
 
-            // Check elFinder instance
-            if (elf = elfNode.elfinder('instance')) {
-                // elFinder instance has already been created
-                done();
-            } else {
-                // To create elFinder instance
-                elf = elfNode.dialogelfinder(Object.assign({
-                    // dialog title
-                    title : 'File Manager',
-                    // start folder setting
-                    startPathHash : open? open : void(0),
-                    // Set to do not use browser history to un-use location.hash
-                    useBrowserHistory : false,
-                    // Disable auto open
-                    autoOpen : false,
-                    // elFinder dialog width
-                    width : '90%',
-                    // elFinder dialog height
-                    height : '90%',
-                    // set getfile command options
-                    commandsOptions : {
-                        getfile: {
-                            oncomplete : 'close'
+                try {
+                    elf = elfNode.dialogelfinder(Object.assign({
+                        title: 'File Manager',
+                        useBrowserHistory: false,
+                        autoOpen: false,
+                        width: '90%',
+                        height: '90%',
+                        commandsOptions: {
+                            getfile: {
+                                oncomplete: 'close'
+                            }
+                        },
+                        bootCallback: function (fm) {
+                            const containerClass = Number(tinymce.majorVersion) < 5 ? 'mce-container' : 'tox';
+                            const container = $('body>.' + containerClass + ':last');
+                            const zIndex = Number.parseInt(container.css('z-index'), 10);
+
+                            if (Number.isFinite(zIndex)) {
+                                fm.getUI().css('z-index', zIndex + 100);
+                            }
+                        },
+                        getFileCallback: function () {}
+                    }, options)).elfinder('instance');
+                } catch (error) {
+                    reject(error);
+                    return;
+                }
+
+                if (elf) {
+                    resolve(elf);
+                } else {
+                    reject(new Error('Unable to initialize the dialogelfinder instance.'));
+                }
+            });
+        };
+
+        this.browser = function (callback, value, meta) {
+            getfm().then(function (fm) {
+                let getfile = fm.getCommand('getfile');
+
+                const register = function () {
+                    fm.options.getFileCallback = getfile.callback = function (file) {
+                        const url = fm.convAbsUrl(file.url);
+                        const info = file.name + ' (' + fm.formatSize(file.size) + ')';
+
+                        if (meta.filetype === 'file') {
+                            callback(url, { text: info, title: info });
+                        } else if (meta.filetype === 'image') {
+                            callback(url, { alt: info });
+                        } else if (meta.filetype === 'media') {
+                            callback(url);
                         }
-                    },
-                    bootCallback : (fm) => {
-                        // set z-index
-                        fm.getUI().css('z-index', parseInt($('body>.'+cls+':last').css('z-index')) + 100);
-                    },
-                    getFileCallback : (files, fm) => {}
-                }, opts)).elfinder('instance');
-                done();
-            }
-        });
-    };
-
-    this.browser = function(callback, value, meta) {
-        getfm().then(fm => {
-            let cgf = fm.getCommand('getfile');
-            const regist = () => {
-                fm.options.getFileCallback = cgf.callback = (file, fm) => {
-                    var url, reg, info;
-
-                    // URL normalization
-                    url = fm.convAbsUrl(file.url);
-
-                    // Make file info
-                    info = file.name + ' (' + fm.formatSize(file.size) + ')';
-
-                    // Provide file and text for the link dialog
-                    if (meta.filetype == 'file') {
-                        callback(url, {text: info, title: info});
-                    }
-
-                    // Provide image and alt text for the image dialog
-                    if (meta.filetype == 'image') {
-                        callback(url, {alt: info});
-                    }
-
-                    // Provide alternative source and posted for the media dialog
-                    if (meta.filetype == 'media') {
-                        callback(url);
-                    }
+                    };
+                    fm.getUI().dialogelfinder('open');
                 };
-                fm.getUI().dialogelfinder('open');
-            };
-            if (cgf) {
-                // elFinder booted
-                regist();
-            } else {
-                // elFinder booting now
-                fm.bind('init', () => {
-                    cgf = fm.getCommand('getfile');
-                    regist();
+
+                if (getfile) {
+                    register();
+                } else {
+                    fm.bind('init', function () {
+                        getfile = fm.getCommand('getfile');
+                        register();
+                    });
+                }
+            });
+
+            return false;
+        };
+
+        const upload = function (blobInfo) {
+            return getfm().then(function (fm) {
+                if (uploadTargetHash || (fm.cwd() && fm.cwd().hash)) {
+                    return fm;
+                }
+
+                return new Promise(function (resolve) {
+                    fm.one('open', function () {
+                        resolve(fm);
+                    });
                 });
-            }
-        });
+            }).then(function (fm) {
+                return new Promise(function (resolve, reject) {
+                    const fmNode = fm.getUI();
+                    const file = blobInfo.blob();
+                    const target = uploadTargetHash || (fm.cwd() && fm.cwd().hash);
+                    let clipdata = true;
 
-        return false;
-    };
+                    if (!target) {
+                        reject(translateError(fm, 'errFolderNotFound'));
+                        return;
+                    }
 
-    this.uploadHandler = function (blobInfo, success, failure) {
-        new Promise(function(resolve, reject) {
-            getfm(uploadTargetHash).then(fm => {
-                let fmNode = fm.getUI(),
-                    file = blobInfo.blob(),
-                    clipdata = true;
-                const err = (e) => {
-                        var dlg = e.data.dialog || {};
-                        if (dlg.hasClass('elfinder-dialog-error') || dlg.hasClass('elfinder-confirm-upload')) {
+                    const onDialogOpened = function (event) {
+                        const dialog = event.data.dialog || {};
+
+                        if (dialog.hasClass('elfinder-dialog-error') || dialog.hasClass('elfinder-confirm-upload')) {
                             fmNode.dialogelfinder('open');
-                            fm.unbind('dialogopened', err);
+                            fm.unbind('dialogopened', onDialogOpened);
                         }
-                    },
-                    closeDlg = () => {
+                    };
+                    const closeDialog = function () {
                         if (!fm.getUI().find('.elfinder-dialog-error:visible,.elfinder-confirm-upload:visible').length) {
                             fmNode.dialogelfinder('close');
                         }
                     };
 
-                // check file object
-                if (file.name) {
-                    // file blob of client side file object
-                    clipdata = void(0);
-                }
-                // Bind err function and exec upload
-                fm.bind('dialogopened', err).exec('upload', {
-                    files: [file],
-                    target: uploadTargetHash,
-                    clipdata: clipdata, // to get unique name on connector
-                    dropEvt: {altKey: true, ctrlKey: true} // diable watermark on demo site
-                }, void(0), uploadTargetHash)
-                    .done(data => {
-                        if (data.added && data.added.length) {
-                            fm.url(data.added[0].hash, { async: true }).done(function(url) {
-                                // prevent to use browser cache
-                                url += (url.match(/\?/)? '&' : '?') + '_t=' + data.added[0].ts;
-                                resolve(fm.convAbsUrl(url));
-                            }).fail(function() {
-                                reject(fm.i18n('errFileNotFound'));
-                            });
-                        } else {
-                            reject(fm.i18n(data.error? data.error : 'errUpload'));
-                        }
-                    })
-                    .fail(err => {
-                        const error = fm.parseError(err);
-                        reject(fm.i18n(error? (error === 'userabort'? 'errAbort' : error) : 'errUploadNoFiles'));
-                    })
-                    .always(() => {
-                        fm.unbind('dialogopened', err);
-                        closeDlg();
-                    });
-            }).catch((fm, err) => {
-                const error = fm.parseError(err);
-                reject(fm.i18n(error? (error === 'userabort'? 'errAbort' : error) : 'errUploadNoFiles'));
+                    if (file.name) {
+                        clipdata = undefined;
+                    }
+
+                    fm.bind('dialogopened', onDialogOpened).exec('upload', {
+                        files: [file],
+                        target: target,
+                        clipdata: clipdata,
+                        dropEvt: { altKey: true, ctrlKey: true }
+                    }, undefined, target)
+                        .done(function (data) {
+                            if (!data.added || !data.added.length) {
+                                reject(translateError(fm, data.error || 'errUpload'));
+                                return;
+                            }
+
+                            const uploaded = data.added[0];
+                            fm.url(uploaded.hash, { async: true })
+                                .done(function (url) {
+                                    const separator = url.match(/\?/) ? '&' : '?';
+                                    resolve(fm.convAbsUrl(url + separator + '_t=' + uploaded.ts));
+                                })
+                                .fail(function () {
+                                    reject(translateError(fm, 'errFileNotFound'));
+                                });
+                        })
+                        .fail(function (error) {
+                            reject(translateError(fm, error));
+                        })
+                        .always(function () {
+                            fm.unbind('dialogopened', onDialogOpened);
+                            closeDialog();
+                        });
+                });
             });
-        }).then((url) => {
-            success(url);
-        }).catch((err) => {
-            failure(err);
-        });
+        };
+
+        this.uploadHandler = function (blobInfo, successOrProgress, failure) {
+            const promise = upload(blobInfo);
+
+            if (Number(tinymce.majorVersion) < 6) {
+                promise.then(successOrProgress).catch(failure);
+                return;
+            }
+
+            return promise.catch(function (error) {
+                return Promise.reject({ message: errorMessage(error) });
+            });
+        };
     };
-};
+
+    function assertDependencies($, tinymce) {
+        if (typeof $ !== 'function') {
+            throw new Error('jQuery is required by the TinyMCE elFinder integration.');
+        }
+        if (!tinymce) {
+            throw new Error('TinyMCE is required by the TinyMCE elFinder integration.');
+        }
+        if (!$.fn || typeof $.fn.elfinder !== 'function') {
+            throw new Error('The elFinder jQuery plugin is required by the TinyMCE elFinder integration.');
+        }
+        if (typeof $.fn.dialogelfinder !== 'function') {
+            throw new Error('The dialogelfinder plugin is required by the TinyMCE elFinder integration.');
+        }
+    }
+
+    function translateError(fm, error) {
+        let translatedError = error;
+
+        if (fm && typeof fm.parseError === 'function') {
+            translatedError = fm.parseError(error);
+        }
+        if (translatedError === 'userabort') {
+            translatedError = 'errAbort';
+        }
+        if (!translatedError) {
+            translatedError = 'errUploadNoFiles';
+        }
+
+        return fm && typeof fm.i18n === 'function'
+            ? fm.i18n(translatedError)
+            : errorMessage(translatedError);
+    }
+
+    function errorMessage(error) {
+        if (error && typeof error.message === 'string') {
+            return error.message;
+        }
+        if (Array.isArray(error)) {
+            return error.join(', ');
+        }
+
+        return String(error);
+    }
+});

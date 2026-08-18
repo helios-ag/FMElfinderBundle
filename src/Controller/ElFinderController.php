@@ -218,6 +218,20 @@ class ElFinderController
                 ];
 
                 return $result;
+            case 'tinymce5':
+                $result['template'] = '@FMElfinder/Elfinder/tinymce5.html.twig';
+                $result['params']   = [
+                    'locale'     => $locale,
+                    'fullscreen' => $fullScreen,
+                    'instance'   => $instance,
+                    'homeFolder' => $homeFolder,
+                    'prefix'     => $assetsPath,
+                    'onlyMimes'  => $onlyMimes,
+                    'theme'      => $theme,
+                    'pathPrefix' => $pathPrefix,
+                ];
+
+                return $result;
             default:
                 $result['template'] = '@FMElfinder/Elfinder/simple.html.twig';
                 $result['params']   = [

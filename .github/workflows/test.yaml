@@ -11,6 +11,21 @@ env:
   fail-fast: true
 
 jobs:
+  javascript-tests:
+    name: "JavaScript (Node.js 24)"
+    runs-on: 'ubuntu-latest'
+    steps:
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
+
+      - name: 'Install Node.js'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: 'Run JavaScript tests'
+        run: node --test tests/JavaScript/tinymceElfinder.test.js
+
   tests:
     name: "PHP ${{ matrix.php-version }}"
     runs-on: 'ubuntu-latest'

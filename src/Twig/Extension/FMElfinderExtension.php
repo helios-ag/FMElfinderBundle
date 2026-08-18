@@ -75,11 +75,20 @@ class FMElfinderExtension extends AbstractExtension
         );
     }
 
-    public function tinymce5(string $instance = 'default'): string
-    {
+    public function tinymce5(
+        string $instance = 'default',
+        string $integrationName = 'fmElfinder',
+        array $options = []
+    ): string {
+        $homeFolder = (string) ($options['homeFolder'] ?? '');
+        unset($options['homeFolder'], $options['url']);
+
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_tinymce5.html.twig', [
-                'instance' => $instance,
+                'instance'        => $instance,
+                'integrationName' => $integrationName,
+                'homeFolder'      => $homeFolder,
+                'options'         => $options,
             ]
         );
     }

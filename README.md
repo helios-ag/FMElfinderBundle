@@ -50,6 +50,7 @@ Recommended bundles to use with:
 - [TinyMCE integration](/docs/tinymce-integration.md)
   - [Integration with TinyMCE 3](/docs/tinymce-integration.md#tinymce-3x)
   - [Integration with TinyMCE 4](/docs/tinymce-integration.md#tinymce-4x)
+  - [Integration with TinyMCE 5–8](/docs/tinymce-integration.md#tinymce-58)
 - [Summernote integration](/docs/summernote-integration.md)
 - [Advanced configuration](/docs/advanced-configuration.md)
   - [Custom configuration provider](/docs/advanced-configuration.md#custom-configuration-provider)
@@ -131,7 +132,7 @@ fm_elfinder:
     instances:
         default:
             locale: '%locale%' # defaults to current request locale
-            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            editor: ckeditor # other options are tinymce, tinymce4, tinymce5, fm_tinymce, form, simple, custom
             relative_path: false #default true, will produce absolute urls to specified file(s)
             #editor_template: custom template for your editor # default null
             #path_prefix: / # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
@@ -158,8 +159,8 @@ fm_elfinder:
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
 * **editor** - determines what template to render, to be compatible with WYSIWYG web editor, currently supported options are:
-  "ckeditor" (to use with FOSCKEditorBundle or TrsteelCkeditorBundle), "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
-  How to configure CKEDitor and TinyMCE to work with this bundle, will be explained further in this document.
+  "ckeditor" (to use with FOSCKEditorBundle or TrsteelCkeditorBundle), "tinymce5" for TinyMCE 5–8, "fm_tinymce" for tinymce4 (to use with FMTinyMCEBundle), "form" for form type, "simple" for standalone and "custom" for custom template.
+  See the [TinyMCE integration guide](/docs/tinymce-integration.md) for version-specific setup.
 * **editor_template** - define template to render when editor is set to "custom".
 * **connector** - root node for defining options for elfinder root directories.
 * **roots** - define "virtual directories" that reflect directories in your project.
@@ -214,7 +215,7 @@ fm_elfinder:
     instances:
         default:
             locale: fr # defaults to current request locale
-            editor: ckeditor # other options are tinymce, tinymce4, fm_tinymce, form, simple, custom
+            editor: ckeditor # other options are tinymce, tinymce4, tinymce5, fm_tinymce, form, simple, custom
             #editor_template: custom template for your editor # default null
             #path_prefix: http://localhost/ # for setting custom assets path prefix, useful for non vhost configurations, i.e. http://127.0.0.1/mysite/
             fullscreen: false # default is true, applies to simple and ckeditor editors

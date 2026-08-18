@@ -74,3 +74,83 @@ as shown below
 ```
 
 instance_name is instance of elfinder configuration
+
+## TinyMCE 5–8
+
+TinyMCE 5 replaced `file_browser_callback` with `file_picker_callback`. TinyMCE 6
+also changed `images_upload_handler` from callbacks to a Promise. FMElfinderBundle
+uses one adapter for TinyMCE 5–8 and selects the correct upload API at runtime.
+
+Configure a dedicated elFinder instance:
+
+```yaml
+# config/packages/fm_elfinder.yaml
+fm_elfinder:
+    instances:
+        images:
+            editor: tinymce5
+            connector:
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: uploads
+                        upload_allow: ['image/png', 'image/jpeg', 'image/gif']
+                        upload_deny: ['all']
+```
+
+Install the bundle assets with `bin/console elfinder:install`. The page must load
+jQuery, jQuery UI, and the elFinder styles and script before rendering the Twig
+helper. Use the versions already managed by your application; the bundle does not
+replace them with CDN copies.
+
+```twig
+<link rel="stylesheet" href="{{ asset('/bundles/fmelfinder/css/elfinder.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/bundles/fmelfinder/css/theme.css') }}">
+
+{# Load your application-owned jQuery and jQuery UI here. #}
+<script src="{{ asset('/bundles/fmelfinder/js/elfinder.min.js') }}"></script>
+
+{{ elfinder_tinymce_init5('images', 'fmElfinderImages') }}
+
+<script>
+    tinymce.init({
+        selector: '.tinymce',
+        plugins: 'image link media',
+        toolbar: 'link image media',
+        file_picker_types: 'file image media',
+        file_picker_callback: window.fmElfinderImages.browser,
+        images_upload_handler: window.fmElfinderImages.uploadHandler,
+        automatic_uploads: true,
+        paste_data_images: true
+    });
+</script>
+```
+
+The same configuration works with TinyMCE 5 and TinyMCE 6–8. TinyMCE 5 receives
+its legacy `success` and `failure` callbacks; TinyMCE 6–8 receive a Promise.
+Selecting files, images, and media uses `file_picker_callback`. Pasted, dropped,
+or locally selected images use `images_upload_handler` and upload into the current
+elFinder directory.
+
+### Home folders and multiple instances
+
+Pass `homeFolder` in the helper options to restrict the integration to a configured
+home folder:
+
+```twig
+{{ elfinder_tinymce_init5('images', 'fmElfinderArticles', {
+    homeFolder: 'articles'
+}) }}
+```
+
+Use a different global name for each integration on the same page:
+
+```twig
+{{ elfinder_tinymce_init5('images', 'fmElfinderImages') }}
+{{ elfinder_tinymce_init5('documents', 'fmElfinderDocuments') }}
+```
+
+The adapter normally derives the upload target from the current elFinder directory.
+Applications that intentionally use a stable custom `volume_id` may pass the
+advanced `uploadTargetHash` option, but raw volume hashes should not be used as a
+portable configuration value.

@@ -1,9 +1,9 @@
+<script src="{{ asset('/bundles/fmelfinder/js/tinymceElfinder.js') }}"></script>
 <script type="text/javascript">
-(function() {
-    const mceElf = new tinymceElfinder({
-        // connector URL (Use elFinder Demo site's connector for this demo)
-        url: "{{ url('elfinder', {'instance': instance}) }}",
-        nodeId: 'elfinder'
-    });
-})();
+{% set jsonFlags = constant('JSON_UNESCAPED_SLASHES') + constant('JSON_HEX_TAG') + constant('JSON_HEX_AMP') + constant('JSON_HEX_APOS') + constant('JSON_HEX_QUOT') %}
+(function(window) {
+    const options = {% if options is empty %}{}{% else %}{{ options|json_encode(jsonFlags)|raw }}{% endif %};
+    options.url = {{ path('ef_connect', {'instance': instance, 'homeFolder': homeFolder})|json_encode(jsonFlags)|raw }};
+    window[{{ integrationName|json_encode(jsonFlags)|raw }}] = new window.tinymceElfinder(options);
+})(window);
 </script>
