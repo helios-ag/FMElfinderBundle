@@ -35,7 +35,7 @@ jobs:
         php-version: ['8.1', '8.2', '8.3', '8.4', '8.5']
     steps:
       - name: 'Checkout code'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: 'Install PHP with extensions'
         uses: shivammathur/setup-php@2.37.1
@@ -55,7 +55,7 @@ jobs:
       - name: 'Run tests'
         run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover ./coverage.xml
       - name: codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml

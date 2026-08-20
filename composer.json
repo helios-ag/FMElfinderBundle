@@ -30,18 +30,23 @@
         "studio-42/elfinder":                  "~2.1.62"
     },
     "require-dev" : {
-        "symfony/phpunit-bridge":                           "^6.4 || ^7.0.1 || ^8.0",
-        "matthiasnoback/symfony-config-test":               "^6.0",
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "league/flysystem": "^3.0",
+        "league/flysystem-ftp": "^3.0",
+        "league/flysystem-sftp-v3": "^3.0",
+        "matthiasnoback/symfony-config-test": "^6.0",
         "matthiasnoback/symfony-dependency-injection-test": "^6.0",
-        "symfony/finder":                                   "^6.4 || ^7.0 || ^8.0",
-        "php-coveralls/php-coveralls":                      "^2.0",
-        "friendsofphp/php-cs-fixer":                        "dev-master"
+        "php-coveralls/php-coveralls": "^2.0",
+        "spatie/dropbox-api": "^1.0|^2.0",
+        "spatie/flysystem-dropbox": "^3.0",
+        "symfony/finder": "^6.4 || ^7.0 || ^8.0",
+        "symfony/phpunit-bridge": "^6.4 || ^7.0.1 || ^8.0"
     },
     "suggest": {
         "helios-ag/fm-tinymce-bundle": "FMTinyMCEBundle WYSIWYG Editor Bundle",
         "helios-ag/fm-summernote-bundle": "FMSummernoteBundle WYSIWYG Editor Bundle",
         "friendsofsymfony/ckeditor-bundle": "FOSCKEditorBundle WYSIWYG Editor Bundle",
-        "barryvdh/elfinder-flysystem-driver": "Flysystem driver for elfinder",
+        "barryvdh/elfinder-flysystem-driver": "Flysystem v3 compatible elFinder volume driver (requires ^0.5, older versions target Flysystem 1.x)",
         "spatie/flysystem-dropbox": "Dropbox 2 Driver for Flysystem"
     },
     "config": {

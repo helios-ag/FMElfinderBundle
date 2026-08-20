@@ -6,6 +6,7 @@ Tests/Functional/log
 vendor
 .php-cs-fixer.cache
 clover.xml
+coverage-html
 .vscode
 .phpunit.result.cache
 ###> symfony/framework-bundle ###
