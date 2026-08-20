@@ -103,6 +103,11 @@ jQuery, jQuery UI, and the elFinder styles and script before rendering the Twig
 helper. Use the versions already managed by your application; the bundle does not
 replace them with CDN copies.
 
+The helper loads its adapter from `fm_elfinder.assets_path` (the same prefix the
+elFinder manager page uses). With the default `elfinder:install` layout the files
+live in the web-root `bundles/` directory, so set `assets_path: /` unless your
+application serves bundle assets from a custom location.
+
 ```twig
 <link rel="stylesheet" href="{{ asset('/bundles/fmelfinder/css/elfinder.min.css') }}">
 <link rel="stylesheet" href="{{ asset('/bundles/fmelfinder/css/theme.css') }}">

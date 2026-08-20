@@ -25,6 +25,8 @@ final class FMElfinderExtension extends Extension
 
         $repo = $container->getDefinition(ElFinderController::class);
         $repo->replaceArgument(1, $config);
+        $twigExtension = $container->getDefinition('twig.extension.fm_elfinder_init');
+        $twigExtension->replaceArgument(1, $config['assets_path']);
         $container->setAlias('fm_elfinder.configurator', $config['configuration_provider']);
         $container->setAlias('fm_elfinder.loader', $config['loader']);
         $container->getAlias('fm_elfinder.loader')->setPublic(true);

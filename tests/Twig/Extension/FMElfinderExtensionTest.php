@@ -127,6 +127,16 @@ EOF;
         self::assertStringContainsString('options.url = "/efconnect"', $html);
     }
 
+    public function testRenderTinyMCE5IntegrationUsesConfiguredAssetsPath(): void
+    {
+        $html = $this->createTinyMCE5Extension('/assets/')->tinymce5('default');
+
+        self::assertStringContainsString(
+            'src="/assets/bundles/fmelfinder/js/tinymceElfinder.js"',
+            $html
+        );
+    }
+
     public function testRenderTinyMCE5IntegrationEscapesInlineScriptValues(): void
     {
         $html = $this->createTinyMCE5Extension()->tinymce5(
@@ -184,7 +194,7 @@ EOF;
         return preg_replace("/\r|\n/", '', str_replace(PHP_EOL, '', str_replace(' ', '', $output)));
     }
 
-    private function createTinyMCE5Extension(): FMElfinderExtension
+    private function createTinyMCE5Extension(string $assetsPath = ''): FMElfinderExtension
     {
         $loader = new FilesystemLoader();
         $loader->addPath(__DIR__ . '/../../../src/Resources/views', 'FMElfinder');
@@ -197,7 +207,7 @@ EOF;
         $twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
         $twig->addExtension(new AssetExtension(new Packages(new Package(new EmptyVersionStrategy()))));
 
-        return new FMElfinderExtension($twig);
+        return new FMElfinderExtension($twig, $assetsPath);
     }
 
     public function testSubClassOfTwigExtension()
