@@ -21,7 +21,7 @@
         const uploadTargetHash = options.uploadTargetHash || null;
         delete options.uploadTargetHash;
 
-        const elfNode = $('<div/>');
+        const elfNode = $(document.createElement('div'));
         if (options.nodeId) {
             elfNode.attr('id', options.nodeId);
             delete options.nodeId;

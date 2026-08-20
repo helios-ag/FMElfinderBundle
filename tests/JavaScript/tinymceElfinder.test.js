@@ -9,6 +9,7 @@ const adapterPath = path.resolve(__dirname, '../../src/Resources/public/tinymceE
 afterEach(() => {
     delete require.cache[adapterPath];
     delete global.window;
+    delete global.document;
 });
 
 test('TinyMCE 5 settles image uploads through callbacks in the current directory', async () => {
@@ -202,8 +203,13 @@ function createFixture({
         jQuery: jquery,
         tinymce: { majorVersion },
     };
+    global.document = {
+        createElement(tag) {
+            return { tagName: tag };
+        },
+    };
 
-    const TinyMCEElfinder = require(adapterPath);
+    const TinyMCEElfinder = require('../../src/Resources/public/tinymceElfinder.js');
 
     return {
         blobInfo: {
