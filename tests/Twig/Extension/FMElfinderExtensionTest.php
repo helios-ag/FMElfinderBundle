@@ -44,6 +44,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
         $collection = $loader->load('routing.yaml');
         $routes->addCollection($collection);
         $this->twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
+        $this->twig->addExtension(new AssetExtension(new Packages(new Package(new EmptyVersionStrategy()))));
     }
 
     public function testRenderTinyMCE3()
