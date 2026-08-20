@@ -51,8 +51,8 @@ final class ElFinderInstallerCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $dr = $input->getOption('docroot');
+        $io        = new SymfonyStyle($input, $output);
+        $dr        = $input->getOption('docroot');
         $vendorDir = $input->getOption('elfinder-vendor-dir');
         $io->title('elFinder Installer');
         $io->comment(sprintf('Trying to install elfinder to %s directory', $dr));
@@ -61,7 +61,7 @@ final class ElFinderInstallerCommand extends Command
 
         $publicDir = sprintf('%s/%s/bundles/fmelfinder', $rootDir, $dr);
 
-        $reflection = new ReflectionClass(\Composer\Autoload\ClassLoader::class);
+        $reflection    = new ReflectionClass(\Composer\Autoload\ClassLoader::class);
         $vendorRootDir = dirname($reflection->getFileName(), 3) . '/vendor';
 
         $io->note(sprintf('Starting to install elfinder to %s folder', $publicDir));
@@ -77,6 +77,11 @@ final class ElFinderInstallerCommand extends Command
         $this->fileSystem->mirror($vendorRootDir . '/' . $vendorDir . '/' . self::ELFINDER_IMG_DIR, $publicDir . '/img');
         $this->fileSystem->mirror($vendorRootDir . '/' . $vendorDir . '/' . self::ELFINDER_JS_DIR, $publicDir . '/js');
         $this->fileSystem->mirror($vendorRootDir . '/' . $vendorDir . '/' . self::ELFINDER_SOUNDS_DIR, $publicDir . '/sounds');
+        $this->fileSystem->copy(
+            dirname(__DIR__) . '/Resources/public/tinymceElfinder.js',
+            $publicDir . '/js/tinymceElfinder.js',
+            true
+        );
 
         $io->success('elFinder assets successfully installed');
 
