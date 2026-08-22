@@ -4,12 +4,10 @@ namespace FM\ElfinderBundle\Tests\Controller;
 
 use FM\ElfinderBundle\Controller\ElFinderController;
 use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
-use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
-#[CoversNothing]
 class ElFinderControllerTest extends TestCase
 {
     public function testRendersTinyMCE5Editor(): void
