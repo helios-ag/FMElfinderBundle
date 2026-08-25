@@ -23,6 +23,21 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasService('fm_elfinder.loader');
         $this->assertContainerBuilderHasService('fm_elfinder.configurator.default');
         $this->assertContainerBuilderHasService('twig.extension.fm_elfinder_init');
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'twig.extension.fm_elfinder_init',
+            1,
+            'assets'
+        );
+    }
+
+    public function testTwigExtensionReceivesConfiguredAssetsPath()
+    {
+        $this->load(['assets_path' => '/custom-assets']);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'twig.extension.fm_elfinder_init',
+            1,
+            '/custom-assets'
+        );
     }
 
     public function testMinimumConfiguration()

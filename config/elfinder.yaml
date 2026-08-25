@@ -23,6 +23,7 @@ services:
         class: FM\ElfinderBundle\Twig\Extension\FMElfinderExtension
         arguments:
             - '@twig'
+            - ''
         tags:
             - { name: 'twig.extension', alias: 'fm_elfinder_init' }
 

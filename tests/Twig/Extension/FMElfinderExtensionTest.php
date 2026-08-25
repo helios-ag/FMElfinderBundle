@@ -3,7 +3,11 @@
 namespace FM\ElfinderBundle\Tests\Twig\Extension;
 
 use FM\ElfinderBundle\Twig\Extension\FMElfinderExtension;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
@@ -40,6 +44,7 @@ class FMElfinderExtensionTest extends \PHPUnit\Framework\TestCase
         $collection = $loader->load('routing.yaml');
         $routes->addCollection($collection);
         $this->twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
+        $this->twig->addExtension(new AssetExtension(new Packages(new Package(new EmptyVersionStrategy()))));
     }
 
     public function testRenderTinyMCE3()
@@ -98,6 +103,52 @@ EOF;
         $this->assertSame($this->normalizeOutput($expected), $this->normalizeOutput($testData));
     }
 
+    public function testRenderTinyMCE5Integration(): void
+    {
+        $html = $this->createTinyMCE5Extension()->tinymce5('images', 'fmElfinderImages', [
+            'homeFolder'       => 'articles',
+            'uploadTargetHash' => 'volume_hash',
+            'url'              => 'https://attacker.invalid',
+        ]);
+
+        self::assertStringContainsString('window["fmElfinderImages"]', $html);
+        self::assertStringContainsString('/efconnect/images/articles', $html);
+        self::assertStringContainsString('"uploadTargetHash":"volume_hash"', $html);
+        self::assertStringNotContainsString('attacker.invalid', $html);
+        self::assertStringContainsString('/bundles/fmelfinder/js/tinymceElfinder.js', $html);
+    }
+
+    public function testRenderTinyMCE5IntegrationWithBackwardCompatibleDefaults(): void
+    {
+        $html = $this->createTinyMCE5Extension()->tinymce5('default');
+
+        self::assertStringContainsString('window["fmElfinder"]', $html);
+        self::assertStringContainsString('const options = {};', $html);
+        self::assertStringContainsString('options.url = "/efconnect"', $html);
+    }
+
+    public function testRenderTinyMCE5IntegrationUsesConfiguredAssetsPath(): void
+    {
+        $html = $this->createTinyMCE5Extension('/assets/')->tinymce5('default');
+
+        self::assertStringContainsString(
+            'src="/assets/bundles/fmelfinder/js/tinymceElfinder.js"',
+            $html
+        );
+    }
+
+    public function testRenderTinyMCE5IntegrationEscapesInlineScriptValues(): void
+    {
+        $html = $this->createTinyMCE5Extension()->tinymce5(
+            'default',
+            'fm</script><script>alert(1)</script>',
+            ['label' => '</script><script>alert(2)</script>']
+        );
+
+        self::assertStringNotContainsString('</script><script>', $html);
+        self::assertStringContainsString('\\u003C/script\\u003E', $html);
+    }
+
     public function testRenderSummernote()
     {
         $testData = $this->twig->render('_summernote.html.twig', ['instance' => 'minimal']);
@@ -141,6 +192,22 @@ EOF;
     protected function normalizeOutput($output)
     {
         return preg_replace("/\r|\n/", '', str_replace(PHP_EOL, '', str_replace(' ', '', $output)));
+    }
+
+    private function createTinyMCE5Extension(string $assetsPath = ''): FMElfinderExtension
+    {
+        $loader = new FilesystemLoader();
+        $loader->addPath(__DIR__ . '/../../../src/Resources/views', 'FMElfinder');
+        $twig = new Environment($loader);
+
+        $routeLoader = new YamlFileLoader(new FileLocator(__DIR__ . '/../../../src/Resources/config'));
+        $routes      = new RouteCollection();
+        $routes->addCollection($routeLoader->load('routing.yaml'));
+
+        $twig->addExtension(new RoutingExtension(new UrlGenerator($routes, new RequestContext())));
+        $twig->addExtension(new AssetExtension(new Packages(new Package(new EmptyVersionStrategy()))));
+
+        return new FMElfinderExtension($twig, $assetsPath);
     }
 
     public function testSubClassOfTwigExtension()

@@ -69,6 +69,15 @@ class ElFinderInstallerCommandTest extends TestCase
 
     private function assertFileSystemOperations(string $docroot): void
     {
+        $this->fileSystem
+            ->expects($this->once())
+            ->method('copy')
+            ->with(
+                $this->projectDir . '/src/Resources/public/tinymceElfinder.js',
+                $this->projectDir . "/$docroot/bundles/fmelfinder/js/tinymceElfinder.js",
+                true
+            );
+
         $expectedCalls = [
             [
                 $this->vendorDir . '/studio-42/elfinder/css',

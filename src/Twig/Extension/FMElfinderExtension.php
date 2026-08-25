@@ -13,15 +13,16 @@ class FMElfinderExtension extends AbstractExtension
 {
     protected Environment $twig;
 
-    public function __construct(Environment $twig)
+    protected string $assetsPath;
+
+    public function __construct(Environment $twig, string $assetsPath = '')
     {
-        $this->twig = $twig;
+        $this->twig       = $twig;
+        $this->assetsPath = rtrim($assetsPath, '/');
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @return array
      */
     public function getFunctions(): array
     {
@@ -50,9 +51,9 @@ class FMElfinderExtension extends AbstractExtension
             '@FMElfinder/Elfinder/helper/_tinymce.html.twig',
             [
                 'instance' => $instance,
-                'width' => $parameters['width'],
-                'height' => $parameters['height'],
-                'title' => $parameters['title'],
+                'width'    => $parameters['width'],
+                'height'   => $parameters['height'],
+                'title'    => $parameters['title'],
             ]
         );
     }
@@ -68,18 +69,28 @@ class FMElfinderExtension extends AbstractExtension
             '@FMElfinder/Elfinder/helper/_tinymce4.html.twig',
             [
                 'instance' => $instance,
-                'width' => $parameters['width'],
-                'height' => $parameters['height'],
-                'title' => $parameters['title'],
+                'width'    => $parameters['width'],
+                'height'   => $parameters['height'],
+                'title'    => $parameters['title'],
             ]
         );
     }
 
-    public function tinymce5(string $instance = 'default'): string
-    {
+    public function tinymce5(
+        string $instance = 'default',
+        string $integrationName = 'fmElfinder',
+        array $options = []
+    ): string {
+        $homeFolder = (string) ($options['homeFolder'] ?? '');
+        unset($options['homeFolder'], $options['url']);
+
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_tinymce5.html.twig', [
-                'instance' => $instance,
+                'instance'        => $instance,
+                'integrationName' => $integrationName,
+                'homeFolder'      => $homeFolder,
+                'options'         => $options,
+                'assetsPath'      => $this->assetsPath,
             ]
         );
     }
@@ -92,16 +103,16 @@ class FMElfinderExtension extends AbstractExtension
     public function summernote(
         string $instance = 'default',
         string $selector = '.summernote',
-        array  $parameters = ['width' => 900, 'height' => 450, 'title' => 'elFinder 2.0']
+        array $parameters = ['width' => 900, 'height' => 450, 'title' => 'elFinder 2.0']
     ): string {
         return $this->twig->render(
             '@FMElfinder/Elfinder/helper/_summernote.html.twig',
             [
                 'instance' => $instance,
                 'selector' => $selector,
-                'width' => $parameters['width'],
-                'height' => $parameters['height'],
-                'title' => $parameters['title'],
+                'width'    => $parameters['width'],
+                'height'   => $parameters['height'],
+                'title'    => $parameters['title'],
             ]
         );
     }
