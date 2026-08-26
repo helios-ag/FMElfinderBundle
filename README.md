@@ -70,18 +70,28 @@ For Symfony Flex installation you need to enable community recipes:
   composer config extra.symfony.allow-contrib true
 ```
 
-Install
+Install the bundle:
 
 ```sh
-  composer require helios-ag/fm-elfinder-bundle
+composer require helios-ag/fm-elfinder-bundle
 ```
 
-Copy elfinder assets to public folder
+Copy the elFinder assets to the public directory:
 
 ```sh
-  bin/console elfinder:install
+bin/console elfinder:install
 ```
 
+With the default `public` document root, the command installs the assets in
+`public/bundles/fmelfinder`. Create the local upload directory used by the basic
+configuration below:
+
+```sh
+mkdir -p public/uploads
+```
+
+Make sure the PHP and web-server users have the required read and write
+permissions for `public/uploads`.
 
 ### Step 2: Enable the bundle (Optional)
 
@@ -108,18 +118,19 @@ elfinder:
      resource: "@FMElfinderBundle/Resources/config/routing.yaml"
 ```
 
+The default file-manager instance is now available at `/elfinder`; its connector
+endpoint is `/efconnect`.
+
 ### Step 4: Configure your application's security.yaml
 
 Secure ElFinder with access_control:
 ``` yaml
 # app/config/security.yaml
 security:
-
-    //....
+    # ...
     access_control:
-        - { path: ^/efconnect, role: ROLE_USER }
-        - { path: ^/elfinder, role: ROLE_USER }
-
+        - { path: ^/efconnect, roles: ROLE_USER }
+        - { path: ^/elfinder, roles: ROLE_USER }
 ```
 
 ## Basic configuration
@@ -128,7 +139,8 @@ security:
 
 ```yaml
 fm_elfinder:
-    #assets_path: / # default is /assets, this is where css/js elfinder files are
+    # Matches public/bundles/fmelfinder created by elfinder:install.
+    assets_path: /
     instances:
         default:
             locale: '%locale%' # defaults to current request locale
@@ -145,7 +157,8 @@ fm_elfinder:
                     uploads:
                         #show_hidden: true|false # defaults to false, hides dotfiles
                         driver: LocalFileSystem
-                        path: uploads
+                        path: '%kernel.project_dir%/public/uploads'
+                        url: /uploads
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                         upload_deny: ['all']
                         upload_max_size: 2M # also file upload sizes restricted in php.ini
@@ -153,8 +166,9 @@ fm_elfinder:
                         #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
 ```
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
-* **path** - define root directory for the files inside web/ directory, default is "uploads". Make sure to set proper write/read and owner permissions to this directory.
-* **url** - url to be prefixed to image path, for displaying. Can be either `absolute` or `relative`. If absolute, you can use `{homeFolder}` string as placeholder which will be replaced automatically. If relative, it will be prefixed with the applications base-url. If left blank, url will be the base-url, append with the value of the 'path' parameter
+* **assets_path** - public URL prefix for the installed elFinder assets. The `/` value matches the default `public/bundles/fmelfinder` installer destination.
+* **path** - filesystem path to the root directory. For a local public upload directory, use `%kernel.project_dir%/public/uploads` and make sure it has the required read/write and owner permissions.
+* **url** - public URL prefix used when displaying files. For the local root above this is `/uploads`. It can also be an absolute URL and may contain a `{homeFolder}` placeholder. If omitted, the bundle derives the URL from `path`, so setting it explicitly is recommended when `path` is an absolute filesystem path.
 * **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
