@@ -1,0 +1,9 @@
+framework:
+    secret: event-listener-test
+    test: true
+
+services:
+    FM\ElfinderBundle\Tests\Functional\Fixtures\RecordingPostExecutionListener:
+        public: true
+        tags:
+            - { name: kernel.event_listener, event: 'FM\ElfinderBundle\Event\ElFinderPostExecutionEvent' }
