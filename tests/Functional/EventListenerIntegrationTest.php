@@ -28,7 +28,10 @@ final class EventListenerIntegrationTest extends KernelTestCase
             restore_exception_handler();
         }
 
-        $errorHandler = get_error_handler();
+        $errorHandler = set_error_handler(static function (): bool {
+            return false;
+        });
+        restore_error_handler();
 
         if (is_array($errorHandler) && $errorHandler[0] instanceof ErrorHandler) {
             restore_error_handler();
