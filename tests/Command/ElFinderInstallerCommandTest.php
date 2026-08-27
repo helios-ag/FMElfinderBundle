@@ -60,7 +60,7 @@ final class ElFinderInstallerCommandTest extends TestCase
         $this->commandTester->execute(['--elfinder-vendor-dir' => 'invalid!name']);
 
         self::assertSame(Command::FAILURE, $this->commandTester->getStatusCode());
-        self::assertStringContainsString('Invalid vendor directory name', $this->commandTester->getDisplay());
+        self::assertWrappingIndependentContains('Invalid vendor directory name', $this->commandTester->getDisplay());
     }
 
     public function testExecuteValidatesAllSourcesBeforeReplacingAssets(): void
@@ -76,9 +76,10 @@ final class ElFinderInstallerCommandTest extends TestCase
         $this->commandTester->execute([]);
 
         self::assertSame(Command::FAILURE, $this->commandTester->getStatusCode());
-        self::assertStringContainsString('Required asset source', $this->commandTester->getDisplay());
-        self::assertStringContainsString($missingSource, $this->commandTester->getDisplay());
-        self::assertStringContainsString('was not found.', $this->commandTester->getDisplay());
+        $display = $this->commandTester->getDisplay();
+        self::assertWrappingIndependentContains('Required asset source', $display);
+        self::assertWrappingIndependentContains($missingSource, $display);
+        self::assertWrappingIndependentContains('was not found.', $display);
     }
 
     private function expectSourcesExist(string $vendorPackage): void
@@ -144,11 +145,20 @@ final class ElFinderInstallerCommandTest extends TestCase
         $this->fileSystem->expects($this->never())->method('copy');
     }
 
+    /**
+     * SymfonyStyle wraps long values (absolute paths) to the terminal width,
+     * breaking them across lines, so compare both sides without whitespace.
+     */
+    private static function assertWrappingIndependentContains(string $needle, string $display): void
+    {
+        self::assertStringContainsString(preg_replace('/\s+/', '', $needle), preg_replace('/\s+/', '', $display));
+    }
+
     private function assertCommandOutput(): void
     {
         $output = $this->commandTester->getDisplay();
-        self::assertStringContainsString('elFinder Installer', $output);
-        self::assertStringContainsString('elFinder assets successfully prepared', $output);
-        self::assertStringContainsString('bin/console assets:install', $output);
+        self::assertWrappingIndependentContains('elFinder Installer', $output);
+        self::assertWrappingIndependentContains('elFinder assets successfully prepared', $output);
+        self::assertWrappingIndependentContains('bin/console assets:install', $output);
     }
 }
