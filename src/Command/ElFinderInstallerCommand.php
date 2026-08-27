@@ -49,7 +49,7 @@ final class ElFinderInstallerCommand extends Command
         $adapterSource = $resourcesDir . '/assets/tinymceElfinder.js';
 
         // validate $vendorDir to match namespace/vendor name
-        if (!preg_match('/^([a-z0-9-]+)\/([a-z0-9-]+)$/i', $vendorPackage)) {
+        if (preg_match('/^([a-z0-9-]+)\/([a-z0-9-]+)$/i', $vendorPackage) === 0) {
             $io->error(sprintf('Invalid vendor directory name %s', $vendorPackage));
 
             return Command::FAILURE;
@@ -61,7 +61,7 @@ final class ElFinderInstallerCommand extends Command
         }
 
         foreach ([...array_values($sources), $adapterSource] as $source) {
-            if (!$this->fileSystem->exists($source)) {
+            if ($this->fileSystem->exists($source) === false) {
                 $io->error(sprintf('Required asset source "%s" was not found.', $source));
 
                 return Command::FAILURE;
