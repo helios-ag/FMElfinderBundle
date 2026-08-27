@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- `elfinder:install` now prepares assets in the bundle's `Resources/public` directory instead of
+  publishing them directly to an application docroot. Run `elfinder:install` before Symfony's
+  `assets:install`; the removed `--docroot` option is replaced by the target argument and
+  `--symlink` option of `assets:install`. This fixes assets disappearing after Composer runs
+  Symfony's installer (issue #525).
 - The Flysystem integration now targets Flysystem v3. The elFinder volume driver must be Flysystem
   v3 compatible: use `barryvdh/elfinder-flysystem-driver` in version `^0.5` or newer (versions
   `0.1`–`0.3` target Flysystem 1.x).
@@ -904,6 +909,5 @@
 - TinyMCE integration + Multiple roots configuration [\#6](https://github.com/helios-ag/FMElfinderBundle/pull/6)
 - Elfinder fullscreen [\#5](https://github.com/helios-ag/FMElfinderBundle/pull/5)
 - Ckeditor integration fix [\#4](https://github.com/helios-ag/FMElfinderBundle/pull/4)
-
 
 

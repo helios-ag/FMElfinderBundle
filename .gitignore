@@ -20,4 +20,8 @@ coverage-html
 ###< symfony/framework-bundle ###
 /.phpunit.cache
 /phpunit.xml
+/src/Resources/public/css/
+/src/Resources/public/img/
+/src/Resources/public/js/
+/src/Resources/public/sounds/
 /bin
