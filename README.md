@@ -76,15 +76,33 @@ Install the bundle:
 composer require helios-ag/fm-elfinder-bundle
 ```
 
-Copy the elFinder assets to the public directory:
+Prepare the elFinder assets inside the bundle, then publish them with Symfony:
 
 ```sh
 bin/console elfinder:install
+bin/console assets:install public
 ```
 
-With the default `public` document root, the command installs the assets in
-`public/bundles/fmelfinder`. Create the local upload directory used by the basic
-configuration below:
+The order is important: `elfinder:install` assembles the bundle's upstream and
+integration assets, then `assets:install` copies or symlinks them into
+`public/bundles/fmelfinder`. Pass a different target directory or `--symlink` to
+Symfony's `assets:install` command when needed.
+
+For Composer auto-scripts, keep the same order in the application `composer.json`:
+
+```json
+{
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "elfinder:install": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
+    }
+}
+```
+
+Create the local upload directory used by the basic configuration below:
 
 ```sh
 mkdir -p public/uploads
@@ -139,7 +157,7 @@ security:
 
 ```yaml
 fm_elfinder:
-    # Matches public/bundles/fmelfinder created by elfinder:install.
+    # Matches public/bundles/fmelfinder published by assets:install.
     assets_path: /
     instances:
         default:
@@ -166,7 +184,7 @@ fm_elfinder:
                         #    - { pattern: '/(.*?)/', read: true, write: false, locked: true }
 ```
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
-* **assets_path** - public URL prefix for the installed elFinder assets. The `/` value matches the default `public/bundles/fmelfinder` installer destination.
+* **assets_path** - public URL prefix for the installed elFinder assets. The `/` value matches the default `public/bundles/fmelfinder` destination created by Symfony's `assets:install`.
 * **path** - filesystem path to the root directory. For a local public upload directory, use `%kernel.project_dir%/public/uploads` and make sure it has the required read/write and owner permissions.
 * **url** - public URL prefix used when displaying files. For the local root above this is `/uploads`. It can also be an absolute URL and may contain a `{homeFolder}` placeholder. If omitted, the bundle derives the URL from `path`, so setting it explicitly is recommended when `path` is an absolute filesystem path.
 * **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration

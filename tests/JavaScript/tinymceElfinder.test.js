@@ -4,7 +4,7 @@ const { afterEach, test } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 
-const adapterPath = path.resolve(__dirname, '../../src/Resources/public/tinymceElfinder.js');
+const adapterPath = path.resolve(__dirname, '../../src/Resources/assets/tinymceElfinder.js');
 
 afterEach(() => {
     delete require.cache[adapterPath];
@@ -209,7 +209,7 @@ function createFixture({
         },
     };
 
-    const TinyMCEElfinder = require('../../src/Resources/public/tinymceElfinder.js');
+    const TinyMCEElfinder = require('../../src/Resources/assets/tinymceElfinder.js');
 
     return {
         blobInfo: {

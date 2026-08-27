@@ -98,15 +98,23 @@ fm_elfinder:
                         upload_deny: ['all']
 ```
 
-Install the bundle assets with `bin/console elfinder:install`. The page must load
-jQuery, jQuery UI, and the elFinder styles and script before rendering the Twig
-helper. Use the versions already managed by your application; the bundle does not
-replace them with CDN copies.
+Prepare and publish the bundle assets in this order:
+
+```sh
+bin/console elfinder:install
+bin/console assets:install public
+```
+
+The first command assembles the assets inside the bundle; Symfony's command then
+copies or symlinks them into the public directory. The page must load jQuery,
+jQuery UI, and the elFinder styles and script before rendering the Twig helper.
+Use the versions already managed by your application; the bundle does not replace
+them with CDN copies.
 
 The helper loads its adapter from `fm_elfinder.assets_path` (the same prefix the
-elFinder manager page uses). With the default `elfinder:install` layout the files
-live in the web-root `bundles/` directory, so set `assets_path: /` unless your
-application serves bundle assets from a custom location.
+elFinder manager page uses). With the default `assets:install public` layout the
+files live in the web-root `bundles/` directory, so set `assets_path: /` unless
+your application serves bundle assets from a custom location.
 
 ```twig
 <link rel="stylesheet" href="{{ asset('/bundles/fmelfinder/css/elfinder.min.css') }}">
