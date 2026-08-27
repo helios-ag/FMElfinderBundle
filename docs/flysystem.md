@@ -75,6 +75,42 @@ fm_elfinder:
 
 for more options see [ElFinderConfigurationReader.php](https://github.com/helios-ag/FMElfinderBundle/blob/master/Configuration/ElFinderConfigurationReader.php)
 
+# SFTP permissions
+
+The built-in SFTP adapter accepts optional file and directory modes:
+
+```yaml
+fm_elfinder:
+    instances:
+        default:
+            connector:
+                roots:
+                    uploads:
+                        driver: Flysystem
+                        flysystem:
+                            type: sftp
+                            options:
+                                sftp:
+                                    host: sftp.example.com
+                                    username: app
+                                    password: '%env(SFTP_PASSWORD)%'
+                                    port: 22
+                                    root: /uploads
+                                    permPublic: 0o640
+                                    permPrivate: 0o600
+                                    directoryPerm: 0o750
+```
+
+`permPublic` and `permPrivate` set the public and private file modes. `directoryPerm`
+sets both the public and private directory modes. Write these integer values in octal form;
+valid values range from `0o000` to `0o777`.
+
+When an option is omitted, Flysystem's corresponding default is retained: `0o644` for
+public files, `0o600` for private files, `0o755` for public directories, and `0o700` for
+private directories. If `directoryPerm` is set, its value replaces both directory defaults.
+The final permissions on the remote server can still be changed or restricted by its umask,
+SFTP subsystem configuration, filesystem ACLs, or other server policy.
+
 # Amazon S3 Configuration
 
 To work with your S3 account and upload your files directly to S3 you have to set the following properties in your config file (config.yml).

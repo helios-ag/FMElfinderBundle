@@ -85,6 +85,54 @@ class ConfigurationTest extends TestCase
         $this->assertSame([], $flysystem['options']['aws_s3_v3']['options']);
     }
 
+    public function testFlysystemSftpPermissionsArePreserved(): void
+    {
+        $processed = $this->processFlysystemOptions([
+            'sftp' => [
+                'permPublic'    => 0640,
+                'permPrivate'   => 0000,
+                'directoryPerm' => 0750,
+            ],
+        ]);
+
+        $sftp = $processed['instances']['default']['connector']['roots']['uploads']['flysystem']['options']['sftp'];
+
+        $this->assertSame(0640, $sftp['permPublic']);
+        $this->assertSame(0000, $sftp['permPrivate']);
+        $this->assertSame(0750, $sftp['directoryPerm']);
+    }
+
+    public function testFlysystemSftpPermissionsDefaultToNull(): void
+    {
+        $processed = $this->processFlysystemOptions(['sftp' => []]);
+
+        $sftp = $processed['instances']['default']['connector']['roots']['uploads']['flysystem']['options']['sftp'];
+
+        $this->assertNull($sftp['permPublic']);
+        $this->assertNull($sftp['permPrivate']);
+        $this->assertNull($sftp['directoryPerm']);
+    }
+
+    #[DataProvider('provideInvalidSftpPermission')]
+    public function testInvalidFlysystemSftpPermissionsAreRejected(string $key, int $value): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $this->processFlysystemOptions(['sftp' => [$key => $value]]);
+    }
+
+    public static function provideInvalidSftpPermission(): array
+    {
+        return [
+            'negative public file permission'   => ['permPublic', -1],
+            'oversized public file permission'  => ['permPublic', 01000],
+            'negative private file permission'  => ['permPrivate', -1],
+            'oversized private file permission' => ['permPrivate', 01000],
+            'negative directory permission'     => ['directoryPerm', -1],
+            'oversized directory permission'    => ['directoryPerm', 01000],
+        ];
+    }
+
     #[DataProvider('provideRemovedAdapterType')]
     public function testRemovedFlysystemAdapterTypesAreRejected(string $type): void
     {

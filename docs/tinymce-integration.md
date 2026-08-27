@@ -144,9 +144,13 @@ home folder:
 
 ```twig
 {{ elfinder_tinymce_init5('images', 'fmElfinderArticles', {
-    homeFolder: 'articles'
+    homeFolder: 'body/articles/criteres_memes'
 }) }}
 ```
+
+`homeFolder` supports nested relative paths whose non-empty segments are separated
+by forward slashes. Do not use a leading or trailing slash, empty segments, `.` or
+`..` segments, or backslashes.
 
 Use a different global name for each integration on the same page:
 

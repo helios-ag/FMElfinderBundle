@@ -1,9 +1,13 @@
 ef_connect:
     path:  /efconnect/{instance}/{homeFolder}
     defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::load, instance: default, homeFolder: '' }
+    requirements:
+        homeFolder: '[^/]+(?:/[^/]+)*'
 ef_main_js:
     path:  /elfinder.main.js
     defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::mainJS }
 elfinder:
     path: /elfinder/{instance}/{homeFolder}
     defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::show, instance: default, homeFolder: '' }
+    requirements:
+        homeFolder: '[^/]+(?:/[^/]+)*'

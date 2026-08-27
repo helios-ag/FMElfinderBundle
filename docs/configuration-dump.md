@@ -154,6 +154,9 @@ fm_elfinder:
                                     privateKey:           ''
                                     timeout:              10
                                     root:                 /
+                                    permPublic:           null
+                                    permPrivate:          null
+                                    directoryPerm:        null
                                 aws_s3_v3:
                                     enabled:              false
                                     key:                  ''
