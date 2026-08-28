@@ -14,6 +14,7 @@ use League\Flysystem\Ftp\FtpConnectionOptions;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Flysystem\PhpseclibV3\SftpAdapter;
 use League\Flysystem\PhpseclibV3\SftpConnectionProvider;
+use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use Spatie\Dropbox\Client;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -227,7 +228,27 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                     false,
                     $opt['sftp']['timeout']
                 );
-                $filesystem = new Filesystem(new SftpAdapter($connectionProvider, $opt['sftp']['root']));
+                $permPublic    = $opt['sftp']['permPublic'] ?? null;
+                $permPrivate   = $opt['sftp']['permPrivate'] ?? null;
+                $directoryPerm = $opt['sftp']['directoryPerm'] ?? null;
+
+                if (null !== $permPublic || null !== $permPrivate || null !== $directoryPerm) {
+                    $visibilityConverter = PortableVisibilityConverter::fromArray([
+                        'file' => [
+                            'public'  => $permPublic ?? 0644,
+                            'private' => $permPrivate ?? 0600,
+                        ],
+                        'dir' => [
+                            'public'  => $directoryPerm ?? 0755,
+                            'private' => $directoryPerm ?? 0700,
+                        ],
+                    ]);
+                    $adapter = new SftpAdapter($connectionProvider, $opt['sftp']['root'], $visibilityConverter);
+                } else {
+                    $adapter = new SftpAdapter($connectionProvider, $opt['sftp']['root']);
+                }
+
+                $filesystem = new Filesystem($adapter);
 
                 break;
             case 'aws_s3_v3':

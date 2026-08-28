@@ -118,6 +118,15 @@ EOF;
         self::assertStringContainsString('/bundles/fmelfinder/js/tinymceElfinder.js', $html);
     }
 
+    public function testRenderTinyMCE5IntegrationWithNestedHomeFolder(): void
+    {
+        $html = $this->createTinyMCE5Extension()->tinymce5('images', 'fmElfinderImages', [
+            'homeFolder' => 'body/articles/criteres_memes',
+        ]);
+
+        self::assertStringContainsString('/efconnect/images/body/articles/criteres_memes', $html);
+    }
+
     public function testRenderTinyMCE5IntegrationWithBackwardCompatibleDefaults(): void
     {
         $html = $this->createTinyMCE5Extension()->tinymce5('default');

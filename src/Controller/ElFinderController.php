@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Twig\Environment;
@@ -38,6 +39,8 @@ class ElFinderController
      */
     public function show(Request $request, string $instance, string $homeFolder): Response
     {
+        $this->assertValidHomeFolder($homeFolder);
+
         $efParameters = $this->params;
 
         if (empty($efParameters['instances'][$instance])) {
@@ -57,6 +60,8 @@ class ElFinderController
 
     public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
+        $this->assertValidHomeFolder($homeFolder);
+
         $loader       = $this->loader;
         $efParameters = $this->params;
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
@@ -90,6 +95,27 @@ class ElFinderController
                 'Content-type' => 'text/javascript',
             ]
         );
+    }
+
+    private function assertValidHomeFolder(string $homeFolder): void
+    {
+        if ('' === $homeFolder) {
+            return;
+        }
+
+        if (str_contains($homeFolder, "\0") ||
+            str_contains($homeFolder, '\\') ||
+            str_starts_with($homeFolder, '/') ||
+            str_ends_with($homeFolder, '/')
+        ) {
+            throw new BadRequestHttpException('Invalid home folder path.');
+        }
+
+        foreach (explode('/', $homeFolder) as $segment) {
+            if ('' === $segment || '.' === $segment || '..' === $segment) {
+                throw new BadRequestHttpException('Invalid home folder path.');
+            }
+        }
     }
 
     /**

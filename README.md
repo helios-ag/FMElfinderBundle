@@ -224,6 +224,15 @@ For example, accessing to `/elfinder/acmeInstance/bob` URL will open up elfinder
 Then, accessing to `/elfinder/acmeInstance/alice` URL will re-use your instance,
 but open up elfinder with `/uploads/alice` folder as root directory, containing only Alice's files.
 
+Home folders can also be nested. For example,
+`/elfinder/acmeInstance/body/articles/criteres_memes` uses
+`/uploads/body/articles/criteres_memes` as the root directory.
+
+The home folder must be a relative path made of non-empty segments separated by a
+single forward slash (`/`). Unicode characters, spaces, and dots inside segment
+names are accepted, but empty segments, `.` and `..` segments, backslashes,
+leading or trailing slashes, and NUL bytes are rejected.
+
 To use this feature, you **must** provide the instance name in the URL,
 and of course be sure to set proper write/read permissions on home folders.
 

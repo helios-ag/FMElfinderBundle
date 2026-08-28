@@ -10,6 +10,8 @@ use InvalidArgumentException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemAdapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
+use League\Flysystem\PhpseclibV3\SftpAdapter;
+use League\Flysystem\UnixVisibility\VisibilityConverter;
 use ReflectionClass;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -278,27 +280,44 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
     public function testConfigureFlysystemSftpAdapter(): void
     {
-        $root              = $this->baseRoot();
-        $root['driver']    = 'Flysystem';
-        $root['flysystem'] = [
-            'enabled'         => true,
-            'filesystem'      => '',
-            'type'            => 'sftp',
-            'adapter_service' => '',
-            'options'         => ['sftp' => [
-                'host'       => '127.0.0.1',
-                'port'       => 22,
-                'username'   => 'user',
-                'password'   => 'pass',
-                'privateKey' => '',
-                'root'       => '/',
-                'timeout'    => 10,
-            ]],
-        ];
-
-        $filesystem = $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
+        $filesystem = $this->buildSftpFilesystem();
 
         $this->assertInstanceOf(Filesystem::class, $filesystem);
+
+        $converter = $this->getSftpVisibilityConverter($filesystem);
+
+        $this->assertSame(0644, $converter->forFile('public'));
+        $this->assertSame(0600, $converter->forFile('private'));
+        $this->assertSame(0755, $converter->forDirectory('public'));
+        $this->assertSame(0700, $converter->forDirectory('private'));
+    }
+
+    public function testConfigureFlysystemSftpAdapterUsesConfiguredPermissions(): void
+    {
+        $filesystem = $this->buildSftpFilesystem([
+            'permPublic'    => 0640,
+            'permPrivate'   => 0000,
+            'directoryPerm' => 0750,
+        ]);
+
+        $converter = $this->getSftpVisibilityConverter($filesystem);
+
+        $this->assertSame(0640, $converter->forFile('public'));
+        $this->assertSame(0000, $converter->forFile('private'));
+        $this->assertSame(0750, $converter->forDirectory('public'));
+        $this->assertSame(0750, $converter->forDirectory('private'));
+    }
+
+    public function testConfigureFlysystemSftpAdapterRetainsDefaultsForUnconfiguredPermissions(): void
+    {
+        $filesystem = $this->buildSftpFilesystem(['permPublic' => 0640]);
+
+        $converter = $this->getSftpVisibilityConverter($filesystem);
+
+        $this->assertSame(0640, $converter->forFile('public'));
+        $this->assertSame(0600, $converter->forFile('private'));
+        $this->assertSame(0755, $converter->forDirectory('public'));
+        $this->assertSame(0700, $converter->forDirectory('private'));
     }
 
     public function testConfigureFlysystemCustomAdapter(): void
@@ -757,6 +776,38 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $container->method('get')->willReturn(null);
 
         return $container;
+    }
+
+    private function buildSftpFilesystem(array $permissionOptions = []): Filesystem
+    {
+        $root              = $this->baseRoot();
+        $root['driver']    = 'Flysystem';
+        $root['flysystem'] = [
+            'enabled'         => true,
+            'filesystem'      => '',
+            'type'            => 'sftp',
+            'adapter_service' => '',
+            'options'         => ['sftp' => array_merge([
+                'host'       => '127.0.0.1',
+                'port'       => 22,
+                'username'   => 'user',
+                'password'   => 'pass',
+                'privateKey' => '',
+                'root'       => '/',
+                'timeout'    => 10,
+            ], $permissionOptions)],
+        ];
+
+        return $this->buildReaderWithRoot($root)->getConfiguration('default')['roots'][0]['filesystem'];
+    }
+
+    private function getSftpVisibilityConverter(Filesystem $filesystem): VisibilityConverter
+    {
+        $adapter = (new ReflectionClass($filesystem))->getProperty('adapter')->getValue($filesystem);
+
+        $this->assertInstanceOf(SftpAdapter::class, $adapter);
+
+        return (new ReflectionClass($adapter))->getProperty('visibilityConverter')->getValue($adapter);
     }
 
     private function baseRoot(): array
