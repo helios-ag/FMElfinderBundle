@@ -18,7 +18,6 @@ use League\Flysystem\UnixVisibility\PortableVisibilityConverter;
 use Spatie\Dropbox\Client;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use TypeError;
 
@@ -78,7 +77,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 'path'            => $pathAndHomeFolder,
                 'startPath'       => $parameter['start_path'],
                 'encoding'        => $parameter['encoding'],
-                'URL'             => $this->getURL($parameter, $request, $homeFolder, $path),
+                'URL'             => $this->getURL($parameter, $homeFolder, $path),
                 'alias'           => $parameter['alias'],
                 'mimeDetect'      => $parameter['mime_detect'],
                 'mimefile'        => $parameter['mimefile'],
@@ -176,19 +175,21 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         return [];
     }
 
-    private function getURL(array $parameter, Request $request, string $homeFolder, string $path): string
+    private function getURL(array $parameter, string $homeFolder, string $path): string
     {
-        if (isset($parameter['url']) && $parameter['url']) {
-            if (0 === strpos($parameter['url'], 'http')) {
-                return str_replace('{homeFolder}', $homeFolder, $parameter['url']);
+        if (!empty($parameter['url'])) {
+            $url = (string) $parameter['url'];
+
+            if (preg_match('#^https?://#i', $url)) {
+                return str_replace('{homeFolder}', $homeFolder, $url);
             }
 
-            $path = $parameter['url'] . '/' . $homeFolder;
+            $path = $url . '/' . $homeFolder;
         } else {
-            $path = $path . '/' . $homeFolder;
+            $path .= '/' . $homeFolder;
         }
 
-        return $request->getUriForPath('/' . trim($path, '/'));
+        return '/' . trim($path, '/');
     }
 
     /**
