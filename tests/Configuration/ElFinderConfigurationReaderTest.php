@@ -64,31 +64,31 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('with_path_with_url');
         $this->assertEquals('/home', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url', $configuration['roots'][0]['URL']);
+        $this->assertSame('/home-url', $configuration['roots'][0]['URL']);
 
         // with path and with homeFolder
         $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('with_path_with_url');
         $this->assertEquals('/home/bob', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url/bob', $configuration['roots'][0]['URL']);
+        $this->assertSame('/home-url/bob', $configuration['roots'][0]['URL']);
 
         // without path and without homeFolder
         $reader        = $this->getConfigurationReader();
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url-without-path', $configuration['roots'][0]['URL']);
+        $this->assertSame('/home-url-without-path', $configuration['roots'][0]['URL']);
 
         // without path and with homeFolder
         $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('without_path_with_url');
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
-        $this->assertEquals('http://test.com/unit-test/home-url-without-path/bob', $configuration['roots'][0]['URL']);
+        $this->assertSame('/home-url-without-path/bob', $configuration['roots'][0]['URL']);
 
         // without path and with url absolute and homeFolder
         $reader        = $this->getConfigurationReader(['homeFolder' => 'bob']);
         $configuration = $reader->getConfiguration('without_path_with_url_absolute_homeFolder');
         $this->assertEquals('/bob', $configuration['roots'][0]['path']);
-        $this->assertEquals('https://test.com/bob', $configuration['roots'][0]['URL']);
+        $this->assertSame('https://test.com/bob', $configuration['roots'][0]['URL']);
     }
 
     public function testAccessTmbURLOption(): void
@@ -458,8 +458,8 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         // A real Request is used instead of a mock: in Symfony >= 8.1 the
         // ``$attributes`` property is a hooked property, and PHPUnit replaces
         // hooked properties of mock objects with test stubs, which would break
-        // the ``homeFolder`` lookup. Overriding the few methods that getURL()
-        // relies on yields the same deterministic behaviour as a partial mock.
+        // the ``homeFolder`` lookup. The non-empty host and base URL also prove
+        // that relative root URLs do not inherit request URL components.
         $requestObject = new class([], [], $attributes) extends Request {
             public function getScheme(): string
             {
