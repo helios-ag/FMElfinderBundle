@@ -177,10 +177,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
     private function getURL(array $parameter, string $homeFolder, string $path): string
     {
-        if (!empty($parameter['url'])) {
+        if (empty($parameter['url']) === false) {
             $url = (string) $parameter['url'];
 
-            if (preg_match('#^https?://#i', $url)) {
+            if (preg_match('#^https?://#i', $url) === 1) {
                 return str_replace('{homeFolder}', $homeFolder, $url);
             }
 
