@@ -5,11 +5,13 @@ namespace FM\ElfinderBundle\Controller;
 use Exception;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
-use FM\ElfinderBundle\Loader\ElFinderLoader;
+use FM\ElfinderBundle\Exception\UploadConfigurationException;
 use FM\ElfinderBundle\Loader\ElFinderLoaderInterface;
+use FM\ElfinderBundle\Loader\ElFinderUploadLoaderInterface;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +55,26 @@ class ElFinderController
         }
 
         $assetsPath = $efParameters['assets_path'];
-        $result     = $this->selectEditor($parameters, $instance, $homeFolder, $assetsPath, $request->query->get('id'));
+        $multiple   = ($parameters['multiple'] ?? false) === true;
+
+        if ('form' === $parameters['editor'] && $request->query->has('multiple')) {
+            $multipleValue = $request->query->get('multiple');
+
+            if (!in_array($multipleValue, ['0', '1'], true)) {
+                throw new BadRequestHttpException('The multiple parameter must be 0 or 1.');
+            }
+
+            $multiple = '1' === $multipleValue;
+        }
+
+        $result = $this->selectEditor(
+            $parameters,
+            $instance,
+            $homeFolder,
+            $assetsPath,
+            $request->query->get('id'),
+            $multiple
+        );
 
         return new Response($this->twig->render($result['template'], $result['params']));
     }
@@ -64,11 +85,8 @@ class ElFinderController
 
         $loader       = $this->loader;
         $efParameters = $this->params;
+        $loader->setSession($session);
         $loader->initBridge($instance, $efParameters); // builds up the Bridge object for the loader with the given instance
-
-        if ($loader instanceof ElFinderLoader) {
-            $loader->setSession($session);
-        }
 
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $eventDispatcher->dispatch($preExecutionEvent);
@@ -80,6 +98,53 @@ class ElFinderController
 
         // returning result (who may have been modified by a post execution event listener)
         return new JsonResponse($postExecutionEvent->getResult());
+    }
+
+    public function upload(
+        SessionInterface $session,
+        HttpKernelInterface $httpKernel,
+        EventDispatcherInterface $eventDispatcher,
+        Request $request,
+        string $instance,
+        string $homeFolder
+    ): JsonResponse {
+        $this->assertValidHomeFolder($homeFolder);
+
+        $file = $request->files->get('upload');
+
+        if (!$file instanceof UploadedFile) {
+            return $this->ckeditorError('No upload file was provided.', 400);
+        }
+
+        if (!$file->isValid()) {
+            return $this->ckeditorError('No valid upload file was provided.', 400);
+        }
+
+        if (!$this->loader instanceof ElFinderUploadLoaderInterface) {
+            return $this->ckeditorError('The configured loader does not support uploads.', 400);
+        }
+
+        if (!isset($this->params['instances'][$instance])) {
+            return $this->ckeditorError('Instance not found.', 404);
+        }
+
+        $this->loader->setSession($session);
+        $this->loader->initBridge($instance, $this->params);
+        $request->query->set('cmd', 'upload');
+
+        $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
+        $eventDispatcher->dispatch($preExecutionEvent);
+
+        try {
+            $result = $this->loader->upload($file);
+        } catch (UploadConfigurationException $exception) {
+            return $this->ckeditorError($exception->getMessage(), 400);
+        }
+
+        $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
+        $eventDispatcher->dispatch($postExecutionEvent);
+
+        return $this->ckeditorResponse($postExecutionEvent->getResult(), $file);
     }
 
     public function mainJS(): Response
@@ -118,11 +183,68 @@ class ElFinderController
         }
     }
 
+    private function ckeditorResponse(array $result, UploadedFile $file): JsonResponse
+    {
+        if (isset($result['error'])) {
+            return $this->ckeditorError($this->flattenElFinderMessage($result['error']));
+        }
+
+        $url = $result['uploadUrl'] ?? null;
+
+        if (!is_string($url) || '' === $url) {
+            return $this->ckeditorError('Uploaded file URL is unavailable.');
+        }
+
+        $fileName = $result['added'][0]['name'] ?? $file->getClientOriginalName();
+        $payload  = [
+            'uploaded' => 1,
+            'fileName' => is_string($fileName) && '' !== $fileName ? $fileName : $file->getClientOriginalName(),
+            'url'      => $url,
+        ];
+
+        if (isset($result['warning'])) {
+            $payload['error'] = ['message' => $this->flattenElFinderMessage($result['warning'])];
+        }
+
+        return new JsonResponse($payload);
+    }
+
+    private function ckeditorError(string $message, int $status = 200): JsonResponse
+    {
+        return new JsonResponse([
+            'uploaded' => 0,
+            'error'    => ['message' => $message],
+        ], $status);
+    }
+
+    private function flattenElFinderMessage(mixed $message): string
+    {
+        if (is_array($message)) {
+            $parts = array_filter(array_map($this->flattenElFinderMessage(...), $message));
+
+            return $parts ? implode(' ', $parts) : 'Upload failed.';
+        }
+
+        if (!is_scalar($message)) {
+            return 'Upload failed.';
+        }
+
+        $normalized = trim(html_entity_decode((string) $message, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+        return '' !== $normalized ? $normalized : 'Upload failed.';
+    }
+
     /**
      * @throws Exception
      */
-    private function selectEditor(array $parameters, string $instance, string $homeFolder, string $assetsPath, ?string $formTypeId = null): array
-    {
+    private function selectEditor(
+        array $parameters,
+        string $instance,
+        string $homeFolder,
+        string $assetsPath,
+        ?string $formTypeId = null,
+        bool $multiple = false
+    ): array {
         $editor       = $parameters['editor'];
         $locale       = $parameters['locale'] ?: $this->container->getParameter('locale');
         $fullScreen   = $parameters['fullscreen'];
@@ -153,6 +275,35 @@ class ElFinderController
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
                     'id'            => $formTypeId,
+                ];
+
+                return $result;
+            case 'callback':
+                $callbackFunction = $parameters['callback_function'] ?? null;
+
+                if (!is_string($callbackFunction) || '' === trim($callbackFunction)) {
+                    throw new Exception("Configuration error : 'callback' editor must define 'callback_function' parameter");
+                }
+
+                $callbackFunction = trim($callbackFunction);
+
+                if (preg_match('/^[A-Za-z_$][A-Za-z0-9_$]*(?:\.[A-Za-z_$][A-Za-z0-9_$]*)*$/D', $callbackFunction) !== 1) {
+                    throw new Exception("Configuration error : 'callback_function' must be a valid dotted JavaScript path");
+                }
+
+                $result['template'] = '@FMElfinder/Elfinder/callback.html.twig';
+                $result['params']   = [
+                    'locale'           => $locale,
+                    'fullscreen'       => $fullScreen,
+                    'instance'         => $instance,
+                    'homeFolder'       => $homeFolder,
+                    'relative_path'    => $relativePath,
+                    'prefix'           => $assetsPath,
+                    'theme'            => $theme,
+                    'pathPrefix'       => $pathPrefix,
+                    'onlyMimes'        => $onlyMimes,
+                    'callbackFunction' => $callbackFunction,
+                    'multiple'         => $multiple,
                 ];
 
                 return $result;
@@ -241,6 +392,7 @@ class ElFinderController
                     'theme'         => $theme,
                     'pathPrefix'    => $pathPrefix,
                     'onlyMimes'     => $onlyMimes,
+                    'multiple'      => $multiple,
                 ];
 
                 return $result;

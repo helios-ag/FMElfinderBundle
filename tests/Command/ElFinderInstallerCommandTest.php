@@ -89,10 +89,12 @@ final class ElFinderInstallerCommandTest extends TestCase
             ['css', 'img', 'js', 'sounds']
         );
         $expectedSources[] = $this->resourcesDir . '/assets/tinymceElfinder.js';
+        $expectedSources[] = $this->resourcesDir . '/assets/elfinderCallback.js';
+        $expectedSources[] = $this->resourcesDir . '/assets/ckeditorElfinder.js';
         $callIndex         = 0;
 
         $this->fileSystem
-            ->expects($this->exactly(5))
+            ->expects($this->exactly(7))
             ->method('exists')
             ->willReturnCallback(function (string $path) use (&$callIndex, $expectedSources): bool {
                 self::assertSame($expectedSources[$callIndex], $path);
@@ -128,14 +130,18 @@ final class ElFinderInstallerCommandTest extends TestCase
                 ++$mirrorIndex;
             });
 
+        $expectedAdapters = ['tinymceElfinder.js', 'elfinderCallback.js', 'ckeditorElfinder.js'];
+        $copyIndex        = 0;
         $this->fileSystem
-            ->expects($this->once())
+            ->expects($this->exactly(3))
             ->method('copy')
-            ->with(
-                $this->resourcesDir . '/assets/tinymceElfinder.js',
-                $this->resourcesDir . '/public/js/tinymceElfinder.js',
-                true
-            );
+            ->willReturnCallback(function (string $source, string $target, bool $overwrite) use (&$copyIndex, $expectedAdapters): void {
+                $filename = $expectedAdapters[$copyIndex];
+                self::assertSame($this->resourcesDir . '/assets/' . $filename, $source);
+                self::assertSame($this->resourcesDir . '/public/js/' . $filename, $target);
+                self::assertTrue($overwrite);
+                ++$copyIndex;
+            });
     }
 
     private function expectNoDestinationChanges(): void

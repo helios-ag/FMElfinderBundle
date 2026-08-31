@@ -17,7 +17,8 @@ use Symfony\Component\Filesystem\Filesystem;
 )]
 final class ElFinderInstallerCommand extends Command
 {
-    private const ASSET_DIRS = ['css', 'img', 'js', 'sounds'];
+    private const ASSET_DIRS    = ['css', 'img', 'js', 'sounds'];
+    private const ADAPTER_FILES = ['tinymceElfinder.js', 'elfinderCallback.js', 'ckeditorElfinder.js'];
 
     public function __construct(protected Filesystem $fileSystem)
     {
@@ -42,11 +43,14 @@ final class ElFinderInstallerCommand extends Command
         $vendorPackage = $input->getOption('elfinder-vendor-dir');
         $io->title('elFinder Installer');
 
-        $reflection    = new ReflectionClass(\Composer\Autoload\ClassLoader::class);
-        $vendorRootDir = dirname($reflection->getFileName(), 3) . '/vendor';
-        $resourcesDir  = dirname(__DIR__) . '/Resources';
-        $publicDir     = $resourcesDir . '/public';
-        $adapterSource = $resourcesDir . '/assets/tinymceElfinder.js';
+        $reflection     = new ReflectionClass(\Composer\Autoload\ClassLoader::class);
+        $vendorRootDir  = dirname($reflection->getFileName(), 3) . '/vendor';
+        $resourcesDir   = dirname(__DIR__) . '/Resources';
+        $publicDir      = $resourcesDir . '/public';
+        $adapterSources = array_map(
+            static fn (string $filename): string => $resourcesDir . '/assets/' . $filename,
+            self::ADAPTER_FILES
+        );
 
         // validate $vendorDir to match namespace/vendor name
         if (preg_match('/^([a-z0-9-]+)\/([a-z0-9-]+)$/i', $vendorPackage) === 0) {
@@ -60,7 +64,7 @@ final class ElFinderInstallerCommand extends Command
             $sources[$directory] = sprintf('%s/%s/%s', $vendorRootDir, $vendorPackage, $directory);
         }
 
-        foreach ([...array_values($sources), $adapterSource] as $source) {
+        foreach ([...array_values($sources), ...$adapterSources] as $source) {
             if ($this->fileSystem->exists($source) === false) {
                 $io->error(sprintf('Required asset source "%s" was not found.', $source));
 
@@ -76,7 +80,9 @@ final class ElFinderInstallerCommand extends Command
             $this->fileSystem->mirror($source, $target, null, ['override' => true]);
         }
 
-        $this->fileSystem->copy($adapterSource, $publicDir . '/js/tinymceElfinder.js', true);
+        foreach ($adapterSources as $adapterSource) {
+            $this->fileSystem->copy($adapterSource, $publicDir . '/js/' . basename($adapterSource), true);
+        }
 
         $io->success('elFinder assets successfully prepared.');
         $io->writeln('Next, run "bin/console assets:install" to publish the assets.');

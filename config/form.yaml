@@ -4,5 +4,7 @@ parameters:
 services:
     fm_elfinder.form.type:
         class: '%elfinder.form.type.class%'
+        arguments:
+            - '%fm_elfinder%'
         tags:
             - { name: 'form.type' }

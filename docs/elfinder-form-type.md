@@ -12,6 +12,7 @@ fm_elfinder:
         form:
             locale: '%locale%' # defaults to current request locale
             editor: form # other choices are tinymce or simple, and form
+            multiple: true # optional; defaults to false
             show_hidden: false # defaults to false
             fullscreen: true # defaults true, applies to simple and ckeditor editors
             connector:
@@ -33,10 +34,33 @@ use FM\ElfinderBundle\Form\Type\ElFinderType;
 // ...
 
 $form = $this->createFormBuilder()
-    ->add('elfinder', ElFinderType::class, ['instance' => 'form', 'enable' => true])
+    ->add('elfinder', ElFinderType::class, [
+        'instance' => 'form',
+        'enable' => true,
+        'multiple' => true,
+    ])
     ->getForm();
 
 ```
+
+In single mode the model and submitted value remain a scalar URL. In multiple mode the model value is an `array<string>` of URLs, while the text input contains a JSON array string such as `["/uploads/one.jpg","/uploads/two.jpg"]`.
+
+The nullable form option follows this precedence:
+
+1. An explicit `multiple: true` or `multiple: false` form option.
+2. The selected instance's `multiple` setting when the form option is omitted or `null`.
+3. `false` when neither value enables multiple selection.
+
+Malformed JSON, non-array JSON, and non-string array entries produce a form transformation error.
+
+## Upgrade note
+
+Since the picker popup delivers selections through the bundled `elfinderCallback.js` asset, re-run
+`bin/console elfinder:install` followed by `bin/console assets:install` after upgrading the bundle,
+otherwise the popup reports that `elfinderCallback.js` could not be loaded. Templates that override
+`elfinder_type.html.twig` and still call `window.opener.setValue()` continue to work through a
+deprecated `setValue()` shim kept in the default widget; migrate such overrides to
+`window.FMElfinderCallback.updateOpenerField()` or to the `callback` editor.
 
 
 ```jinja

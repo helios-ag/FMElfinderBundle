@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- The form type supports multiple file selection: set `multiple: true` on the instance or the form
+  option. In multiple mode the model value is an `array<string>` of URLs and the text input holds a
+  JSON array string. A new `callback` editor delivers selected files (always as an array) to a
+  configurable dotted function path on `window.opener`, e.g. `App.media.onSelect`.
+- New CKEditor paste/drop upload endpoint `POST /efupload/{instance}` returning the CKEditor JSON
+  response format, plus a standalone CKEditor 5 upload adapter (`ckeditorElfinder.js`). The upload
+  instance must have exactly one readable root; a configured `start_path` is honored (it must point
+  to a readable directory inside the root, otherwise the upload is rejected by elFinder).
+- **Upgrade note:** the form editor popup now writes the selection through
+  `elfinderCallback.js` (`window.FMElfinderCallback.updateOpenerField()`) instead of inline code.
+  Re-run `bin/console elfinder:install` and `bin/console assets:install` to publish the new
+  `elfinderCallback.js`/`ckeditorElfinder.js` assets. Applications that overrode
+  `elfinder_type.html.twig` and still call `window.opener.setValue()` keep working: the default
+  widget retains a deprecated `setValue()` shim (to be removed in a future release).
+- The connector now actually passes the Symfony session to elFinder. Previously
+  `ElFinderLoader::setSession()` ran after the bridge was constructed, so the session never
+  reached elFinder. As a result elFinder now stores its volume caches in the user session.
 - `elfinder:install` now prepares assets in the bundle's `Resources/public` directory instead of
   publishing them directly to an application docroot. Run `elfinder:install` before Symfony's
   `assets:install`; the removed `--docroot` option is replaced by the target argument and

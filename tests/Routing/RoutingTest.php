@@ -5,6 +5,7 @@ namespace FM\ElfinderBundle\Tests\Routing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Loader\YamlFileLoader;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
@@ -13,9 +14,9 @@ use Symfony\Component\Routing\RequestContext;
 class RoutingTest extends TestCase
 {
     #[DataProvider('nestedHomeFolderRouteProvider')]
-    public function testNestedHomeFolderMatches(string $path, string $route): void
+    public function testNestedHomeFolderMatches(string $path, string $route, string $method = 'GET'): void
     {
-        $parameters = $this->createMatcher()->match($path);
+        $parameters = $this->createMatcher($method)->match($path);
 
         self::assertSame($route, $parameters['_route']);
         self::assertSame('images', $parameters['instance']);
@@ -27,7 +28,15 @@ class RoutingTest extends TestCase
         return [
             'connector' => ['/efconnect/images/body/articles/criteres_memes', 'ef_connect'],
             'manager'   => ['/elfinder/images/body/articles/criteres_memes', 'elfinder'],
+            'upload'    => ['/efupload/images/body/articles/criteres_memes', 'ef_upload', 'POST'],
         ];
+    }
+
+    public function testUploadRouteOnlyMatchesPostRequests(): void
+    {
+        $this->expectException(MethodNotAllowedException::class);
+
+        $this->createMatcher('GET')->match('/efupload/images');
     }
 
     #[DataProvider('malformedHomeFolderRouteProvider')]
@@ -50,10 +59,12 @@ class RoutingTest extends TestCase
         ];
     }
 
-    private function createMatcher(): UrlMatcher
+    private function createMatcher(string $method = 'GET'): UrlMatcher
     {
-        $loader = new YamlFileLoader(new FileLocator(__DIR__ . '/../../src/Resources/config'));
+        $loader  = new YamlFileLoader(new FileLocator(__DIR__ . '/../../src/Resources/config'));
+        $context = new RequestContext();
+        $context->setMethod($method);
 
-        return new UrlMatcher($loader->load('routing.yaml'), new RequestContext());
+        return new UrlMatcher($loader->load('routing.yaml'), $context);
     }
 }

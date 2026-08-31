@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <script src="{{ asset(prefix|trim('/', 'right') ~ '/bundles/fmelfinder/js/elfinderCallback.js') }}"></script>
     <script data-main="{{path('ef_main_js')}}" src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <script>
         define('elFinderConfig', {
@@ -14,15 +15,26 @@
                 url : '{{path('ef_connect', { 'instance': instance, 'homeFolder': homeFolder } )}}',
                 lang : '{{locale}}',
                 onlyMimes: {{ onlyMimes|raw }},
-                getFileCallback: function(file) {
-                    {% if relative_path %}
-                        window.opener.setValue('{{ pathPrefix }}'+file.url.replace("{{ app.request.schemeAndHttpHost }}/", ""), "{{ id }}");
-                    {% else %}
-                        window.opener.setValue(file.url, "{{ id }}");
-                    {% endif %}
-                    window.close();
+                getFileCallback: function(files) {
+                    if (typeof window.FMElfinderCallback === 'undefined') {
+                        window.alert('FMElfinderBundle: elfinderCallback.js could not be loaded. Run "bin/console elfinder:install" and "bin/console assets:install", then retry.');
+                        return;
+                    }
+                    try {
+                        window.FMElfinderCallback.updateOpenerField(files, {{ id|json_encode|raw }}, {
+                            multiple: {{ multiple ? 'true' : 'false' }},
+                            relativePath: {{ relative_path ? 'true' : 'false' }},
+                            pathPrefix: {{ pathPrefix|json_encode|raw }},
+                            origin: {{ app.request.schemeAndHttpHost|json_encode|raw }} + '/'
+                        });
+                    } catch (error) {
+                        window.FMElfinderCallback.showError(error, document);
+                    }
                 },
                 commandsOptions : {
+                    getfile : {
+                        multiple: {{ multiple ? 'true' : 'false' }}
+                    },
                     edit : {
                         extraOptions : {
                             // set API key to enable Creative Cloud image editor
@@ -73,6 +85,7 @@
 <body>
 
 <!-- Element where elFinder will be created (REQUIRED) -->
+<div id="fm-elfinder-callback-error" role="alert" hidden></div>
 <div id="elfinder"></div>
 
 </body>
