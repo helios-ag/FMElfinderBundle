@@ -102,7 +102,12 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
 
         foreach (array_diff(scandir($directory), ['.', '..']) as $item) {
             $path = $directory . '/' . $item;
-            true === is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+
+            if (true === is_dir($path)) {
+                $this->removeDirectory($path);
+            } else {
+                unlink($path);
+            }
         }
 
         rmdir($directory);

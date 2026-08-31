@@ -81,14 +81,15 @@
             throw new Error('The configured callback path is invalid.');
         }
 
+        var callbackName = segments.pop();
         var owner = opener;
 
         try {
-            for (var index = 0; index < segments.length - 1; index += 1) {
-                owner = readOwnProperty(owner, segments[index]);
-            }
+            segments.forEach(function (segment) {
+                owner = readOwnProperty(owner, segment);
+            });
 
-            var callback = readOwnProperty(owner, segments[segments.length - 1]);
+            var callback = readOwnProperty(owner, callbackName);
             if (typeof callback !== 'function') {
                 throw new Error('The configured callback is not callable.');
             }
