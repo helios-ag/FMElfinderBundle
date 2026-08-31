@@ -380,6 +380,27 @@ class ElFinderLoaderTest extends \PHPUnit\Framework\TestCase
         }
     }
 
+    public function testUploadReportsMissingResolvedUrl(): void
+    {
+        $volume = $this->createStub(elFinderVolumeDriver::class);
+        $volume->method('isReadable')->willReturn(true);
+        $volume->method('defaultPath')->willReturn('l1_root');
+        [$loader] = $this->createUploadLoader([$volume], [
+            ['added' => [['hash' => 'l1_file']]],
+            ['url' => null],
+        ]);
+        $file = $this->createUploadedFile();
+
+        try {
+            self::assertSame(
+                ['error' => ['Uploaded file URL is unavailable.']],
+                $loader->upload($file)
+            );
+        } finally {
+            unlink($file->getPathname());
+        }
+    }
+
     private function createUploadedFile(): UploadedFile
     {
         $path = tempnam(sys_get_temp_dir(), 'fm_elfinder_upload_');

@@ -475,11 +475,12 @@ class ElFinderControllerTest extends TestCase
         $controller->show(Request::create('/elfinder/default'), 'default', '');
     }
 
-    public function testCallbackEditorRejectsInvalidFunctionPath(): void
+    #[DataProvider('invalidCallbackFunctionProvider')]
+    public function testCallbackEditorRejectsInvalidFunctionPath(string $callbackFunction): void
     {
         $controller = new ElFinderController(
             $this->createStub(Environment::class),
-            $this->editorParameters('callback', ['callback_function' => 'App["media"].onSelect']),
+            $this->editorParameters('callback', ['callback_function' => $callbackFunction]),
             $this->createStub(ElFinderLoaderInterface::class)
         );
 
@@ -487,6 +488,14 @@ class ElFinderControllerTest extends TestCase
         $this->expectExceptionMessage('valid dotted JavaScript path');
 
         $controller->show(Request::create('/elfinder/default'), 'default', '');
+    }
+
+    public static function invalidCallbackFunctionProvider(): array
+    {
+        return [
+            'bracket notation'     => ['App["media"].onSelect'],
+            'prototype traversal' => ['__proto__.toString'],
+        ];
     }
 
     #[DataProvider('formMultipleOverrideProvider')]

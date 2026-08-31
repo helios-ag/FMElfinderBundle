@@ -64,4 +64,27 @@ final class JsonStringArrayTransformerTest extends TestCase
 
         (new JsonStringArrayTransformer())->transform('/one.jpg');
     }
+
+    public function testRejectsModelArrayContainingNonStringValue(): void
+    {
+        $this->expectException(TransformationFailedException::class);
+
+        (new JsonStringArrayTransformer())->transform(['/one.jpg', 42]);
+    }
+
+    public function testRejectsModelArrayContainingInvalidUtf8(): void
+    {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('valid UTF-8');
+
+        (new JsonStringArrayTransformer())->transform(["\xB1\x31"]);
+    }
+
+    public function testRejectsNonStringSubmittedValue(): void
+    {
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('JSON string');
+
+        (new JsonStringArrayTransformer())->reverseTransform(['/one.jpg']);
+    }
 }

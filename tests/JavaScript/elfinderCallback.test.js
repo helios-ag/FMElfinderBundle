@@ -100,6 +100,41 @@ test('keeps picker open for missing, invalid, or non-callable callbacks', () => 
     assert.equal(closed, false);
 });
 
+test('rejects callback paths that can traverse JavaScript prototypes', () => {
+    let closed = false;
+    global.window = {
+        opener: {},
+        close() {
+            closed = true;
+        },
+    };
+    const adapter = loadAdapter();
+
+    assert.throws(
+        () => adapter.callOpener({ url: '/one.jpg' }, '__proto__.toString', {}),
+        /invalid/
+    );
+    assert.equal(closed, false);
+});
+
+test('does not resolve callbacks inherited from an opener prototype', () => {
+    let closed = false;
+    const inherited = { onSelect() {} };
+    global.window = {
+        opener: { App: Object.create(inherited) },
+        close() {
+            closed = true;
+        },
+    };
+    const adapter = loadAdapter();
+
+    assert.throws(
+        () => adapter.callOpener({ url: '/one.jpg' }, 'App.onSelect', {}),
+        /not found/
+    );
+    assert.equal(closed, false);
+});
+
 test('reports unavailable and cross-origin opener access', () => {
     global.window = { opener: null, close() {} };
     let adapter = loadAdapter();

@@ -28,7 +28,7 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
         });
         restore_exception_handler();
 
-        if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ErrorHandler) {
+        if (true === is_array($exceptionHandler) && true === ($exceptionHandler[0] instanceof ErrorHandler)) {
             restore_exception_handler();
         }
 
@@ -37,7 +37,7 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
         });
         restore_error_handler();
 
-        if (is_array($errorHandler) && $errorHandler[0] instanceof ErrorHandler) {
+        if (true === is_array($errorHandler) && true === ($errorHandler[0] instanceof ErrorHandler)) {
             restore_error_handler();
         }
     }
@@ -96,13 +96,13 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
 
     private function removeDirectory(string $directory): void
     {
-        if (!is_dir($directory)) {
+        if (false === is_dir($directory)) {
             return;
         }
 
         foreach (array_diff(scandir($directory), ['.', '..']) as $item) {
             $path = $directory . '/' . $item;
-            is_dir($path) ? $this->removeDirectory($path) : unlink($path);
+            true === is_dir($path) ? $this->removeDirectory($path) : unlink($path);
         }
 
         rmdir($directory);

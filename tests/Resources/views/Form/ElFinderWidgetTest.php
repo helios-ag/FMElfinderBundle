@@ -51,7 +51,7 @@ final class ElFinderWidgetTest extends TestCase
             $path = sprintf('/elfinder/%s/%s', $parameters['instance'], $parameters['homeFolder']);
             unset($parameters['instance'], $parameters['homeFolder']);
 
-            return $path . ($parameters ? '?' . http_build_query($parameters) : '');
+            return $path . ([] !== $parameters ? '?' . http_build_query($parameters) : '');
         }));
 
         return $twig->render('widget.html.twig', [

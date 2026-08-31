@@ -16,7 +16,7 @@ final class JsonStringArrayTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (!is_array($value) || array_filter($value, static fn (mixed $item): bool => !is_string($item))) {
+        if (false === is_array($value) || [] !== array_filter($value, static fn (mixed $item): bool => false === is_string($item))) {
             throw new TransformationFailedException('Expected an array of strings.');
         }
 
@@ -33,7 +33,7 @@ final class JsonStringArrayTransformer implements DataTransformerInterface
             return [];
         }
 
-        if (!is_string($value)) {
+        if (false === is_string($value)) {
             throw new TransformationFailedException('Expected a JSON string.');
         }
 
@@ -43,7 +43,7 @@ final class JsonStringArrayTransformer implements DataTransformerInterface
             throw new TransformationFailedException('Expected a JSON array of strings.', 0, $exception);
         }
 
-        if (!is_array($decoded) || array_filter($decoded, static fn (mixed $item): bool => !is_string($item))) {
+        if (false === is_array($decoded) || [] !== array_filter($decoded, static fn (mixed $item): bool => false === is_string($item))) {
             throw new TransformationFailedException('Expected a JSON array of strings.');
         }
 

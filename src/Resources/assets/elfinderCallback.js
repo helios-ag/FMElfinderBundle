@@ -13,7 +13,8 @@
 }(typeof window !== 'undefined' ? window : globalThis, function (root) {
     'use strict';
 
-    var callbackPattern = /^[A-Za-z_$][\w$]*(\.[A-Za-z_$][\w$]*)*$/;
+    var callbackSegmentPattern = /^[A-Za-z_$][A-Za-z0-9_$]*$/;
+    var forbiddenCallbackSegments = ['__proto__', 'prototype', 'constructor'];
 
     function normalizeFiles(files, options) {
         var normalizedOptions = options || {};
@@ -71,27 +72,24 @@
     }
 
     function resolveCallback(opener, callbackPath) {
-        if (typeof callbackPath !== 'string' || !callbackPattern.test(callbackPath)) {
+        var segments = typeof callbackPath === 'string' ? callbackPath.split('.') : [];
+        var invalidSegment = segments.length === 0 || segments.some(function (segment) {
+            return !callbackSegmentPattern.test(segment) || forbiddenCallbackSegments.indexOf(segment) !== -1;
+        });
+
+        if (invalidSegment) {
             throw new Error('The configured callback path is invalid.');
         }
 
-        var segments = callbackPath.split('.');
         var owner = opener;
 
         try {
             for (var index = 0; index < segments.length - 1; index += 1) {
-                owner = owner[segments[index]];
-                if (owner === null || (typeof owner !== 'object' && typeof owner !== 'function')) {
-                    throw new Error('The configured callback was not found.');
-                }
+                owner = readOwnProperty(owner, segments[index]);
             }
 
-            var callback = owner[segments[segments.length - 1]];
+            var callback = readOwnProperty(owner, segments[segments.length - 1]);
             if (typeof callback !== 'function') {
-                if (typeof callback === 'undefined') {
-                    throw new Error('The configured callback was not found.');
-                }
-
                 throw new Error('The configured callback is not callable.');
             }
 
@@ -103,6 +101,28 @@
 
             throw error;
         }
+    }
+
+    function readOwnProperty(owner, segment) {
+        if (owner === null || (typeof owner !== 'object' && typeof owner !== 'function')) {
+            throw new Error('The configured callback was not found.');
+        }
+
+        var descriptor = Object.getOwnPropertyDescriptor(owner, segment);
+
+        if (!descriptor) {
+            throw new Error('The configured callback was not found.');
+        }
+
+        if (Object.prototype.hasOwnProperty.call(descriptor, 'value')) {
+            return descriptor.value;
+        }
+
+        if (typeof descriptor.get === 'function') {
+            return descriptor.get.call(owner);
+        }
+
+        throw new Error('The configured callback was not found.');
     }
 
     function callOpener(files, callbackPath, options) {

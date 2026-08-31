@@ -39,8 +39,8 @@
                 xhr.responseType = 'json';
                 xhr.withCredentials = adapter.options.withCredentials === true;
 
-                Object.keys(adapter.options.headers || {}).forEach(function (name) {
-                    xhr.setRequestHeader(name, adapter.options.headers[name]);
+                Object.entries(adapter.options.headers || {}).forEach(function ([name, value]) {
+                    xhr.setRequestHeader(name, value);
                 });
 
                 xhr.upload.onprogress = function (event) {

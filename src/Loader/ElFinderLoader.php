@@ -100,30 +100,32 @@ class ElFinderLoader implements ElFinderLoaderInterface, ElFinderUploadLoaderInt
         $startPath = $volume->getOption('startPath');
         // defaultPath() only knows startPath on `init` requests (mount resolves
         // it from $_GET/$_POST), so background uploads encode the option directly.
-        $target = is_string($startPath) && '' !== $startPath
+        $target = true === is_string($startPath) && '' !== $startPath
             ? $volume->getHash($startPath)
             : $volume->defaultPath();
-        $result = $this->bridge->exec('upload', [
+        $mimeType = $file->getClientMimeType();
+        $fileSize = $file->getSize();
+        $result   = $this->bridge->exec('upload', [
             'target' => $target,
             'FILES'  => [
                 'upload' => [
                     'name'     => [$file->getClientOriginalName()],
-                    'type'     => [$file->getClientMimeType() ?: 'application/octet-stream'],
+                    'type'     => [null !== $mimeType && '' !== $mimeType ? $mimeType : 'application/octet-stream'],
                     'tmp_name' => [$file->getPathname()],
                     'error'    => [$file->getError()],
-                    'size'     => [$file->getSize() ?: 0],
+                    'size'     => [false !== $fileSize ? $fileSize : 0],
                 ],
             ],
         ]);
 
-        if (isset($result['error'])) {
+        if (true === isset($result['error'])) {
             return $result;
         }
 
         $hash = $result['added'][0]['hash'] ?? null;
 
-        if (!is_string($hash) || '' === $hash) {
-            if (isset($result['warning'])) {
+        if (false === is_string($hash) || '' === $hash) {
+            if (true === isset($result['warning'])) {
                 return ['error' => $result['warning']];
             }
 
@@ -132,13 +134,13 @@ class ElFinderLoader implements ElFinderLoaderInterface, ElFinderUploadLoaderInt
 
         $urlResult = $this->bridge->exec('url', ['target' => $hash]);
 
-        if (isset($urlResult['error'])) {
+        if (true === isset($urlResult['error'])) {
             return $urlResult;
         }
 
         $url = $urlResult['url'] ?? null;
 
-        if (!is_string($url) || '' === $url) {
+        if (false === is_string($url) || '' === $url) {
             return ['error' => ['Uploaded file URL is unavailable.']];
         }
 

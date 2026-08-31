@@ -57,10 +57,10 @@ class ElFinderController
         $assetsPath = $efParameters['assets_path'];
         $multiple   = ($parameters['multiple'] ?? false) === true;
 
-        if ('form' === $parameters['editor'] && $request->query->has('multiple')) {
+        if ('form' === $parameters['editor'] && true === $request->query->has('multiple')) {
             $multipleValue = $request->query->get('multiple');
 
-            if (!in_array($multipleValue, ['0', '1'], true)) {
+            if (false === in_array($multipleValue, ['0', '1'], true)) {
                 throw new BadRequestHttpException('The multiple parameter must be 0 or 1.');
             }
 
@@ -112,19 +112,19 @@ class ElFinderController
 
         $file = $request->files->get('upload');
 
-        if (!$file instanceof UploadedFile) {
+        if (false === ($file instanceof UploadedFile)) {
             return $this->ckeditorError('No upload file was provided.', 400);
         }
 
-        if (!$file->isValid()) {
+        if (false === $file->isValid()) {
             return $this->ckeditorError('No valid upload file was provided.', 400);
         }
 
-        if (!$this->loader instanceof ElFinderUploadLoaderInterface) {
+        if (false === ($this->loader instanceof ElFinderUploadLoaderInterface)) {
             return $this->ckeditorError('The configured loader does not support uploads.', 400);
         }
 
-        if (!isset($this->params['instances'][$instance])) {
+        if (false === isset($this->params['instances'][$instance])) {
             return $this->ckeditorError('Instance not found.', 404);
         }
 
@@ -185,24 +185,24 @@ class ElFinderController
 
     private function ckeditorResponse(array $result, UploadedFile $file): JsonResponse
     {
-        if (isset($result['error'])) {
+        if (true === isset($result['error'])) {
             return $this->ckeditorError($this->flattenElFinderMessage($result['error']));
         }
 
         $url = $result['uploadUrl'] ?? null;
 
-        if (!is_string($url) || '' === $url) {
+        if (false === is_string($url) || '' === $url) {
             return $this->ckeditorError('Uploaded file URL is unavailable.');
         }
 
         $fileName = $result['added'][0]['name'] ?? $file->getClientOriginalName();
         $payload  = [
             'uploaded' => 1,
-            'fileName' => is_string($fileName) && '' !== $fileName ? $fileName : $file->getClientOriginalName(),
+            'fileName' => true === is_string($fileName) && '' !== $fileName ? $fileName : $file->getClientOriginalName(),
             'url'      => $url,
         ];
 
-        if (isset($result['warning'])) {
+        if (true === isset($result['warning'])) {
             $payload['error'] = ['message' => $this->flattenElFinderMessage($result['warning'])];
         }
 
@@ -219,13 +219,13 @@ class ElFinderController
 
     private function flattenElFinderMessage(mixed $message): string
     {
-        if (is_array($message)) {
+        if (true === is_array($message)) {
             $parts = array_filter(array_map($this->flattenElFinderMessage(...), $message));
 
-            return $parts ? implode(' ', $parts) : 'Upload failed.';
+            return [] !== $parts ? implode(' ', $parts) : 'Upload failed.';
         }
 
-        if (!is_scalar($message)) {
+        if (false === is_scalar($message)) {
             return 'Upload failed.';
         }
 
@@ -281,13 +281,20 @@ class ElFinderController
             case 'callback':
                 $callbackFunction = $parameters['callback_function'] ?? null;
 
-                if (!is_string($callbackFunction) || '' === trim($callbackFunction)) {
+                if (false === is_string($callbackFunction) || '' === trim($callbackFunction)) {
                     throw new Exception("Configuration error : 'callback' editor must define 'callback_function' parameter");
                 }
 
-                $callbackFunction = trim($callbackFunction);
+                $callbackFunction  = trim($callbackFunction);
+                $callbackSegments  = explode('.', $callbackFunction);
+                $forbiddenSegments = ['__proto__', 'prototype', 'constructor'];
+                $invalidSegments   = array_filter(
+                    $callbackSegments,
+                    static fn (string $segment): bool => 1 !== preg_match('/^[A-Za-z_$][A-Za-z0-9_$]*$/D', $segment) ||
+                        true === in_array($segment, $forbiddenSegments, true)
+                );
 
-                if (preg_match('/^[A-Za-z_$][A-Za-z0-9_$]*(?:\.[A-Za-z_$][A-Za-z0-9_$]*)*$/D', $callbackFunction) !== 1) {
+                if ([] !== $invalidSegments) {
                     throw new Exception("Configuration error : 'callback_function' must be a valid dotted JavaScript path");
                 }
 
