@@ -10,6 +10,26 @@ use Symfony\Component\Config\Definition\Processor;
 
 class ConfigurationTest extends TestCase
 {
+    public function testSelectionOptionsHaveBackwardCompatibleDefaults(): void
+    {
+        $processed = $this->processInstance([]);
+
+        self::assertFalse($processed['instances']['default']['multiple']);
+        self::assertNull($processed['instances']['default']['callback_function']);
+    }
+
+    public function testSelectionOptionsAcceptExplicitValues(): void
+    {
+        $processed = $this->processInstance([
+            'editor'            => 'callback',
+            'multiple'          => true,
+            'callback_function' => 'App.media.onSelect',
+        ]);
+
+        self::assertTrue($processed['instances']['default']['multiple']);
+        self::assertSame('App.media.onSelect', $processed['instances']['default']['callback_function']);
+    }
+
     /**
      * Several array nodes accept a comma-separated string that is normalised
      * into a trimmed list of scalars. The fixture-based test feeds arrays, so
@@ -171,6 +191,18 @@ class ConfigurationTest extends TestCase
                     ],
                 ],
             ],
+        ]);
+    }
+
+    private function processInstance(array $instance): array
+    {
+        $instance['connector']['roots']['uploads'] ??= [
+            'driver' => 'LocalFileSystem',
+            'path'   => 'uploads',
+        ];
+
+        return (new Processor())->processConfiguration(new Configuration(), [
+            ['instances' => ['default' => $instance]],
         ]);
     }
 }

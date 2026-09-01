@@ -2,7 +2,9 @@
 
 namespace FM\ElfinderBundle\Tests\Form\Type;
 
+use FM\ElfinderBundle\Form\DataTransformer\JsonStringArrayTransformer;
 use FM\ElfinderBundle\Form\Type\ElFinderType;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,6 +25,42 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($resolver->isDefined('enable'));
         $this->assertTrue($resolver->isDefined('instance'));
         $this->assertTrue($resolver->isDefined('homeFolder'));
+        $this->assertTrue($resolver->isDefined('multiple'));
+    }
+
+    #[DataProvider('multipleOptionProvider')]
+    public function testMultipleOptionInheritsFromInstanceUnlessExplicitlyOverridden(
+        ?string $instance,
+        ?bool $configuredOption,
+        bool $expected
+    ): void {
+        $resolver = new OptionsResolver();
+        $type     = new ElFinderType([
+            'instances' => [
+                'single'  => ['multiple' => false],
+                'gallery' => ['multiple' => true],
+            ],
+        ]);
+        $type->configureOptions($resolver);
+
+        $resolved = $resolver->resolve([
+            'instance' => $instance,
+            'multiple' => $configuredOption,
+        ]);
+
+        self::assertSame($expected, $resolved['multiple']);
+    }
+
+    public static function multipleOptionProvider(): array
+    {
+        return [
+            'single inherits false'     => ['single', null, false],
+            'gallery inherits true'     => ['gallery', null, true],
+            'explicit false wins'       => ['gallery', false, false],
+            'explicit true wins'        => ['single', true, true],
+            'unknown instance is false' => ['unknown', null, false],
+            'null instance is false'    => [null, null, false],
+        ];
     }
 
     public function testBuildView()
@@ -31,6 +69,7 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
             'instance'   => 'default1',
             'enable'     => true,
             'homeFolder' => '/home',
+            'multiple'   => true,
         ];
         $view = new FormView();
         $type = new ElFinderType();
@@ -53,11 +92,35 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
             return $builder;
         });
 
-        (new ElFinderType())->buildForm($builder, ['enable' => true, 'instance' => 'custom', 'homeFolder' => '/home']);
+        (new ElFinderType())->buildForm($builder, [
+            'enable'     => true,
+            'instance'   => 'custom',
+            'homeFolder' => '/home',
+            'multiple'   => false,
+        ]);
 
         $this->assertTrue($set['enable']);
         $this->assertSame('custom', $set['instance']);
         $this->assertSame('/home', $set['homeFolder']);
+        $this->assertFalse($set['multiple']);
+    }
+
+    public function testBuildFormAddsJsonTransformerInMultipleMode(): void
+    {
+        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder->expects(self::once())->method('getAttribute')->with('enable')->willReturn(true);
+        $builder->method('setAttribute')->willReturnSelf();
+        $builder->expects(self::once())
+            ->method('addModelTransformer')
+            ->with(self::isInstanceOf(JsonStringArrayTransformer::class))
+            ->willReturnSelf();
+
+        (new ElFinderType())->buildForm($builder, [
+            'enable'     => true,
+            'instance'   => 'gallery',
+            'homeFolder' => '',
+            'multiple'   => true,
+        ]);
     }
 
     public function testBuildFormOmitsInstanceWhenDisabled()
@@ -71,7 +134,12 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
             return $builder;
         });
 
-        (new ElFinderType())->buildForm($builder, ['enable' => false, 'instance' => 'default', 'homeFolder' => '']);
+        (new ElFinderType())->buildForm($builder, [
+            'enable'     => false,
+            'instance'   => 'default',
+            'homeFolder' => '',
+            'multiple'   => false,
+        ]);
 
         $this->assertArrayNotHasKey('instance', $set);
         $this->assertFalse($set['enable']);
@@ -82,9 +150,15 @@ class ElFinderTypeTest extends \PHPUnit\Framework\TestCase
         $view = new FormView();
         $form = $this->createStub('Symfony\Component\Form\Test\FormInterface');
 
-        (new ElFinderType())->buildView($view, $form, ['enable' => false, 'instance' => 'default', 'homeFolder' => '']);
+        (new ElFinderType())->buildView($view, $form, [
+            'enable'     => false,
+            'instance'   => 'default',
+            'homeFolder' => '',
+            'multiple'   => true,
+        ]);
 
         $this->assertFalse($view->vars['enable']);
+        $this->assertTrue($view->vars['multiple']);
         $this->assertArrayNotHasKey('instance', $view->vars);
         $this->assertArrayNotHasKey('homeFolder', $view->vars);
     }

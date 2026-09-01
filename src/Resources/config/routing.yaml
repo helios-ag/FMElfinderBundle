@@ -3,6 +3,12 @@ ef_connect:
     defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::load, instance: default, homeFolder: '' }
     requirements:
         homeFolder: '[^/]+(?:/[^/]+)*'
+ef_upload:
+    path: /efupload/{instance}/{homeFolder}
+    defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::upload, instance: default, homeFolder: '' }
+    requirements:
+        homeFolder: '[^/]+(?:/[^/]+)*'
+    methods: [POST]
 ef_main_js:
     path:  /elfinder.main.js
     defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::mainJS }

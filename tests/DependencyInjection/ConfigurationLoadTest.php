@@ -2,8 +2,8 @@
 
 namespace FM\ElfinderBundle\Tests\DependencyInjection;
 
-use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use FM\ElfinderBundle\DependencyInjection\Configuration;
+use FM\ElfinderBundle\DependencyInjection\FMElfinderExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -11,16 +11,6 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
 {
-    protected function getContainerExtension(): ExtensionInterface
-    {
-        return new FMElfinderExtension();
-    }
-
-    protected function getConfiguration(): ConfigurationInterface
-    {
-        return new Configuration();
-    }
-
     #[DataProvider('getSupportsAllConfigFormatsData')]
     public function testSupportsAllConfigFormats($path): void
     {
@@ -34,6 +24,8 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                     'editor'             => 'tinymce',
                     'theme'              => 'smoothness',
                     'editor_template'    => 'Elfinder/editor.html.twig',
+                    'multiple'           => false,
+                    'callback_function'  => null,
                     'fullscreen'         => false,
                     'where_is_multi'     => [],
                     'multi_home_folder'  => false,
@@ -101,9 +93,9 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'time_format'      => 'H:i',
                                 'archive_mimes'    => [],
                                 'archivers'        => [
-                                  'enabled' => false,
-                                  'create'  => [],
-                                  'extract' => [],
+                                    'enabled' => false,
+                                    'create'  => [],
+                                    'extract' => [],
                                 ],
                                 'glide_url'         => '',
                                 'glide_key'         => '',
@@ -116,29 +108,29 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'upload_max_size'   => 0,
                                 'upload_max_conn'   => 3,
                                 'dropbox2_settings' => [
-                                    'aliasFormat'     => '%s@Dropbox',
-                                    'path'            => '/',
-                                    'separator'       => '/',
-                                    'acceptedName'    => '%s@Dropbox',
-                                    'rootCssClass'    => 'elfinder-navbar-root-dropbox',
-                                    'getThumbSize'    => 'medium',
-                                    'app_key'         => 'some_consumer',
-                                    'app_secret'      => 'con$umer',
-                                    'enabled'         => true,
+                                    'aliasFormat'  => '%s@Dropbox',
+                                    'path'         => '/',
+                                    'separator'    => '/',
+                                    'acceptedName' => '%s@Dropbox',
+                                    'rootCssClass' => 'elfinder-navbar-root-dropbox',
+                                    'getThumbSize' => 'medium',
+                                    'app_key'      => 'some_consumer',
+                                    'app_secret'   => 'con$umer',
+                                    'enabled'      => true,
                                 ],
                                 'box_settings' => [
-                                    'client_id'      => 'some_consumer',
-                                    'client_secret'  => 'con$umer',
-                                    'accessToken'    => 'token',
-                                    'root'           => 'Box.com',
-                                    'path'           => '/',
-                                    'separator'      => '/',
-                                    'tmbPath'        => '',
-                                    'tmbURL'         => '',
-                                    'tmpPath'        => '',
-                                    'acceptedName'   => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
-                                    'rootCssClass'   => 'elfinder-navbar-root-box',
-                                    'enabled'        => true,
+                                    'client_id'     => 'some_consumer',
+                                    'client_secret' => 'con$umer',
+                                    'accessToken'   => 'token',
+                                    'root'          => 'Box.com',
+                                    'path'          => '/',
+                                    'separator'     => '/',
+                                    'tmbPath'       => '',
+                                    'tmbURL'        => '',
+                                    'tmpPath'       => '',
+                                    'acceptedName'  => '#^[^/\?*:|"<>]*[^./\?*:|"<>]$#',
+                                    'rootCssClass'  => 'elfinder-navbar-root-box',
+                                    'enabled'       => true,
                                 ],
                                 'onedrive_settings' => [
                                     'client_id'         => 'some_consumer',
@@ -181,14 +173,24 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
             ],
         ];
 
-        $this->assertProcessedConfigurationEquals($expectedConfiguration, [__DIR__.'/../Fixtures/'.$path]);
+        $this->assertProcessedConfigurationEquals($expectedConfiguration, [__DIR__ . '/../Fixtures/' . $path]);
     }
 
     public static function getSupportsAllConfigFormatsData(): array
     {
         return [
             'yml' => ['config/config.yml'],
-            'php' => ['config/config.php'],            
+            'php' => ['config/config.php'],
         ];
+    }
+
+    protected function getContainerExtension(): ExtensionInterface
+    {
+        return new FMElfinderExtension();
+    }
+
+    protected function getConfiguration(): ConfigurationInterface
+    {
+        return new Configuration();
     }
 }

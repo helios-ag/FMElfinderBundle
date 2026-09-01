@@ -34,6 +34,8 @@ final class Configuration implements ConfigurationInterface
                             ->booleanNode('cors_support')->defaultFalse()->end()
                             ->scalarNode('editor')->defaultValue('simple')->end()
                             ->scalarNode('editor_template')->defaultNull()->end()
+                            ->booleanNode('multiple')->defaultFalse()->end()
+                            ->scalarNode('callback_function')->defaultNull()->end()
                             ->booleanNode('fullscreen')->defaultTrue()->end()
                             ->booleanNode('multi_home_folder')->defaultFalse()->end()
                             ->scalarNode('folder_separator')->defaultValue('')->end()

@@ -24,7 +24,7 @@ jobs:
           node-version: 24
 
       - name: 'Run JavaScript tests'
-        run: node --test tests/JavaScript/tinymceElfinder.test.js
+        run: node --test tests/JavaScript/*.test.js
 
   tests:
     name: "PHP ${{ matrix.php-version }}"

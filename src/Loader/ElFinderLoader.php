@@ -6,10 +6,13 @@ use Exception;
 use FM\ElfinderBundle\Bridge\ElFinderBridge;
 use FM\ElfinderBundle\Configuration\ElFinderConfigurationProviderInterface;
 use FM\ElfinderBundle\Connector\ElFinderConnector;
+use FM\ElfinderBundle\Exception\UploadConfigurationException;
+use FM\ElfinderBundle\Session\ElFinderSession;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ElFinderLoader implements ElFinderLoaderInterface
+class ElFinderLoader implements ElFinderLoaderInterface, ElFinderUploadLoaderInterface
 {
     protected string $instance;
 
@@ -38,6 +41,7 @@ class ElFinderLoader implements ElFinderLoaderInterface
 
     /**
      * Configure the Bridge to ElFinder.
+     *
      * @throws Exception
      */
     public function initBridge(string $instance, array $efParameters): void
@@ -60,11 +64,11 @@ class ElFinderLoader implements ElFinderLoaderInterface
             }
         }
 
-        $this->bridge = new ElFinderBridge($this->config);
-
         if ($this->session) {
-            $this->bridge->setSession($this->session);
+            $this->config['session'] = new ElFinderSession($this->session);
         }
+
+        $this->bridge = new ElFinderBridge($this->config);
     }
 
     /**
@@ -79,6 +83,70 @@ class ElFinderLoader implements ElFinderLoaderInterface
         }
 
         return $connector->run($request->query->all());
+    }
+
+    public function upload(UploadedFile $file): array
+    {
+        $readableVolumes = array_values(array_filter(
+            $this->bridge->getVolumes(),
+            static fn ($volume): bool => $volume->isReadable()
+        ));
+
+        if (1 !== count($readableVolumes)) {
+            throw new UploadConfigurationException('CKEditor uploads require exactly one readable volume.');
+        }
+
+        $volume    = $readableVolumes[0];
+        $startPath = $volume->getOption('startPath');
+        // defaultPath() only knows startPath on `init` requests (mount resolves
+        // it from $_GET/$_POST), so background uploads encode the option directly.
+        $target = true === is_string($startPath) && '' !== $startPath
+            ? $volume->getHash($startPath)
+            : $volume->defaultPath();
+        $mimeType            = $file->getClientMimeType();
+        $fileSize            = $file->getSize();
+        $arguments           = array_fill_keys(array_keys($this->bridge->commandArgsList('upload')), '');
+        $arguments['target'] = $target;
+        $arguments['FILES']  = [
+            'upload' => [
+                'name'     => [$file->getClientOriginalName()],
+                'type'     => [null !== $mimeType && '' !== $mimeType ? $mimeType : 'application/octet-stream'],
+                'tmp_name' => [$file->getPathname()],
+                'error'    => [$file->getError()],
+                'size'     => [false !== $fileSize ? $fileSize : 0],
+            ],
+        ];
+        $result = $this->bridge->exec('upload', $arguments);
+
+        if (true === isset($result['error'])) {
+            return $result;
+        }
+
+        $hash = $result['added'][0]['hash'] ?? null;
+
+        if (false === is_string($hash) || '' === $hash) {
+            if (true === isset($result['warning'])) {
+                return ['error' => $result['warning']];
+            }
+
+            return ['error' => ['Uploaded file metadata is missing.']];
+        }
+
+        $urlResult = $this->bridge->exec('url', ['target' => $hash]);
+
+        if (true === isset($urlResult['error'])) {
+            return $urlResult;
+        }
+
+        $url = $urlResult['url'] ?? null;
+
+        if (false === is_string($url) || '' === $url) {
+            return ['error' => ['Uploaded file URL is unavailable.']];
+        }
+
+        $result['uploadUrl'] = $url;
+
+        return $result;
     }
 
     public function setInstance(string $instance): void

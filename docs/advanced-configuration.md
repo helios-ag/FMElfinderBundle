@@ -22,6 +22,41 @@ Configuration class must implement  ElFinderConfigurationProviderInterface
 
 method getConfiguration($instance) should return array of parameters compatible with ElFinder bundle configuration
 
+## Selection callback
+
+Use the built-in `callback` editor when the parent window should receive selected files without maintaining a custom Twig template:
+
+```yaml
+fm_elfinder:
+    instances:
+        media_picker:
+            editor: callback
+            callback_function: App.media.onSelect
+            multiple: true
+            connector:
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: '%kernel.project_dir%/public/uploads'
+                        url: /uploads
+```
+
+The configured function is resolved as a dotted property path on `window.opener`; it is never evaluated as JavaScript source. It always receives an array, including when `multiple` is disabled:
+
+```js
+window.App = {
+    media: {
+        onSelect(files) {
+            files.forEach(({ url, name, mime, size, hash }) => {
+                console.log(url, name, mime, size, hash);
+            });
+        }
+    }
+};
+```
+
+`multiple` defaults to `false`. Existing editor modes keep their current callback contracts.
+
 ## Custom loader
 
 It is possible to override loader service with your own class:

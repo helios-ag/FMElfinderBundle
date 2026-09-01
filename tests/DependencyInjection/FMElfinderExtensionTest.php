@@ -9,13 +9,6 @@ use Symfony\Component\Yaml\Parser;
 
 class FMElfinderExtensionTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions(): array
-    {
-        return [
-            new FMElfinderExtension(),
-        ];
-    }
-
     public function testServices()
     {
         $this->load();
@@ -28,6 +21,12 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
             1,
             'assets'
         );
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'fm_elfinder.form.type',
+            0,
+            '%fm_elfinder%'
+        );
+        $this->assertArrayHasKey('instances', $this->container->getParameter('fm_elfinder'));
     }
 
     public function testTwigExtensionReceivesConfiguredAssetsPath()
@@ -48,24 +47,31 @@ class FMElfinderExtensionTest extends AbstractExtensionTestCase
         $this->assertTrue($this->container instanceof ContainerBuilder);
     }
 
+    protected function getContainerExtensions(): array
+    {
+        return [
+            new FMElfinderExtension(),
+        ];
+    }
+
     protected function getMinimalConfiguration(): array
     {
         $yaml = <<<'EOF'
-instances:
-    default:
-      locale: '%locale%'
-      editor: simple # other choices are tinymce or simple
-      fullscreen: true
-      connector:
-          debug: true # defaults to false
-          roots:       # at least one root must be defined
-              uploads:
-                  driver: LocalFileSystem
-                  path: uploads
-                  upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
-                  upload_deny: ['all']
-                  upload_max_size: 2M
-EOF;
+            instances:
+                default:
+                  locale: '%locale%'
+                  editor: simple # other choices are tinymce or simple
+                  fullscreen: true
+                  connector:
+                      debug: true # defaults to false
+                      roots:       # at least one root must be defined
+                          uploads:
+                              driver: LocalFileSystem
+                              path: uploads
+                              upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                              upload_deny: ['all']
+                              upload_max_size: 2M
+            EOF;
         $parser = new Parser();
 
         return $parser->parse($yaml);
