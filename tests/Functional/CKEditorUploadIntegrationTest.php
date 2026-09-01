@@ -67,6 +67,35 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
         self::assertSame($bytes, file_get_contents(CKEditorUploadTestKernel::uploadRoot() . '/articles/pixel.png'));
     }
 
+    public function testRepeatedUploadRespectsConfiguredOverwriteBehavior(): void
+    {
+        $bytes  = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', true);
+        $kernel = self::bootKernel(['environment' => 'ckeditor_upload', 'debug' => false]);
+
+        foreach (['first', 'second'] as $suffix) {
+            $source = CKEditorUploadTestKernel::testRoot() . '/pixel-' . $suffix . '.png';
+            file_put_contents($source, $bytes);
+            $file = new UploadedFile($source, 'pixel.png', 'image/png', UPLOAD_ERR_OK, true);
+
+            $response = $kernel->handle(Request::create(
+                '/efupload/ckeditor_upload',
+                'POST',
+                [],
+                [],
+                ['upload' => $file]
+            ));
+
+            self::assertSame(200, $response->getStatusCode());
+            self::assertSame(
+                'pixel.png',
+                json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR)['fileName']
+            );
+        }
+
+        self::assertFileExists(CKEditorUploadTestKernel::uploadRoot() . '/articles/pixel.png');
+        self::assertFileDoesNotExist(CKEditorUploadTestKernel::uploadRoot() . '/articles/pixel-1.png');
+    }
+
     public function testRejectsDisallowedMimeThroughElFinderRules(): void
     {
         $source = CKEditorUploadTestKernel::testRoot() . '/notes.txt';

@@ -103,20 +103,20 @@ class ElFinderLoader implements ElFinderLoaderInterface, ElFinderUploadLoaderInt
         $target = true === is_string($startPath) && '' !== $startPath
             ? $volume->getHash($startPath)
             : $volume->defaultPath();
-        $mimeType = $file->getClientMimeType();
-        $fileSize = $file->getSize();
-        $result   = $this->bridge->exec('upload', [
-            'target' => $target,
-            'FILES'  => [
-                'upload' => [
-                    'name'     => [$file->getClientOriginalName()],
-                    'type'     => [null !== $mimeType && '' !== $mimeType ? $mimeType : 'application/octet-stream'],
-                    'tmp_name' => [$file->getPathname()],
-                    'error'    => [$file->getError()],
-                    'size'     => [false !== $fileSize ? $fileSize : 0],
-                ],
+        $mimeType            = $file->getClientMimeType();
+        $fileSize            = $file->getSize();
+        $arguments           = array_fill_keys(array_keys($this->bridge->commandArgsList('upload')), '');
+        $arguments['target'] = $target;
+        $arguments['FILES']  = [
+            'upload' => [
+                'name'     => [$file->getClientOriginalName()],
+                'type'     => [null !== $mimeType && '' !== $mimeType ? $mimeType : 'application/octet-stream'],
+                'tmp_name' => [$file->getPathname()],
+                'error'    => [$file->getError()],
+                'size'     => [false !== $fileSize ? $fileSize : 0],
             ],
-        ]);
+        ];
+        $result = $this->bridge->exec('upload', $arguments);
 
         if (true === isset($result['error'])) {
             return $result;

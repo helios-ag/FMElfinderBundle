@@ -144,7 +144,11 @@ class ElFinderController
         $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
         $eventDispatcher->dispatch($postExecutionEvent);
 
-        return $this->ckeditorResponse($postExecutionEvent->getResult(), $file);
+        return $this->ckeditorResponse(
+            $postExecutionEvent->getResult(),
+            $file,
+            'ckeditor5' === $request->query->get('response_format')
+        );
     }
 
     public function mainJS(): Response
@@ -183,7 +187,7 @@ class ElFinderController
         }
     }
 
-    private function ckeditorResponse(array $result, UploadedFile $file): JsonResponse
+    private function ckeditorResponse(array $result, UploadedFile $file, bool $ckeditor5Response = false): JsonResponse
     {
         if (true === isset($result['error'])) {
             return $this->ckeditorError($this->flattenElFinderMessage($result['error']));
@@ -203,7 +207,13 @@ class ElFinderController
         ];
 
         if (true === isset($result['warning'])) {
-            $payload['error'] = ['message' => $this->flattenElFinderMessage($result['warning'])];
+            $warning = ['message' => $this->flattenElFinderMessage($result['warning'])];
+
+            if (true === $ckeditor5Response) {
+                $payload['warning'] = $warning;
+            } else {
+                $payload['error'] = $warning;
+            }
         }
 
         return new JsonResponse($payload);

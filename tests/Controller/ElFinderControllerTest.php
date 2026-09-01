@@ -353,6 +353,35 @@ class ElFinderControllerTest extends TestCase
         ], $this->decodeResponse($response));
     }
 
+    public function testUploadReturnsSuccessfulWarningCompatibleWithCKEditor5SimpleUpload(): void
+    {
+        $response = $this->uploadWithLoaderResult([
+            'added'     => [['name' => 'photo-1.png', 'hash' => 'l1_photo']],
+            'uploadUrl' => '/uploads/photo-1.png',
+            'warning'   => ['The file was renamed.'],
+        ], ['response_format' => 'ckeditor5']);
+
+        self::assertSame([
+            'uploaded' => 1,
+            'fileName' => 'photo-1.png',
+            'url'      => '/uploads/photo-1.png',
+            'warning'  => ['message' => 'The file was renamed.'],
+        ], $this->decodeResponse($response));
+    }
+
+    public function testUploadReturnsFailureForCKEditor5SimpleUpload(): void
+    {
+        $response = $this->uploadWithLoaderResult(
+            ['error' => ['File type is not allowed.']],
+            ['response_format' => 'ckeditor5']
+        );
+
+        self::assertSame([
+            'uploaded' => 0,
+            'error'    => ['message' => 'File type is not allowed.'],
+        ], $this->decodeResponse($response));
+    }
+
     public function testUploadReturnsConfigurationFailureWithHttp400(): void
     {
         $file   = $this->createTestUpload();
@@ -616,7 +645,7 @@ class ElFinderControllerTest extends TestCase
         ];
     }
 
-    private function uploadWithLoaderResult(array $result): JsonResponse
+    private function uploadWithLoaderResult(array $result, array $query = []): JsonResponse
     {
         $file   = $this->createTestUpload();
         $loader = $this->createStubForIntersectionOfInterfaces([
@@ -629,13 +658,15 @@ class ElFinderControllerTest extends TestCase
             $this->editorParameters('ckeditor'),
             $loader
         );
+        $request = Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]);
+        $request->query->add($query);
 
         try {
             return $controller->upload(
                 $this->createStub(SessionInterface::class),
                 $this->createStub(HttpKernelInterface::class),
                 new EventDispatcher(),
-                Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]),
+                $request,
                 'default',
                 ''
             );

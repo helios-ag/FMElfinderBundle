@@ -61,13 +61,14 @@ final class CKEditorUploadTestKernel extends Kernel
                     'connector' => [
                         'roots' => [
                             'uploads' => [
-                                'driver'       => 'LocalFileSystem',
-                                'path'         => self::uploadRoot(),
-                                'url'          => '/media',
-                                'start_path'   => self::uploadRoot() . '/articles',
-                                'upload_allow' => ['image/png'],
-                                'upload_deny'  => ['all'],
-                                'upload_order' => ['deny', 'allow'],
+                                'driver'           => 'LocalFileSystem',
+                                'path'             => self::uploadRoot(),
+                                'url'              => '/media',
+                                'start_path'       => self::uploadRoot() . '/articles',
+                                'upload_allow'     => ['image/png'],
+                                'upload_deny'      => ['all'],
+                                'upload_order'     => ['deny', 'allow'],
+                                'upload_overwrite' => true,
                             ],
                         ],
                     ],

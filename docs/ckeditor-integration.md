@@ -101,12 +101,12 @@ CKEditorElfinder({
 
 `withCredentials` defaults to `false`. Set it only when cross-origin cookie credentials are required. Header values are copied to every upload request.
 
-If your CKEditor 5 build already includes the official Simple Upload Adapter plugin, the same endpoint can be used without the bundle JavaScript adapter:
+If your CKEditor 5 build already includes the official Simple Upload Adapter plugin, the endpoint can be used without the bundle JavaScript adapter. Add `response_format=ckeditor5` so a successful elFinder warning is not exposed as an `error`, which the official adapter treats as a failed upload:
 
 ```js
 ClassicEditor.create(document.querySelector('#editor'), {
     simpleUpload: {
-        uploadUrl: '/efupload/ckeditor_upload',
+        uploadUrl: '/efupload/ckeditor_upload?response_format=ckeditor5',
         headers: { 'X-CSRF-TOKEN': 'token' },
         withCredentials: false
     }
