@@ -7,7 +7,7 @@ FMElfinderBundle
 
 | Tests | Coverage| License | Version |
 |-------------|-----------------|-----------------|----------------|
-|[![Tests - Linux](https://github.com/helios-ag/FMElfinderBundle/actions/workflows/test.yaml/badge.svg)](https://github.com/helios-ag/FMElfinderBundle/actions/workflows/test.yaml)|[![codecov](https://codecov.io/gh/helios-ag/FMElfinderBundle/graph/badge.svg?token=JcZh9UHGKs)](https://codecov.io/gh/helios-ag/FMElfinderBundle)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
+|[![Tests - Linux](https://github.com/helios-ag/FMElfinderBundle/actions/workflows/test.yaml/badge.svg)](https://github.com/helios-ag/FMElfinderBundle/actions/workflows/test.yaml)|[![Codacy Coverage](https://app.codacy.com/project/badge/Coverage/a94fdc93da334a4a84c04db3bebe8a03?branch=main)](https://app.codacy.com/gh/helios-ag/FMElfinderBundle/dashboard)|[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)|[![Latest Stable Version](https://poser.pugx.org/helios-ag/fm-elfinder-bundle/v/stable.svg)](https://packagist.org/packages/helios-ag/fm-elfinder-bundle)|
 
 
 | Downloads |

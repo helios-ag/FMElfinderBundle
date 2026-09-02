@@ -40,7 +40,7 @@ jobs:
       - name: 'Install PHP with extensions'
         uses: shivammathur/setup-php@2.37.1
         with:
-          coverage: xdebug
+          coverage: ${{ matrix.php-version == '8.5' && 'xdebug' || 'none' }}
           php-version: ${{ matrix.php-version }}
           tools: composer:v2
           extensions: mbstring, intl
@@ -52,11 +52,22 @@ jobs:
           composer global require --no-progress --no-scripts --no-plugins symfony/flex
           composer update --no-interaction --prefer-dist --optimize-autoloader --prefer-stable
           vendor/bin/simple-phpunit install
-      - name: 'Run tests'
+
+      - name: 'Run tests without coverage'
+        if: matrix.php-version != '8.5'
+        run: vendor/bin/phpunit --no-coverage
+
+      - name: 'Run tests with coverage'
+        if: matrix.php-version == '8.5'
         run: XDEBUG_MODE=coverage vendor/bin/phpunit --coverage-clover ./coverage.xml
-      - name: codecov
-        uses: codecov/codecov-action@v7.0.0
+
+      - name: 'Upload coverage to Codacy'
+        if: >-
+          matrix.php-version == '8.5' &&
+          github.actor != 'dependabot[bot]' &&
+          (github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository)
+        uses: codacy/codacy-coverage-reporter-action@v1.3.0
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
-          verbose: true # optional (default = false)
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: ./coverage.xml
