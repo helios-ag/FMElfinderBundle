@@ -26,6 +26,7 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use TypeError;
 
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
@@ -57,9 +58,11 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         $options['plugin']      = $parameters['connector']['plugins'];
         $options['roots']       = [];
 
+        $homeFolder = (string) $request->attributes->get('homeFolder');
+        $this->assertValidHomeFolder($homeFolder);
+
         foreach ($parameters['connector']['roots'] as $parameter) {
             $path              = $parameter['path'];
-            $homeFolder        = $request->attributes->get('homeFolder');
             $pathAndHomeFolder = $homeFolder ? sprintf('%s/%s', $path, $homeFolder) : $path;
 
             if ($parameter['flysystem']['enabled']) {
@@ -180,6 +183,23 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
         }
 
         return [];
+    }
+
+    private function assertValidHomeFolder(string $homeFolder): void
+    {
+        if ('' === $homeFolder) {
+            return;
+        }
+
+        if (str_contains($homeFolder, "\0") || str_contains($homeFolder, '\\')) {
+            throw new BadRequestHttpException('Invalid home folder path.');
+        }
+
+        foreach (explode('/', $homeFolder) as $segment) {
+            if ('' === $segment || '.' === $segment || '..' === $segment) {
+                throw new BadRequestHttpException('Invalid home folder path.');
+            }
+        }
     }
 
     private function getURL(array $parameter, Request $request, string $homeFolder, string $path): string

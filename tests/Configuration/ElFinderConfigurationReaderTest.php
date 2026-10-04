@@ -316,6 +316,68 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         return $attributesObject;
     }
 
+    /**
+     * @dataProvider invalidHomeFolderProvider
+     */
+    public function testRejectsInvalidHomeFolder(string $homeFolder): void
+    {
+        $reader = $this->getConfigurationReader(new \Symfony\Component\HttpFoundation\ParameterBag(['homeFolder' => $homeFolder]));
+
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\BadRequestHttpException::class);
+        $this->expectExceptionMessage('Invalid home folder path.');
+
+        $reader->getConfiguration('with_path_with_url');
+    }
+
+    public static function invalidHomeFolderProvider(): array
+    {
+        return [
+            'parent' => ['..'],
+            'nested parent' => ['articles/../private'],
+            'multiple parents' => ['../../private'],
+            'current directory' => ['.'],
+            'nested current directory' => ['articles/./private'],
+            'backslash' => ['..\\private'],
+            'absolute path' => ['/private'],
+            'empty segment' => ['articles//private'],
+            'trailing slash' => ['articles/'],
+            'NUL byte' => ["articles\0private"],
+        ];
+    }
+
+    public function testRejectsEncodedParentFromConnectorRoute(): void
+    {
+        $loader = new \Symfony\Component\Routing\Loader\YamlFileLoader(
+            new \Symfony\Component\Config\FileLocator(__DIR__.'/../../src/Resources/config')
+        );
+        $matcher = new \Symfony\Component\Routing\Matcher\UrlMatcher(
+            $loader->load('routing.yaml'),
+            new \Symfony\Component\Routing\RequestContext()
+        );
+        $attributes = $matcher->match('/efconnect/default/%2e%2e');
+        self::assertSame('..', $attributes['homeFolder']);
+        $reader = $this->getConfigurationReader(new \Symfony\Component\HttpFoundation\ParameterBag($attributes));
+
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\BadRequestHttpException::class);
+        $reader->getConfiguration('with_path_with_url');
+    }
+
+    /**
+     * @dataProvider validHomeFolderProvider
+     */
+    public function testPreservesValidHomeFolder(string $homeFolder): void
+    {
+        $reader = $this->getConfigurationReader(new \Symfony\Component\HttpFoundation\ParameterBag(['homeFolder' => $homeFolder]));
+        $configuration = $reader->getConfiguration('with_path_with_url');
+
+        self::assertSame('/home'.('' === $homeFolder ? '' : '/'.$homeFolder), $configuration['roots'][0]['path']);
+    }
+
+    public static function validHomeFolderProvider(): array
+    {
+        return [[''], ['bob'], ['articles/drafts'], ['новости/Article drafts/v1.2'], ['.hidden'], ['a..b']];
+    }
+
     public function testConfiguration(): void
     {
         $reader        = $this->getConfigurationReader($this->getDefaultAttributesObject());
