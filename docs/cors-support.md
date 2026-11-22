@@ -29,9 +29,11 @@ nelmio_cors:
         hosts: []
     paths:
         '^/efconnect':
-            allow_origin: ['*']
-            allow_headers: ['X-Custom-Auth', 'Content-Type', 'X-Requested-With']
-            allow_methods: ['POST', 'GET', 'PATCH', 'PUT', 'DELETE']
+            allow_origin: ['https://editor.example.com']
+            allow_headers: ['X-Custom-Auth', 'Content-Type', 'X-Requested-With', 'X-elFinder-CSRF', 'X-elFinderReqId']
+            allow_methods: ['POST', 'GET', 'OPTIONS']
             max_age: 3600
             allow_credentials: true
 ```
+
+List only trusted editor origins. Custom elFinder clients must initialize the connector with `open` and `init=1`, then send the returned `csrf` value in `X-elFinder-CSRF` on POST requests that change files or cancel operations.

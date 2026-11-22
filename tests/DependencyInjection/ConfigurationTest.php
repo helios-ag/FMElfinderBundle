@@ -18,6 +18,16 @@ class ConfigurationTest extends TestCase
         self::assertNull($processed['instances']['default']['callback_function']);
     }
 
+    public function testDefaultUploadPolicyAllowsRasterImagesWithFiniteSize(): void
+    {
+        $root = $this->processInstance([])['instances']['default']['connector']['roots']['uploads'];
+
+        self::assertContains('image/png', $root['upload_allow']);
+        self::assertNotContains('image', $root['upload_allow']);
+        self::assertNotContains('image/svg+xml', $root['upload_allow']);
+        self::assertSame('20M', $root['upload_max_size']);
+    }
+
     public function testSelectionOptionsAcceptExplicitValues(): void
     {
         $processed = $this->processInstance([

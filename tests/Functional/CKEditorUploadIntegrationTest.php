@@ -50,12 +50,16 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
         $file   = new UploadedFile($source, 'pixel.png', 'image/png', UPLOAD_ERR_OK, true);
         $kernel = self::bootKernel(['environment' => 'ckeditor_upload', 'debug' => false]);
 
+        $rejected = $kernel->handle(Request::create('/efupload/ckeditor_upload', 'POST', [], [], ['upload' => $file]));
+        self::assertSame(403, $rejected->getStatusCode());
+
         $response = $kernel->handle(Request::create(
             '/efupload/ckeditor_upload',
             'POST',
             [],
             [],
-            ['upload' => $file]
+            ['upload' => $file],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
         ));
 
         self::assertSame(200, $response->getStatusCode());
@@ -82,7 +86,8 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
                 'POST',
                 [],
                 [],
-                ['upload' => $file]
+                ['upload' => $file],
+                ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
             ));
 
             self::assertSame(200, $response->getStatusCode());
@@ -108,7 +113,8 @@ final class CKEditorUploadIntegrationTest extends KernelTestCase
             'POST',
             [],
             [],
-            ['upload' => $file]
+            ['upload' => $file],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
         ));
         $payload = json_decode((string) $response->getContent(), true, 512, JSON_THROW_ON_ERROR);
 

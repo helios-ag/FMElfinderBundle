@@ -69,6 +69,61 @@ class ElFinderConnectorTest extends \PHPUnit\Framework\TestCase
         $this->assertIsArray($result);
     }
 
+    public function testExternalCommandsAreRejectedBeforeDispatch(): void
+    {
+        foreach (['callback', 'editor'] as $command) {
+            $bridge = $this->createMock(ElFinderBridge::class);
+            $bridge->method('loaded')->willReturn(true);
+            $bridge->method('commandExists')->willReturn(true);
+            $bridge->method('commandArgsList')->willReturn([]);
+            $bridge->expects(self::never())->method('exec');
+
+            $result = (new ElFinderConnector($bridge))->run(['cmd' => $command]);
+
+            self::assertArrayHasKey('error', $result);
+        }
+    }
+
+    public function testMutationRequiresCsrfValidationBeforeDispatch(): void
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = [];
+        $bridge = $this->createMock(ElFinderBridge::class);
+        $bridge->method('loaded')->willReturn(true);
+        $bridge->method('commandExists')->willReturn(true);
+        $bridge->expects(self::never())->method('exec');
+        $session = $this->createStub(\elFinderSessionInterface::class);
+        $session->method('get')->willReturn([]);
+        $bridge->method('getSession')->willReturn($session);
+
+        $result = (new ElFinderConnector($bridge))->run(['cmd' => 'mkdir']);
+
+        self::assertTrue($result['csrfReload']);
+    }
+
+    #[\PHPUnit\Framework\Attributes\BackupGlobals(true)]
+    public function testInitIssuesCsrfTokenAndValidPostDispatches(): void
+    {
+        $token = str_repeat('a', 64);
+        $session = $this->createStub(\elFinderSessionInterface::class);
+        $session->method('get')->willReturn(['token' => $token, 'expires' => time() + 300]);
+        $bridge = $this->createMock(ElFinderBridge::class);
+        $bridge->method('getSession')->willReturn($session);
+        $bridge->method('loaded')->willReturn(true);
+        $bridge->method('commandExists')->willReturn(true);
+        $bridge->method('commandArgsList')->willReturn([]);
+        $bridge->expects(self::exactly(2))->method('exec')->willReturn(['ok' => true]);
+
+        self::assertSame($token, (new ElFinderConnector($bridge))->run(['cmd' => 'open', 'init' => '1'])['csrf']);
+
+        $_SERVER['HTTP_X_ELFINDER_CSRF'] = $token;
+        self::assertTrue((new ElFinderConnector($bridge))->run(['cmd' => 'mkdir'])['csrfReload']);
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST = [];
+        self::assertSame(['ok' => true], (new ElFinderConnector($bridge))->run(['cmd' => 'mkdir']));
+    }
+
     public function testRunRejectsUnknownCommand(): void
     {
         $connector = new ElFinderConnector(new ElFinderBridge([

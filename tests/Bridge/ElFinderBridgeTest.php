@@ -32,6 +32,63 @@ class ElFinderBridgeTest extends \PHPUnit\Framework\TestCase
         $this->assertNotEmpty($bridge->getVolumes());
     }
 
+    #[\PHPUnit\Framework\Attributes\RunInSeparateProcess]
+    public function testCancellationFlagsAreIsolatedBySession(): void
+    {
+        $first = $this->createStub(SessionInterface::class);
+        $first->method('getId')->willReturn('first-session');
+        $second = $this->createStub(SessionInterface::class);
+        $second->method('getId')->willReturn('second-session');
+        $options = ['roots' => [], 'connectionFlagsPath' => $this->volumePath];
+        $firstBridge = new ElFinderBridge($options + ['session' => new \FM\ElfinderBundle\Session\ElFinderSession($first)]);
+        $secondBridge = new ElFinderBridge($options + ['session' => new \FM\ElfinderBundle\Session\ElFinderSession($second)]);
+        $abort = new \ReflectionMethod(ElFinderBridge::class, 'abort');
+        $originalMethod = $_SERVER['REQUEST_METHOD'] ?? null;
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+        try {
+            $abort->invoke($firstBridge, ['makeFile' => '1a']);
+            $firstFlags = glob($this->volumePath . '/elfreq*');
+            self::assertCount(1, $firstFlags);
+
+            $abort->invoke($secondBridge, ['makeFile' => '1a']);
+            self::assertCount(2, glob($this->volumePath . '/elfreq*'));
+
+            $abort->invoke($secondBridge, ['id' => '1a']);
+            self::assertSame($firstFlags, glob($this->volumePath . '/elfreq*'));
+
+            $abort->invoke($firstBridge, ['id' => '1a']);
+            self::assertSame([], glob($this->volumePath . '/elfreq*'));
+        } finally {
+            if (null === $originalMethod) {
+                unset($_SERVER['REQUEST_METHOD']);
+            } else {
+                $_SERVER['REQUEST_METHOD'] = $originalMethod;
+            }
+        }
+    }
+
+    public function testThumbnailDispatchSkipsImagesAbovePixelLimit(): void
+    {
+        $volume = $this->createMock(elFinderVolumeDriver::class);
+        $volume->method('dimensions')->willReturnMap([
+            ['l1_small', '4000x6000'],
+            ['l1_large', '4001x6000'],
+        ]);
+        $volume->expects(self::once())->method('tmb')->with('l1_small')->willReturn('small.png');
+        $bridge = $this->getMockBuilder(ElFinderBridge::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['volume'])
+            ->getMock();
+        $bridge->expects(self::exactly(3))->method('volume')->willReturn($volume);
+
+        $method = new \ReflectionMethod(ElFinderBridge::class, 'tmb');
+        self::assertSame(
+            ['images' => ['l1_small' => 'small.png']],
+            $method->invoke($bridge, ['targets' => ['l1_small', 'l1_large']])
+        );
+    }
+
     public function testMountsPreInstantiatedServiceVolume(): void
     {
         $volume = $this->createStub(elFinderVolumeDriver::class);

@@ -75,7 +75,15 @@ fm_elfinder:
                         upload_allow:
 
                             # Default:
-                            - image
+                            - image/jpeg
+                            - image/png
+                            - image/gif
+                            - image/webp
+                            - image/avif
+                            - image/bmp
+                            - image/tiff
+                            - image/x-icon
+                            - image/vnd.microsoft.icon
                         upload_deny:
 
                             # Default:
@@ -85,7 +93,7 @@ fm_elfinder:
                             # Defaults:
                             - deny
                             - allow
-                        upload_max_size:      0
+                        upload_max_size:      20M
                         upload_max_conn:      3
                         defaults:
 

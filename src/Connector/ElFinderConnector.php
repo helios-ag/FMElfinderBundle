@@ -49,8 +49,21 @@ class ElFinderConnector extends \elFinderConnector
         }
         // telepat_mode: off
 
-        if (!$this->elFinder->commandExists($cmd)) {
+        if (in_array($cmd, ['callback', 'editor'], true)) {
+            return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_PERM_DENIED)]);
+        }
+
+        if (!is_string($cmd) || !$this->elFinder->commandExists($cmd)) {
             return $this->output(['error' => $this->elFinder->error(elFinder::ERROR_UNKNOWN_CMD)]);
+        }
+
+        if ('abort' === $cmd || $this->csrfProtectedCommand($cmd)) {
+            if (!$isPost || !$this->refreshCsrfTokenTtl()) {
+                return $this->output([
+                    'error' => $this->elFinder->error(elFinder::ERROR_PERM_DENIED, 'Invalid request. Please reload.'),
+                    'csrfReload' => true,
+                ]);
+            }
         }
 
         // collect required arguments to exec command
@@ -71,7 +84,18 @@ class ElFinderConnector extends \elFinderConnector
 
         $args['debug'] = isset($src['debug']) && $src['debug'];
 
-        return $this->output($this->elFinder->exec($cmd, $this->input_filter($args)));
+        $token = $this->shouldIssueCsrfToken($cmd, $src) ? $this->issueCsrfToken() : null;
+        if (null === $token && $this->shouldRefreshCsrfToken($cmd, $src)) {
+            $this->refreshCsrfTokenTtl();
+        }
+
+        $result = $this->elFinder->exec($cmd, $this->input_filter($args));
+
+        if (null !== $token && is_array($result) && !isset($result['error'])) {
+            $result[self::$csrfResponseKey] = $token;
+        }
+
+        return $this->output($result);
     }
 
     protected function output(array $data)

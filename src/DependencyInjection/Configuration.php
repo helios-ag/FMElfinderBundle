@@ -121,7 +121,7 @@ final class Configuration implements ConfigurationInterface
                                                         })
                                                     ->end()
                                                     ->prototype('scalar')->end()
-                                                    ->defaultValue(['image'])
+                                                    ->defaultValue(['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif', 'image/bmp', 'image/tiff', 'image/x-icon', 'image/vnd.microsoft.icon'])
                                                 ->end() // upload_allow
                                                 ->arrayNode('upload_deny')
                                                     ->beforeNormalization()
@@ -147,7 +147,7 @@ final class Configuration implements ConfigurationInterface
                                                     ->prototype('scalar')->end()
                                                     ->defaultValue(['deny', 'allow'])
                                                 ->end() // upload_order
-                                                ->scalarNode('upload_max_size')->defaultValue(0)->end()
+                                                ->scalarNode('upload_max_size')->defaultValue('20M')->end()
                                                 ->integerNode('upload_max_conn')->defaultValue(3)->end()
                                                 ->arrayNode('defaults')
                                                     ->useAttributeAsKey('defaults')

@@ -39,7 +39,7 @@
                 xhr.responseType = 'json';
                 xhr.withCredentials = adapter.options.withCredentials === true;
 
-                Object.entries(adapter.options.headers || {}).forEach(function ([name, value]) {
+                Object.entries(Object.assign({ 'X-Requested-With': 'XMLHttpRequest' }, adapter.options.headers)).forEach(function ([name, value]) {
                     xhr.setRequestHeader(name, value);
                 });
 

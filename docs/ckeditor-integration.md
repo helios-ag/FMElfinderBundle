@@ -107,7 +107,7 @@ If your CKEditor 5 build already includes the official Simple Upload Adapter plu
 ClassicEditor.create(document.querySelector('#editor'), {
     simpleUpload: {
         uploadUrl: '/efupload/ckeditor_upload?response_format=ckeditor5',
-        headers: { 'X-CSRF-TOKEN': 'token' },
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': 'token' },
         withCredentials: false
     }
 });
@@ -117,9 +117,10 @@ CKEditor sends one request per pasted or dropped image; several images are there
 
 ## Security and troubleshooting
 
-The upload route deliberately delegates file type, name, size, and write-permission checks to the configured elFinder volume. Protect `/efupload` with your Symfony firewall as needed. The bundle does not create or validate an application-specific CSRF token automatically; add one through CKEditor headers and validate it in your application when your security model requires it.
+The upload route deliberately delegates file type, name, size, and write-permission checks to the configured elFinder volume. Protect `/efupload` with your Symfony firewall. The endpoint requires `X-Requested-With: XMLHttpRequest`. The bundle adapter adds it automatically. Configure it explicitly in Simple Upload or other custom clients, and allow it in CORS only for trusted origins. Application-specific tokens must be validated by the host application.
 
 - HTTP 400 means the request or upload instance cannot be used, for example a missing/invalid `upload` field, a custom loader without upload support, or zero/multiple readable roots.
+- HTTP 403 means the required `X-Requested-With` header is missing or invalid.
 - HTTP 404 means the requested instance does not exist.
 - HTTP 200 with `uploaded: 0` means elFinder processed the request but rejected the file according to MIME, name, size, access, or filesystem rules.
 - A successful response must contain a non-empty public URL. Configure the root `url` option when files must be inserted into editor content.

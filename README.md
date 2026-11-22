@@ -33,6 +33,7 @@ Recommended bundles to use with:
   - [Step 2: Enable the bundle](#step-2-enable-the-bundle-optional)
   - [Step 3: Import FMElfinderBundle routing file](#step-3-import-fmelfinderbundle-routing-file)
   - [Step 4: Securing paths](#step-4-configure-your-applications-securityyaml)
+  - [Connector and upload security](#connector-and-upload-security)
 - [Basic configuration](#basic-configuration)
   - [Add configuration options to your config.yaml](#add-configuration-options-to-your-configyaml)
   - [Use multiple upload folder by instance](#use-multiple-upload-folder-by-instance)
@@ -82,6 +83,9 @@ Prepare the elFinder assets inside the bundle, then publish them with Symfony:
 bin/console elfinder:install
 bin/console assets:install public
 ```
+
+The bundle requires elFinder 2.1.70 or newer within the 2.1 series. After
+upgrading, rerun both commands to publish the client that supports CSRF tokens.
 
 The order is important: `elfinder:install` assembles the bundle's upstream and
 integration assets, then `assets:install` copies or symlinks them into
@@ -148,8 +152,34 @@ security:
     # ...
     access_control:
         - { path: ^/efconnect, roles: ROLE_USER }
+        - { path: ^/efupload, roles: ROLE_USER }
         - { path: ^/elfinder, roles: ROLE_USER }
 ```
+
+### Connector and upload security
+
+- **elFinder connector.** Commands that modify files or cancel operations require
+  POST and a valid `X-elFinder-CSRF` header. The bundled client handles this
+  automatically. Custom clients should read the `csrf` value returned by
+  `cmd=open` with `init=1` and send it in the header. If the connector returns
+  HTTP 403 with `csrfReload: true`, initialize it again to obtain a valid token.
+  Cancellation is scoped to the session that started the operation.
+- **CKEditor uploads.** The `/efupload` endpoint requires
+  `X-Requested-With: XMLHttpRequest`. The bundled adapter adds it automatically.
+  Set it explicitly when using CKEditor 5 Simple Upload Adapter or a custom
+  client. See the [CKEditor integration guide](/docs/ckeditor-integration.md).
+- **Cross-origin requests.** Allow only trusted editor origins and the headers
+  your client uses. See the [CORS configuration guide](/docs/cors-support.md).
+
+By default, uploads accept common raster image formats up to 20 MiB per file.
+Configure `upload_allow` and `upload_max_size` on each root to override these
+defaults. PHP and web server request limits also apply. Only allow SVG when the
+application controls how uploaded SVGs are served.
+
+The connector does not fetch files from remote URLs. Upload the file contents
+directly. Thumbnail creation and resizing require the volume to report image
+dimensions and are limited to 24,000,000 pixels per input image. Resize
+requests have the same limit on the requested output dimensions.
 
 ## Basic configuration
 
@@ -186,7 +216,7 @@ fm_elfinder:
 * **default** - instance of elfinder, can be used to define multiple configurations of ElFinder, allows simultaneous configuration for different types of WYSIWYG editors in your project
 * **assets_path** - public URL prefix for the installed elFinder assets. The `/` value matches the default `public/bundles/fmelfinder` destination created by Symfony's `assets:install`.
 * **path** - filesystem path to the root directory. For a local public upload directory, use `%kernel.project_dir%/public/uploads` and make sure it has the required read/write and owner permissions.
-* **url** - public URL prefix used when displaying files. For the local root above this is `/uploads`. It can also be an absolute URL and may contain a `{homeFolder}` placeholder. If omitted, the bundle derives the URL from `path`, so setting it explicitly is recommended when `path` is an absolute filesystem path.
+* **url** - public URL prefix used when displaying files. For the local root above this is `/uploads`. It can also be an absolute URL and may contain a `{homeFolder}` placeholder. Set it explicitly when `path` is an absolute filesystem path and the integration requires a public URL (for example, CKEditor uploads). With a relative `path`, the bundle can still derive the URL when this option is omitted.
 * **driver** - can be LocalFileSystem, FTP or MySQL, Flysystem, S3 and etc, check class FM\ElfinderBundle\DependencyInjection\Configuration
 * **locale** - locale determines, which language, ElFinder will use, to translate user interface, default is current request locale
 * **cors_support** - allows cross domain responses handling (default false)
