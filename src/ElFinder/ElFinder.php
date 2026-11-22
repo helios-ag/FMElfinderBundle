@@ -70,7 +70,7 @@ class ElFinder extends BaseElFinder
         }
         $id = $args[$key] ?? null;
 
-        if ('' === $sessionId || !is_string($id) || 1 !== preg_match('/^[a-f0-9]+$/iD', $id)) {
+        if ('' === $sessionId || false === is_string($id) || 1 !== preg_match('/^[a-f0-9]+$/iD', $id)) {
             return;
         }
 
