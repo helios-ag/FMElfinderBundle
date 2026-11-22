@@ -135,7 +135,7 @@ class ElFinderController
             return $this->ckeditorError('Instance not found.', 404);
         }
 
-        if (!$request->isXmlHttpRequest()) {
+        if (false === $request->isXmlHttpRequest()) {
             return $this->ckeditorError('The X-Requested-With header is required.', 403);
         }
 

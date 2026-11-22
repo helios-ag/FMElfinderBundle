@@ -12,10 +12,10 @@ final class HomeFolderPath
             return;
         }
 
-        if (str_contains($homeFolder, "\0") ||
-            str_contains($homeFolder, '\\') ||
-            str_starts_with($homeFolder, '/') ||
-            str_ends_with($homeFolder, '/')
+        if (true === str_contains($homeFolder, "\0") ||
+            true === str_contains($homeFolder, '\\') ||
+            true === str_starts_with($homeFolder, '/') ||
+            true === str_ends_with($homeFolder, '/')
         ) {
             throw new BadRequestHttpException('Invalid home folder path.');
         }

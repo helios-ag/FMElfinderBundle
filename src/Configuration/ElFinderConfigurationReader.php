@@ -56,8 +56,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $homeFolder        = (string) $request->attributes->get('homeFolder');
             $pathAndHomeFolder = $homeFolder ? sprintf('%s/%s', $path, $homeFolder) : $path;
 
-            if ($homeFolder && ($parameters['multi_home_folder'] ?? false)
-                && isset($parameters['where_is_multi']['roots'])
+            if (true === (bool) $homeFolder && true === ($parameters['multi_home_folder'] ?? false)
+                && true === isset($parameters['where_is_multi']['roots'])
                 && (string) $parameters['where_is_multi']['roots'] === (string) count($options['roots'])
             ) {
                 $separator    = $parameters['folder_separator'];
@@ -65,7 +65,7 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 $expandedPath = str_replace($separator, '/', $pathAndHomeFolder);
 
                 // Check the same expansion the loader applies, including the root boundary.
-                if (!str_starts_with($expandedPath, $prefix) || $expandedPath === $prefix) {
+                if (false === str_starts_with($expandedPath, $prefix) || $expandedPath === $prefix) {
                     throw new BadRequestHttpException('Invalid home folder path.');
                 }
 
@@ -150,8 +150,8 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 )));
             }
 
-            if (in_array('put', (array) $driverOptions['disabled'], true)
-                && !in_array('edit', $driverOptions['disabled'], true)
+            if (true === in_array('put', (array) $driverOptions['disabled'], true)
+                && false === in_array('edit', $driverOptions['disabled'], true)
             ) {
                 $driverOptions['disabled'][] = 'edit';
             }

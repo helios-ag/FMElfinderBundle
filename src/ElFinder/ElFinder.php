@@ -21,7 +21,7 @@ class ElFinder extends BaseElFinder
 
     protected function tmb($args)
     {
-        $targets = is_array($args['targets']) ? $args['targets'] : [$args['targets']];
+        $targets = true === is_array($args['targets']) ? $args['targets'] : [$args['targets']];
         $args['targets'] = array_filter($targets, $this->isImageWithinPixelLimit(...));
 
         return parent::tmb($args);
@@ -29,9 +29,9 @@ class ElFinder extends BaseElFinder
 
     protected function resize($args)
     {
-        if (!$this->isImageWithinPixelLimit($args['target'])
+        if (false === $this->isImageWithinPixelLimit($args['target'])
             || ((int) $args['width'] > 0 && (int) $args['height'] > 0
-                && !self::isPixelCountAllowed((int) $args['width'], (int) $args['height']))
+                && false === self::isPixelCountAllowed((int) $args['width'], (int) $args['height']))
         ) {
             return ['error' => $this->error(self::ERROR_RESIZE, self::ERROR_RESIZESIZE)];
         }
