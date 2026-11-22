@@ -59,7 +59,11 @@ class ElFinderPreExecutionEvent extends Event
 
         $command = $parameters['cmd'] ?? '';
 
-        return true === is_string($command) ? $command : '';
+        if (false === is_string($command)) {
+            return '';
+        }
+
+        return $command;
     }
 
     public function getRequest(): Request

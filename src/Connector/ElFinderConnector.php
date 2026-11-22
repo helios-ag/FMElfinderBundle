@@ -84,7 +84,10 @@ class ElFinderConnector extends \elFinderConnector
 
         $args['debug'] = isset($src['debug']) && $src['debug'];
 
-        $token = true === $this->shouldIssueCsrfToken($cmd, $src) ? $this->issueCsrfToken() : null;
+        $token = null;
+        if (true === $this->shouldIssueCsrfToken($cmd, $src)) {
+            $token = $this->issueCsrfToken();
+        }
         if (null === $token && true === $this->shouldRefreshCsrfToken($cmd, $src)) {
             $this->refreshCsrfTokenTtl();
         }

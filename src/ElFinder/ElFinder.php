@@ -21,7 +21,10 @@ class ElFinder extends BaseElFinder
 
     protected function tmb($args)
     {
-        $targets = true === is_array($args['targets']) ? $args['targets'] : [$args['targets']];
+        $targets = $args['targets'];
+        if (false === is_array($targets)) {
+            $targets = [$targets];
+        }
         $args['targets'] = array_filter($targets, $this->isImageWithinPixelLimit(...));
 
         return parent::tmb($args);
@@ -42,7 +45,7 @@ class ElFinder extends BaseElFinder
     private function isImageWithinPixelLimit(mixed $target): bool
     {
         self::checkAborted();
-        if (!is_string($target) || !($volume = $this->volume($target))) {
+        if (false === is_string($target) || false === ($volume = $this->volume($target))) {
             return false;
         }
 
@@ -61,7 +64,10 @@ class ElFinder extends BaseElFinder
     protected function abort($args = array())
     {
         $sessionId = $this->session instanceof SymfonyElFinderSession ? $this->session->getId() : session_id();
-        $key = isset($args['makeFile']) ? 'makeFile' : 'id';
+        $key = 'id';
+        if (true === isset($args['makeFile'])) {
+            $key = 'makeFile';
+        }
         $id = $args[$key] ?? null;
 
         if ('' === $sessionId || !is_string($id) || 1 !== preg_match('/^[a-f0-9]+$/iD', $id)) {
