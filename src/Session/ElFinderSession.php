@@ -14,6 +14,11 @@ class ElFinderSession implements elFinderSessionInterface
         $this->session = $session;
     }
 
+    public function getId(): string
+    {
+        return $this->session->getId();
+    }
+
     public function start()
     {
         $this->session->start();

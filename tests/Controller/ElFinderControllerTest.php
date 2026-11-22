@@ -196,7 +196,7 @@ class ElFinderControllerTest extends TestCase
             $this->createStub(SessionInterface::class),
             $this->createStub(HttpKernelInterface::class),
             new EventDispatcher(),
-            Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]),
+            Request::create('/efupload/default', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']),
             'default',
             ''
         );
@@ -219,7 +219,7 @@ class ElFinderControllerTest extends TestCase
                 $this->createStub(SessionInterface::class),
                 $this->createStub(HttpKernelInterface::class),
                 new EventDispatcher(),
-                Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]),
+                Request::create('/efupload/default', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']),
                 'default',
                 ''
             );
@@ -249,7 +249,7 @@ class ElFinderControllerTest extends TestCase
                 $this->createStub(SessionInterface::class),
                 $this->createStub(HttpKernelInterface::class),
                 new EventDispatcher(),
-                Request::create('/efupload/unknown', 'POST', [], [], ['upload' => $file]),
+                Request::create('/efupload/unknown', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']),
                 'unknown',
                 ''
             );
@@ -265,7 +265,7 @@ class ElFinderControllerTest extends TestCase
     {
         $calls   = [];
         $file    = $this->createTestUpload();
-        $request = Request::create('/efupload/default/articles', 'POST', [], [], ['upload' => $file]);
+        $request = Request::create('/efupload/default/articles', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
         $loader  = $this->createMockForIntersectionOfInterfaces([
             ElFinderLoaderInterface::class,
             ElFinderUploadLoaderInterface::class,
@@ -403,7 +403,7 @@ class ElFinderControllerTest extends TestCase
                 $this->createStub(SessionInterface::class),
                 $this->createStub(HttpKernelInterface::class),
                 new EventDispatcher(),
-                Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]),
+                Request::create('/efupload/default', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']),
                 'default',
                 ''
             );
@@ -658,7 +658,7 @@ class ElFinderControllerTest extends TestCase
             $this->editorParameters('ckeditor'),
             $loader
         );
-        $request = Request::create('/efupload/default', 'POST', [], [], ['upload' => $file]);
+        $request = Request::create('/efupload/default', 'POST', [], [], ['upload' => $file], ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
         $request->query->add($query);
 
         try {

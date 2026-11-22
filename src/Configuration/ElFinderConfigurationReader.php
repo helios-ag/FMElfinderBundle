@@ -19,6 +19,7 @@ use Spatie\Dropbox\Client;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use TypeError;
 
 class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterface
@@ -54,6 +55,22 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
             $path              = $parameter['path'];
             $homeFolder        = (string) $request->attributes->get('homeFolder');
             $pathAndHomeFolder = $homeFolder ? sprintf('%s/%s', $path, $homeFolder) : $path;
+
+            if (true === (bool) $homeFolder && true === ($parameters['multi_home_folder'] ?? false)
+                && true === isset($parameters['where_is_multi']['roots'])
+                && (string) $parameters['where_is_multi']['roots'] === (string) count($options['roots'])
+            ) {
+                $separator    = $parameters['folder_separator'];
+                $prefix       = str_replace($separator, '/', $path . '/');
+                $expandedPath = str_replace($separator, '/', $pathAndHomeFolder);
+
+                // Check the same expansion the loader applies, including the root boundary.
+                if (false === str_starts_with($expandedPath, $prefix) || $expandedPath === $prefix) {
+                    throw new BadRequestHttpException('Invalid home folder path.');
+                }
+
+                HomeFolderPath::assertValid(substr($expandedPath, strlen($prefix)));
+            }
 
             if ($parameter['flysystem']['enabled']) {
                 if ($parameter['flysystem']['filesystem']) {
@@ -127,7 +144,16 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
                 /** @var ElfinderSecurityInterface $voter */
                 $voter = $this->container->get($parameter['security_voter']);
 
-                $driverOptions['disabled'] = $this->parseSecurityConfiguration($voter);
+                $driverOptions['disabled'] = array_values(array_unique(array_merge(
+                    (array) $driverOptions['disabled'],
+                    $this->parseSecurityConfiguration($voter)
+                )));
+            }
+
+            if (true === in_array('put', (array) $driverOptions['disabled'], true)
+                && false === in_array('edit', $driverOptions['disabled'], true)
+            ) {
+                $driverOptions['disabled'][] = 'edit';
             }
 
             if ('Flysystem' == $parameter['driver']) {
@@ -186,6 +212,10 @@ class ElFinderConfigurationReader implements ElFinderConfigurationProviderInterf
 
             $path = $url . '/' . $homeFolder;
         } else {
+            if (preg_match('~^(?:[/\\\\\\\\]|[a-z]:)~i', $path) === 1) {
+                return '';
+            }
+
             $path .= '/' . $homeFolder;
         }
 

@@ -40,7 +40,7 @@ test('installs an upload adapter and resolves a successful upload', async () => 
     assert.equal(xhr.url, '/efupload/ckeditor_upload');
     assert.equal(xhr.responseType, 'json');
     assert.equal(xhr.withCredentials, true);
-    assert.deepEqual(xhr.headers, { 'X-CSRF-TOKEN': 'token' });
+    assert.deepEqual(xhr.headers, { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRF-TOKEN': 'token' });
     assert.deepEqual(xhr.body.entries, [['upload', adapter.loaderFile]]);
 
     xhr.respond(200, { uploaded: 1, url: '/media/photo.png' });

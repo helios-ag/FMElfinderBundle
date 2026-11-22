@@ -3,6 +3,7 @@
 namespace FM\ElfinderBundle\Controller;
 
 use Exception;
+use FM\ElfinderBundle\Configuration\HomeFolderPath;
 use FM\ElfinderBundle\Event\ElFinderPostExecutionEvent;
 use FM\ElfinderBundle\Event\ElFinderPreExecutionEvent;
 use FM\ElfinderBundle\Exception\UploadConfigurationException;
@@ -41,7 +42,7 @@ class ElFinderController
      */
     public function show(Request $request, string $instance, string $homeFolder): Response
     {
-        $this->assertValidHomeFolder($homeFolder);
+        HomeFolderPath::assertValid($homeFolder);
 
         $efParameters = $this->params;
 
@@ -81,7 +82,7 @@ class ElFinderController
 
     public function load(SessionInterface $session, HttpKernelInterface $httpKernel, EventDispatcherInterface $eventDispatcher, Request $request, string $instance, string $homeFolder): JsonResponse
     {
-        $this->assertValidHomeFolder($homeFolder);
+        HomeFolderPath::assertValid($homeFolder);
 
         $loader       = $this->loader;
         $efParameters = $this->params;
@@ -91,13 +92,19 @@ class ElFinderController
         $preExecutionEvent = new ElFinderPreExecutionEvent($request, $httpKernel, $instance, $homeFolder);
         $eventDispatcher->dispatch($preExecutionEvent);
 
-        $result = $loader->load($request); // the instance is already set
+        try {
+            $result = $loader->load($request);
+        } catch (\elFinderAbortException) {
+            return new JsonResponse(null, 204);
+        }
+
+        $status = is_array($result) && true === ($result['csrfReload'] ?? false) ? 403 : 200;
 
         $postExecutionEvent = new ElFinderPostExecutionEvent($request, $httpKernel, $instance, $homeFolder, $result);
         $eventDispatcher->dispatch($postExecutionEvent);
 
         // returning result (who may have been modified by a post execution event listener)
-        return new JsonResponse($postExecutionEvent->getResult());
+        return new JsonResponse($postExecutionEvent->getResult(), $status);
     }
 
     public function upload(
@@ -108,7 +115,7 @@ class ElFinderController
         string $instance,
         string $homeFolder
     ): JsonResponse {
-        $this->assertValidHomeFolder($homeFolder);
+        HomeFolderPath::assertValid($homeFolder);
 
         $file = $request->files->get('upload');
 
@@ -126,6 +133,10 @@ class ElFinderController
 
         if (false === isset($this->params['instances'][$instance])) {
             return $this->ckeditorError('Instance not found.', 404);
+        }
+
+        if (false === $request->isXmlHttpRequest()) {
+            return $this->ckeditorError('The X-Requested-With header is required.', 403);
         }
 
         $this->loader->setSession($session);
@@ -164,27 +175,6 @@ class ElFinderController
                 'Content-type' => 'text/javascript',
             ]
         );
-    }
-
-    private function assertValidHomeFolder(string $homeFolder): void
-    {
-        if ('' === $homeFolder) {
-            return;
-        }
-
-        if (str_contains($homeFolder, "\0") ||
-            str_contains($homeFolder, '\\') ||
-            str_starts_with($homeFolder, '/') ||
-            str_ends_with($homeFolder, '/')
-        ) {
-            throw new BadRequestHttpException('Invalid home folder path.');
-        }
-
-        foreach (explode('/', $homeFolder) as $segment) {
-            if ('' === $segment || '.' === $segment || '..' === $segment) {
-                throw new BadRequestHttpException('Invalid home folder path.');
-            }
-        }
     }
 
     private function ckeditorResponse(array $result, UploadedFile $file, bool $ckeditor5Response = false): JsonResponse

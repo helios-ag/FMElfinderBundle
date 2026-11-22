@@ -5,9 +5,79 @@ namespace FM\ElfinderBundle\ElFinder;
 use elFinder as BaseElFinder;
 use elFinderSession;
 use elFinderSessionInterface;
+use FM\ElfinderBundle\Session\ElFinderSession as SymfonyElFinderSession;
 
 class ElFinder extends BaseElFinder
 {
+    private const MAX_IMAGE_PIXELS = 24_000_000;
+
+    protected function get_remote_contents(&$url, $timeout = 30, $redirect_max = 5, $ua = 'Mozilla/5.0', $fp = null)
+    {
+        $this->remoteContentHeaders = [];
+        $this->remoteContentError = self::ERROR_PERM_DENIED;
+
+        return false;
+    }
+
+    protected function tmb($args)
+    {
+        $targets = $args['targets'];
+        if (false === is_array($targets)) {
+            $targets = [$targets];
+        }
+        $args['targets'] = array_filter($targets, $this->isImageWithinPixelLimit(...));
+
+        return parent::tmb($args);
+    }
+
+    protected function resize($args)
+    {
+        if (false === $this->isImageWithinPixelLimit($args['target'])
+            || ((int) $args['width'] > 0 && (int) $args['height'] > 0
+                && false === self::isPixelCountAllowed((int) $args['width'], (int) $args['height']))
+        ) {
+            return ['error' => $this->error(self::ERROR_RESIZE, self::ERROR_RESIZESIZE)];
+        }
+
+        return parent::resize($args);
+    }
+
+    private function isImageWithinPixelLimit(mixed $target): bool
+    {
+        self::checkAborted();
+        if (false === is_string($target) || false === ($volume = $this->volume($target))) {
+            return false;
+        }
+
+        $dimensions = $volume->dimensions($target);
+
+        return is_string($dimensions)
+            && 1 === preg_match('/^([1-9][0-9]*)x([1-9][0-9]*)$/D', $dimensions, $matches)
+            && self::isPixelCountAllowed((int) $matches[1], (int) $matches[2]);
+    }
+
+    private static function isPixelCountAllowed(int $width, int $height): bool
+    {
+        return $height > 0 && $width <= intdiv(self::MAX_IMAGE_PIXELS, $height);
+    }
+
+    protected function abort($args = array())
+    {
+        $sessionId = $this->session instanceof SymfonyElFinderSession ? $this->session->getId() : session_id();
+        $key = 'id';
+        if (true === isset($args['makeFile'])) {
+            $key = 'makeFile';
+        }
+        $id = $args[$key] ?? null;
+
+        if ('' === $sessionId || false === is_string($id) || 1 !== preg_match('/^[a-f0-9]+$/iD', $id)) {
+            return;
+        }
+
+        $args[$key] = hash_hmac('sha256', $id, $sessionId);
+        parent::abort($args);
+    }
+
     /**
      * Constructor.
      *

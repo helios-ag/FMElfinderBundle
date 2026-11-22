@@ -91,6 +91,33 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         $this->assertSame('https://test.com/bob', $configuration['roots'][0]['URL']);
     }
 
+    public function testMultiHomeFolderRejectsEmptyDecodedSegmentBeforeMount(): void
+    {
+        $reader = $this->buildReaderWithRoot(
+            $this->baseRoot(),
+            ['homeFolder' => 'reports||drafts'],
+            instanceOptions: [
+                'multi_home_folder' => true,
+                'where_is_multi'    => ['roots' => 0],
+                'folder_separator'  => '|',
+            ]
+        );
+
+        $this->expectException(\Symfony\Component\HttpKernel\Exception\BadRequestHttpException::class);
+        $reader->getConfiguration('default');
+    }
+
+    public function testAbsoluteFilesystemPathDoesNotBecomePublicUrl(): void
+    {
+        $root = $this->baseRoot();
+        $root['path'] = '/var/app/media';
+        $root['url'] = '';
+
+        $configuration = $this->buildReaderWithRoot($root)->getConfiguration('default');
+
+        self::assertSame('', $configuration['roots'][0]['URL']);
+    }
+
     public function testAccessTmbURLOption(): void
     {
         $reader        = $this->getConfigurationReader();
@@ -199,13 +226,14 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
         $root                   = $this->baseRoot();
         $root['security_voter'] = 'app.voter';
+        $root['disabled_commands'] = ['zipdl', 'put'];
 
         $disabled = $this->buildReaderWithRoot($root, [], $container)->getConfiguration('default')['roots'][0]['disabled'];
 
-        $this->assertSame(['rm', 'rename'], $disabled);
+        $this->assertSame(['zipdl', 'put', 'rm', 'rename', 'edit'], $disabled);
     }
 
-    public function testSecurityVoterReturnsEmptyWhenNoRoleGranted(): void
+    public function testSecurityVoterPreservesStaticRestrictionsWhenNoRoleGranted(): void
     {
         $voter = $this->createStub(ElfinderSecurityInterface::class);
         $voter->method('getConfiguration')->willReturn(['ROLE_ADMIN' => ['rm']]);
@@ -214,10 +242,11 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
 
         $root                   = $this->baseRoot();
         $root['security_voter'] = 'app.voter';
+        $root['disabled_commands'] = ['zipdl'];
 
         $disabled = $this->buildReaderWithRoot($root, [], $container)->getConfiguration('default')['roots'][0]['disabled'];
 
-        $this->assertSame([], $disabled);
+        $this->assertSame(['zipdl'], $disabled);
     }
 
     public function testFlysystemRejectsNonFilesystemService(): void
@@ -722,11 +751,11 @@ class ElFinderConfigurationReaderTest extends \PHPUnit\Framework\TestCase
         return $container;
     }
 
-    private function buildReaderWithRoot(array $root, array $requestAttributes = [], ?ContainerInterface $container = null): ElFinderConfigurationReader
+    private function buildReaderWithRoot(array $root, array $requestAttributes = [], ?ContainerInterface $container = null, array $instanceOptions = []): ElFinderConfigurationReader
     {
         $params = [
             'instances' => [
-                'default' => [
+                'default' => $instanceOptions + [
                     'cors_support' => '',
                     'connector'    => [
                         'debug' => '', 'binds' => '', 'plugins' => '',

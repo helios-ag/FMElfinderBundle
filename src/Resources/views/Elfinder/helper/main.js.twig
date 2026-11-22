@@ -65,7 +65,7 @@
                         // Make elFinder
                         $('#' + id).elfinder(
                             // 1st Arg - options
-                            $.extend(true, { lang: lang }, opts, mOpts || {}),
+                            $.extend(true, { lang: lang, requestType: 'post' }, opts, mOpts || {}),
                             // 2nd Arg - before boot up function
                             function(fm, extraObj) {
                                 // `init` event callback function
@@ -120,7 +120,7 @@
             'jquery'   : '//cdnjs.cloudflare.com/ajax/libs/jquery/'+(old? '1.12.4' : jqver)+'/jquery.min',
             'jquery-ui': '//cdnjs.cloudflare.com/ajax/libs/jqueryui/'+uiver+'/jquery-ui.min',
             'elfinder' : 'elfinder.min',
-            'encoding-japanese': '//cdn.rawgit.com/polygonplanet/encoding.js/1.0.26/encoding.min'
+            'encoding-japanese': 'https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/1.0.26/encoding.min'
         },
         waitSeconds : 10 // optional
     });

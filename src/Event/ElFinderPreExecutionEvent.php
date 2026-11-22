@@ -52,7 +52,18 @@ class ElFinderPreExecutionEvent extends Event
      */
     public function getCommand(): string
     {
-        return $this->request->query->get('cmd');
+        $parameters = $this->request->query->all();
+        if (true === $this->request->isMethod('POST')) {
+            $parameters += $this->request->request->all();
+        }
+
+        $command = $parameters['cmd'] ?? '';
+
+        if (false === is_string($command)) {
+            return '';
+        }
+
+        return $command;
     }
 
     public function getRequest(): Request

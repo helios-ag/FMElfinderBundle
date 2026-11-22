@@ -105,7 +105,7 @@ class ConfigurationLoadTest extends AbstractExtensionConfigurationTestCase
                                 'upload_order'      => ['deny', 'allow'],
                                 'defaults'          => ['read' => true, 'write' => true],
                                 'upload_deny'       => ['all'],
-                                'upload_max_size'   => 0,
+                                'upload_max_size'   => 'config/config.php' === $path ? 0 : '20M',
                                 'upload_max_conn'   => 3,
                                 'dropbox2_settings' => [
                                     'aliasFormat'  => '%s@Dropbox',

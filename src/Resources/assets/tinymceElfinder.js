@@ -39,6 +39,7 @@
                 try {
                     elf = elfNode.dialogelfinder(Object.assign({
                         title: 'File Manager',
+                        requestType: 'post',
                         useBrowserHistory: false,
                         autoOpen: false,
                         width: '90%',
