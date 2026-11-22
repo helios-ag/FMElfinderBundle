@@ -16,6 +16,22 @@ class ElFinderPreExecutionEventTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($command, $event->getCommand());
     }
 
+    public function testGetCommandFromPostWithQueryTakingPrecedence(): void
+    {
+        $request = Request::create('/efconnect/default', 'POST', ['cmd' => 'tmb']);
+        $httpKernel = $this->createStub(\Symfony\Component\HttpKernel\HttpKernelInterface::class);
+        $event = new ElFinderPreExecutionEvent($request, $httpKernel, 'default', '');
+
+        self::assertSame('tmb', $event->getCommand());
+
+        $request->query->set('cmd', 'open');
+        self::assertSame('open', $event->getCommand());
+
+        $request->query->remove('cmd');
+        $request->request->remove('cmd');
+        self::assertSame('', $event->getCommand());
+    }
+
     public function testSubRequest()
     {
         $request    = new Request(['cmd' => 'info']);
